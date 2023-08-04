@@ -69,11 +69,14 @@ determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
 #'   - NA if any input contains non-responses or unknown diagnosis ages (997, 998, or 999).
 #'
 #' @details The function evaluates the input variables `FMH_11`, `FMH_12`, `FMH_13`, and `FMH_14` to determine the cardiovascular disease (CVD) family history.
-#'   - If `FMH_11` is equal to 1 or `FMH_13` is equal to 1, it indicates that someone in the family had heart disease or stroke, respectively. In this case, the function checks the age at diagnosis (`FMH_12` for heart disease and `FMH_14` for stroke). If the age is greater than or equal to 0 and less than 60, it represents a diagnosis before age 60, and `famheart60` or `famstroke60` is set to 1, respectively.
-#'   - If the age is greater than or equal to 60 and less than or equal to 100, it indicates a late diagnosis, and the corresponding `famheart60` and `famstroke60` is set to 0.
-#'   - If any of the integer inputs contain non-responses (i.e., values greater than 2) or any age input takes non-response values (997, 998, or 999), `famCVD60` is set to NA to indicate that the CVD family history is not available.
-#'   - If neither heart disease nor stroke is reported in the family (`FMH_11` and `FMH_13` both equal to 2), or if non-response values are provided for both `FMH_12` and `FMH_14`, the function sets `famCVD60` to NA.
-#'   - If any of the conditions for premature CVD (before age 60) are met for either heart disease or stroke, the function sets `famCVD60` to 1, indicating a family history of premature CVD. Otherwise, `famCVD60` is set to 2, representing no family history of premature CVD.
+#'   - If `FMH_11` is equal to 1 or `FMH_13` is equal to 1, it indicates that someone in the family had heart disease or stroke, respectively. 
+#'   In this case, the function checks the age at diagnosis (`FMH_12` for heart disease and `FMH_14` for stroke). If the age is greater than or equal to 0 and less than 60, 
+#'   it represents a diagnosis before age 60, and `famheart60` or `famstroke60` is set to 1, respectively.
+#'   - If the age is greater than or equal to 60 and less than or equal to 100, it indicates a late diagnosis, and the corresponding `famheart60` and `famstroke60` are set to 0.
+#'   - If any of the integer inputs contain non-responses (i.e., values greater than 2) or any age input takes non-response values (997, 998, or 999), `famCVD60` is set to NA to 
+#'   indicate that the CVD family history is not available.
+#'   - If any of the conditions for premature CVD (before age 60) are met for either heart disease or stroke, the function sets `famCVD60` to 1, indicating a family history of 
+#'   premature CVD. Otherwise, `famCVD60` is set to 2, representing no family history of premature CVD.
 #'
 #' @examples
 #' 
@@ -106,7 +109,7 @@ determine_CVD_Family_History <- function(FMH_11, FMH_12, FMH_13, FMH_14) {
   else if (FMH_11 == 2 && FMH_13 == 2) {
     famheart60 <- 0
   }
-  else if ((FMH_11 > 2 || FMH_13 > 2)) {
+  else if (FMH_11 > 2 || FMH_13 > 2) {
     return(famCVD60)
   }
   
