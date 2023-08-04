@@ -41,7 +41,7 @@
 #' # Example 3: Calculate GFR for a 35-year-old black female with serum creatine of 70 µmol/L.
 #' calculateGFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35)
 #' # Output: GFR = 86.51265
-calculateGFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
+calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   
   GFR <- 0
   serumcreat <- 0
