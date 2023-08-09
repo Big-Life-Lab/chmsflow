@@ -83,7 +83,7 @@ pack_years_fun <- function(SMKDSTY, CLC_AGE, SMKDSTP, SMK_52, SMK_31, SMK_41, SM
   }
   # Account for invalid input (NA)
   else {
-    pack_years <- NA
+    pack_years <- haven::tagged_na("b")
   }
   
   return(pack_years)

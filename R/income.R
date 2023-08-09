@@ -45,6 +45,9 @@ calculate_Hhld_Income <- function(THI_01, DHHDHSZ) {
   
   # Step 2 - Adjust total household income based on household size 
   adj_hh_inc <- THI_01 / hh_size_wt
+  if (is.na(adj_hh_inc)) {
+    adj_hh_inc <- haven::tagged_na("b")
+  }
   return(adj_hh_inc)
   
 }

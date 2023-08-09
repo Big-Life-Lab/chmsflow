@@ -10,7 +10,7 @@
 #' @param CLC_AGE Age (years). It should be a numeric value.
 #'
 #' @return The calculated GFR as a numeric value. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
-#'         are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996), the GFR will be NA
+#'         are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996), the GFR will be NA(b)
 #'         (Not Available).
 #' 
 #' @details The function uses the serum creatine level (LAB_BCRE) in µmol/L to calculate the estimated GFR. First, it
@@ -43,7 +43,7 @@
 #' # Output: GFR = 86.51265
 calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   
-  GFR <- 0
+  GFR <- haven::tagged_na("b")
   serumcreat <- 0
   
   if (LAB_BCRE < 996 && PGDCGT < 96 && CLC_SEX < 6 && CLC_AGE < 996) {

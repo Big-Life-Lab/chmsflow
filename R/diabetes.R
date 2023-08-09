@@ -24,7 +24,7 @@ determine_inclusive_diabetes <- function(diab_m, diab_drug, CCC_51) {
     diabX = 1 # "Yes" if one answered "Yes" for either of the three inputs
   }
   else if (diab_m >= 6 || is.na(diab_drug) || CCC_51 >= 6) {
-    diabX = NA # NA if any input contains non-responses 
+    diabX = haven::tagged_na("b") # NA if any input contains non-responses 
   }
   else {
     diabX = 2  # "No" if all else

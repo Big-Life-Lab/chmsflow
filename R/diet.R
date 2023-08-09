@@ -37,6 +37,9 @@
 find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
  
   totalFV <- sum(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) / 365
+  if (is.na(totalFV)) {
+    totalFV <- haven::tagged_na("b")
+  }
   return(totalFV)
 
 }
@@ -86,11 +89,12 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #'                         GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90)
 #' # Output: 1.882192
 #' # The average daily consumption of fruits and vegetables in a year for this respondent is approximately 1.88 times per day based on CHMS cycles 3-6 data.
-#'
-
 find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
   
   totalFV <- sum(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) / 365
+  if (is.na(totalFV)) {
+    totalFV <- haven::tagged_na("b")
+  }
   return(totalFV)
 
 }
@@ -121,7 +125,7 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
     nonHDL <- LAB_CHOL - LAB_HDL
   }
   else {
-    nonHDL <- NA
+    nonHDL <- haven::tagged_na("b")
   }
   return(nonHDL)
 }

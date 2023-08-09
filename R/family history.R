@@ -19,7 +19,7 @@
 #'          condition (heart disease, heart attack, or stroke) is present. In such a case, `cardiov` is set to 1,
 #'          representing a CVD personal history of "Yes." If all of the input variables are equal to 2, it implies that
 #'          none of the conditions are present, and `cardiov` is set to 2, representing a CVD personal history of "No."
-#'          If any of the input variables is a non-response (i.e., not 1 or 2), `cardiov` is set to NA, indicating that
+#'          If any of the input variables is a non-response (i.e., not 1 or 2), `cardiov` is set to NA(b), indicating that
 #'          the personal history is not available due to non-response, unless one of the input variables is equal to 1,
 #'          in which case the CVD personal history is considered "Yes."
 #' 
@@ -47,7 +47,7 @@ determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
     cardiov <- 2
   }
   else { # Any non-responses yield NA
-    cardiov <- NA
+    cardiov <- haven::tagged_na("b")
   }
   
   return(cardiov)
@@ -66,7 +66,7 @@ determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
 #' @return An integer indicating the cardiovascular disease (CVD) family history: 
 #'   - 1 for "Yes" if there is a family history of premature CVD (before age 60) based on heart disease and stroke histories. 
 #'   - 2 for "No" if there is no such family history.
-#'   - NA if any input contains non-responses or unknown diagnosis ages (997, 998, or 999).
+#'   - NA(b) if any input contains non-responses or unknown diagnosis ages (997, 998, or 999).
 #'
 #' @details The function evaluates the input variables `FMH_11`, `FMH_12`, `FMH_13`, and `FMH_14` to determine the cardiovascular disease (CVD) family history.
 #'   - If `FMH_11` is equal to 1 or `FMH_13` is equal to 1, it indicates that someone in the family had heart disease or stroke, respectively. 
@@ -87,7 +87,7 @@ determine_CVD_Family_History <- function(FMH_11, FMH_12, FMH_13, FMH_14) {
   
   famheart60 <- 0
   famstroke60 <- 0
-  famCVD60 <- NA
+  famCVD60 <- haven::tagged_na("b")
   
   if (FMH_11 == 1 || FMH_13 == 1) {  # someone in the family diagnosed with heart disease or stroke
     if (FMH_12 >= 0 && FMH_12 < 60) { # before age 60

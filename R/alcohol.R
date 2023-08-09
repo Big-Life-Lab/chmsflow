@@ -138,7 +138,7 @@ low_drink_score_fun1 <- function(CLC_SEX, ALCDWKY, ALC_17, ALC_11) {
       } else if (step1 %in% 5:9) {
         low_drink_score1 <- 5
       } else {
-        low_drink_score1 <- NA
+        low_drink_score1 <- haven::tagged_na("b")
       }
     }
     

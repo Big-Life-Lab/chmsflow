@@ -27,7 +27,7 @@
 #' # Output: 2 (Inclusion status is "No" as the respondent does not meet the criteria for inclusion in the study sample).
 determine_inclusion_status <- function(agegroup2079, highBP14090, PRS_11) {
   
-  insample <- 0
+  insample <- haven::tagged_na("b")
   
   if (agegroup2079 == 1 && !is.na(highBP14090) && PRS_11 != 1) {
     insample <- 1

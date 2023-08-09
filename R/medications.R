@@ -1,7 +1,6 @@
 #' @file
 #' Load packages
 library(logger)
-library(purrr)
 
 #' @brief Calculate the number of occurrences of a specific drug class based on given conditions.
 #' 
@@ -78,9 +77,17 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
   # Initialize the class variable column
   df[[class_var_name]] <- 0 
   
-  # Apply the condition function to each pair of med and last_taken vars
+  # Apply the condition function to each pair of med and last_taken vars using a loop
   for (i in seq_along(med_vars)) {
-    df[[class_var_name]] <- df[[class_var_name]] + purrr::map2_int(df[[med_vars[i]]], df[[last_taken_vars[i]]], class_condition_fun)
+    med_values <- df[[med_vars[i]]]
+    last_taken_values <- df[[last_taken_vars[i]]]
+    class_values <- numeric(nrow(df))
+    
+    for (j in seq_along(med_values)) {
+      class_values[j] <- class_condition_fun(med_values[j], last_taken_values[j])
+    }
+    
+    df[[class_var_name]] <- df[[class_var_name]] + class_values
   }
   
   return(df)
@@ -113,7 +120,12 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 #' 
 #' is_beta_blocker('C07AA13', 3)
 is_beta_blocker <- function(atc_code, time_last_taken) {
-  startsWith(atc_code, "C07") && !(atc_code %in% c('C07AA07', 'C07AA12', 'C07AG02')) && time_last_taken <= 4
+  starts_with_C07 <- startsWith(atc_code, "C07")
+  not_in_specific_codes <- !(atc_code %in% c('C07AA07', 'C07AA12', 'C07AG02'))
+  time_condition <- time_last_taken <= 4
+  
+  is_beta_blocker <- starts_with_C07 & not_in_specific_codes & time_condition
+  return(is_beta_blocker)
 }
 
 #' @brief Determine if a CHMS respondent's medication is an ACE inhibitor.

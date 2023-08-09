@@ -11,7 +11,7 @@
 #' @details The function calculates the adjusted systolic blood pressure (SBP_adj) based on the value of BPMDPBPS. If
 #'          BPMDPBPS is greater than or equal to 0 and less than 996, the adjustment is made using the formula:
 #'          SBP_adj = 11.4 + (0.93 * BPMDPBPS). Otherwise, if BPMDPBPS is a non-response value (BPMDPBPS >= 996), the
-#'          adjusted systolic blood pressure is set to NA, indicating that the measurement is not available. The adjusted
+#'          adjusted systolic blood pressure is set to NA(b), indicating that the measurement is not available. The adjusted
 #'          systolic blood pressure is returned as the final output.
 #'
 #' @examples
@@ -27,7 +27,7 @@ adjust_SBP <- function(BPMDPBPS) {
     SBP_adj <- 11.4 + (0.93 * BPMDPBPS)
   }
   else {
-    SBP_adj <- NA # SBP_adj is set to NA for non-response values
+    SBP_adj <- haven::tagged_na("b") # SBP_adj is set to NA(b) for non-response values
   }
   
   return(SBP_adj)
@@ -47,7 +47,7 @@ adjust_SBP <- function(BPMDPBPS) {
 #' @details The function calculates the adjusted diastolic blood pressure (DBP_adj) based on the value of BPMDPBPD. If
 #'          BPMDPBPD is greater than or equal to 0 and less than 996, the adjustment is made using the formula:
 #'          DBP_adj = 15.6 + (0.83 * BPMDPBPD). Otherwise, if BPMDPBPD is a non-response value (BPMDPBPD >= 996), the
-#'          adjusted diastolic blood pressure is set to NA, indicating that the measurement is not available. The adjusted
+#'          adjusted diastolic blood pressure is set to NA(b), indicating that the measurement is not available. The adjusted
 #'          diastolic blood pressure is returned as the final output.
 #'
 #' @examples
@@ -63,7 +63,7 @@ adjust_DBP <- function(BPMDPBPD) {
     DBP_adj <- 15.6 + (0.83 * BPMDPBPD)
   }
   else {
-    DBP_adj <- NA # DBP_adj is set to NA for non-response values
+    DBP_adj <- haven::tagged_na("b") # DBP_adj is set to NA(b) for non-response values
   }
   
   return(DBP_adj)
@@ -83,7 +83,7 @@ adjust_DBP <- function(BPMDPBPD) {
 #' @return An integer representing the hypertension status:
 #'   - 1: High blood pressure (BP ≥ 140/90 mmHg or on hypertension medication)
 #'   - 2: Normal blood pressure (BP < 140/90 mmHg and not on hypertension medication)
-#'   - NA: Invalid input or non-response
+#'   - NA(b): Invalid input or non-response
 #'
 #' @examples
 #' 
@@ -97,7 +97,7 @@ adjust_DBP <- function(BPMDPBPD) {
 determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   highsys140 <- NA
   highdias90 <- NA
-  highBP14090 <- NA
+  highBP14090 <- haven::tagged_na("b")
   
   # Check conditions and assign values to highsys140 and highdias90
   if (140 <= BPMDPBPS && BPMDPBPS < 996) {
@@ -142,7 +142,7 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
 #' @return An integer representing the adjusted hypertension status:
 #'   - 1: High blood pressure (adjusted BP ≥ 140/90 mmHg or on hypertension medication)
 #'   - 2: Normal blood pressure (adjusted BP < 140/90 mmHg and not on hypertension medication)
-#'   - NA: Invalid input or non-response
+#'   - NA(b): Invalid input or non-response
 #'
 #' @examples
 #' 
@@ -156,7 +156,7 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
 determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   highsys140_adj <- NA
   highdias90_adj <- NA
-  highBP14090_adj <- NA
+  highBP14090_adj <- haven::tagged_na("b")
   
   # Check conditions and assign values to highsys140_adj and highdias90_adj
   if (140 <= SBP_adj && SBP_adj < 996) {
@@ -202,7 +202,7 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
 #' @return An integer representing the controlled hypertension status:
 #'   - 1: Hypertension not controlled (BP ≥ 140/90 mmHg or on hypertension medication).
 #'   - 2: Hypertension controlled (BP < 140/90 mmHg and on hypertension medication).
-#'   - NA: Invalid input or non-response.
+#'   - NA(b): Invalid input or non-response.
 #'
 #' @examples
 #' 
@@ -216,7 +216,7 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
 determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   highsys140 <- NA
   highdias90 <- NA
-  Control14090 <- NA
+  Control14090 <- haven::tagged_na("b")
   
   # Check conditions and assign values to highsys140 and highdias90
   if (140 <= BPMDPBPS && BPMDPBPS < 996) {
@@ -260,7 +260,7 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
 #' @return An integer representing the controlled adjusted hypertension status:
 #'   - 1: Hypertension not controlled (adjusted BP ≥ 140/90 mmHg or on hypertension medication).
 #'   - 2: Hypertension controlled (adjusted BP < 140/90 mmHg and on hypertension medication).
-#'   - NA: Invalid input or non-response.
+#'   - NA(b): Invalid input or non-response.
 #'
 #' @examples
 #' 
@@ -274,7 +274,7 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
 determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   highsys140_adj <- NA
   highdias90_adj <- NA
-  Control14090_adj <- NA
+  Control14090_adj <- haven::tagged_na("b")
   
   # Check conditions and assign values to highsys140_adj and highdias90_adj
   if (140 <= SBP_adj && SBP_adj < 996) {

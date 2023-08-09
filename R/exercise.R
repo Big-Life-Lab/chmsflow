@@ -22,8 +22,13 @@
 #' find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
 #' # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
 find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7) {
+  
   MVPA_min <- mean(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7)
+  if (is.na(MVPA_min)) {
+    MVPA_min <- haven::tagged_na("b")
+  }
   return(MVPA_min)
+  
 }
 
 #' @brief Convert minutes per day to minutes per week. 
@@ -44,6 +49,11 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
 #' minperday_to_minperweek(35)
 #' # Output: 245 (The equivalent minutes of exercise per one week is 245 minutes.)
 minperday_to_minperweek <- function(MVPA_min) {
+  
   minperweek <- MVPA_min * 7
+  if (is.na(minperweek)) {
+    minperweek <- haven::tagged_na("b")
+  }
   return(minperweek)
-}
+
+  }
