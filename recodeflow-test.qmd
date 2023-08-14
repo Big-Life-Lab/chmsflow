@@ -1,0 +1,43 @@
+---
+title: "Recodeflow test"
+format: html
+
+---
+
+1. Create CHMS synthetic data with missing values. Name of synthetic data has to be name of exact database in order for use in recodeflow. Using only age and sex to keep it simple.
+```{r}
+# Create synthetic data with missing values
+n <- 100  # Number of observations
+set.seed(123)  # Set seed for reproducibility
+
+# Generate random ages between 18 and 75, with some missing values [996-999]
+ages <- sample(c(18:75, 996:999), n, replace = TRUE)
+
+# Generate random sexes (1 for male, 2 for female, with some missing values [6-9])
+sexes <- sample(c(1:2, 6:9), n, replace = TRUE)
+
+# Create a data frame named cycle1
+cycle1 <- data.frame(CLC_AGE = ages, CLC_SEX = sexes)
+
+# Print the first few rows of the cycle1 data
+print(head(cycle1))
+```
+
+2. Load variables and variable-details from worksheets folder.
+```{r}
+library(readr)
+library(here)
+
+my_variables <- read.csv(here("worksheets", "chmsflow-variables.csv"))
+my_variable_details <- read.csv(here("worksheets", "chmsflow-variable-details.csv"))
+```
+
+3. Test recodeflow on fake CHMS data. Refer to console outputs to see results. What do you think?
+```{r}
+cycle1_ages <- recodeflow::rec_with_table(cycle1, "CLC_AGE", variable_details = my_variable_details, log = TRUE, var_labels = c(CLC_SEX = "AGE"))
+cycle1_sexes <- recodeflow::rec_with_table(cycle1, "CLC_SEX", variable_details = my_variable_details, log = TRUE, var_labels = c(CLC_SEX = "SEX"))
+
+head(cycle1_ages)
+head(cycle1_sexes)
+```
+
