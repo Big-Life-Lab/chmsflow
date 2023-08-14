@@ -23,7 +23,7 @@ adjust_SBP <- function(BPMDPBPS) {
   
   SBP_adj <- 0
   
-  if (0 <= BPMDPBPS && BPMDPBPS < 996) { # Proceeds without non-responses
+  if (BPMDPBPS >= 0 && BPMDPBPS < 996 && !is.na(BPMDPBPS)) { # Proceeds without non-responses
     SBP_adj <- 11.4 + (0.93 * BPMDPBPS)
   }
   else {
@@ -59,7 +59,7 @@ adjust_DBP <- function(BPMDPBPD) {
   
   DBP_adj <- 0
   
-  if (0 <= BPMDPBPD && BPMDPBPD < 996) { # Proceeds without non-responses
+  if (BPMDPBPD >= 0 && BPMDPBPD < 996 && !is.na(BPMDPBPD)) { # Proceeds without non-responses
     DBP_adj <- 15.6 + (0.83 * BPMDPBPD)
   }
   else {
@@ -98,6 +98,10 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   highsys140 <- NA
   highdias90 <- NA
   highBP14090 <- haven::tagged_na("b")
+  
+  if (is.na(BPMDPBPS) || is.na(BPMDPBPD) || is.na(ANYmed)) {
+    return(highBP14090)
+  }
   
   # Check conditions and assign values to highsys140 and highdias90
   if (140 <= BPMDPBPS && BPMDPBPS < 996) {
@@ -157,6 +161,10 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   highsys140_adj <- NA
   highdias90_adj <- NA
   highBP14090_adj <- haven::tagged_na("b")
+  
+  if (is.na(SBP_adj) || is.na(DBP_adj) || is.na(ANYmed)) {
+    return(highBP14090)
+  }
   
   # Check conditions and assign values to highsys140_adj and highdias90_adj
   if (140 <= SBP_adj && SBP_adj < 996) {
@@ -218,6 +226,10 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   highdias90 <- NA
   Control14090 <- haven::tagged_na("b")
   
+  if (is.na(BPMDPBPS) || is.na(BPMDPBPD) || is.na(ANYmed)) {
+    return(highBP14090)
+  }
+  
   # Check conditions and assign values to highsys140 and highdias90
   if (140 <= BPMDPBPS && BPMDPBPS < 996) {
     highsys140 <- 1
@@ -275,6 +287,10 @@ determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed)
   highsys140_adj <- NA
   highdias90_adj <- NA
   Control14090_adj <- haven::tagged_na("b")
+  
+  if (is.na(SBP_adj) || is.na(DBP_adj) || is.na(ANYmed)) {
+    return(highBP14090)
+  }
   
   # Check conditions and assign values to highsys140_adj and highdias90_adj
   if (140 <= SBP_adj && SBP_adj < 996) {
