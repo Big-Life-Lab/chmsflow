@@ -46,6 +46,9 @@ low_drink_score_fun <- function(CLC_SEX, ALCDWKY) {
         step1 <- NA
       }
     }
+    else if (is.na(CLC_SEX) || is.na(ALCDWKY)) {
+      low_drink_score <- haven::tagged_na("b")
+    }
     
     ## Categorical score
     low_drink_score <- NA
@@ -122,6 +125,9 @@ low_drink_score_fun1 <- function(CLC_SEX, ALCDWKY, ALC_17, ALC_11) {
       } else {
         step1 <- NA
       }
+    }
+    else if (is.na(CLC_SEX) || is.na(ALCDWKY) || is.na(ALC_17) || is.na(ALC_11)) {
+      low_drink_score1 <- haven::tagged_na("b")
     }
     
     ## Categorical score
