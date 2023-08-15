@@ -19,8 +19,11 @@ sexes <- sample(c(1:2, 6:9), n, replace = TRUE)
 # Generate random systolic blood pressures between 73 and 216, with some missing values [996-999]
 systolic_bps <- sample(c(73:216, 996:999), n, replace = TRUE)
 
+# Generate random systolic blood pressures between 0 and 400, with some missing values [9996-9999]
+day_1_AM_measurements <- sample(c(0:400, 9996:9999), n, replace = TRUE)
+
 # Create a data frame named cycle1
-cycle1 <- data.frame(CLC_AGE = ages, CLC_SEX = sexes, BPMDPBPS = systolic_bps)
+cycle1 <- data.frame(CLC_AGE = ages, CLC_SEX = sexes, BPMDPBPS = systolic_bps, AMSDMVA1 = day_1_AM_measurements)
 
 # Print the first few rows of the cycle1 data
 print(head(cycle1))
@@ -43,6 +46,10 @@ cycle1_sexes <- recodeflow::rec_with_table(cycle1, "CLC_SEX", variable_details =
 
 head(cycle1_ages)
 head(cycle1_sexes)
+
+# Recoding a variable which had different name in the past
+cycle1_AM_day1 <- recodeflow::rec_with_table(cycle1, "AMMDMVA1", variable_details = my_variable_details, log = TRUE)
+head(cycle1_AM_day1)
 
 # Recoding a transformed variable (cont to cat)
 cycle1_categorical_ages <- recodeflow::rec_with_table(cycle1, "agegroup4", variable_details = my_variable_details, log = TRUE)
