@@ -1,4 +1,4 @@
-#' @brief Calculate the low drink score for a CHMS respondent based on alcohol consumption.
+#' @title Calculate the low drink score for a CHMS respondent based on alcohol consumption.
 #'
 #' @param CLC_SEX An integer indicating the respondent's sex. 1 for male, 2 for female.
 #' @param ALCDWKY An integer representing the number of standard drinks consumed by the respondent in a week.
@@ -69,7 +69,7 @@ low_drink_score_fun <- function(CLC_SEX, ALCDWKY) {
     return(low_drink_score)
   }
 
-#' @brief Calculate the low drink score for a respondent based on alcohol consumption (with former and never categories included).
+#' @title Calculate the low drink score for a respondent based on alcohol consumption (with former and never categories included).
 #'
 #' @param CLC_SEX An integer indicating the respondent's sex. 1 for male, 2 for female.
 #' @param ALCDWKY An integer representing the number of standard drinks consumed by the respondent in a week.
@@ -108,6 +108,8 @@ low_drink_score_fun <- function(CLC_SEX, ALCDWKY) {
 #' # Example: Determine low drink score for a male respondent who consumed 3 standard drinks per week and drank within past year.
 #' low_drink_score_fun1(CLC_SEX = 1, ALCDWKY = 3, ALC_17 = 1, ALC_11 = 1)
 #' # Output: 2 (Low risk due to consuming 3 standard drinks per week and having alcohol before).
+#' 
+#' @export
 low_drink_score_fun1 <- function(CLC_SEX, ALCDWKY, ALC_17, ALC_11) {
     ## Step 1: How many standard drinks did you have in a week?
     step1 <- NA

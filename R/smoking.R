@@ -42,6 +42,8 @@
 #' # Example 2: Calculate pack years for a former occasional smoker (non-smoker now) who smoked at least 100 cigarettes in their lifetime.
 #' pack_years_fun(SMKDSTY = 5, CLC_AGE = 50, SMKDSTP = 40, SMK_52 = 18, SMK_31 = NA, SMK_41 = 15, SMK_53 = NA, SMK_23 = 3, SMK_21 = 25, SMK_11 = 1)
 #' # Output: 0.0137 (pack years)
+#' 
+#' @export
 #'
 #' @seealso https://big-life-lab.github.io/cchsflow/reference/pack_years_fun.html
 pack_years_fun <- function(SMKDSTY, CLC_AGE, SMKDSTP, SMK_52, SMK_31, SMK_41, SMK_53, SMK_23, SMK_21, SMK_11) {

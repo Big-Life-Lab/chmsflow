@@ -21,15 +21,17 @@
 #'
 #' # Example 1: Calculate adjusted household income for a respondent with $50,000 income and a household size of 3.
 #' calculate_Hhld_Income(THI_01 = 50000, DHHDHSZ = 3)
-#' # Output: 108108.11
+#' # Output: 29411.76
 #'
 #' # Example 2: Calculate adjusted household income for a respondent with $75000 income and a household size of 2.
 #' calculate_Hhld_Income(THI_01 = 75000, DHHDHSZ = 2)
-#' # Output: 131578.95
+#' # Output: 53571.43
 #'
 #' # Example 3: Calculate adjusted household income for a respondent with $90000 income and a household size of 1.
 #' calculate_Hhld_Income(THI_01 = 90000, DHHDHSZ = 1)
 #' # Output: 90000
+#' 
+#' @export
 calculate_Hhld_Income <- function(THI_01, DHHDHSZ) {
   
   # Step 1 - derive household adjustment based on household size 

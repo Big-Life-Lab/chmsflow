@@ -19,6 +19,8 @@
 #' # Determine CVD personal history for a person with heart disease (CCC_61 = 1).
 #' determine_CVD_Personal_History(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
 #' # Output: 1 (CVD personal history is "Yes" as heart disease is present).
+#' 
+#' @export
 determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
   
   cardiov <- haven::tagged_na("b")
@@ -36,7 +38,7 @@ determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
   return(cardiov)
 }
 
-#' @brief Determine a respondent's cardiovascular disease (CVD) family history based on specific conditions related to heart disease and stroke in their immediate family members.
+#' @title Determine a respondent's cardiovascular disease (CVD) family history based on specific conditions related to heart disease and stroke in their immediate family members.
 #'
 #' @param FMH_11 An integer indicating whether an immediate family member was diagnosed with heart disease. 
 #'              1 for "Yes", 2 for "No".
@@ -65,6 +67,8 @@ determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
 #' # Example: Determine CVD family history for a respondent with a family member diagnosed with heart disease at age 50.
 #' determine_CVD_Family_History(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = 6)
 #' # Output: 1 (CVD family history is "Yes" due to a family member's premature heart disease).
+#' 
+#' @export
 determine_CVD_Family_History <- function(FMH_11, FMH_12, FMH_13, FMH_14) {
   
   famheart60 <- 0

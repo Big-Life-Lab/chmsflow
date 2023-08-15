@@ -31,15 +31,13 @@
 #'
 #' # Example 1: Calculate GFR for a 45-year-old white female with serum creatine of 80 µmol/L.
 #' calculate_GFR(LAB_BCRE = 80, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 45)
-#' # Output: GFR = 80.25535
-#'
-#' # Example 2: Calculate GFR for a 55-year-old black male with serum creatine of 1100 µmol/L (non-response).
-#' calculate_GFR(LAB_BCRE = 1100, PGDCGT = 2, CLC_SEX = 1, CLC_AGE = 55)
-#' # Output: GFR = NA
-#'
-#' # Example 3: Calculate GFR for a 35-year-old black female with serum creatine of 70 µmol/L.
+#' # Output: GFR = 67.27905
+#' 
+#' # Example 2: Calculate GFR for a 35-year-old black female with serum creatine of 70 µmol/L.
 #' calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35)
-#' # Output: GFR = 86.51265
+#' # Output: GFR = 99.94114
+#' 
+#' @export
 calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   
   GFR <- haven::tagged_na("b")

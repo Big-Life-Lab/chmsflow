@@ -1,4 +1,4 @@
-#' @brief Adjusted systolic blood pressure
+#' @title Adjuste systolic blood pressure
 #' 
 #' This function adjusts systolic blood pressure based on the respondent's systolic average blood pressure across 
 #' six measurements. The adjustment is made using specific correction factors. The adjusted systolic blood pressure
@@ -18,7 +18,9 @@
 #' 
 #' # Example: Calculate adjusted systolic blood pressure for a respondent with an average systolic blood pressure of 120 mmHg.
 #' adjust_SBP(BPMDPBPS = 120)
-#' # Output: 123.6
+#' # Output: 123
+#' 
+#' @export
 adjust_SBP <- function(BPMDPBPS) {
   
   SBP_adj <- 0
@@ -33,8 +35,7 @@ adjust_SBP <- function(BPMDPBPS) {
   return(SBP_adj)
 }
 
-
-#' @brief Adjusted diastolic blood pressure
+#' @title Adjust diastolic blood pressure
 #' 
 #' This function adjusts diastolic blood pressure based on the respondent's diastolic average blood pressure across 
 #' six measurements. The adjustment is made using specific correction factors. The adjusted diastolic blood pressure
@@ -54,7 +55,9 @@ adjust_SBP <- function(BPMDPBPS) {
 #' 
 #' # Example: Calculate adjusted diastolic blood pressure for a respondent with an average diastolic blood pressure of 80 mmHg.
 #' adjust_DBP(BPMDPBPD = 80)
-#' # Output: 83.4
+#' # Output: 82
+#' 
+#' @export
 adjust_DBP <- function(BPMDPBPD) {
   
   DBP_adj <- 0
@@ -94,6 +97,8 @@ adjust_DBP <- function(BPMDPBPD) {
 #' # Example 2: Determine hypertension status for a respondent with systolic BP = 120, diastolic BP = 80, and not on medication.
 #' determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYmed = 2)
 #' # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
+#' 
+#' @export
 determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   highsys140 <- NA
   highdias90 <- NA
@@ -157,6 +162,8 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
 #' # Example 2: Determine adjusted hypertension status for a respondent with adjusted systolic BP = 120, adjusted diastolic BP = 80, and not on medication.
 #' determine_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYmed = 2)
 #' # Output: 2 (Normal blood pressure as adjusted BP is below 140/90 mmHg and not on medication).
+#' 
+#' @export
 determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   highsys140_adj <- NA
   highdias90_adj <- NA
@@ -221,6 +228,8 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
 #' # Example 2: Determine controlled hypertension status for a respondent with systolic BP = 120, diastolic BP = 80, and on medication.
 #' determine_controlled_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYmed = 1)
 #' # Output: 2 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
+#' 
+#' @export
 determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   highsys140 <- NA
   highdias90 <- NA
@@ -283,6 +292,8 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
 #' # Example 2: Determine controlled adjusted hypertension status for a respondent with adjusted systolic BP = 120, adjusted diastolic BP = 80, and on medication.
 #' determine_controlled_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYmed = 1)
 #' # Output: 2 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
+#' 
+#' @export
 determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   highsys140_adj <- NA
   highdias90_adj <- NA

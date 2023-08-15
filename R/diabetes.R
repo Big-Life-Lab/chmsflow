@@ -20,6 +20,8 @@
 #' # Example: Determine the inclusive diabetes status for a respondent who does not have diabetes.
 #' determine_inclusive_diabetes(diab_m = 2, diab_drug = 2, CCC_51 = 2)
 #' # Output: 2 (Inclusive diabetes status is "No" as the respondent does not have diabetes based on any of the factors).
+#' 
+#' @export
 determine_inclusive_diabetes <- function(diab_m, diab_drug, CCC_51) {
   
   diabX <- haven::tagged_na("b")

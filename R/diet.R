@@ -1,4 +1,4 @@
-#' @brief Calculate daily fruit and vegetable consumption in a year for respondent in CHMS cycles 1-2.
+#' @title Calculate daily fruit and vegetable consumption in a year for respondent in CHMS cycles 1-2.
 #' 
 #' This function calculates the daily fruit and vegetable consumption in a year for respondent in the Canadian Health Measures 
 #' Survey (CHMS) cycles 1-2. It takes seven parameters, each representing the number of times per year a specific fruit or vegetable item
@@ -35,6 +35,8 @@
 #' find_totalFV_cycles1and2(WSDD14Y = 50, GFVD17Y = 150, GFVD18Y = 200, GFVD19Y = 100, GFVD20Y = 80, GFVD22Y = 120, GFVD23Y = 90)
 #' # Output: 2.164384
 #' # The average daily consumption of fruits and vegetables in a year is approximately 2.16 times per day based on CHMS cycles 1-2 data.
+#' 
+#' @export
 find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
  
   if (all(is.na(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)))) {
@@ -51,7 +53,7 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 
 }
 
-#' @brief Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.
+#' @title Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.
 #' 
 #' This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures 
 #' Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or 
@@ -97,6 +99,8 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #'                         GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90)
 #' # Output: 2.931507
 #' # The average daily consumption of fruits and vegetables in a year for this respondent is approximately 2.91 times per day based on CHMS cycles 3-6 data.
+#' 
+#' @export
 find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
   
   if (all(is.na(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)))) {
@@ -137,6 +141,8 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 #' HDL cholesterol of 5 mmol/L.
 #' calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
 #' # Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
+#' 
+#' @export
 calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
   nonHDL <- 0
   if (LAB_CHOL < 99.6 && LAB_HDL < 9.96 && !is.na(LAB_CHOL) && !is.na(LAB_HDL)) {

@@ -30,6 +30,8 @@
 #' # The respondent's age is not between 20 and 79, they may or may not have hypertension or be pregnant.
 #' determine_inclusion_status(agegroup2079 = 2, highBP14090 = 1, PRS_11 = 2)
 #' # Output: 2 (Inclusion status is "No" as the respondent does not meet the criteria for inclusion in the study sample).
+#' 
+#' @export
 determine_inclusion_status <- function(agegroup2079, highBP14090, PRS_11) {
   
   insample <- haven::tagged_na("b")
