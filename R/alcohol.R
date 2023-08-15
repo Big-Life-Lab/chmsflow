@@ -26,6 +26,8 @@
 #' # Example: Determine low drink score for a male respondent who consumed 3 standard drinks per week.
 #' low_drink_score_fun(CLC_SEX = 1, ALCDWKY = 3)
 #' # Output: 1 (Low risk due to consuming 3 standard drinks per week).
+#' 
+#' @export
 low_drink_score_fun <- function(CLC_SEX, ALCDWKY) {
     ## Step 1: How many standard drinks did you have in a week?
     step1 <- NA
