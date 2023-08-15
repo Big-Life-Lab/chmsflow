@@ -47,7 +47,7 @@ cycle1_sexes <- recodeflow::rec_with_table(cycle1, "CLC_SEX", variable_details =
 head(cycle1_ages)
 head(cycle1_sexes)
 
-# Recoding a variable which had different name in the past
+# Recoding a variable which had different name in certain cycle
 cycle1_AM_day1 <- recodeflow::rec_with_table(cycle1, "AMMDMVA1", variable_details = my_variable_details, log = TRUE)
 head(cycle1_AM_day1)
 
