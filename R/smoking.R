@@ -47,9 +47,9 @@
 pack_years_fun <- function(SMKDSTY, CLC_AGE, SMKDSTP, SMK_52, SMK_31, SMK_41, SMK_53, SMK_23, SMK_21, SMK_11) {
   # Age verification
   if (is.na(CLC_AGE)) {
-    return(NA)
+    return(haven::tagged_na("b"))
   } else if (CLC_AGE < 0) {
-    return(NA)
+    return(haven::tagged_na("b"))
   }
   
   # PackYears for Daily Smoker
