@@ -23,7 +23,8 @@
 #' # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
 find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7) {
   
-  MVPA_min <- mean(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7)
+  measurements <- c(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7)
+  MVPA_min <- mean(measurements, na.rm = FALSE)
   if (is.na(MVPA_min)) {
     MVPA_min <- haven::tagged_na("b")
   }

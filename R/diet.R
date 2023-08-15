@@ -17,7 +17,8 @@
 #' 
 #' @details The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 #'          frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
-#'          fruits and vegetables in a year.
+#'          fruits and vegetables in a year. NA(b) is only returned if all the parameters are missing or if the average ends
+#'          up being NA.
 #' 
 #' @examples
 #' 
@@ -32,14 +33,20 @@
 #' # GFVD23Y (other vegetables) = 90 times
 #' # Using the function:
 #' find_totalFV_cycles1and2(WSDD14Y = 50, GFVD17Y = 150, GFVD18Y = 200, GFVD19Y = 100, GFVD20Y = 80, GFVD22Y = 120, GFVD23Y = 90)
-#' # Output: 1.178082
-#' # The average daily consumption of fruits and vegetables in a year is approximately 1.18 times per day based on CHMS cycles 1-2 data.
+#' # Output: 2.164384
+#' # The average daily consumption of fruits and vegetables in a year is approximately 2.16 times per day based on CHMS cycles 1-2 data.
 find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
  
-  totalFV <- sum(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) / 365
-  if (is.na(totalFV)) {
+  if (all(is.na(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)))) {
     totalFV <- haven::tagged_na("b")
   }
+  else {
+    totalFV <- sum(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y), na.rm = TRUE) / 365
+    if (is.na(totalFV)) {
+      totalFV <- haven::tagged_na("b")
+    }
+  }
+  
   return(totalFV)
 
 }
@@ -67,7 +74,8 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' 
 #' @details The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 #'          frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
-#'          fruits and vegetables in a year.
+#'          fruits and vegetables in a year. NA(b) is only returned if all the parameters are missing or if the average ends
+#'          up being NA.
 #' 
 #' @examples
 #' 
@@ -87,17 +95,22 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' # Using the function:
 #' find_totalFV_cycles3to6(WSDD34Y = 50, WSDD35Y = 100, GFVD17AY = 150, GFVD17BY = 80, GFVD17CY = 40, GFVD17DY = 200,
 #'                         GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90)
-#' # Output: 1.882192
-#' # The average daily consumption of fruits and vegetables in a year for this respondent is approximately 1.88 times per day based on CHMS cycles 3-6 data.
+#' # Output: 2.931507
+#' # The average daily consumption of fruits and vegetables in a year for this respondent is approximately 2.91 times per day based on CHMS cycles 3-6 data.
 find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
   
-  totalFV <- sum(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) / 365
-  if (is.na(totalFV)) {
+  if (all(is.na(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)))) {
     totalFV <- haven::tagged_na("b")
   }
+  else {
+    totalFV <- sum(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y), na.rm = TRUE) / 365
+    if (is.na(totalFV)) {
+      totalFV <- haven::tagged_na("b")
+    }
+  }
   return(totalFV)
-
 }
+
 
 #' @title Calculate Non-HDL Cholesterol Level
 #'
