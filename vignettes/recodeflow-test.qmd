@@ -41,7 +41,7 @@ my_variable_details <- read.csv(here("worksheets", "chmsflow-variable-details.cs
 3. Test recodeflow on fake CHMS data. Refer to console outputs to see results. What do you think?
 ```{r}
 # Recoding basic variables
-cycle1_ages <- recodeflow::rec_with_table(cycle1, "CLC_AGE", variable_details = my_variable_details, log = TRUE, var_labels = c(CLC_SEX = "AGE"))
+cycle1_ages <- recodeflow::rec_with_table(cycle1, "CLC_AGE", variable_details = my_variable_details, log = TRUE, var_labels = c(CLC_AGE = "AGE"))
 cycle1_sexes <- recodeflow::rec_with_table(cycle1, "CLC_SEX", variable_details = my_variable_details, log = TRUE, var_labels = c(CLC_SEX = "SEX"))
 
 head(cycle1_ages)
