@@ -130,7 +130,7 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   # Calculate highBP14090
   if (highsys140 == 1 || highdias90 == 1 || ANYmed == 1) {
     highBP14090 <- 1
-  } else if (highsys140 == 2 && highdias90 == 2 && ANYmed == 2) {
+  } else if (highsys140 == 2 && highdias90 == 2 && ANYmed == 0) {
     highBP14090 <- 2
   }
   
@@ -196,7 +196,7 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   
   if (highsys140_adj == 1 || highdias90_adj == 1 || ANYmed == 1) {
     highBP14090_adj <- 1
-  } else if (highsys140_adj == 2 && highdias90_adj == 2 && ANYmed == 2) {
+  } else if (highsys140_adj == 2 && highdias90_adj == 2 && ANYmed == 0) {
     highBP14090_adj <- 2
   }
   

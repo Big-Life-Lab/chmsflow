@@ -118,7 +118,7 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 #' 
 #' Let's say a for one respondent's medication, the ATC code is C07AA13 and the time they last took it was within the last 
 #' week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
-#' given respondent's medication is a beta blocker (TRUE) or not (FALSE).
+#' given respondent's medication is a beta blocker (1) or not (0).
 #' 
 #' is_beta_blocker('C07AA13', 3)
 #' 
@@ -129,7 +129,7 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
   time_condition <- NPI_25B <= 4
   
   is_beta_blocker <- starts_with_C07 & not_in_specific_codes & time_condition
-  return(is_beta_blocker)
+  return(as.numeric(is_beta_blocker))
 }
 
 #' @title Determine if a CHMS respondent's medication is an ACE inhibitor.
@@ -154,13 +154,13 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
 #' 
 #' Let's say a for one respondent's medication, the ATC code is C09AB03 and the time they last took it was yesterday. By 
 #' passing in the code and integer time response (2 in this case) into the function, it can be checked if the given 
-#' respondent's medication is an ACE inhibitor (TRUE) or not (FALSE).
+#' respondent's medication is an ACE inhibitor (1) or not (0).
 #' 
 #' is_ace_inhibitor('C09AB03', 2)
 #' 
 #' @export
 is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
-  startsWith(MEUCATC, "C09") && NPI_25B <= 4
+  as.numeric(startsWith(MEUCATC, "C09") && NPI_25B <= 4)
 }
 
 #' @title Determine if a CHMS respondent's medication is a diuretic.
@@ -186,13 +186,13 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 #' 
 #' Let's say a for one respondent's medication, the ATC code is C03AA03 and the time they last took it was within the last 
 #' week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
-#' given respondent's medication is a diuretic (TRUE) or not (FALSE).
+#' given respondent's medication is a diuretic (1) or not (0).
 #' 
 #' is_diuretic('C03AA03', 3)
 #' 
 #' @export
 is_diuretic <- function(MEUCATC, NPI_25B) {
-  startsWith(MEUCATC, "C03") && !(MEUCATC %in% c('C03BA08', 'C03CA01')) && NPI_25B <= 4
+  as.numeric(startsWith(MEUCATC, "C03") && !(MEUCATC %in% c('C03BA08', 'C03CA01')) && NPI_25B <= 4)
 }
 
 #' @title Determine if a CHMS respondent's medication is a calcium channel blocker.
@@ -217,13 +217,13 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 #' 
 #' Let's say a for one respondent's medication, the ATC code is C08CA05 and the time they last took it was today. By 
 #' passing in the code and integer time response (1 in this case) into the function, it can be checked if the given 
-#' respondent's medication is a calcium channel blocker (TRUE) or not (FALSE).
+#' respondent's medication is a calcium channel blocker (1) or not (0).
 #' 
 #' is_calcium_channel_blocker('C08CA05', 1)
 #' 
 #' @export
 is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
-  startsWith(MEUCATC, "C08") && NPI_25B <= 4
+  as.numeric(startsWith(MEUCATC, "C08") && NPI_25B <= 4)
 }
 
 #' @title Determine if a CHMS respondent's medication is another anti-hypertensive drug.
@@ -249,13 +249,13 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
 #' 
 #' Let's say a for one respondent's medication, the ATC code is C02AC04 and the time they last took it was within the last 
 #' week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
-#' given respondent's medication is another anti-hypertensive drug (TRUE) or not (FALSE).
+#' given respondent's medication is another anti-hypertensive drug (1) or not (0).
 #' 
 #' is_other_antiHTN_med('C02AC04', 3)
 #' 
 #' @export
 is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
-  startsWith(MEUCATC, "C02") && !(MEUCATC %in% c('C02KX01')) && NPI_25B <= 4
+  as.numeric(startsWith(MEUCATC, "C02") && !(MEUCATC %in% c('C02KX01')) && NPI_25B <= 4)
 }
 
 #' @title Determine if a CHMS respondent's medication is any anti-hypertensive drug.
@@ -282,13 +282,13 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' 
 #' Let's say a for one respondent's medication, the ATC code is C07AB02 and the time they last took it was within the last 
 #' month. By passing in the code and integer time response (4 in this case) into the function, it can be checked if the 
-#' given respondent's medication is an anti-hypertensive drug (TRUE) or not (FALSE).
+#' given respondent's medication is an anti-hypertensive drug (1) or not (0).
 #' 
 #' is_any_antiHTN_med('C07AB02', 4)
 #' 
 #' @export
 is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
-  grepl('^C0[2, 3, 7, 8, 9]', MEUCATC) && !(MEUCATC %in% c('C07AA07', 'C07AA12', 'C07AG02', 'C03BA08', 'C03CA01', 'C02KX01')) && NPI_25B <= 4
+  as.numeric(grepl('^C0[2, 3, 7, 8, 9]', MEUCATC) && !(MEUCATC %in% c('C07AA07', 'C07AA12', 'C07AG02', 'C03BA08', 'C03CA01', 'C02KX01')) && NPI_25B <= 4)
 }
 
 #' @title Determine if a CHMS respondent's medication is a non-steroidal anti-inflammatory drug (NSAID).
@@ -313,13 +313,13 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' 
 #' Let's say a for one respondent's medication, the ATC code is M01AB05 and the time they last took it was today. By
 #' passing in the code and integer time response (1 in this case) into the function, it can be checked if the given
-#' respondent's medication is an NSAID (TRUE) or not (FALSE).
+#' respondent's medication is an NSAID (1) or not (0).
 #' 
 #' is_NSAID('M01AB05', 1)
 #' 
 #' @export
 is_NSAID <- function(MEUCATC, NPI_25B) {
-  startsWith(MEUCATC, "M01A") && NPI_25B <= 4
+  as.numeric(startsWith(MEUCATC, "M01A") && NPI_25B <= 4)
 }
 
 #' @title Determine if a CHMS respondent's medication is a diabetes drug.
@@ -344,11 +344,11 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
 #' 
 #' Let's say a for one respondent's medication, the ATC code is A10BB09 and the time they last took it was within the last 
 #' week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
-#' given respondent's medication is a diabetes drug (TRUE) or not (FALSE).
+#' given respondent's medication is a diabetes drug (1) or not (0).
 #' 
 #' is_diabetes_drug('A10BB09', 3)
 #' 
 #' @export
 is_diabetes_drug <- function(MEUCATC, NPI_25B) {
-  startsWith(MEUCATC, "A10") && NPI_25B <= 4
+  as.numeric(startsWith(MEUCATC, "A10") && NPI_25B <= 4)
 }
