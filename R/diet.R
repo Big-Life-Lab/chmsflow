@@ -115,6 +115,43 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
   return(totalFV)
 }
 
+poordiet_cycles1to2 <- function(totalFV) {
+  
+  poordiet <- haven::tagged_na("b")
+  
+  if (is.na(totalFV)) {
+    return(poordiet)
+  }
+  else {
+    if (totalFV < 5) {
+      poordiet <- 1
+    }
+    else {
+      poordiet <- 2
+    }
+  }
+  return(poordiet)
+  
+}
+
+poordiet_cycles3to6 <- function(totalFV) {
+  
+  poordiet <- haven::tagged_na("b")
+  
+  if (is.na(totalFV)) {
+    return(poordiet)
+  }
+  else {
+    if (totalFV < 5) {
+      poordiet <- 1
+    }
+    else {
+      poordiet <- 2
+    }
+  }
+  return(poordiet)
+  
+}
 
 #' @title Calculate Non-HDL Cholesterol Level
 #'
@@ -152,4 +189,23 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
     nonHDL <- haven::tagged_na("b")
   }
   return(nonHDL)
+}
+
+categorize_nonHDL <- function(nonHDL) {
+  
+  nonhdltodd <- haven::tagged_na("b")
+  
+  if (is.na(nonHDL)) {
+    return(nonhdltodd)
+  }
+  else {
+    if (nonHDL >= 4.3) {
+      nonhdltodd <- 1
+    }
+    else {
+      nonhdltodd <- 2
+    }
+  }
+  return(nonhdltodd)
+  
 }

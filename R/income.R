@@ -59,3 +59,50 @@ calculate_Hhld_Income <- function(THI_01, DHHDHSZ) {
   return(adj_hh_inc)
   
 }
+
+categorize_income <- function(adj_hh_inc) {
+  
+  incq <- haven::tagged_na("b")
+  
+  if (is.na(adj_hh_inc)) {
+    return(incq)
+  }
+  else {
+    if (adj_hh_inc <= 21500) {
+      incq <- 1
+    }
+    else if (adj_hh_inc > 21500 && adj_hh_inc <= 35000) {
+      incq <- 2
+    }
+    else if (adj_hh_inc > 35500 && adj_hh_inc <= 50000) {
+      incq <- 3
+    }
+    else if (adj_hh_inc > 50000 && adj_hh_inc <= 70000) {
+      incq <- 4
+    }
+    else if (adj_hh_inc > 70000) {
+      incq <- 5
+    }
+  }
+  return(incq)
+  
+}
+
+in_lowest_income_qunitle <- function(incq) {
+  
+  incq1 <- haven::tagged_na("b")
+  
+  if (is.na(incq)) {
+    return(incq)
+  }
+  else {
+    if (incq == 1) {
+      incq1 <- 1
+    }
+    else {
+      incq1 <- 2
+    }
+  }
+  return(incq1)
+  
+}

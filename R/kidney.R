@@ -66,3 +66,22 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   return(GFR)
   
 }
+
+categorize_GFR <- function(GFR) {
+  
+  CKD <- haven::tagged_na("b")
+  
+  if (is.na(GFR)) {
+    return(CKD)
+  }
+  else {
+    if (GFR <= 60) {
+      CKD <- 1
+    }
+    else {
+      CKD <- 2
+    }
+  }
+  return(CKD)
+  
+}
