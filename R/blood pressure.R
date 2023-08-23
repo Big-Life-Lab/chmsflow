@@ -1,4 +1,4 @@
-#' @brief Adjusted systolic blood pressure
+#' @title Adjuste systolic blood pressure
 #' 
 #' This function adjusts systolic blood pressure based on the respondent's systolic average blood pressure across 
 #' six measurements. The adjustment is made using specific correction factors. The adjusted systolic blood pressure
@@ -18,12 +18,14 @@
 #' 
 #' # Example: Calculate adjusted systolic blood pressure for a respondent with an average systolic blood pressure of 120 mmHg.
 #' adjust_SBP(BPMDPBPS = 120)
-#' # Output: 123.6
+#' # Output: 123
+#' 
+#' @export
 adjust_SBP <- function(BPMDPBPS) {
   
   SBP_adj <- 0
   
-  if (0 <= BPMDPBPS && BPMDPBPS < 996) { # Proceeds without non-responses
+  if (BPMDPBPS >= 0 && BPMDPBPS < 996 && !is.na(BPMDPBPS)) { # Proceeds without non-responses
     SBP_adj <- 11.4 + (0.93 * BPMDPBPS)
   }
   else {
@@ -33,8 +35,7 @@ adjust_SBP <- function(BPMDPBPS) {
   return(SBP_adj)
 }
 
-
-#' @brief Adjusted diastolic blood pressure
+#' @title Adjust diastolic blood pressure
 #' 
 #' This function adjusts diastolic blood pressure based on the respondent's diastolic average blood pressure across 
 #' six measurements. The adjustment is made using specific correction factors. The adjusted diastolic blood pressure
@@ -54,12 +55,14 @@ adjust_SBP <- function(BPMDPBPS) {
 #' 
 #' # Example: Calculate adjusted diastolic blood pressure for a respondent with an average diastolic blood pressure of 80 mmHg.
 #' adjust_DBP(BPMDPBPD = 80)
-#' # Output: 83.4
+#' # Output: 82
+#' 
+#' @export
 adjust_DBP <- function(BPMDPBPD) {
   
   DBP_adj <- 0
   
-  if (0 <= BPMDPBPD && BPMDPBPD < 996) { # Proceeds without non-responses
+  if (BPMDPBPD >= 0 && BPMDPBPD < 996 && !is.na(BPMDPBPD)) { # Proceeds without non-responses
     DBP_adj <- 15.6 + (0.83 * BPMDPBPD)
   }
   else {
@@ -94,10 +97,16 @@ adjust_DBP <- function(BPMDPBPD) {
 #' # Example 2: Determine hypertension status for a respondent with systolic BP = 120, diastolic BP = 80, and not on medication.
 #' determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYmed = 2)
 #' # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
+#' 
+#' @export
 determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   highsys140 <- NA
   highdias90 <- NA
   highBP14090 <- haven::tagged_na("b")
+  
+  if (is.na(BPMDPBPS) || is.na(BPMDPBPD) || is.na(ANYmed)) {
+    return(highBP14090)
+  }
   
   # Check conditions and assign values to highsys140 and highdias90
   if (140 <= BPMDPBPS && BPMDPBPS < 996) {
@@ -121,7 +130,7 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   # Calculate highBP14090
   if (highsys140 == 1 || highdias90 == 1 || ANYmed == 1) {
     highBP14090 <- 1
-  } else if (highsys140 == 2 && highdias90 == 2 && ANYmed == 2) {
+  } else if (highsys140 == 2 && highdias90 == 2 && ANYmed == 0) {
     highBP14090 <- 2
   }
   
@@ -153,10 +162,16 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
 #' # Example 2: Determine adjusted hypertension status for a respondent with adjusted systolic BP = 120, adjusted diastolic BP = 80, and not on medication.
 #' determine_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYmed = 2)
 #' # Output: 2 (Normal blood pressure as adjusted BP is below 140/90 mmHg and not on medication).
+#' 
+#' @export
 determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   highsys140_adj <- NA
   highdias90_adj <- NA
   highBP14090_adj <- haven::tagged_na("b")
+  
+  if (is.na(SBP_adj) || is.na(DBP_adj) || is.na(ANYmed)) {
+    return(highBP14090)
+  }
   
   # Check conditions and assign values to highsys140_adj and highdias90_adj
   if (140 <= SBP_adj && SBP_adj < 996) {
@@ -181,7 +196,7 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   
   if (highsys140_adj == 1 || highdias90_adj == 1 || ANYmed == 1) {
     highBP14090_adj <- 1
-  } else if (highsys140_adj == 2 && highdias90_adj == 2 && ANYmed == 2) {
+  } else if (highsys140_adj == 2 && highdias90_adj == 2 && ANYmed == 0) {
     highBP14090_adj <- 2
   }
   
@@ -213,10 +228,16 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
 #' # Example 2: Determine controlled hypertension status for a respondent with systolic BP = 120, diastolic BP = 80, and on medication.
 #' determine_controlled_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYmed = 1)
 #' # Output: 2 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
+#' 
+#' @export
 determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   highsys140 <- NA
   highdias90 <- NA
   Control14090 <- haven::tagged_na("b")
+  
+  if (is.na(BPMDPBPS) || is.na(BPMDPBPD) || is.na(ANYmed)) {
+    return(highBP14090)
+  }
   
   # Check conditions and assign values to highsys140 and highdias90
   if (140 <= BPMDPBPS && BPMDPBPS < 996) {
@@ -241,6 +262,9 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
   if (ANYmed == 1) {
     Control14090 <- ifelse(highsys140 == 1 || highdias90 == 1, 2,
                            ifelse(highsys140 == 2 && highdias90 == 2, 1, NA))
+  }
+  else {
+    Control14090 <- 2
   }
   
   return(Control14090)
@@ -271,10 +295,16 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
 #' # Example 2: Determine controlled adjusted hypertension status for a respondent with adjusted systolic BP = 120, adjusted diastolic BP = 80, and on medication.
 #' determine_controlled_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYmed = 1)
 #' # Output: 2 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
+#' 
+#' @export
 determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed) {
   highsys140_adj <- NA
   highdias90_adj <- NA
   Control14090_adj <- haven::tagged_na("b")
+  
+  if (is.na(SBP_adj) || is.na(DBP_adj) || is.na(ANYmed)) {
+    return(Control14090_adj)
+  }
   
   # Check conditions and assign values to highsys140_adj and highdias90_adj
   if (140 <= SBP_adj && SBP_adj < 996) {
@@ -299,6 +329,9 @@ determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed)
   if (ANYmed == 1) {
     Control14090_adj <- ifelse(highsys140_adj == 1 || highdias90_adj == 1, 2,
                                ifelse(highsys140_adj == 2 && highdias90_adj == 2, 1, NA))
+  }
+  else {
+    Control14090 <- 2
   }
   
   return(Control14090_adj)

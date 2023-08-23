@@ -1,4 +1,4 @@
-#' @brief Calculate the average minutes of exercise per day for week-long accelerometer data. 
+#' @title Calculate the average minutes of exercise per day for week-long accelerometer data. 
 #' 
 #' This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
 #' parameters, each representing the minutes of exercise on a specific day (Day 1 to Day 7) of accelerometer measurement.
@@ -21,9 +21,12 @@
 #' # Example: Calculate the average minutes of exercise per day for a week of accelerometer data.
 #' find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
 #' # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
+#' 
+#' @export
 find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7) {
   
-  MVPA_min <- mean(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7)
+  measurements <- c(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7)
+  MVPA_min <- mean(measurements, na.rm = FALSE)
   if (is.na(MVPA_min)) {
     MVPA_min <- haven::tagged_na("b")
   }
@@ -31,7 +34,7 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
   
 }
 
-#' @brief Convert minutes per day to minutes per week. 
+#' @title Convert minutes per day to minutes per week. 
 #' 
 #' This function takes the average minutes of exercise per day across a week of accelerometer use as an input (`MVPA_min`) and
 #' calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value.
@@ -48,6 +51,8 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
 #' # Example: Convert average minutes of exercise per day to minutes per week.
 #' minperday_to_minperweek(35)
 #' # Output: 245 (The equivalent minutes of exercise per one week is 245 minutes.)
+#' 
+#' @export
 minperday_to_minperweek <- function(MVPA_min) {
   
   minperweek <- MVPA_min * 7

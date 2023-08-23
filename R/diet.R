@@ -1,4 +1,4 @@
-#' @brief Calculate daily fruit and vegetable consumption in a year for respondent in CHMS cycles 1-2.
+#' @title Calculate daily fruit and vegetable consumption in a year for respondent in CHMS cycles 1-2.
 #' 
 #' This function calculates the daily fruit and vegetable consumption in a year for respondent in the Canadian Health Measures 
 #' Survey (CHMS) cycles 1-2. It takes seven parameters, each representing the number of times per year a specific fruit or vegetable item
@@ -17,7 +17,8 @@
 #' 
 #' @details The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 #'          frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
-#'          fruits and vegetables in a year.
+#'          fruits and vegetables in a year. NA(b) is only returned if all the parameters are missing or if the average ends
+#'          up being NA.
 #' 
 #' @examples
 #' 
@@ -32,19 +33,27 @@
 #' # GFVD23Y (other vegetables) = 90 times
 #' # Using the function:
 #' find_totalFV_cycles1and2(WSDD14Y = 50, GFVD17Y = 150, GFVD18Y = 200, GFVD19Y = 100, GFVD20Y = 80, GFVD22Y = 120, GFVD23Y = 90)
-#' # Output: 1.178082
-#' # The average daily consumption of fruits and vegetables in a year is approximately 1.18 times per day based on CHMS cycles 1-2 data.
+#' # Output: 2.164384
+#' # The average daily consumption of fruits and vegetables in a year is approximately 2.16 times per day based on CHMS cycles 1-2 data.
+#' 
+#' @export
 find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
  
-  totalFV <- sum(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) / 365
-  if (is.na(totalFV)) {
+  if (all(is.na(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)))) {
     totalFV <- haven::tagged_na("b")
   }
+  else {
+    totalFV <- sum(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y), na.rm = TRUE) / 365
+    if (is.na(totalFV)) {
+      totalFV <- haven::tagged_na("b")
+    }
+  }
+  
   return(totalFV)
 
 }
 
-#' @brief Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.
+#' @title Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.
 #' 
 #' This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures 
 #' Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or 
@@ -67,7 +76,8 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' 
 #' @details The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 #'          frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
-#'          fruits and vegetables in a year.
+#'          fruits and vegetables in a year. NA(b) is only returned if all the parameters are missing or if the average ends
+#'          up being NA.
 #' 
 #' @examples
 #' 
@@ -87,21 +97,65 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' # Using the function:
 #' find_totalFV_cycles3to6(WSDD34Y = 50, WSDD35Y = 100, GFVD17AY = 150, GFVD17BY = 80, GFVD17CY = 40, GFVD17DY = 200,
 #'                         GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90)
-#' # Output: 1.882192
-#' # The average daily consumption of fruits and vegetables in a year for this respondent is approximately 1.88 times per day based on CHMS cycles 3-6 data.
+#' # Output: 2.931507
+#' # The average daily consumption of fruits and vegetables in a year for this respondent is approximately 2.91 times per day based on CHMS cycles 3-6 data.
+#' 
+#' @export
 find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
   
-  totalFV <- sum(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) / 365
-  if (is.na(totalFV)) {
+  if (all(is.na(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)))) {
     totalFV <- haven::tagged_na("b")
   }
+  else {
+    totalFV <- sum(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y), na.rm = TRUE) / 365
+    if (is.na(totalFV)) {
+      totalFV <- haven::tagged_na("b")
+    }
+  }
   return(totalFV)
-
 }
 
-#' @brief Calculate a respondent's non-HDL cholesterol level.
-#' 
-#' This function calculates a respondent's non-HDL cholesterol level by subtracting their HDL cholesterol level 
+poordiet_cycles1to2 <- function(totalFV) {
+  
+  poordiet <- haven::tagged_na("b")
+  
+  if (is.na(totalFV)) {
+    return(poordiet)
+  }
+  else {
+    if (totalFV < 5) {
+      poordiet <- 1
+    }
+    else {
+      poordiet <- 2
+    }
+  }
+  return(poordiet)
+  
+}
+
+poordiet_cycles3to6 <- function(totalFV) {
+  
+  poordiet <- haven::tagged_na("b")
+  
+  if (is.na(totalFV)) {
+    return(poordiet)
+  }
+  else {
+    if (totalFV < 5) {
+      poordiet <- 1
+    }
+    else {
+      poordiet <- 2
+    }
+  }
+  return(poordiet)
+  
+}
+
+#' @title Calculate Non-HDL Cholesterol Level
+#'
+#' @description This function calculates a respondent's non-HDL cholesterol level by subtracting their HDL cholesterol level 
 #' from their total cholesterol level. It first checks whether the input values `LAB_CHOL` (total cholesterol) 
 #' and `LAB_HDL` (HDL cholesterol) are both less than certain thresholds (99.6 mmol/L and 9.96 mmol/L, respectively). 
 #' If both conditions are met, it calculates the non-HDL cholesterol level; otherwise, it sets the non-HDL value to 
@@ -109,23 +163,49 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 #'
 #' @param LAB_CHOL A numeric representing a respondent's total cholesterol level in mmol/L.
 #' @param LAB_HDL A numeric representing a respondent's HDL cholesterol level in mmol/L.
-#' 
+#'
 #' @return A numeric representing the calculated non-HDL cholesterol level (in mmol.L) if both `LAB_CHOL` and 
-#' `LAB_HDL` are below the specified thresholds; otherwise, it returns NA.
-#' 
+#' `LAB_HDL` are below the specified thresholds; otherwise, it returns NA(b) to indicate that the calculation is not applicable.
+#'
+#' @details The function calculates the non-HDL cholesterol level by subtracting the HDL cholesterol level from the total cholesterol level.
+#' It first checks if both `LAB_CHOL` and `LAB_HDL` are less than the specified thresholds (99.6 mmol/L and 9.96 mmol/L, respectively).
+#' If both conditions are met and neither input is missing, the non-HDL cholesterol level is calculated. If either of the conditions
+#' is not met or if either input is missing (NA), the function returns NA(b) to indicate that the calculation is not applicable.
+#'
 #' @examples
+#'
+#' # Example: Calculate non-HDL cholesterol level for a respondent with total cholesterol of 50 mmol/L and 
+#' HDL cholesterol of 5 mmol/L.
+#' calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
+#' # Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
 #' 
-#' # Example: Calculate non-HDL cholesterol level for a respondent with total cholesterol of 150 mmol/L and 
-#' HDL cholesterol of 50 mmol/L.
-#' calculate_nonHDL(LAB_CHOL = 150, LAB_HDL = 50)
-#' # Output: 100 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 150 - 50 = 100)
+#' @export
 calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
   nonHDL <- 0
-  if (LAB_CHOL < 99.6 && LAB_HDL < 9.96) {
+  if (LAB_CHOL < 99.6 && LAB_HDL < 9.96 && !is.na(LAB_CHOL) && !is.na(LAB_HDL)) {
     nonHDL <- LAB_CHOL - LAB_HDL
   }
   else {
     nonHDL <- haven::tagged_na("b")
   }
   return(nonHDL)
+}
+
+categorize_nonHDL <- function(nonHDL) {
+  
+  nonhdltodd <- haven::tagged_na("b")
+  
+  if (is.na(nonHDL)) {
+    return(nonhdltodd)
+  }
+  else {
+    if (nonHDL >= 4.3) {
+      nonhdltodd <- 1
+    }
+    else {
+      nonhdltodd <- 2
+    }
+  }
+  return(nonhdltodd)
+  
 }
