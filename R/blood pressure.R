@@ -263,6 +263,9 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYmed) {
     Control14090 <- ifelse(highsys140 == 1 || highdias90 == 1, 2,
                            ifelse(highsys140 == 2 && highdias90 == 2, 1, NA))
   }
+  else {
+    Control14090 <- 2
+  }
   
   return(Control14090)
 }
@@ -300,7 +303,7 @@ determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed)
   Control14090_adj <- haven::tagged_na("b")
   
   if (is.na(SBP_adj) || is.na(DBP_adj) || is.na(ANYmed)) {
-    return(highBP14090)
+    return(Control14090_adj)
   }
   
   # Check conditions and assign values to highsys140_adj and highdias90_adj
@@ -326,6 +329,9 @@ determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYmed)
   if (ANYmed == 1) {
     Control14090_adj <- ifelse(highsys140_adj == 1 || highdias90_adj == 1, 2,
                                ifelse(highsys140_adj == 2 && highdias90_adj == 2, 1, NA))
+  }
+  else {
+    Control14090 <- 2
   }
   
   return(Control14090_adj)
