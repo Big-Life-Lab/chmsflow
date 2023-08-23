@@ -8,7 +8,7 @@ format: html
 ```{r}
 # Create synthetic data with missing values
 n <- 100  # Number of observations
-set.seed(456)  # Set seed for reproducibility
+set.seed(123)  # Set seed for reproducibility
 
 # Generate random ages between 18 and 75, with some missing values [996-999]
 ages <- sample(c(18:75, 996:999), n, replace = TRUE)
