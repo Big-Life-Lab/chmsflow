@@ -67,7 +67,28 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   
 }
 
-categorize_GFR <- function(GFR) {
+#' Categorize Glomerular Filtration Rate (GFR) to Chronic Kidney Disease (CKD) Stage
+#'
+#' This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
+#'
+#' @param GFR Numeric value representing the glomerular filtration rate.
+#'
+#' @return A categorical value indicating the CKD stage:
+#'   - 1: GFR of 60 or below (indicating CKD)
+#'   - 2: GFR above 60 (not indicating CKD)
+#'   - NA(b): Missing or invalid input
+#'
+#' @examples
+#' # Example 1: Categorize a GFR of 45
+#' categorize_GFR_to_CKD(45)
+#' # Output: 1
+#'
+#' # Example 2: Categorize a GFR of 75
+#' categorize_GFR_to_CKD(75)
+#' # Output: 2
+#'
+#' @export
+categorize_GFR_to_CKD <- function(GFR) {
   
   CKD <- haven::tagged_na("b")
   

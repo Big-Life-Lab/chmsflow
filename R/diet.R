@@ -115,6 +115,27 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
   return(totalFV)
 }
 
+#' Poor Diet Categorization for Cycles 1 to 2
+#'
+#' This function categorizes individuals' diet quality based on their total fruit and vegetable consumption for cycles 1 to 2 of the study.
+#'
+#' @param totalFV Numeric value representing the total fruit and vegetable consumption of an individual.
+#'
+#' @return A categorical value indicating the diet quality:
+#'   - 1: Poor diet (totalFV < 5)
+#'   - 2: Good diet (totalFV >= 5)
+#'   - NA(b): Missing or invalid input
+#'
+#' @examples
+#' # Example 1: Categorize a totalFV value of 3 as poor diet
+#' poordiet_cycles1to2(3)
+#' # Output: 1
+#' 
+#' # Example 2: Categorize a totalFV value of 7 as good diet
+#' poordiet_cycles1to2(7)
+#' # Output: 2
+#'
+#' @export
 poordiet_cycles1to2 <- function(totalFV) {
   
   poordiet <- haven::tagged_na("b")
@@ -134,6 +155,27 @@ poordiet_cycles1to2 <- function(totalFV) {
   
 }
 
+#' Poor Diet Categorization for Cycles 3 to 6
+#'
+#' This function categorizes individuals' diet quality based on their total fruit and vegetable consumption for cycles 3 to 6 of the study.
+#'
+#' @param totalFV Numeric value representing the total fruit and vegetable consumption of an individual.
+#'
+#' @return A categorical value indicating the diet quality:
+#'   - 1: Poor diet (totalFV < 5)
+#'   - 2: Good diet (totalFV >= 5)
+#'   - NA(b): Missing or invalid input
+#'
+#' @examples
+#' # Example 1: Categorize a totalFV value of 3 as poor diet
+#' poordiet_cycles3to6(3)
+#' # Output: 1
+#' 
+#' # Example 2: Categorize a totalFV value of 7 as good diet
+#' poordiet_cycles3to6(7)
+#' # Output: 2
+#'
+#' @export
 poordiet_cycles3to6 <- function(totalFV) {
   
   poordiet <- haven::tagged_na("b")
@@ -191,6 +233,27 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
   return(nonHDL)
 }
 
+#' Non-HDL Cholesterol Categorization
+#'
+#' This function categorizes individuals' non-HDL cholesterol levels based on a threshold value.
+#'
+#' @param nonHDL Numeric value representing an individual's non-HDL cholesterol level.
+#'
+#' @return A categorical value indicating the non-HDL cholesterol category:
+#'   - 1: High non-HDL cholesterol (nonHDL >= 4.3)
+#'   - 2: Normal non-HDL cholesterol (nonHDL < 4.3)
+#'   - NA(b): Missing or invalid input
+#'
+#' @examples
+#' # Example 1: Categorize a nonHDL value of 5.0 as high non-HDL cholesterol
+#' categorize_nonHDL(5.0)
+#' # Output: 1
+#' 
+#' # Example 2: Categorize a nonHDL value of 3.8 as normal non-HDL cholesterol
+#' categorize_nonHDL(3.8)
+#' # Output: 2
+#'
+#' @export
 categorize_nonHDL <- function(nonHDL) {
   
   nonhdltodd <- haven::tagged_na("b")
