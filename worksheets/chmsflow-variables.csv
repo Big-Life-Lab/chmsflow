@@ -21,6 +21,7 @@ cardiov,,Table 1,,Cardiovascular disease,,,,,Cardiovascular disease - heart dise
 ccbmed,,,,Calcium channel blockers,,,,,Taking calcium channel blockers,,,,,,,Health status,,Medication,,Categorical,,N/A,,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",,,,,"DerivedVar::[meucatc, npi_25b]",,,,,,,,
 ccc_32,,Table 1,,High blood pressure medication ,,,,,Took high blood pressure medication - past month,,,,,,,Health status,,Medication,,Categorical,,N/A,,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",,,,,"cycle6::CCC_32, [ccc_32]",,,,,,,,
 ccc_51,,Table 1,,Diabetes,,,,,Has diabetes,,,,,,,Health status,,Chronic disease,,Categorical,,N/A,,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",,,,,"cycle6::CCC_51, [ccc_51]",,,,,,,,
+ccc_59,,,,Diabetes medication,,,,,Take pills to control blood sugar,,,,,,,Health status,,Medication,,Categorical,,N/A,,"cycle5, cycle6",,,,,"cycle5::ccc_59, cycle6::CCC_59",,,,,,,,
 ccc_61,,Table 1,,Heart disease ,,,,,Has heart disease,,,,,,,Health status,,Chronic disease,,Categorical,,N/A,,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",,,,,"cycle6::CCC_61, [ccc_61]",,,,,,,,
 ccc_63,,Table 1,,Heart attack,,,,,Ever had a heart attack,,,,,,,Health status,,Chronic disease,,Categorical,,N/A,,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",,,,,"cycle6::CCC_63, [ccc_63]",,,,,,,,
 ccc_81,,Table 1,,Stroke,,,,,Suffers from the effects of a stroke,,,,,,,Health status,,Chronic disease,,Categorical,,N/A,,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",,,,,"cycle6::CCC_81, [ccc_81]",,,,,,,,

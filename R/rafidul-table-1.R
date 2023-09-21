@@ -58,3 +58,27 @@ table1 <- table1 %>%
   mutate(pct = (n/sample_size) * 100)
 table1 <- recodeflow::set_data_labels(table1, variable_details = my_variable_details, variables_sheet = my_variables)
 # write.csv(table1, "P:/10619/Dropbox/Aug24/rafidul_table1.csv")
+
+# table1_data <- get_descriptive_data(
+#   cycles1to6_table1_data,
+#   my_variables,
+#   my_variable_details,
+#   # All the variables whose descriptive statistics we want
+#   recodeflow:::select_vars_by_role(
+#     c("Table 1"),
+#     my_variables
+#   ),
+#   # Sets the stratifier
+#   list("all" = list("clc_sex"))
+# )
+# 
+# create_descriptive_table( 
+#   table1_data,
+#   my_variables,
+#   my_variable_details,
+#   recodeflow:::select_vars_by_role(
+#     c("Table 1"),
+#     my_variables
+#   ),
+#   column_stratifier = c("clc_sex")
+# )
