@@ -6,6 +6,9 @@ library(haven)
 library(cli)
 library(pastecs)
 
+source("R/get-descriptive-data.R")
+source("R/create-descriptive-table.R")
+
 my_variables <- read.csv("P:/10619/Dropbox/Aug24/worksheets/chmsflow-variables.csv")
 my_variable_details <- read.csv("P:/10619/Dropbox/Aug24/worksheets/chmsflow-variable-details.csv")
 
@@ -15,6 +18,7 @@ cycle3 <- read_stata("data/cycle3/cycle3.dta")
 cycle4 <- read_stata("data/cycle4/cycle4.dta")
 cycle5 <- read_stata("data/cycle5/cycle5.dta")
 cycle6 <- read_stata("data/cycle6/cycle6.dta")
+names(cycle6) <- tolower(names(cycle6)) 
 
 cycle1_table1_data <- recodeflow::rec_with_table(cycle1, recodeflow:::select_vars_by_role("Table 1", my_variables), variable_details = my_variable_details, log = TRUE)
 cycle2_table1_data <- recodeflow::rec_with_table(cycle2, recodeflow:::select_vars_by_role("Table 1", my_variables), variable_details = my_variable_details, log = TRUE)
@@ -24,14 +28,14 @@ cycle5_table1_data <- recodeflow::rec_with_table(cycle5, recodeflow:::select_var
 cycle6_table1_data <- recodeflow::rec_with_table(cycle6, recodeflow:::select_vars_by_role("Table 1", my_variables), variable_details = my_variable_details, log = TRUE)
 
 cycles1to6_table1_data <- dplyr::bind_rows(cycle1_table1_data, cycle2_table1_data, cycle3_table1_data, cycle4_table1_data, cycle5_table1_data, cycle6_table1_data)
+cycles1to6_table1_data <- dplyr::filter(cycles1to6_table1_data, insample == 1)
 
 cycles1to6_table1_data_summary <- as.data.frame(pastecs::stat.desc(cycles1to6_table1_data))
 # write.csv(cycles1to6_table1_data_summary, "P:/10619/Dropbox/Aug24/rafidul_table1_data_summary.csv")
 
 stratified_cycles1to6_table1_data <- cycles1to6_table1_data %>%
   group_by(clc_sex) %>%
-  select(insample, highbp14090, agegroup4, married, nohsgrad, pgdcgt, gen_055, GEN_055, smkdsty, cardiov, mvpa150wk, poordiet_c1to2, poordiet_c3to6, hwmdbmi, ccc_51, CCC_51, ckd, CKD, nonhdltodd) %>%
-  filter(insample == 1) 
+  select(highbp14090, agegroup4, married, nohsgrad, pgdcgt, gen_055, GEN_055, smkdsty, cardiov, mvpa150wk, poordiet_c1to2, poordiet_c3to6, hwmdbmi, ccc_51, CCC_51, ckd, CKD, nonhdltodd)
 
 table1 <- dplyr::bind_rows(count(stratified_cycles1to6_table1_data, highbp14090 == 1),
                            count(stratified_cycles1to6_table1_data, agegroup4),
@@ -45,8 +49,7 @@ table1 <- dplyr::bind_rows(count(stratified_cycles1to6_table1_data, highbp14090 
                            # count(stratified_cycles1to6_table1_data, fambp),
                            # count(stratified_cycles1to6_table1_data, famcvd60),
                            count(stratified_cycles1to6_table1_data, mvpa150wk == 2),
-                           count(stratified_cycles1to6_table1_data, poordiet_c1to2 == 1),
-                           count(stratified_cycles1to6_table1_data, poordiet_c3to6 == 1),
+                           count(stratified_cycles1to6_table1_data, poordiet == 1),
                            count(stratified_cycles1to6_table1_data, hwmdbmi >= 25),
                            count(stratified_cycles1to6_table1_data, ccc_51 == 1),
                            count(stratified_cycles1to6_table1_data, ckd == 1),

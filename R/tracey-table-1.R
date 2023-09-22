@@ -6,6 +6,9 @@ library(haven)
 library(cli)
 library(pastecs)
 
+source("get-descriptive-data.R")
+source("create-descriptive-table.R")
+
 my_variables <- read.csv("P:/10619/Dropbox/Aug24/worksheets/chmsflow-variables.csv")
 my_variable_details <- read.csv("P:/10619/Dropbox/Aug24/worksheets/chmsflow-variable-details.csv")
 
@@ -20,14 +23,14 @@ cycle3_table1_data <- recodeflow::rec_with_table(cycle3, recodeflow:::select_var
 cycle4_table1_data <- recodeflow::rec_with_table(cycle4, recodeflow:::select_vars_by_role("Table 1", my_variables), variable_details = my_variable_details, log = TRUE)
 
 cycles1to4_table1_data <- dplyr::bind_rows(cycle1_table1_data, cycle2_table1_data, cycle3_table1_data, cycle4_table1_data)
+cycles1to4_table1_data <- dplyr::filter(cycles1to4_table1_data, insample == 1)
 
 cycles1to4_table1_data_summary <- as.data.frame(pastecs::stat.desc(cycles1to4_table1_data))
 # write.csv(cycles1to4_table1_data_summary, "P:/10619/Dropbox/Aug24/table1_data_summary.csv")
 
 stratified_cycles1to4_table1_data <- cycles1to4_table1_data %>%
   group_by(clc_sex) %>%
-  select(insample, highbp14090, agegroup4, married, nohsgrad, incq1, pgdcgt, gen_055, smkdsty, cardiov, fambp, famcvd60, mvpa150wk, poordiet_c1to2, poordiet_c3to6, hwmdbmi, ccc_51, ckd, nonhdltodd) %>%
-  filter(insample == 1) 
+  select(highbp14090, agegroup4, married, nohsgrad, incq1, pgdcgt, gen_055, smkdsty, cardiov, fambp, famcvd60, mvpa150wk, poordiet_c1to2, poordiet_c3to6, hwmdbmi, ccc_51, ckd, nonhdltodd)
 
 table1 <- dplyr::bind_rows(count(stratified_cycles1to4_table1_data, highbp14090 == 1),
 count(stratified_cycles1to4_table1_data, agegroup4),
@@ -41,8 +44,7 @@ count(stratified_cycles1to4_table1_data, cardiov == 1),
 count(stratified_cycles1to4_table1_data, fambp == 1),
 count(stratified_cycles1to4_table1_data, famcvd60 == 1),
 count(stratified_cycles1to4_table1_data, mvpa150wk == 2),
-count(stratified_cycles1to4_table1_data, poordiet_c1to2 == 1),
-count(stratified_cycles1to4_table1_data, poordiet_c3to6 == 1),
+count(stratified_cycles1to4_table1_data, poordiet == 1),
 count(stratified_cycles1to4_table1_data, hwmdbmi >= 25),
 count(stratified_cycles1to4_table1_data, ccc_51 == 1),
 count(stratified_cycles1to4_table1_data, ckd == 1),
@@ -68,7 +70,7 @@ table1 <- recodeflow::set_data_labels(table1, variable_details = my_variable_det
 #   list("all" = list("clc_sex"))
 # )
 # 
-# create_descriptive_table( 
+# create_descriptive_table(
 #   table1_data,
 #   my_variables,
 #   my_variable_details,
