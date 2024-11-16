@@ -1,7 +1,7 @@
-# Modify this path to the directory where your zip files are located
-package_dir <- "P:/10619/Rpackages"
+# Modify this path to the directory where your zip files are located at RDC
+package_dir <- ""
 
-# Install packages from zip files
+# Install packages from zip files - feel free to add or delete lines depending on what packages AND their dependencies you need for your analysis
 install.packages(file.path(package_dir, "backports_1.4.1.zip"), repos = NULL, type = "win.binary")
 install.packages(file.path(package_dir, "base64enc.zip"), repos = NULL, type = "win.binary")
 install.packages(file.path(package_dir, "bigD.zip"), repos = NULL, type = "win.binary")
