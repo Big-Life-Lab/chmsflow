@@ -3,7 +3,7 @@ title: "Recoding CHMS variables"
 format: html
 ---
 
-1. Load required packages, functions, and worksheets (variables and variable details sheets). It is the analyst's responsibility on ensuring right packages are installed and loaded for their analyses/purposes. See installation.R in GitHub to see how packages can be installed at the RDC. 
+1. Load required packages, functions, and worksheets (variables and variable details sheets). See README.md in GitHub to see how packages can be installed at the RDC. 
 ```{r}
 library(here) # Ensure here is set to your current working directory
 
@@ -52,9 +52,9 @@ print(head(cycle6))
 ```{r}
 # Recoding basic variables
 cycle6_ages <- rec_with_table(cycle6, "clc_age", variable_details = my_variable_details, log = TRUE)
-cycle6_sexes <- rec_with_table(cycle6, "clc_sex", variable_details = my_variable_details, log = TRUE)
-
 head(cycle6_ages)
+
+cycle6_sexes <- rec_with_table(cycle6, "clc_sex", variable_details = my_variable_details, log = TRUE)
 head(cycle6_sexes)
 
 # Recoding a transformed variable (cont to cat)
@@ -93,6 +93,7 @@ recode_na_b <- function(column) {
 }
 
 recoded_cycle5$ckd <- recode_na_b(recoded_cycle5$ckd)
+head(recoded_cycle5)
 ```
 
 5. Recoding variable with "not asked" missing category.
@@ -101,4 +102,5 @@ recoded_cycle5$ckd <- recode_na_b(recoded_cycle5$ckd)
 cycle4 <- data.frame(slp_11 = c(8, 99.7, tagged_na("c")), fmh_15 = c(1, 6, tagged_na("c")), clc_sex = c(1, 1, 2))
 
 recoded_cycle4 <- rec_with_table(cycle4, c("slp_11", "fmh_15", "clc_sex"), variable_details = my_variable_details)
+head(recoded_cycle4)
 ```

@@ -3,7 +3,7 @@ title: "Recoding CHMS medication variables"
 format: html
 ---
 
-1. Load required packages, functions, and worksheets (variables and variable details sheets). It is the analyst's responsibility on ensuring right packages are installed and loaded for their analyses/purposes. See installation.R in GitHub to see how packages can be installed at the RDC.
+1. Load required packages, functions, and worksheets (variables and variable details sheets). See README.md in GitHub to see how packages can be installed at the RDC.
 ```{r}
 library(here) # Ensure here is set to your working directory
 

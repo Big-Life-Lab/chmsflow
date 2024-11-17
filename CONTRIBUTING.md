@@ -1,6 +1,6 @@
 # Contributing to chmsflow
 
-This page outlines how to contribute to the `cchsflow` package. 
+This page outlines how to contribute to the `chmsflow` package. 
 
 ## Adding variables to chmsflow
 
@@ -14,7 +14,7 @@ You will first need to create a custom function that will carry out the necessar
 
 ### Requesting a variable
 
-To request a variable to be added to chmsflow, please use the variable request template available on the GitHub [repository](https://github.com/Big-Life-Lab/cchsflow/issues).
+To request a variable to be added to chmsflow, please use the variable request template available on the GitHub [repository](https://github.com/Big-Life-Lab/chmsflow/issues).
 
 ## Documentation
 

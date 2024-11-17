@@ -5,15 +5,13 @@ library(stringr)
 library(dplyr)
 library(magrittr)
 
-
 #' @title
 #' Recode with Table
 #'
 #' Recode with Table is responsible for recoding values of a dataset based on
 #' the specifications in variable_details.
 #'
-#' The \href{https://github.com/Big-Life-Lab/cchsflow/blob/master/inst/extdata/variable_details.csv}{variable_details}
-#'  dataframe needs the following variables to function:
+#' The variable_details dataframe needs the following variables to function:
 #'  \describe{
 #'   \item{variable}{name of new (mutated) variable that is recoded}
 #'   \item{toType}{type the variable is being recoded to
@@ -89,12 +87,20 @@ library(magrittr)
 #' @param attach_data_name to attach name of database to end table
 #'
 #' @return a dataframe that is recoded according to rules in variable_details.
+#' 
+#' @examples
+#' cycle1_ages_and_sexes <- rec_with_table(
+#'   data = cycle1, 
+#'   variables = c("clc_age", "clc_sex"),
+#'   variable_details = my_variable_details
+#' )
+#' 
 #' @export
 rec_with_table <-
   function(data,
-           variables = NULL,
+           variables,
            database_name = NULL,
-           variable_details = NULL,
+           variable_details,
            else_value = NA,
            append_to_data = FALSE,
            log = FALSE,
