@@ -6,8 +6,8 @@ format: html
 1. Load required packages, functions, and worksheets (variables and variable details sheets). See README.md in GitHub to see how packages can be installed at the RDC. 
 ```{r}
 library(here) # Ensure here is set to your current working directory
+library(recodeflow)
 
-source(here("R", "recode-with-table.R"), local = knitr::knit_global())
 source(here("R", "blood-pressure.R"), local = knitr::knit_global())
 source(here("R", "kidney.R"), local = knitr::knit_global())
 
@@ -16,9 +16,9 @@ my_variable_details <- read.csv(here("worksheets", "variable-details.csv"))
 ```
 
 
-2.  Create CHMS synthetic data with missing values. Name of synthetic data has to be name of exact database in order for recoding. Using only age, sex, and blood pressures to keep it simple. 
+2.  Create CHMS synthetic data with missing values. Cycle data object always has to be called "cyclex" in order for recoding to work.
 
-At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst's responsibility to merge their required components in one database named in the format of cyclex. However, keep medication data separate from the cycle data (see recoding-medications.qmd).
+At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst's responsibility to merge their required components in one database named "cyclex". However, keep medication data separate from the rest of the cycle data (see recoding-medications.qmd).
 
 ```{r}
 # Create synthetic data with missing values
@@ -64,43 +64,4 @@ head(cycle6_categorical_ages)
 # Recoding a derived variable
 cycle6_adjusted_SBPs <- rec_with_table(cycle6, c("bpmdpbps", "sbp_adj"), variable_details = my_variable_details, log = TRUE)
 head(cycle6_adjusted_SBPs)
-```
-
-4. Recoding derived variables with missing values.
-
-```{r}
-# 2 observations have missing data (one with missing ethnicity, and one with missing creatine - both needed to compute GFR later)
-cycle5 <- data.frame(
-  clc_sex = c(1, 2, 2),
-  clc_age = c(60, 50, 40),
-  pgdcgt = c(1, 96, 2),
-  lab_bcre = c(50, 50, 9996)
-)
-
-# Recoding variables needed to compute GFR which will be used to determine CKD status
-recoded_cycle5 <- rec_with_table(cycle5, c("lab_bcre", "pgdcgt", "clc_sex", "clc_age", "gfr", "ckd"), variable_details = my_variable_details)
-head(recoded_cycle5)
-
-# Temporary fix for derived categorical variable NAs -> convert factored NA of ckd variable into "NA(b)"
-recode_na_b <- function(column) {
-  # Convert the column to character if it's a factor
-  if (is.factor(column)) {
-    column <- as.character(column)
-  }
-  # Replace NAs with "NA(b)"
-  column[is.na(column)] <- "NA(b)"
-  return(column)
-}
-
-recoded_cycle5$ckd <- recode_na_b(recoded_cycle5$ckd)
-head(recoded_cycle5)
-```
-
-5. Recoding variable with "not asked" missing category.
-
-```{r}
-cycle4 <- data.frame(slp_11 = c(8, 99.7, tagged_na("c")), fmh_15 = c(1, 6, tagged_na("c")), clc_sex = c(1, 1, 2))
-
-recoded_cycle4 <- rec_with_table(cycle4, c("slp_11", "fmh_15", "clc_sex"), variable_details = my_variable_details)
-head(recoded_cycle4)
 ```
