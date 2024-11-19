@@ -36,4 +36,4 @@ At the RDC where CHMS data is located, R packages cannot be readily installed, i
 
 ## Contributing
 
-Please follow [this guide](https://big-life-lab.github.io/chmsflow/CONTRIBUTING.md) if you would like to contribute to the *chmsflow* package.
+Please follow [this guide](https://github.com/Big-Life-Lab/chmsflow/blob/dev/CONTRIBUTING.md) if you would like to contribute to the *chmsflow* package.

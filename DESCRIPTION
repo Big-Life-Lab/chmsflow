@@ -1,10 +1,11 @@
 Package: chmsflow
 Type: Package
 Title: Transforming and Harmonizing CHMS Variables
-Version: 0.0.0.9000
-Authors@R: 
+Version: 0.1.0
+Authors@R: c(
     person(given = "Rafidul", family = "Islam", email = "raislam@ohri.ca", role = c("aut", "cre")),
     person(given = "Douglas", family = "Manuel", email = "dmanuel@ohri.ca", role = c("aut"))
+)
 Description: Supporting the use of the Canadian Health Measures Survey (CHMS)
              by transforming variables from each cycle into harmonized, 
              consistent versions that span survey cycles 1-6. 
