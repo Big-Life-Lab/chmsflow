@@ -1,4 +1,4 @@
-# chmsflow
+# chmsflow <img src="man/figures/logo.svg" align="right" alt="" width="180"/>
 
 *chmsflow* supports the use of the Canadian Health Measures Survey (CHMS) by transforming variables from each cycle into harmonized, consistent versions that span survey cycles 1-6.
 

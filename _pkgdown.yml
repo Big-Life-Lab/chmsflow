@@ -1,0 +1,62 @@
+destination: docs
+
+template:
+  params:
+    bootswatch: cosmo
+
+development:
+  mode: auto
+
+home:
+  links:
+    - text: Calculators
+      href: https://www.projectbiglife.ca 
+      
+navbar:
+  structure:
+    left: [home, get_started, articles, reference, news]
+    right: github
+  components:
+    get_started:
+      text: Get started
+      href: articles/get_started.html
+    articles:
+      text: Articles
+      menu:
+      - text: Recoding medications
+        href: articles/recoding-medications.html
+      - text: Recoding variables
+        href: articles/recoding-variables.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    news:
+      text: Changelog
+      href: news/index.html
+
+reference:
+  - title: "Worksheets"
+    desc: variable and variable_details worksheets
+    contents: 
+    - variables
+    - variable_details
+  - title: "Derived variable functions"
+    desc: Functions for deriving custom CHMS variables
+    contents:
+  - title: "Challenging variables"
+    desc: Derived variables in cchsflow with issues and challenges
+    contents:
+  - title: "CHMS test datasets"
+    desc: Datasets for each CCHS cycle
+    contents:
+  - title: "Processing functions"
+    desc: Functions used to manipulate CCHS datasets
+    contents:
+    - rec_with_table
+    - set_data_labels
+    - merge_rec_data
+  - title: "Utility functions"
+    desc: Utility functions that are used in other cchsflow functions
+    contents:
+    - if_else2
+    
