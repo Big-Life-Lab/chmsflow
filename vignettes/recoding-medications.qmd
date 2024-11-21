@@ -6,7 +6,6 @@ format: html
 1. Load required packages, functions, and worksheets (variables and variable details sheets). See README.md in GitHub to see how packages can be installed at the RDC. SECTION WILL BE REMOVED WHEN PACKAGE POSTED!
 ```{r}
 library(here) # Ensure here is set to your working directory
-library(magrittr)
 library(dplyr)
 library(recodeflow)
 
@@ -15,15 +14,9 @@ source(here("R", "family-history.R"), local = knitr::knit_global())
 source(here("R", "diabetes.R"), local = knitr::knit_global())
 source(here("R", "kidney.R"), local = knitr::knit_global())
 source(here("R", "blood-pressure.R"), local = knitr::knit_global())
-withr::with_dir(here::here(), {
-  source(here("R", "strings.R"), local = knitr::knit_global())
-  source(here("R", "recode-with-table.R"), local = knitr::knit_global())
-  source(here("R", "label-utils.R"), local = knitr::knit_global())
-  source(here("R", "merge-data.R"), local = knitr::knit_global())
-})
 
-my_variables <- read.csv(here("inst", "extdata", "variables.csv"))
-my_variable_details <- read.csv(here("inst", "extdata", "variable-details.csv"))
+variables <- read.csv(here("inst", "extdata", "variables.csv"))
+variable_details <- read.csv(here("inst", "extdata", "variable-details.csv"))
 ```
 
 2. Create synthetic data for cycle 2 and cycle 3, with each cycle's medication data being separate. Medication data object always has to be called "cyclex_meds" in order for recoding to work, with rest of the data being called "cyclex" as stated in recoding-variables.qmd. Note that row headers for medication data of cycles 1, 4, and 6 must be put to lower case prior to recoding.
@@ -160,18 +153,18 @@ cycle3_meds <- data.frame(
 3. Recode medication variables for individual cycles.
 ```{r}
 # Recoding basic variables from cycles 1 and 3
-cycle2_medication_data <- rec_with_table(cycle2_meds, c("clinicid", "atc_101a", "mhr_101b"), variable_details = my_variable_details)
+cycle2_medication_data <- rec_with_table(cycle2_meds, c("clinicid", "atc_101a", "mhr_101b"), variable_details = variable_details)
 head(cycle2_medication_data)
 
-cycle3_medication_data <- rec_with_table(cycle3_meds, c("clinicid", "meucatc", "npi_25b"), variable_details = my_variable_details)
+cycle3_medication_data <- rec_with_table(cycle3_meds, c("clinicid", "meucatc", "npi_25b"), variable_details = variable_details)
 head(cycle3_medication_data)
 
 # Recoding derived variable acemed for cycle2. Select vars by role used to avoid writing all med variables in one line
-cycle2_ace_medication_data <- rec_with_table(cycle2_meds, c("clinicid", "acemed", recodeflow:::select_vars_by_role("Drugs", my_variables)), variable_details = my_variable_details)
+cycle2_ace_medication_data <- rec_with_table(cycle2_meds, c("clinicid", "acemed", recodeflow:::select_vars_by_role("Drugs", variables)), variable_details = variable_details)
 head(select(cycle2_ace_medication_data, clinicid, acemed)) 
 
 # Recoding derived variable acemed for cycle3. Much simpler function used here.
-cycle3_ace_medication_data <- rec_with_table(cycle3_meds, c("clinicid", "meucatc", "npi_25b", "acemed"), variable_details = my_variable_details)
+cycle3_ace_medication_data <- rec_with_table(cycle3_meds, c("clinicid", "meucatc", "npi_25b", "acemed"), variable_details = variable_details)
 head(cycle3_ace_medication_data)
 ```
 
@@ -204,7 +197,7 @@ Example: Determine hypertension status by recoding medications
 ```{r}
 # Cycles 1-2
 # Recode medication variables first - anymed for hypertension and diab_drug for diabetes which is involved in determining hypertension status
-cycle2_htn_medication_data <- rec_with_table(cycle2_meds, c("clinicid", recodeflow:::select_vars_by_role("Drugs", my_variables)), variable_details = my_variable_details)
+cycle2_htn_medication_data <- rec_with_table(cycle2_meds, c("clinicid", recodeflow:::select_vars_by_role("Drugs", variables)), variable_details = variable_details)
 
 # Create dummy medication variable by duplicating recoded medication variable
 cycle2_htn_medication_data$anymed2 <- as.numeric(as.character(cycle2_htn_medication_data$anymed))
@@ -215,12 +208,12 @@ cycle2_htn_medication_data <- select(cycle2_htn_medication_data, clinicid, anyme
 cycle2 <- merge(cycle2, cycle2_htn_medication_data, by = "clinicid")
 
 # Recode hypertension (and diabetes) status using recoded, dummy medication variables
-cycle2_htn_data <- rec_with_table(cycle2, c(recodeflow:::select_vars_by_role("Test", my_variables)), variable_details = my_variable_details)
+cycle2_htn_data <- rec_with_table(cycle2, c(recodeflow:::select_vars_by_role("Test", variables)), variable_details = variable_details)
 head(cycle2_htn_data)
 
 # Cycles 3-6
 # Recode medication variables first - - anymed for hypertension and diab_drug for diabetes which is involved in determining hypertension status
-cycle3_htn_medication_data <- rec_with_table(cycle3_meds, c("clinicid", "meucatc", "npi_25b", "anymed", "diab_drug"), variable_details = my_variable_details)
+cycle3_htn_medication_data <- rec_with_table(cycle3_meds, c("clinicid", "meucatc", "npi_25b", "anymed", "diab_drug"), variable_details = variable_details)
 
 # Aggregating recoded cycle3 data by clinicid
 cycle3_htn_medication_data <- cycle3_htn_medication_data %>%
@@ -242,6 +235,6 @@ cycle3_htn_medication_data <- select(cycle3_htn_medication_data, clinicid, anyme
 cycle3 <- merge(cycle3, cycle3_htn_medication_data, by = "clinicid")
 
 # Recode hypertension (and diabetes) status using recoded, dummy medication variables
-cycle3_htn_data <- rec_with_table(cycle3, c(recodeflow:::select_vars_by_role("Test", my_variables)), variable_details = my_variable_details)
+cycle3_htn_data <- rec_with_table(cycle3, c(recodeflow:::select_vars_by_role("Test", variables)), variable_details = variable_details)
 head(cycle3_htn_data)
 ```

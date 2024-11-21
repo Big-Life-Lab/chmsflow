@@ -7,19 +7,14 @@ format: html
 
 ```{r}
 library(here) # Ensure here is set to your current working directory
-library(magrittr)
+library(dplyr)
+library(recodeflow)
 
 source(here("R", "blood-pressure.R"), local = knitr::knit_global())
 source(here("R", "kidney.R"), local = knitr::knit_global())
-withr::with_dir(here::here(), {
-  source(here("R", "strings.R"), local = knitr::knit_global())
-  source(here("R", "label-utils.R"), local = knitr::knit_global())
-  source(here("R", "recode-with-table.R"), local = knitr::knit_global())
-  source(here("R", "merge-data.R"), local = knitr::knit_global())
-})
 
-my_variables <- read.csv(here("inst", "extdata", "variables.csv"))
-my_variable_details <- read.csv(here("inst", "extdata", "variable-details.csv"))
+variables <- read.csv(here("inst", "extdata", "variables.csv"))
+variable_details <- read.csv(here("inst", "extdata", "variable-details.csv"))
 ```
 
 
@@ -57,51 +52,17 @@ print(head(cycle4))
 
 ```{r}
 # Recoding basic variables
-cycle4_ages <- rec_with_table(cycle4, "clc_age", variable_details = my_variable_details, log = TRUE)
+cycle4_ages <- rec_with_table(cycle4, "clc_age", variable_details = variable_details, log = TRUE)
 head(cycle4_ages)
 
-cycle4_sexes <- rec_with_table(cycle4, "clc_sex", variable_details = my_variable_details, log = TRUE)
+cycle4_sexes <- rec_with_table(cycle4, "clc_sex", variable_details = variable_details, log = TRUE)
 head(cycle4_sexes)
 
 # Recoding a transformed variable (cont to cat)
-cycle4_categorical_ages <- rec_with_table(cycle4, "agegroup4", variable_details = my_variable_details, log = TRUE)
+cycle4_categorical_ages <- rec_with_table(cycle4, "agegroup4", variable_details = variable_details, log = TRUE)
 head(cycle4_categorical_ages)
 
 # Recoding a derived variable
-cycle4_adjusted_SBPs <- rec_with_table(cycle4, c("bpmdpbps", "sbp_adj"), variable_details = my_variable_details, log = TRUE)
+cycle4_adjusted_SBPs <- rec_with_table(cycle4, c("bpmdpbps", "sbp_adj"), variable_details = variable_details, log = TRUE)
 head(cycle4_adjusted_SBPs)
-```
-
-4. Merge recoded CHMS data.
-
-```{r}
-# Create synthetic data with missing values
-n <- 100  # Number of observations
-set.seed(124)  # Set seed for reproducibility
-
-# Generate random ages between 18 and 75, with some missing values [996-999]
-ages <- sample(c(18:75), n, replace = TRUE)
-
-# Generate random sexes (1 for male, 2 for female, with some missing values [6-9])
-sexes <- sample(c(1:2), n, replace = TRUE)
-
-# Generate random systolic blood pressures between 80 and 215, with some missing values [996-999]
-systolic_bps <- sample(c(80:215, 996:999), n, replace = TRUE)
-
-# Generate random diastolic blood pressures between 50 and 150, with some missing values [996-999]
-diastolic_bps <- sample(c(50:150, 996:999), n, replace = TRUE)
-
-# Create a data frame named cycle5
-cycle5 <- data.frame(clc_age = ages, clc_sex = sexes, bpmdpbps = systolic_bps, bpmdpbpd = diastolic_bps)
-
-# Print the first few rows of the cycle5 data
-print(head(cycle5))
-
-# Recode age from cycle5
-cycle5_ages <- rec_with_table(cycle5, "clc_age", variable_details = my_variable_details, log = TRUE)
-head(cycle5_ages)
-
-# Merge recoded cycle4 ages with recoded cycle5 ages
-cycle4and5_ages <- merge_rec_data(cycle4_ages, cycle5_ages)
-head(cycle4and5_ages)
 ```
