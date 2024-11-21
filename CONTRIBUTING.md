@@ -14,7 +14,7 @@ You will first need to create a custom function that will carry out the necessar
 
 ### Requesting a variable
 
-To request a variable to be added to chmsflow, please use the variable request template available on the GitHub [repository](https://github.com/Big-Life-Lab/chmsflow/issues).
+To request a variable to be added to chmsflow, please use the variable request template available on the GitHub [repository](https://github.com/Big-Life-Lab/chmsflow/blob/dev/.github/ISSUE_TEMPLATE/variable-request.md).
 
 ## Documentation
 
@@ -33,7 +33,7 @@ When linking to other .Rmd files make sure their extension is changed to .html. 
 
 ## Filing an issue
 
-The easiest way to propose a change or new feature is to file an issue. If you've found a bug, you may also create an associated issue. If possible, try to illustrate your proposal or the bug with a minimal [reproducible example](https://www.tidyverse.org/help/#reprex). When filing an issue, please use the issues template available on the GitHub [repository](https://github.com/Big-Life-Lab/cchsflow/issues).
+The easiest way to propose a change or new feature is to file an issue. If you've found a bug, you may also create an associated issue. If possible, try to illustrate your proposal or the bug with a minimal [reproducible example](https://www.tidyverse.org/help/#reprex). When filing an issue, please use the issues template available on the GitHub [repository](https://github.com/Big-Life-Lab/chmsflow/blob/dev/.github/ISSUE_TEMPLATE/bug_report.md).
 
 ## Pull request
 

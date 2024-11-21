@@ -20,6 +20,7 @@ Imports:
     stringr,
     dplyr,
     magrittr,
+    sjlabelled,
     logger
 License: MIT + file LICENSE
 URL: https://github.com/Big-Life-Lab/chmsflow
@@ -28,6 +29,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
     here,
+    withr,
     recodeflow,
     testthat (>= 3.0.0)
 LazyData: true

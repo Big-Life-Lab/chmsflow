@@ -3,22 +3,31 @@ title: "Recoding CHMS variables"
 format: html
 ---
 
-1. Load required packages, functions, and worksheets (variables and variable details sheets). See README.md in GitHub to see how packages can be installed at the RDC. 
+1. Load required packages, functions, and worksheets (variables and variable details sheets). See README.md in GitHub to see how packages can be installed at the RDC. SECTION WILL BE REMOVED WHEN PACKAGE POSTED!
+
 ```{r}
 library(here) # Ensure here is set to your current working directory
-library(recodeflow)
+library(magrittr)
 
 source(here("R", "blood-pressure.R"), local = knitr::knit_global())
 source(here("R", "kidney.R"), local = knitr::knit_global())
+withr::with_dir(here::here(), {
+  source(here("R", "strings.R"), local = knitr::knit_global())
+  source(here("R", "label-utils.R"), local = knitr::knit_global())
+  source(here("R", "recode-with-table.R"), local = knitr::knit_global())
+  source(here("R", "merge-data.R"), local = knitr::knit_global())
+})
 
-my_variables <- read.csv(here("worksheets", "variables.csv"))
-my_variable_details <- read.csv(here("worksheets", "variable-details.csv"))
+my_variables <- read.csv(here("inst", "extdata", "variables.csv"))
+my_variable_details <- read.csv(here("inst", "extdata", "variable-details.csv"))
 ```
 
 
 2.  Create CHMS synthetic data with missing values. Cycle data object always has to be called "cyclex" in order for recoding to work.
 
-At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst's responsibility to merge their required components in one database named "cyclex". However, keep medication data separate from the rest of the cycle data (see recoding-medications.qmd).
+At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst's responsibility to merge their required components in one database named "cyclex". However, keep medication data separate from the rest of the cycle data (see recoding-medications.qmd). 
+
+Note that row headers for cycle 6 must be put to lower case prior to recoding.
 
 ```{r}
 # Create synthetic data with missing values
@@ -37,31 +46,62 @@ systolic_bps <- sample(c(80:215, 996:999), n, replace = TRUE)
 # Generate random diastolic blood pressures between 50 and 150, with some missing values [996-999]
 diastolic_bps <- sample(c(50:150, 996:999), n, replace = TRUE)
 
-# Create a data frame named cycle6
-cycle6 <- data.frame(CLC_AGE = ages, CLC_SEX = sexes, bpmdpbps = systolic_bps, bpmdpbpd = diastolic_bps)
+# Create a data frame named cycle4
+cycle4 <- data.frame(clc_age = ages, clc_sex = sexes, bpmdpbps = systolic_bps, bpmdpbpd = diastolic_bps)
 
-# Putting all headers to lowercase to ensure easy recoding (cycle6 only)
-names(cycle6) <- tolower(names(cycle6)) 
-
-# Print the first few rows of the cycle6 data
-print(head(cycle6))
+# Print the first few rows of the cycle4 data
+print(head(cycle4))
 ```
 
 3.  Test rec_with_table on fake CHMS data.
 
 ```{r}
 # Recoding basic variables
-cycle6_ages <- rec_with_table(cycle6, "clc_age", variable_details = my_variable_details, log = TRUE)
-head(cycle6_ages)
+cycle4_ages <- rec_with_table(cycle4, "clc_age", variable_details = my_variable_details, log = TRUE)
+head(cycle4_ages)
 
-cycle6_sexes <- rec_with_table(cycle6, "clc_sex", variable_details = my_variable_details, log = TRUE)
-head(cycle6_sexes)
+cycle4_sexes <- rec_with_table(cycle4, "clc_sex", variable_details = my_variable_details, log = TRUE)
+head(cycle4_sexes)
 
 # Recoding a transformed variable (cont to cat)
-cycle6_categorical_ages <- rec_with_table(cycle6, "agegroup4", variable_details = my_variable_details, log = TRUE)
-head(cycle6_categorical_ages)
+cycle4_categorical_ages <- rec_with_table(cycle4, "agegroup4", variable_details = my_variable_details, log = TRUE)
+head(cycle4_categorical_ages)
 
 # Recoding a derived variable
-cycle6_adjusted_SBPs <- rec_with_table(cycle6, c("bpmdpbps", "sbp_adj"), variable_details = my_variable_details, log = TRUE)
-head(cycle6_adjusted_SBPs)
+cycle4_adjusted_SBPs <- rec_with_table(cycle4, c("bpmdpbps", "sbp_adj"), variable_details = my_variable_details, log = TRUE)
+head(cycle4_adjusted_SBPs)
+```
+
+4. Merge recoded CHMS data.
+
+```{r}
+# Create synthetic data with missing values
+n <- 100  # Number of observations
+set.seed(124)  # Set seed for reproducibility
+
+# Generate random ages between 18 and 75, with some missing values [996-999]
+ages <- sample(c(18:75), n, replace = TRUE)
+
+# Generate random sexes (1 for male, 2 for female, with some missing values [6-9])
+sexes <- sample(c(1:2), n, replace = TRUE)
+
+# Generate random systolic blood pressures between 80 and 215, with some missing values [996-999]
+systolic_bps <- sample(c(80:215, 996:999), n, replace = TRUE)
+
+# Generate random diastolic blood pressures between 50 and 150, with some missing values [996-999]
+diastolic_bps <- sample(c(50:150, 996:999), n, replace = TRUE)
+
+# Create a data frame named cycle5
+cycle5 <- data.frame(clc_age = ages, clc_sex = sexes, bpmdpbps = systolic_bps, bpmdpbpd = diastolic_bps)
+
+# Print the first few rows of the cycle5 data
+print(head(cycle5))
+
+# Recode age from cycle5
+cycle5_ages <- rec_with_table(cycle5, "clc_age", variable_details = my_variable_details, log = TRUE)
+head(cycle5_ages)
+
+# Merge recoded cycle4 ages with recoded cycle5 ages
+cycle4and5_ages <- merge_rec_data(cycle4_ages, cycle5_ages)
+head(cycle4and5_ages)
 ```

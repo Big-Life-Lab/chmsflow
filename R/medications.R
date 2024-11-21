@@ -1,7 +1,3 @@
-#' @file
-#' Load packages
-library(logger)
-
 #' @title Calculate the number of occurrences of a specific drug class based on given conditions.
 #' 
 #' This function calculates the number of occurrences of a specific drug class in the data frame.
@@ -31,50 +27,50 @@ library(logger)
 is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, class_condition_fun, log_level = "INFO", overwrite = FALSE) {
   # Validate input parameters
   if (!is.character(class_var_name) || class_var_name == "") {
-    log_fatal("The 'class_var_name' must be a non-empty character string.")
+    logger::log_fatal("The 'class_var_name' must be a non-empty character string.")
     stop()
   }
   
   if (!is.logical(overwrite)) {
-    log_fatal("'overwrite' must be a logical value (TRUE or FALSE).")
+    logger::log_fatal("'overwrite' must be a logical value (TRUE or FALSE).")
     stop()
   }
   
   if (!all(med_vars %in% names(df))) {
     missing_vars <- med_vars[!(med_vars %in% names(df))]
     error_msg <- paste0("The following medication variables are not in the data frame: ", paste(missing_vars, collapse = ", "))
-    log_error(error_msg)
+    logger::log_error(error_msg)
     stop()
   }
   
   if (!all(last_taken_vars %in% names(df))) {
     missing_vars <- last_taken_vars[!(last_taken_vars %in% names(df))]
     error_msg <- paste0("The following 'last_taken' variables are not in the data frame: ", paste(missing_vars, collapse = ", "))
-    log_error(error_msg)
+    logger::log_error(error_msg)
     stop()
   }
   
   if (length(med_vars) != length(last_taken_vars)) {
     error_msg <- "The lists of medication variables and 'last_taken' variables are not of the same length."
-    log_warn(error_msg)
+    logger::log_warn(error_msg)
     stop()
   }
   
   # Set the log level
-  log_threshold(log_level)
+  logger::log_threshold(log_level)
   
   # Check if class_var_name already exists in the data frame
   if (class_var_name %in% names(df)) {
     error_msg <- paste0("Variable '", class_var_name, "' already exists in the data frame.")
     if (overwrite) {
-      log_warn(paste0(error_msg, " The variable will be overwritten."))
+      logger::log_warn(paste0(error_msg, " The variable will be overwritten."))
     } else {
-      log_fatal(paste0(error_msg, " Use a new variable name or change 'overwrite=TRUE'."))
+      logger::log_fatal(paste0(error_msg, " Use a new variable name or change 'overwrite=TRUE'."))
       stop()
     }
   }
   
-  log_info(paste0("Adding variable '", class_var_name, "' to the data frame."))
+  logger::log_info(paste0("Adding variable '", class_var_name, "' to the data frame."))
   
   # Initialize the class variable column
   df[[class_var_name]] <- 0 

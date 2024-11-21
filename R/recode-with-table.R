@@ -1,9 +1,5 @@
-#' @file
-#' Load packages
-library(haven)
-library(stringr)
-library(dplyr)
-library(magrittr)
+source("R/strings.R")
+source("R/label-utils.R")
 
 # Removing Note
 . <- NULL
@@ -18,7 +14,6 @@ library(magrittr)
 #' @return boolean value of whether or not v1 and v2 are equal
 #'
 #' @examples
-#' library(cchsflow)
 #' is_equal(1,2)
 #' # FALSE
 #'
@@ -51,7 +46,7 @@ is_equal <- function(v1, v2) {
 #' Recode with Table is responsible for recoding values of a dataset based on
 #' the specifications in variable_details.
 #'
-#' The \href{https://github.com/Big-Life-Lab/cchsflow/blob/master/inst/extdata/variable_details.csv}{variable_details}
+#' The \href{https://github.com/Big-Life-Lab/chmsflow/blob/master/inst/extdata/variable_details.csv}{variable_details}
 #'  dataframe needs the following variables to function:
 #'  \describe{
 #'   \item{variable}{name of new (mutated) variable that is recoded}
@@ -130,39 +125,17 @@ is_equal <- function(v1, v2) {
 #' @return a dataframe that is recoded according to rules in variable_details.
 #'
 #' @examples
-#' library(cchsflow)
-#' bmi2001 <- rec_with_table(
-#'   data = cchs2001_p, c(
-#'     "HWTGHTM",
-#'     "HWTGWTK", "HWTGBMI_der"
-#'   )
+#' cycle1_ages <- rec_with_table(
+#'   data = cycle1, variables = "clc_age", variable_details
 #' )
-#'
-#' head(bmi2001)
-#'
-#' bmi2011_2012 <- rec_with_table(
-#'   data = cchs2011_2012_p,  c(
-#'     "HWTGHTM",
-#'     "HWTGWTK", "HWTGBMI_der"
-#'   )
-#' )
-#'
-#' tail(bmi2011_2012)
-#'
-#' combined_bmi <- bind_rows(bmi2001, bmi2011_2012)
-#' head(combined_bmi)
-#' tail(combined_bmi)
-#' @importFrom haven tagged_na
-#' @importFrom stringr str_match
-#' @importFrom dplyr rowwise select do
 #' @importFrom magrittr %>%
 #' @export
 
 rec_with_table <-
   function(data,
-           variables = NULL,
+           variables,
            database_name = NULL,
-           variable_details = NULL,
+           variable_details,
            else_value = NA,
            append_to_data = FALSE,
            log = FALSE,
@@ -394,7 +367,7 @@ get_data_variable_name <-
     } else if (grepl("\\[", var_start_names)) {
       # Strip default var name tags: []
       data_variable_being_checked <-
-        str_match(var_start_names, "\\[(.*?)\\]")[, 2]
+        stringr::str_match(var_start_names, "\\[(.*?)\\]")[, 2]
     } else {
       stop(
         paste(
@@ -811,7 +784,7 @@ recode_variable_NA_formating <- function(cell_value, var_type) {
     if (is_equal(var_type, pkg.globals$argument.CatType)) {
       recode_value <- paste("NA(", na_value_list[[3]], ")", sep = "")
     } else {
-      recode_value <- tagged_na(as.character(na_value_list[[3]]))
+      recode_value <- haven::tagged_na(as.character(na_value_list[[3]]))
     }
   } else {
     if (!is_equal(var_type, pkg.globals$argument.CatType) &&
@@ -936,9 +909,9 @@ recode_derived_variables <-
       
       column_value <-
         recoded_data %>%
-        rowwise() %>%
-        select(used_feeder_vars) %>%
-        do(
+        dplyr::rowwise() %>%
+        dplyr::select(used_feeder_vars) %>%
+        dplyr::do(
           column_being_added = calculate_custom_function_row_value(
             .,
             variable_names = used_feeder_vars,
@@ -971,6 +944,7 @@ recode_derived_variables <-
       )
     )
   }
+
 calculate_custom_function_row_value <-
   function(row_values,
            variable_names,
