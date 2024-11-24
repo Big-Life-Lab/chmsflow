@@ -38,7 +38,7 @@ pack_years_fun(
 
 \item{SMK_41}{A numeric value representing the number of cigarettes smoked per day for occasional smokers.}
 
-\item{SMK_53}{A numeric value representing the number of years since the respondent quit smoking (for former daily or occasional smokers).}
+\item{SMK_53}{A numeric value representing the number of cigarettes smoked per day for former daily smokers.}
 
 \item{SMK_23}{A numeric value representing the number of days per month the respondent smoked at least 1 cigarette (for former daily or occasional smokers).}
 
@@ -71,8 +71,8 @@ This function calculates an individual's smoking pack-years based on various CHM
 }
 \examples{
 
-# Example 1: Calculate pack years for a daily smoker who started at age 20 and smokes 30 cigarettes per day.
-pack_years_fun(SMKDSTY = 1, CLC_AGE = 40, SMKDSTP = NA, SMK_52 = 20, SMK_31 = 30, SMK_41 = NA, SMK_53 = NA, SMK_23 = NA, SMK_21 = NA, SMK_11 = NA)
+# Example 1: Calculate pack years for a 40 year-old respondent, who is a daily smoker, started smoking age 20, and smokes 30 cigarettes per day (1.5 packs/day).
+pack_years_fun(SMKDSTY = 1, CLC_AGE = 40, SMK_52 = 20, SMK_31 = 30)
 # Output: 30 (pack years)
 
 # Example 2: Calculate pack years for a former occasional smoker (non-smoker now) who smoked at least 100 cigarettes in their lifetime.

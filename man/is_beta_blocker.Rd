@@ -2,11 +2,11 @@
 % Please edit documentation in R/medications.R
 \name{is_beta_blocker}
 \alias{is_beta_blocker}
-\title{Determine if a CHMS respondent's medication is a beta blocker.
+\title{Determine if a CHMS respondent's medication belongs to the beta blocker class.
 
-This function checks if a given medication for a CHMS respondent belongs to the beta blocker drug class.
-The specific conditions for identifying a beta blocker are based on Anatomical Therapeutic Chemical (ATC) codes
-and the time when the medication was last taken.}
+This function determines whether a given medication, taken by a CHMS respondent,
+is classified as a beta blocker. The identification is based on Anatomical Therapeutic Chemical (ATC) codes and the
+timing of the last medication intake.}
 \usage{
 is_beta_blocker(MEUCATC, NPI_25B)
 }
@@ -21,16 +21,15 @@ is_beta_blocker(MEUCATC, NPI_25B)
 A numeric, 1 if medication is in the beta blocker class and 0 if it is not.
 }
 \description{
-Determine if a CHMS respondent's medication is a beta blocker.
+Determine if a CHMS respondent's medication belongs to the beta blocker class.
 
-This function checks if a given medication for a CHMS respondent belongs to the beta blocker drug class.
-The specific conditions for identifying a beta blocker are based on Anatomical Therapeutic Chemical (ATC) codes
-and the time when the medication was last taken.
+This function determines whether a given medication, taken by a CHMS respondent,
+is classified as a beta blocker. The identification is based on Anatomical Therapeutic Chemical (ATC) codes and the
+timing of the last medication intake.
 }
 \details{
-This function uses the \code{startsWith} function to identify beta blockers based on their ATC codes, which
+This function identifies whether a medication is a beta blocker based on their ATC codes, which
 typically start with "C07". Additionally, specific sub-codes 'C07AA07', 'C07AA12', and 'C07AG02' are excluded
-from the beta blocker class. If the ATC code matches the pattern and is not in the exclusion list, and the
-medication was taken within the last month (NPI_25B <= 4), the medication is considered a beta blocker, and the function
-returns TRUE. Otherwise, it returns FALSE.
+from the beta blocker class. A respondent is classified as taking a beta blocker (return = 1) if the ATC code matches the pattern and is not in the exclusion list, and the
+medication was taken within the last month (NPI_25B <= 4), otherwise the respondent is not taking a betablocker (return = 0)
 }

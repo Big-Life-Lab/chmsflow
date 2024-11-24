@@ -12,7 +12,9 @@ low_drink_score_fun(CLC_SEX, ALCDWKY)
 \item{ALCDWKY}{An integer representing the number of standard drinks consumed by the respondent in a week.}
 }
 \value{
-An integer representing the low drink score:
+If data of the wrong type is inputted (eg. a string for ALCDWKY), the function would return NA and remind the user to ensure all inputs are numeric.
+If data is out of bounds (eg. 3 for CLC_SEX which only is 1 or 2), the function would return NA and remind the user that input data is out of bounds.
+Otherwise, when numeric data within proper range is inputted, the function returns an integer representing the low drink score:
 \itemize{
 \item 1 for "Low risk" (0 points).
 \item 2 for "Marginal risk" (1-2 points).
@@ -36,6 +38,8 @@ obtained from adding the points in step 1 and step 2.
 Step 2 is not included in this function because the questions in
 step 2 are not asked in any of the CHMS cycles. The score is only based on
 step 1.
+
+See https://osf.io/eprg7/ for more details on the guideline and score.
 }
 \examples{
 
