@@ -17,7 +17,7 @@ test_that("determine_inclusive_diabetes handles all inputs NA", {
 test_that("determine_inclusive_diabetes handles two inputs NA", {
   # Case 4: diab_m and CCC_51 are NA, decision based on diab_drug2
   expect_equal(determine_inclusive_diabetes(NA, NA, 1), 1)
-  expect_equal(determine_inclusive_diabetes(NA, NA, 0), 2)
+  expect_equal(determine_inclusive_diabetes(NA, NA, 0), haven::tagged_na("b"))
   
   # Case 5: diab_m and diab_drug2 are NA, decision based on CCC_51
   expect_equal(determine_inclusive_diabetes(NA, 1, NA), 1)

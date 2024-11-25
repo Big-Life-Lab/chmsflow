@@ -92,7 +92,7 @@ test_that("determine_controlled_adjusted_hypertension works correctly", {
   expect_equal(determine_controlled_adjusted_hypertension(142, 92, 1), 2)
   
   # Case 3: Controlled for Special Cases
-  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CKD = 1), 1)
+  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, CKD = 1), 1)
   
   # Case 4: Invalid Input
   expect_error(determine_controlled_adjusted_hypertension(999, 999, 1))

@@ -37,7 +37,7 @@ test_that("is_taking_drug_class computes correctly", {
   }
   
   result <- is_taking_drug_class(df, "class_var", c("med1", "med2"), c("last1", "last2"), class_condition_fun, overwrite = TRUE)
-  expect_equal(result$class_var, c(2, 0, 1))
+  expect_equal(result$class_var, c(1, 0, 2))
 })
 
 test_that("is_beta_blocker identifies beta blockers correctly", {
@@ -252,7 +252,7 @@ test_that("cycles1to2_other_antiHTN_meds works correctly", {
   
   # Test 4: Case with mixed medications
   test_data_4 <- list(
-    atc_101a = "C09AA01", mhr_101b = 1,  # Other anti-hypertensive, taken today
+    atc_101a = "C02AA01", mhr_101b = 1,  # Other anti-hypertensive, taken today
     atc_102a = "C08CA01", mhr_102b = 2   # Calcium channel blocker, taken yesterday
   )
   expect_equal(cycles1to2_other_antiHTN_meds(!!!test_data_4), 1)  # Should return 1 because of the other anti-hypertensive

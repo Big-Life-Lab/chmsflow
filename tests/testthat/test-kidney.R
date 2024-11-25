@@ -7,7 +7,7 @@ test_that("calculate_GFR works correctly", {
   expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35), 99.94114, tolerance = 1e-5)
   
   # Non-response values
-  expect_equal(calculate_GFR(LAB_BCRE = 996, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
+  expect_equal(calculate_GFR(LAB_BCRE = 9996, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
   expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 96, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
   expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 6, CLC_AGE = 30), haven::tagged_na("b"))
   expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 996), haven::tagged_na("b"))
