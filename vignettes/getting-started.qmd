@@ -1,9 +1,9 @@
 ---
-title: "Recoding CHMS variables"
+title: "Recoding CHMS variables - Getting Started!"
 format: html
 ---
 
-1. Load required packages, functions, and worksheets (variables and variable details sheets). See README.md in GitHub to see how packages can be installed at the RDC. SECTION WILL BE REMOVED WHEN PACKAGE POSTED!
+1. Load required packages, functions, and worksheets (variables and variable details sheets). See README.md in GitHub to see how packages can be loaded at the RDC. SECTION WILL BE REMOVED WHEN PACKAGE POSTED!
 
 ```{r}
 library(here) # Ensure here is set to your current working directory

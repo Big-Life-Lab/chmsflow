@@ -6,11 +6,11 @@ This page outlines how to contribute to the `chmsflow` package.
 
 ### Transforming existing CHMS variables
 
-Using the naming conventions described in the [`variables.csv`](https://big-life-lab.github.io/cchsflow/articles/variables_sheet.html) and [`variable_details.csv`](https://big-life-lab.github.io/cchsflow/articles/variable_details.html) you can add more CHMS variables that can be transformed and harmonized across cycles.
+Using the naming conventions described in the [`variables.csv`](https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html) and [`variable_details.csv`](https://big-life-lab.github.io/chmsflow/articles/variable_details.html) you can add more CHMS variables that can be transformed and harmonized across cycles.
 
 ### Creating a derived variable
 
-You will first need to create a custom function that will carry out the necessary transformations needed for your derived variable. You will then need to specify your derived variable on `variables.csv` and `variable_details.csv`. For more information, [click here](https://big-life-lab.github.io/cchsflow/articles/how_to_add_variables.html).
+You will first need to create a custom function that will carry out the necessary transformations needed for your derived variable. You will then need to specify your derived variable on `variables.csv` and `variable_details.csv`.
 
 ### Requesting a variable
 

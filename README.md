@@ -14,16 +14,14 @@ The CHMS is a cross-sectional survey administered by Statistics Canada that coll
     devtools::install_github("Big-Life-Lab/chmsflow")
 ```
 
-At the RDC where CHMS data is located, R packages cannot be readily installed, it is the analyst's responsibility to ensure that the right R packages are installed for their analyses/purposes. See below for guide on how to install R packages at RDC:
+See below for guide on how to load R packages at RDC:
 
 ```         
-    # Define path to the directory where your zip files are located at RDC
-    package_dir <- ""
-
-    # For each package needed, install it AND all its dependencies
-    install.packages(file.path(package_dir, "package.zip"), repos = NULL, type = "win.binary")
-    install.packages(file.path(package_dir, "package-dependency1.zip"), repos = NULL, type = "win.binary")
-    install.packages(file.path(package_dir, "package-dependency2.zip"), repos = NULL, type = "win.binary")
+    # Within quotations, define path to the directory where your package folders are located at RDC
+    .libPaths("")
+    
+    # Load chmsflow package
+    library(chmsflow)
 ```
 
 ## What is in the `chmsflow` package?
