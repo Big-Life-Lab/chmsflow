@@ -38,8 +38,4 @@ determine_inclusive_diabetes(diab_m = 2, CCC_51 = 2, diab_drug2 = 2)
 determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
 # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
 
-# Example: Determine inclusive diabetes status when two parameters are NA.
-determine_inclusive_diabetes(diab_m = NA, CCC_51 = NA, diab_drug2 = 2)
-# Output: 2 (Based on `diab_drug2`, inclusive diabetes status is "No").
-
 }
