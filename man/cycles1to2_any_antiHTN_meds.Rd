@@ -2,10 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_any_antiHTN_meds}
 \alias{cycles1to2_any_antiHTN_meds}
-\title{Determine if a person is taking any anti-hypertensive medication in CHMS cycles 1 to 2.
-
-This function checks if a person is taking any anti-hypertensive medication based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.}
+\title{Determine if a person is taking any anti-hypertensive medication in CHMS cycles 1 to 2.}
 \usage{
 cycles1to2_any_antiHTN_meds(
   atc_101a = NULL,
@@ -101,8 +98,6 @@ cycles1to2_any_antiHTN_meds(
 anymed, a numeric set to 1 if the person is taking any anti-hypertensive medication, NA if no information is available, 0 otherwise.
 }
 \description{
-Determine if a person is taking any anti-hypertensive medication in CHMS cycles 1 to 2.
-
 This function checks if a person is taking any anti-hypertensive medication based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
 and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }

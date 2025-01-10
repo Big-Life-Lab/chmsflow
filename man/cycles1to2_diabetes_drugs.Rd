@@ -2,10 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_diabetes_drugs}
 \alias{cycles1to2_diabetes_drugs}
-\title{Determine if a person is taking diabetes drugs in CHMS cycles 1 to 2.
-
-This function checks if a person is taking diabetes drugs based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.}
+\title{Determine if a person is taking diabetes drugs in CHMS cycles 1 to 2.}
 \usage{
 cycles1to2_diabetes_drugs(
   atc_101a = NULL,
@@ -101,8 +98,6 @@ cycles1to2_diabetes_drugs(
 diab_drug, a numeric set to 1 if the person is taking any diabetes drugs, NA if no information is available, 0 otherwise.
 }
 \description{
-Determine if a person is taking diabetes drugs in CHMS cycles 1 to 2.
-
 This function checks if a person is taking diabetes drugs based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
 and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }

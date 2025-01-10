@@ -2,11 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_any_antiHTN_med}
 \alias{is_any_antiHTN_med}
-\title{Determine if a CHMS respondent's medication is any anti-hypertensive drug.
-
-This function checks if a given medication for a CHMS respondent belongs to any anti-hypertensive drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.}
+\title{Determine if a CHMS respondent's medication is any anti-hypertensive drug.}
 \usage{
 is_any_antiHTN_med(MEUCATC, NPI_25B)
 }
@@ -21,8 +17,6 @@ is_any_antiHTN_med(MEUCATC, NPI_25B)
 A numeric, 1 if medication is in any anti-hypertensive drug class and 0 if it is not.
 }
 \description{
-Determine if a CHMS respondent's medication is any anti-hypertensive drug.
-
 This function checks if a given medication for a CHMS respondent belongs to any anti-hypertensive drug class.
 The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
 medication was last taken.
@@ -34,4 +28,13 @@ This function first identifies any anti-hypertensive drugs based on their ATC co
 code matches the pattern and is not in the exclusion list, and the medication was taken within the last month
 (NPI_25B <= 4), the medication is considered an anti-hypertensive drug, and the function returns TRUE.
 Otherwise, it returns FALSE.
+}
+\examples{
+
+# Let's say a for one respondent's medication, the ATC code is C07AB02 and the time they last took it was within the last 
+# month. By passing in the code and integer time response (4 in this case) into the function, it can be checked if the 
+# given respondent's medication is an anti-hypertensive drug (1) or not (0).
+
+is_any_antiHTN_med(`C07AB02`, 4)
+
 }

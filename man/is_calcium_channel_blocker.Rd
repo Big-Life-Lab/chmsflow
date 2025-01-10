@@ -2,11 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_calcium_channel_blocker}
 \alias{is_calcium_channel_blocker}
-\title{Determine if a CHMS respondent's medication is a calcium channel blocker.
-
-This function checks if a given medication for a CHMS respondent belongs to the calcium channel blocker drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.}
+\title{Determine if a CHMS respondent's medication is a calcium channel blocker.}
 \usage{
 is_calcium_channel_blocker(MEUCATC, NPI_25B)
 }
@@ -21,8 +17,6 @@ is_calcium_channel_blocker(MEUCATC, NPI_25B)
 A numeric, 1 if medication is in the calcium channel blocker class and 0 if it is not.
 }
 \description{
-Determine if a CHMS respondent's medication is a calcium channel blocker.
-
 This function checks if a given medication for a CHMS respondent belongs to the calcium channel blocker drug class.
 The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
 medication was last taken.
@@ -32,4 +26,13 @@ This function uses the \code{startsWith} function to identify calcium channel bl
 which typically start with "C08". If the ATC code matches the pattern and the medication was taken within
 the last month (NPI_25B <= 4), the medication is considered a calcium channel blocker, and the
 function returns TRUE. Otherwise, it returns FALSE.
+}
+\examples{
+
+# Let's say a for one respondent's medication, the ATC code is C08CA05 and the time they last took it was today. By 
+# passing in the code and integer time response (1 in this case) into the function, it can be checked if the given 
+# respondent's medication is a calcium channel blocker (1) or not (0).
+
+is_calcium_channel_blocker(`C08CA05`, 1)
+
 }

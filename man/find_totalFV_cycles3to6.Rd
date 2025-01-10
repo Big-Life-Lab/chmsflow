@@ -2,12 +2,7 @@
 % Please edit documentation in R/diet.R
 \name{find_totalFV_cycles3to6}
 \alias{find_totalFV_cycles3to6}
-\title{Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.
-
-This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures
-Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or
-vegetable item was consumed. The function then sums up the consumption frequencies of all these items and divides the total
-by 365 to obtain the average daily consumption of fruits and vegetables in a year.}
+\title{Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.}
 \usage{
 find_totalFV_cycles3to6(
   WSDD34Y,
@@ -50,8 +45,6 @@ find_totalFV_cycles3to6(
 A numeric representing the average times per day fruits and vegetables were consumed in a year.
 }
 \description{
-Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.
-
 This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures
 Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or
 vegetable item was consumed. The function then sums up the consumption frequencies of all these items and divides the total

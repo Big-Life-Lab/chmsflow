@@ -2,11 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_ace_inhibitor}
 \alias{is_ace_inhibitor}
-\title{Determine if a CHMS respondent's medication is an ACE inhibitor.
-
-This function checks if a given medication for a CHMS respondent belongs to the ACE inhibitor drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.}
+\title{Determine if a CHMS respondent's medication is an ACE inhibitor.}
 \usage{
 is_ace_inhibitor(MEUCATC, NPI_25B)
 }
@@ -21,8 +17,6 @@ is_ace_inhibitor(MEUCATC, NPI_25B)
 A numeric, 1 if medication is in the ACE inhibitor class and 0 if it is not.
 }
 \description{
-Determine if a CHMS respondent's medication is an ACE inhibitor.
-
 This function checks if a given medication for a CHMS respondent belongs to the ACE inhibitor drug class.
 The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
 medication was last taken.
@@ -32,4 +26,13 @@ This function uses the \code{startsWith} function to identify ACE inhibitors bas
 typically start with "C09". If the ATC code matches the pattern and the medication was taken within the last
 month (NPI_25B <= 4), the medication is considered an ACE inhibitor and the function returns TRUE.
 Otherwise, it returns FALSE.
+}
+\examples{
+
+# Let's say for one respondent's medication, the ATC code is "C09AB03" and the time they last took it was yesterday. 
+# By passing in the code and integer time response (2 in this case) into the function, it can be checked if the 
+# given respondent's medication is an ACE inhibitor (1) or not (0).
+
+is_ace_inhibitor("C09AB03", 2)
+
 }
