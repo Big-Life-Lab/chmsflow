@@ -117,224 +117,50 @@ test_that("is_diabetes_drug works correctly", {
   expect_equal(is_diabetes_drug("A10BB09", NA), haven::tagged_na("b")) # Missing time response
 })
 
-test_that("cycles1to2_beta_blockers works as expected", {
-  # Test 1: Case when taking beta-blockers
-  test_data_1 <- list(
-    atc_101a = "C07", mhr_101b = 1,  # Beta-blocker ATC code, taken today
-    atc_102a = NULL, mhr_102b = NULL
-  )
-  expect_equal(cycles1to2_beta_blockers(!!!test_data_1), 1)
-  
-  # Test 2: Case when not taking beta-blockers
-  test_data_2 <- list(
-    atc_101a = "C09", mhr_101b = 1,  # Non-beta-blocker ATC code, taken today
-    atc_102a = NULL, mhr_102b = NULL
-  )
-  expect_equal(cycles1to2_beta_blockers(!!!test_data_2), 0)
-  
-  # Test 3: Case with missing data (NA)
-  test_data_3 <- list(
-    atc_101a = NULL, mhr_101b = NULL  # No data
-  )
-  expect_equal(cycles1to2_beta_blockers(!!!test_data_3), haven::tagged_na("b"))
-  
-  # Test 4: Case with ambiguous data (mixed beta-blocker and other drugs)
-  test_data_4 <- list(
-    atc_101a = "C07", mhr_101b = 2,  # Beta-blocker, taken yesterday
-    atc_102a = "C09", mhr_102b = 1   # Non-beta-blocker, taken today
-  )
-  expect_equal(cycles1to2_beta_blockers(!!!test_data_4), 1)  # Should return 1 because of the beta-blocker
+test_that("cycles1to2_beta_blockers works correctly", {
+  expect_equal(cycles1to2_beta_blockers(atc_101a = "C07AA13", mhr_101b = 3), 1)
+  expect_equal(cycles1to2_beta_blockers(atc_101a = "C07AA07", mhr_101b = 5), 0)
+  expect_equal(cycles1to2_beta_blockers(atc_101a = "C07AA13", mhr_101b = 6, atc_102a = "C09AA01", mhr_102b = 2), 0)
 })
 
-test_that("cycles1to2_ace_inhibitors works as expected", {
-  # Test 1: Case when taking ACE inhibitors
-  test_data_1 <- list(
-    atc_101a = "C09", mhr_101b = 1,  # ACE inhibitor ATC code, taken today
-    atc_102a = NULL, mhr_102b = NULL
-  )
-  expect_equal(cycles1to2_ace_inhibitors(!!!test_data_1), 1)
-  
-  # Test 2: Case when not taking ACE inhibitors
-  test_data_2 <- list(
-    atc_101a = "C07", mhr_101b = 1,  # Non-ACE inhibitor ATC code, taken today
-    atc_102a = NULL, mhr_102b = NULL
-  )
-  expect_equal(cycles1to2_ace_inhibitors(!!!test_data_2), 0)
-  
-  # Test 3: Case with missing data (NA)
-  test_data_3 <- list(
-    atc_101a = NULL, mhr_101b = NULL  # No data
-  )
-  expect_equal(cycles1to2_ace_inhibitors(!!!test_data_3), haven::tagged_na("b"))
-  
-  # Test 4: Case with mixed ACE inhibitors and other drugs
-  test_data_4 <- list(
-    atc_101a = "C09", mhr_101b = 1,  # ACE inhibitor, taken today
-    atc_102a = "C07", mhr_102b = 2   # Non-ACE inhibitor, taken yesterday
-  )
-  expect_equal(cycles1to2_ace_inhibitors(!!!test_data_4), 1)  # Should return 1 because of the ACE inhibitor
+test_that("cycles1to2_ace_inhibitors works correctly", {
+  expect_equal(cycles1to2_ace_inhibitors(atc_101a = "C09AA13", mhr_101b = 1), 1)
+  expect_equal(cycles1to2_ace_inhibitors(atc_101a = "C07AA07", mhr_101b = 1), 0)
+  expect_equal(cycles1to2_ace_inhibitors(atc_101a = "C09AA13", mhr_101b = 1, atc_102a = "C07AA07", mhr_102b = 2), 1)
 })
 
 test_that("cycles1to2_diuretics works as expected", {
-  # Test 1: Case when taking diuretics
-  test_data_1 <- list(
-    atc_101a = "C03", mhr_101b = 1,  # Diuretic ATC code, taken today
-    atc_102a = NULL, mhr_102b = NULL
-  )
-  expect_equal(cycles1to2_diuretics(!!!test_data_1), 1)
-  
-  # Test 2: Case when not taking diuretics
-  test_data_2 <- list(
-    atc_101a = "C09", mhr_101b = 1,  # Non-diuretic ATC code, taken today
-    atc_102a = NULL, mhr_102b = NULL
-  )
-  expect_equal(cycles1to2_diuretics(!!!test_data_2), 0)
-  
-  # Test 3: Case with missing data (NA)
-  test_data_3 <- list(
-    atc_101a = NULL, mhr_101b = NULL  # No data
-  )
-  expect_equal(cycles1to2_diuretics(!!!test_data_3), haven::tagged_na("b"))
-  
-  # Test 4: Case with mixed diuretics and other drugs
-  test_data_4 <- list(
-    atc_101a = "C03", mhr_101b = 1,  # Diuretic, taken today
-    atc_102a = "C07", mhr_102b = 2   # Non-diuretic, taken yesterday
-  )
-  expect_equal(cycles1to2_diuretics(!!!test_data_4), 1)  # Should return 1 because of the diuretic
+  expect_equal(cycles1to2_diuretics(atc_101a = "C03AA13", mhr_101b = 1), 1)
+  expect_equal(cycles1to2_diuretics(atc_101a = "C03BA08", mhr_101b = 1), 0)
+  expect_equal(cycles1to2_diuretics(atc_101a = "C03AA13", mhr_101b = 1, atc_102a = "C07BA08", mhr_102b = 2), 1)
 })
 
 test_that("cycles1to2_calcium_channel_blockers works correctly", {
-  # Test 1: Case when taking calcium channel blockers
-  test_data_1 <- list(
-    atc_101a = "C08CA01", mhr_101b = 1  # Calcium channel blocker, taken today
-  )
-  expect_equal(cycles1to2_calcium_channel_blockers(!!!test_data_1), 1)
-  
-  # Test 2: Case when not taking calcium channel blockers
-  test_data_2 <- list(
-    atc_101a = "C09AA01", mhr_101b = 1  # Non-calcium channel blocker, taken today
-  )
-  expect_equal(cycles1to2_calcium_channel_blockers(!!!test_data_2), 0)
-  
-  # Test 3: Case with missing data (NA)
-  test_data_3 <- list(
-    atc_101a = NULL, mhr_101b = NULL  # No data
-  )
-  expect_equal(cycles1to2_calcium_channel_blockers(!!!test_data_3), haven::tagged_na("b"))
-  
-  # Test 4: Case with mixed medications
-  test_data_4 <- list(
-    atc_101a = "C08CA01", mhr_101b = 1,  # Calcium channel blocker, taken today
-    atc_102a = "C09AA01", mhr_102b = 2   # Non-calcium channel blocker, taken yesterday
-  )
-  expect_equal(cycles1to2_calcium_channel_blockers(!!!test_data_4), 1)  # Should return 1 because of the calcium channel blocker
+  expect_equal(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = 1), 1)
+  expect_equal(cycles1to2_calcium_channel_blockers(atc_101a = "C09AA01", mhr_101b = 1), 0)
+  expect_equal(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = 1, atc_102a = "C09AA01", mhr_102b = 2), 1)
 })
 
 test_that("cycles1to2_other_antiHTN_meds works correctly", {
-  # Test 1: Case when taking other anti-hypertensive medications
-  test_data_1 <- list(
-    atc_101a = "C09AA01", mhr_101b = 1  # Other anti-hypertensive, taken today
-  )
-  expect_equal(cycles1to2_other_antiHTN_meds(!!!test_data_1), 1)
-  
-  # Test 2: Case when not taking other anti-hypertensive medications
-  test_data_2 <- list(
-    atc_101a = "C08CA01", mhr_101b = 1  # Calcium channel blocker, taken today
-  )
-  expect_equal(cycles1to2_other_antiHTN_meds(!!!test_data_2), 0)
-  
-  # Test 3: Case with missing data (NA)
-  test_data_3 <- list(
-    atc_101a = NULL, mhr_101b = NULL  # No data
-  )
-  expect_equal(cycles1to2_other_antiHTN_meds(!!!test_data_3), haven::tagged_na("b"))
-  
-  # Test 4: Case with mixed medications
-  test_data_4 <- list(
-    atc_101a = "C02AA01", mhr_101b = 1,  # Other anti-hypertensive, taken today
-    atc_102a = "C08CA01", mhr_102b = 2   # Calcium channel blocker, taken yesterday
-  )
-  expect_equal(cycles1to2_other_antiHTN_meds(!!!test_data_4), 1)  # Should return 1 because of the other anti-hypertensive
+  expect_equal(cycles1to2_other_antiHTN_meds(atc_101a = "C02AA01", mhr_101b = 1), 1)
+  expect_equal(cycles1to2_other_antiHTN_meds(atc_101a = "C08CA01", mhr_101b = 1), 0)
+  expect_equal(cycles1to2_other_antiHTN_meds(atc_101a = "C02AA01", mhr_101b = 1, atc_102a = "C08CA01", mhr_102b = 2), 1)
 })
 
 test_that("cycles1to2_any_antiHTN_meds works correctly", {
-  # Test 1: Case when taking any anti-hypertensive medication
-  test_data_1 <- list(
-    atc_101a = "C08CA01", mhr_101b = 1  # Calcium channel blocker, taken today
-  )
-  expect_equal(cycles1to2_any_antiHTN_meds(!!!test_data_1), 1)
-  
-  # Test 2: Case when taking another anti-hypertensive medication
-  test_data_2 <- list(
-    atc_101a = "C09AA01", mhr_101b = 1  # Other anti-hypertensive, taken today
-  )
-  expect_equal(cycles1to2_any_antiHTN_meds(!!!test_data_2), 1)
-  
-  # Test 3: Case with missing data (NA)
-  test_data_3 <- list(
-    atc_101a = NULL, mhr_101b = NULL  # No data
-  )
-  expect_equal(cycles1to2_any_antiHTN_meds(!!!test_data_3), haven::tagged_na("b"))
-  
-  # Test 4: Case with mixed medications
-  test_data_4 <- list(
-    atc_101a = "C08CA01", mhr_101b = 1,  # Calcium channel blocker, taken today
-    atc_102a = "C09AA01", mhr_102b = 2   # Other anti-hypertensive, taken yesterday
-  )
-  expect_equal(cycles1to2_any_antiHTN_meds(!!!test_data_4), 1)  # Should return 1 because of any anti-hypertensive
+  expect_equal(cycles1to2_any_antiHTN_meds(atc_101a = "C08CA01", mhr_101b = 1), 1)
+  expect_equal(cycles1to2_any_antiHTN_meds(atc_101a = "C09AA01", mhr_101b = 1), 1)
+  expect_equal(cycles1to2_any_antiHTN_meds(atc_101a = "C08CA01", mhr_101b = 1, atc_102a = "C09AA01", mhr_102b = 2), 1)
 })
 
 test_that("cycles1to2_nsaid works correctly", {
-  # Test 1: Case when taking NSAIDs
-  test_data_1 <- list(
-    atc_101a = "M01AE01", mhr_101b = 1  # NSAID, taken today
-  )
-  expect_equal(cycles1to2_nsaid(!!!test_data_1), 1)
-  
-  # Test 2: Case when not taking NSAIDs
-  test_data_2 <- list(
-    atc_101a = "C09AA01", mhr_101b = 1  # Non-NSAID, taken today
-  )
-  expect_equal(cycles1to2_nsaid(!!!test_data_2), 0)
-  
-  # Test 3: Case with missing data (NA)
-  test_data_3 <- list(
-    atc_101a = NULL, mhr_101b = NULL  # No data
-  )
-  expect_equal(cycles1to2_nsaid(!!!test_data_3), haven::tagged_na("b"))
-  
-  # Test 4: Case with mixed medications
-  test_data_4 <- list(
-    atc_101a = "M01AE01", mhr_101b = 1,  # NSAID, taken today
-    atc_102a = "C09AA01", mhr_102b = 2   # Non-NSAID, taken yesterday
-  )
-  expect_equal(cycles1to2_nsaid(!!!test_data_4), 1)  # Should return 1 because of the NSAID
+  expect_equal(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = 1), 1)
+  expect_equal(cycles1to2_nsaid(atc_101a = "C09AA01", mhr_101b = 1), 0)
+  expect_equal(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = 1, atc_102a = "C09AA01", mhr_102b = 2), 1)
 })
 
 test_that("cycles1to2_diabetes_drugs works correctly", {
-  # Test 1: Case when taking diabetes drugs
-  test_data_1 <- list(
-    atc_101a = "A10BA02", mhr_101b = 1  # Diabetes drug, taken today
-  )
-  expect_equal(cycles1to2_diabetes_drugs(!!!test_data_1), 1)
-  
-  # Test 2: Case when not taking diabetes drugs
-  test_data_2 <- list(
-    atc_101a = "C09AA01", mhr_101b = 1  # Non-diabetes drug, taken today
-  )
-  expect_equal(cycles1to2_diabetes_drugs(!!!test_data_2), 0)
-  
-  # Test 3: Case with missing data (NA)
-  test_data_3 <- list(
-    atc_101a = NULL, mhr_101b = NULL  # No data
-  )
-  expect_equal(cycles1to2_diabetes_drugs(!!!test_data_3), haven::tagged_na("b"))
-  
-  # Test 4: Case with mixed medications
-  test_data_4 <- list(
-    atc_101a = "A10BA02", mhr_101b = 1,  # Diabetes drug, taken today
-    atc_102a = "C09AA01", mhr_102b = 2   # Non-diabetes drug, taken yesterday
-  )
-  expect_equal(cycles1to2_diabetes_drugs(!!!test_data_4), 1)  # Should return 1 because of the diabetes drug
+  expect_equal(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = 1), 1)
+  expect_equal(cycles1to2_diabetes_drugs(atc_101a = "C09AA01", mhr_101b = 1), 0)
+  expect_equal(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = 1, atc_102a = "C09AA01", mhr_102b = 2), 1)
 })

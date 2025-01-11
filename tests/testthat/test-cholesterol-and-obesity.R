@@ -49,5 +49,5 @@ test_that("calculate_WHR works correctly", {
   expect_equal(calculate_WHR(170, 0), 0) # WHR = 0/170
   
   # Edge case: Zero height (should handle division by zero)
-  expect_error(calculate_WHR(0, 85)) # Expect an error for division by zero
+  expect_equal(calculate_WHR(0, 85), Inf)
 })

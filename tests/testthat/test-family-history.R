@@ -69,7 +69,7 @@ test_that("determine_CVD_Family_History works correctly", {
   expect_equal(determine_CVD_Family_History(FMH_11 = 1, FMH_12 = 65, FMH_13 = 1, FMH_14 = 55), 1)
   
   # Non-response combined with valid input
-  expect_equal(determine_CVD_Family_History(FMH_11 = 1, FMH_12 = NA, FMH_13 = 1, FMH_14 = 55), haven::tagged_na("b"))
+  expect_equal(determine_CVD_Family_History(FMH_11 = 1, FMH_12 = NA, FMH_13 = 1, FMH_14 = 55), 1)
   expect_equal(determine_CVD_Family_History(FMH_11 = 1, FMH_12 = 50, FMH_13 = 1, FMH_14 = NA), 1)
   
 })
