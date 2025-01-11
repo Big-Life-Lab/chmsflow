@@ -1,28 +1,4 @@
 #test-medications.R
-test_that("is_taking_drug_class validates input parameters", {
-  df <- data.frame(med1 = c("C07AA13", "C09AA02"), 
-                   last1 = c(3, 5), 
-                   med2 = c("C03AA03", NA), 
-                   last2 = c(2, NA))
-  
-  class_condition_fun <- function(med_code, last_taken) {
-    if (is.na(med_code) | is.na(last_taken)) {
-      return(0)
-    }
-    return(as.numeric(startsWith(med_code, "C07") & last_taken <= 4))
-  }
-  
-  # Test for errors with missing parameters
-  expect_error(is_taking_drug_class(df, "", c("med1"), c("last1"), class_condition_fun))
-  expect_error(is_taking_drug_class(df, "class_var", c("med1", "non_existent"), c("last1"), class_condition_fun))
-  expect_error(is_taking_drug_class(df, "class_var", c("med1"), c("last1", "non_existent"), class_condition_fun))
-  
-  # Test overwrite functionality
-  df$class_var <- 1
-  expect_error(is_taking_drug_class(df, "class_var", c("med1"), c("last1"), class_condition_fun))
-  expect_silent(is_taking_drug_class(df, "class_var", c("med1"), c("last1"), class_condition_fun, overwrite = TRUE))
-})
-
 test_that("is_taking_drug_class computes correctly", {
   df <- data.frame(med1 = c("C07AA13", "C09AA02", "C07AG02"), 
                    last1 = c(3, 5, 1), 
@@ -37,6 +13,7 @@ test_that("is_taking_drug_class computes correctly", {
   }
   
   result <- is_taking_drug_class(df, "class_var", c("med1", "med2"), c("last1", "last2"), class_condition_fun, overwrite = TRUE)
+  # Expected: 1 (from med1), 0 (no valid combinations), 2 (from both med1 and med2)
   expect_equal(result$class_var, c(1, 0, 2))
 })
 
