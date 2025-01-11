@@ -34,6 +34,6 @@ TRUE. Otherwise, it returns FALSE.
 # week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
 # given respondent's medication is another anti-hypertensive drug (1) or not (0).
 
-is_other_antiHTN_med(`C02AC04`, 3)
+is_other_antiHTN_med("C02AC04", 3)
 
 }

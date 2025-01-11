@@ -34,6 +34,6 @@ returns TRUE. Otherwise, it returns FALSE.
 # week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
 # given respondent's medication is a diuretic (1) or not (0).
 
-is_diuretic(`C03AA03`, 3)
+is_diuretic("C03AA03", 3)
 
 }

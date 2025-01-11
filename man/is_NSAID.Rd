@@ -33,6 +33,6 @@ returns FALSE.
 # passing in the code and integer time response (1 in this case) into the function, it can be checked if the given
 # respondent's medication is an NSAID (1) or not (0).
 
-is_NSAID(`M01AB05`, 1)
+is_NSAID("M01AB05", 1)
 
 }

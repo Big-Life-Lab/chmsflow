@@ -35,6 +35,6 @@ Otherwise, it returns FALSE.
 # month. By passing in the code and integer time response (4 in this case) into the function, it can be checked if the 
 # given respondent's medication is an anti-hypertensive drug (1) or not (0).
 
-is_any_antiHTN_med(`C07AB02`, 4)
+is_any_antiHTN_med("C07AB02", 4)
 
 }

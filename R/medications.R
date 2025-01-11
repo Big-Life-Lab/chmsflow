@@ -197,7 +197,7 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 #' # week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
 #' # given respondent's medication is a diuretic (1) or not (0).
 #' 
-#' is_diuretic(`C03AA03`, 3)
+#' is_diuretic("C03AA03", 3)
 #' 
 #' @export
 is_diuretic <- function(MEUCATC, NPI_25B) {
@@ -233,7 +233,7 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 #' # passing in the code and integer time response (1 in this case) into the function, it can be checked if the given 
 #' # respondent's medication is a calcium channel blocker (1) or not (0).
 #' 
-#' is_calcium_channel_blocker(`C08CA05`, 1)
+#' is_calcium_channel_blocker("C08CA05" 1)
 #' 
 #' @export
 is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
@@ -270,7 +270,7 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
 #' # week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
 #' # given respondent's medication is another anti-hypertensive drug (1) or not (0).
 #' 
-#' is_other_antiHTN_med(`C02AC04`, 3)
+#' is_other_antiHTN_med("C02AC04", 3)
 #' 
 #' @export
 is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
@@ -308,7 +308,7 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' # month. By passing in the code and integer time response (4 in this case) into the function, it can be checked if the 
 #' # given respondent's medication is an anti-hypertensive drug (1) or not (0).
 #' 
-#' is_any_antiHTN_med(`C07AB02`, 4)
+#' is_any_antiHTN_med("C07AB02", 4)
 #' 
 #' @export
 is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
@@ -344,7 +344,7 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' # passing in the code and integer time response (1 in this case) into the function, it can be checked if the given
 #' # respondent's medication is an NSAID (1) or not (0).
 #' 
-#' is_NSAID(`M01AB05`, 1)
+#' is_NSAID("M01AB05", 1)
 #' 
 #' @export
 is_NSAID <- function(MEUCATC, NPI_25B) {
@@ -380,7 +380,7 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
 #' # week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
 #' # given respondent's medication is a diabetes drug (1) or not (0).
 #' 
-#' is_diabetes_drug(`A10BB09`, 3)
+#' is_diabetes_drug("A10BB09", 3)
 #' 
 #' @export
 is_diabetes_drug <- function(MEUCATC, NPI_25B) {
