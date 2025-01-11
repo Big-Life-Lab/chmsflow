@@ -233,7 +233,7 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 #' # passing in the code and integer time response (1 in this case) into the function, it can be checked if the given 
 #' # respondent's medication is a calcium channel blocker (1) or not (0).
 #' 
-#' is_calcium_channel_blocker("C08CA05" 1)
+#' is_calcium_channel_blocker("C08CA05", 1)
 #' 
 #' @export
 is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
