@@ -81,8 +81,7 @@ categorize_nonHDL <- function(nonHDL) {
 
 #' @title Calculate Waist-to-Height Ratio (WHR)
 #'
-#' @description
-#' This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent.
+#' @description This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent.
 #'
 #' @param HWM_11CM A numeric value representing the height of the respondent in centimeters.
 #' @param HWM_14CX A numeric value representing the waist circumference of the respondent in centimeters.

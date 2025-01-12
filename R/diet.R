@@ -113,9 +113,9 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
   return(totalFV)
 }
       
-#' Diet Categorization 
+#' @title Diet Categorization 
 #'
-#' This function categorizes individuals' diet quality based on their total fruit and vegetable consumption.
+#' @description This function categorizes individuals' diet quality based on their total fruit and vegetable consumption.
 #'
 #' @param totalFV Numeric value representing the average times per day fruits and vegetables were consumed in a year.
 #'
