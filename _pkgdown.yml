@@ -68,9 +68,9 @@ reference:
     - determine_adjusted_hypertension
     - determine_controlled_adjusted_hypertension
     - determine_controlled_hypertension
+    - determine_gooddiet
     - determine_hypertension
     - determine_inclusive_diabetes
-    - determine_poordiet
     - find_totalFV_cycles1and2
     - find_totalFV_cycles3to6
     - find_week_accelerometer_average
@@ -88,12 +88,6 @@ reference:
     - low_drink_score_fun1
     - minperday_to_minperweek
     - pack_years_fun
-  - title: "Challenging variables"
-    desc: Derived variables in chmsflow with issues and challenges
-    contents:
-  - title: "CHMS test datasets"
-    desc: Datasets for each CHMS cycle
-    contents:
   - title: "Processing functions"
     desc: Functions used to manipulate CHMS datasets
     contents:
