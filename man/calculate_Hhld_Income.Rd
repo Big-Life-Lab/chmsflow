@@ -30,15 +30,15 @@ respondent's total household income (THI_01) by dividing it by hh_size_wt. The a
 }
 \examples{
 
-# Example 1: Calculate adjusted household income for a respondent with $50,000 income and a household size of 3.
+# Example 1: Respondent with $50,000 income and a household size of 3.
 calculate_Hhld_Income(THI_01 = 50000, DHHDHSZ = 3)
 # Output: 29411.76
 
-# Example 2: Calculate adjusted household income for a respondent with $75000 income and a household size of 2.
+# Example 2: Respondent with $75000 income and a household size of 2.
 calculate_Hhld_Income(THI_01 = 75000, DHHDHSZ = 2)
 # Output: 53571.43
 
-# Example 3: Calculate adjusted household income for a respondent with $90000 income and a household size of 1.
+# Example 3: Respondent with $90000 income and a household size of 1.
 calculate_Hhld_Income(THI_01 = 90000, DHHDHSZ = 1)
 # Output: 90000
 

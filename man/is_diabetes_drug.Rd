@@ -2,11 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_diabetes_drug}
 \alias{is_diabetes_drug}
-\title{Determine if a CHMS respondent's medication is a diabetes drug.
-
-This function checks if a given medication for a CHMS respondent belongs to the diabetes drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.}
+\title{Determine if a CHMS respondent's medication is a diabetes drug.}
 \usage{
 is_diabetes_drug(MEUCATC, NPI_25B)
 }
@@ -21,8 +17,6 @@ is_diabetes_drug(MEUCATC, NPI_25B)
 A numeric, 1 if medication is in the diabetes drug class and 0 if it is not.
 }
 \description{
-Determine if a CHMS respondent's medication is a diabetes drug.
-
 This function checks if a given medication for a CHMS respondent belongs to the diabetes drug class.
 The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
 medication was last taken.
@@ -32,4 +26,11 @@ This function uses the \code{startsWith} function to identify diabetes drugs bas
 typically start with "A10". If the ATC code matches the pattern and the medication was taken within the last
 month (NPI_25B <= 4), the medication is considered a diabetes drug, and the function returns TRUE.
 Otherwise, it returns FALSE.
+}
+\examples{
+
+# Let's say the ATC code is "A10BB09" and the time last taken was within last week (3).
+
+is_diabetes_drug("A10BB09", 3) # Should return 1 (TRUE)
+
 }

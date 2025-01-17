@@ -2,11 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_other_antiHTN_med}
 \alias{is_other_antiHTN_med}
-\title{Determine if a CHMS respondent's medication is another anti-hypertensive drug.
-
-This function checks if a given medication for a CHMS respondent belongs to another anti-hypertensive drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.}
+\title{Determine if a CHMS respondent's medication is another anti-hypertensive drug.}
 \usage{
 is_other_antiHTN_med(MEUCATC, NPI_25B)
 }
@@ -21,8 +17,6 @@ is_other_antiHTN_med(MEUCATC, NPI_25B)
 A numeric, 1 if medication is in another anti-hypertensive drug class and 0 if it is not.
 }
 \description{
-Determine if a CHMS respondent's medication is another anti-hypertensive drug.
-
 This function checks if a given medication for a CHMS respondent belongs to another anti-hypertensive drug class.
 The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
 medication was last taken.
@@ -33,4 +27,11 @@ codes, which typically start with "C02". The sub-code 'C02KX01' is excluded from
 matches the pattern and is not in the exclusion list, and the medication was taken within the last month
 (NPI_25B <= 4), the medication is considered another anti-hypertensive drug, and the function returns
 TRUE. Otherwise, it returns FALSE.
+}
+\examples{
+
+# Let's say the ATC code is "C02AC04" and the time last taken was within last week (3).
+
+is_other_antiHTN_med("C02AC04", 3) # Should return 1 (TRUE)
+
 }

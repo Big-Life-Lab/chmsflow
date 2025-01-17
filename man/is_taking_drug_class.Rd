@@ -2,10 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_taking_drug_class}
 \alias{is_taking_drug_class}
-\title{Calculate the number of occurrences of a specific drug class based on given conditions.
-
-This function calculates the number of occurrences of a specific drug class in the data frame.
-The calculation is based on custom conditions specified by the user.}
+\title{Calculate the number of occurrences of a specific drug class based on given conditions.}
 \usage{
 is_taking_drug_class(
   df,
@@ -38,8 +35,6 @@ It should return an integer, 1 if the medication belongs to the class, 0 otherwi
 The input data frame 'df' with an additional column representing the drug class.
 }
 \description{
-Calculate the number of occurrences of a specific drug class based on given conditions.
-
 This function calculates the number of occurrences of a specific drug class in the data frame.
 The calculation is based on custom conditions specified by the user.
 }

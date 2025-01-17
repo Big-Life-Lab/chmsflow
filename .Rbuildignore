@@ -1,3 +1,12 @@
 ^chmsflow\.Rproj$
 ^\.Rproj\.user$
-^LICENSE\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^Vignettes$
+^CONTRIBUTING.md
+^cran-comments\.md$
+^README.html
+^CRAN-RELEASE$
+^CODE_OF_CONDUCT.md
+^.github

@@ -2,49 +2,50 @@
 % Please edit documentation in R/family-history.R
 \name{determine_CVD_Family_History}
 \alias{determine_CVD_Family_History}
-\title{Determine a respondent's cardiovascular disease (CVD) family history based on specific conditions related to heart disease and stroke in their immediate family members.}
+\title{Determine Cardiovascular Disease (CVD) Family History}
 \usage{
 determine_CVD_Family_History(FMH_11, FMH_12, FMH_13, FMH_14)
 }
 \arguments{
-\item{FMH_11}{An integer indicating whether an immediate family member was diagnosed with heart disease.
-1 for "Yes", 2 for "No".}
+\item{FMH_11}{Integer: Indicates whether an immediate family member was diagnosed with heart disease.
+- 1 for "Yes"
+- 2 for "No".}
 
-\item{FMH_12}{A numeric variable representing the youngest age at diagnosis of heart disease in an immediate family member.}
+\item{FMH_12}{Numeric: Represents the youngest age at diagnosis of heart disease in an immediate family member.}
 
-\item{FMH_13}{An integer indicating whether an immediate family member was diagnosed with stroke.
-1 for "Yes", 2 for "No".}
+\item{FMH_13}{Integer: Indicates whether an immediate family member was diagnosed with stroke.
+- 1 for "Yes"
+- 2 for "No".}
 
-\item{FMH_14}{A numeric variable representing the youngest age at diagnosis of stroke in an immediate family member.}
+\item{FMH_14}{Numeric: Represents the youngest age at diagnosis of stroke in an immediate family member.}
 }
 \value{
-An integer indicating the cardiovascular disease (CVD) family history:
+An integer indicating the CVD family history:
 \itemize{
-\item 1 for "Yes" if there is a family history of premature CVD (before age 60) based on heart disease and stroke histories.
-\item 2 for "No" if there is no such family history.
-\item NA(b) if any input contains non-responses or unknown diagnosis ages (997, 998, or 999).
+\item 1: "Yes" — Family history of premature CVD exists (diagnosis before age 60).
+\item 2: "No" — No family history of premature CVD.
+\item \code{NA(b)}: Missing/unknown — Due to non-responses, invalid inputs, or unknown diagnosis ages.
 }
 }
 \description{
-Determine a respondent's cardiovascular disease (CVD) family history based on specific conditions related to heart disease and stroke in their immediate family members.
+This function evaluates a respondent's family history of cardiovascular disease (CVD), based on data about diagnoses of heart disease and stroke in immediate family members and the ages at which these diagnoses occurred. It identifies premature CVD if any diagnosis occurred before age 60.
 }
 \details{
-The function evaluates the input variables \code{FMH_11}, \code{FMH_12}, \code{FMH_13}, and \code{FMH_14} to determine the cardiovascular disease (CVD) family history.
 \itemize{
-\item If \code{FMH_11} is equal to 1 or \code{FMH_13} is equal to 1, it indicates that someone in the family had heart disease or stroke, respectively.
-In this case, the function checks the age at diagnosis (\code{FMH_12} for heart disease and \code{FMH_14} for stroke). If the age is greater than or equal to 0 and less than 60,
-it represents a diagnosis before age 60, and \code{famheart60} or \code{famstroke60} is set to 1, respectively.
-\item If the age is greater than or equal to 60 and less than or equal to 100, it indicates a late diagnosis, and the corresponding \code{famheart60} and \code{famstroke60} are set to 0.
-\item If any of the integer inputs contain non-responses (i.e., values greater than 2) or any age input takes non-response values (997, 998, or 999), \code{famCVD60} is set to NA to
-indicate that the CVD family history is not available.
-\item If any of the conditions for premature CVD (before age 60) are met for either heart disease or stroke, the function sets \code{famCVD60} to 1, indicating a family history of
-premature CVD. Otherwise, \code{famCVD60} is set to 2, representing no family history of premature CVD.
+\item If both \code{FMH_11} (heart disease history) and \code{FMH_13} (stroke history) are \code{NA}, the function returns \code{NA(b)}.
+\item If either \code{FMH_11} or \code{FMH_13} indicates a diagnosis (\code{1} for "Yes"), the corresponding age (\code{FMH_12} for heart disease and \code{FMH_14} for stroke) is evaluated:
+\itemize{
+\item Ages between 0 and 59 indicate premature CVD.
+\item Ages between 60 and 100 indicate late-onset CVD.
+\item Ages outside this range or invalid inputs (997, 998, 999) result in \code{NA(b)}.
+}
+\item If both \code{FMH_11} and \code{FMH_13} are \code{2} ("No"), there is no family history of CVD (\code{2}).
+\item Any invalid inputs for \code{FMH_11} or \code{FMH_13} (values greater than 2) also result in \code{NA(b)}.
 }
 }
 \examples{
-
-# Example: Determine CVD family history for a respondent with a family member diagnosed with heart disease at age 50.
-determine_CVD_Family_History(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = 6)
-# Output: 1 (CVD family history is "Yes" due to a family member's premature heart disease).
+# Example 1: Premature CVD due to heart disease diagnosis at age 50
+determine_CVD_Family_History(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
+# Output: 1
 
 }

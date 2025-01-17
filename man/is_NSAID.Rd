@@ -2,11 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_NSAID}
 \alias{is_NSAID}
-\title{Determine if a CHMS respondent's medication is a non-steroidal anti-inflammatory drug (NSAID).
-
-This function checks if a given medication for a CHMS respondent belongs to the non-steroidal anti-inflammatory drug
-(NSAID) class. The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the
-time when the medication was last taken.}
+\title{Determine if a CHMS respondent's medication is a non-steroidal anti-inflammatory drug (NSAID).}
 \usage{
 is_NSAID(MEUCATC, NPI_25B)
 }
@@ -21,8 +17,6 @@ is_NSAID(MEUCATC, NPI_25B)
 A numeric, 1 if medication is in the NSAID class and 0 if it is not.
 }
 \description{
-Determine if a CHMS respondent's medication is a non-steroidal anti-inflammatory drug (NSAID).
-
 This function checks if a given medication for a CHMS respondent belongs to the non-steroidal anti-inflammatory drug
 (NSAID) class. The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the
 time when the medication was last taken.
@@ -32,4 +26,11 @@ This function uses the \code{startsWith} function to identify NSAIDs based on th
 start with "M01A". If the ATC code matches the pattern and the medication was taken within the last month
 (NPI_25B <= 4), the medication is considered an NSAID, and the function returns TRUE. Otherwise, it
 returns FALSE.
+}
+\examples{
+
+# Let's say the ATC code is "M01AB05" and the time last taken was today (1).
+
+is_NSAID("M01AB05", 1) # Should return 1 (TRUE)
+
 }

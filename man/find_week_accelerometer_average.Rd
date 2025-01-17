@@ -2,11 +2,7 @@
 % Please edit documentation in R/exercise.R
 \name{find_week_accelerometer_average}
 \alias{find_week_accelerometer_average}
-\title{Calculate the average minutes of exercise per day for week-long accelerometer data.
-
-This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
-parameters, each representing the minutes of exercise on a specific day (Day 1 to Day 7) of accelerometer measurement.
-The function computes the average of these values to obtain the average minutes of exercise per day.}
+\title{Calculate the average minutes of exercise per day for week-long accelerometer data.}
 \usage{
 find_week_accelerometer_average(
   AMMDMVA1,
@@ -37,8 +33,6 @@ find_week_accelerometer_average(
 A numeric representing the average minutes of exercise per day across a week of accelerometer use.
 }
 \description{
-Calculate the average minutes of exercise per day for week-long accelerometer data.
-
 This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
 parameters, each representing the minutes of exercise on a specific day (Day 1 to Day 7) of accelerometer measurement.
 The function computes the average of these values to obtain the average minutes of exercise per day.

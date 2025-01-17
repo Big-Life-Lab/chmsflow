@@ -18,7 +18,9 @@ low_drink_score_fun1(CLC_SEX, ALCDWKY, ALC_17, ALC_11)
 1 for "Yes", 2 for "No".}
 }
 \value{
-An integer representing the low drink score:
+If data of the wrong type is inputted (eg. a string for ALCDWKY), the function would return NA and remind the user to ensure all inputs are numeric.
+If data is out of bounds (eg. 3 for CLC_SEX which only is 1 or 2), the function would return NA and remind the user that input data is out of bounds.
+Otherwise, when numeric data within proper range is inputted, the function returns an integer representing the low drink score:
 \itemize{
 \item 1 - Low risk - never drank (0 points)
 \item 2 - Low risk - former drinker (0 points)
@@ -51,7 +53,7 @@ step 1.
 }
 \examples{
 
-# Example: Determine low drink score for a male respondent who consumed 3 standard drinks per week and drank within past year.
+# Example: A male respondent who drank 3 standard drinks per week and drank within past year.
 low_drink_score_fun1(CLC_SEX = 1, ALCDWKY = 3, ALC_17 = 1, ALC_11 = 1)
 # Output: 2 (Low risk due to consuming 3 standard drinks per week and having alcohol before).
 

@@ -18,8 +18,8 @@ a heart attack, 2 for "No" if the person did not have a heart attack.}
 }
 \value{
 An integer indicating the CVD personal history: 1 for "Yes" if the person had heart disease, heart attack,
-or stroke; 2 for "No" if the person had neither of the conditions; and NA if any of the input variables is a
-non-response, unless one of the conditions is present (i.e., one of the input variables is equal to 1).
+or stroke; 2 for "No" if the person had neither of the conditions; and NA if all the input variables are a
+non-response.
 }
 \description{
 This function determines a respondent's cardiovascular disease (CVD) personal history based on the presence or absence

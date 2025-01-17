@@ -2,10 +2,7 @@
 % Please edit documentation in R/exercise.R
 \name{minperday_to_minperweek}
 \alias{minperday_to_minperweek}
-\title{Convert minutes per day to minutes per week.
-
-This function takes the average minutes of exercise per day across a week of accelerometer use as an input (\code{MVPA_min}) and
-calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value.}
+\title{Convert minutes per day to minutes per week.}
 \usage{
 minperday_to_minperweek(MVPA_min)
 }
@@ -16,8 +13,6 @@ minperday_to_minperweek(MVPA_min)
 A numeric representing the average minutes of exercise per one week of accelerometer use.
 }
 \description{
-Convert minutes per day to minutes per week.
-
 This function takes the average minutes of exercise per day across a week of accelerometer use as an input (\code{MVPA_min}) and
 calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value.
 }

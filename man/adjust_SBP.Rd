@@ -2,11 +2,7 @@
 % Please edit documentation in R/blood-pressure.R
 \name{adjust_SBP}
 \alias{adjust_SBP}
-\title{Adjust systolic blood pressure
-
-This function adjusts systolic blood pressure based on the respondent's systolic average blood pressure across
-six measurements. The adjustment is made using specific correction factors. The adjusted systolic blood pressure
-is returned as a numeric value.}
+\title{Adjust systolic blood pressure}
 \usage{
 adjust_SBP(BPMDPBPS)
 }
@@ -17,8 +13,6 @@ adjust_SBP(BPMDPBPS)
 The adjusted systolic blood pressure as a numeric value.
 }
 \description{
-Adjust systolic blood pressure
-
 This function adjusts systolic blood pressure based on the respondent's systolic average blood pressure across
 six measurements. The adjustment is made using specific correction factors. The adjusted systolic blood pressure
 is returned as a numeric value.
@@ -32,7 +26,7 @@ systolic blood pressure is returned as the final output.
 }
 \examples{
 
-# Example: Calculate adjusted systolic blood pressure for a respondent with an average systolic blood pressure of 120 mmHg.
+# Example: Adjust for a respondent with average systolic blood pressure of 120 mmHg.
 adjust_SBP(BPMDPBPS = 120)
 # Output: 123
 

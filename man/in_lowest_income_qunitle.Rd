@@ -2,7 +2,7 @@
 % Please edit documentation in R/income.R
 \name{in_lowest_income_qunitle}
 \alias{in_lowest_income_qunitle}
-\title{Check If in Lowest Income Quartile}
+\title{Check If in Lowest Income Quintile}
 \usage{
 in_lowest_income_qunitle(incq)
 }
@@ -10,7 +10,7 @@ in_lowest_income_qunitle(incq)
 \item{incq}{Categorical value indicating the income category as defined by the categorize_income function.}
 }
 \value{
-A categorical value indicating whether the individual is in the lowest income quartile:
+A categorical value indicating whether the individual is in the lowest income quintile:
 \itemize{
 \item 1: In the lowest income quartile
 \item 2: Not in the lowest income quartile
@@ -18,14 +18,14 @@ A categorical value indicating whether the individual is in the lowest income qu
 }
 }
 \description{
-This function checks if an individual's income category corresponds to the lowest income quartile.
+This function checks if an individual's income category corresponds to the lowest income quintile.
 }
 \examples{
-# Example 1: Check if an income category of 3 (between $35,000 and $50,000) is in the lowest quartile
+# Example 1: Check if an income category of 3 (between $35,000-50,000) is in the lowest quintile
 in_lowest_income_qunitle(3)
 # Output: 2
 
-# Example 2: Check if an income category of 1 (below or equal to $21,500) is in the lowest quartile
+# Example 2: Check if an income category of 1 (below or equal to $21,500) is in the lowest quintile
 in_lowest_income_qunitle(1)
 # Output: 1
 

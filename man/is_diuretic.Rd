@@ -2,11 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_diuretic}
 \alias{is_diuretic}
-\title{Determine if a CHMS respondent's medication is a diuretic.
-
-This function checks if a given medication for a CHMS respondent belongs to the diuretic drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.}
+\title{Determine if a CHMS respondent's medication is a diuretic.}
 \usage{
 is_diuretic(MEUCATC, NPI_25B)
 }
@@ -21,8 +17,6 @@ is_diuretic(MEUCATC, NPI_25B)
 A numeric, 1 if medication is in the diuretic class and 0 if it is not.
 }
 \description{
-Determine if a CHMS respondent's medication is a diuretic.
-
 This function checks if a given medication for a CHMS respondent belongs to the diuretic drug class.
 The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
 medication was last taken.
@@ -33,4 +27,11 @@ typically start with "C03". Additionally, specific sub-codes 'C03BA08' and 'C03C
 diuretic class. If the ATC code matches the pattern and is not in the exclusion list, and the medication was
 taken within the last month (NPI_25B <= 4), the medication is considered a diuretic, and the function
 returns TRUE. Otherwise, it returns FALSE.
+}
+\examples{
+
+# Let's say the ATC code is "C03AA03" and the time last taken was within last week (3). 
+
+is_diuretic("C03AA03", 3) # Should return 1 (TRUE)
+
 }

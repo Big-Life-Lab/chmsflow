@@ -4,32 +4,38 @@
 \alias{determine_inclusive_diabetes}
 \title{Determine Inclusive Diabetes Status}
 \usage{
-determine_inclusive_diabetes(diab_m, diab_drug, CCC_51)
+determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2)
 }
 \arguments{
 \item{diab_m}{An integer indicating whether the respondent has diabetes based on HbA1c level. 1 for "Yes", 2 for "No".}
 
-\item{diab_drug}{An integer indicating whether the respondent takes diabetes drugs. 1 for "Yes", 0 for "No".}
+\item{CCC_51}{An integer indicating whether the respondent self-reported diabetes. 1 for "Yes", 2 for "No".}
 
-\item{CCC_51}{An integer indicating whether the respondent has diabetes in general. 1 for "Yes", 2 for "No".}
+\item{diab_drug2}{An integer indicating whether the respondent is on diabetes medication. 1 for "Yes", 0 for "No".}
 }
 \value{
-An integer indicating the inclusive diabetes status. If any of the input parameters (diab_m, diab_drug, CCC_51)
-are non-response values (not 1 or 2), the inclusive diabetes status will be NA(b). If any of the input parameters
-is equal to 1, indicating a positive response, the inclusive diabetes status will be 1 ("Yes"). Otherwise, if all
-input parameters are 2 ("No"), the inclusive diabetes status will be 2 ("No").
+An integer indicating the inclusive diabetes status:
+- 1 ("Yes") if any of \code{diab_m}, \code{CCC_51}, or \code{diab_drug2} is 1.
+- 2 ("No") if all of \code{diab_m}, \code{CCC_51}, and \code{diab_drug2} are 2.
+- \code{haven::tagged_na("b")} if all three parameters are \code{NA}.
+- If two parameters are \code{NA}, the third non-\code{NA} parameter determines the result.
+- If one parameter is \code{NA}, the function checks the remaining two for a decision.
 }
 \description{
-This function evaluates various factors to determine the inclusive diabetes status of a respondent.
+This function evaluates inclusive diabetes status based on three factors: \code{diab_m}, \code{CCC_51}, and \code{diab_drug2}.
 }
 \examples{
 
-# Example: Determine the inclusive diabetes status for a respondent who has diabetes based on HbA1c.
-determine_inclusive_diabetes(diab_m = 1, diab_drug = 2, CCC_51 = 2)
-# Output: 1 (Inclusive diabetes status is "Yes" due to having diabetes based on HbA1c).
+# Example: Determine the inclusive diabetes status for a respondent with diabetes based on HbA1c.
+determine_inclusive_diabetes(diab_m = 1, CCC_51 = 2, diab_drug2 = 2)
+# Output: 1 (Inclusive diabetes status is "Yes").
 
-# Example: Determine the inclusive diabetes status for a respondent who does not have diabetes.
-determine_inclusive_diabetes(diab_m = 2, diab_drug = 2, CCC_51 = 2)
-# Output: 2 (Inclusive diabetes status is "No" as the respondent does not have diabetes based on any of the factors).
+# Example: Determine the inclusive diabetes status for a respondent no diabetes all around.
+determine_inclusive_diabetes(diab_m = 2, CCC_51 = 2, diab_drug2 = 2)
+# Output: 2 (Inclusive diabetes status is "No").
+
+# Example: Determine inclusive diabetes status when only one parameter is NA.
+determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
+# Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
 
 }

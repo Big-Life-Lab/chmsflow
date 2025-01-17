@@ -2,11 +2,7 @@
 % Please edit documentation in R/blood-pressure.R
 \name{adjust_DBP}
 \alias{adjust_DBP}
-\title{Adjust diastolic blood pressure
-
-This function adjusts diastolic blood pressure based on the respondent's diastolic average blood pressure across
-six measurements. The adjustment is made using specific correction factors. The adjusted diastolic blood pressure
-is returned as a numeric value.}
+\title{Adjust diastolic blood pressure}
 \usage{
 adjust_DBP(BPMDPBPD)
 }
@@ -17,8 +13,6 @@ adjust_DBP(BPMDPBPD)
 The adjusted diastolic blood pressure as a numeric value.
 }
 \description{
-Adjust diastolic blood pressure
-
 This function adjusts diastolic blood pressure based on the respondent's diastolic average blood pressure across
 six measurements. The adjustment is made using specific correction factors. The adjusted diastolic blood pressure
 is returned as a numeric value.
@@ -32,7 +26,7 @@ diastolic blood pressure is returned as the final output.
 }
 \examples{
 
-# Example: Calculate adjusted diastolic blood pressure for a respondent with an average diastolic blood pressure of 80 mmHg.
+# Example: Adjust for a respondent with average diastolic blood pressure of 80 mmHg.
 adjust_DBP(BPMDPBPD = 80)
 # Output: 82
 
