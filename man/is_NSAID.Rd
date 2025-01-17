@@ -29,10 +29,8 @@ returns FALSE.
 }
 \examples{
 
-# Let's say a for one respondent's medication, the ATC code is M01AB05 and the time they last took it was today. By
-# passing in the code and integer time response (1 in this case) into the function, it can be checked if the given
-# respondent's medication is an NSAID (1) or not (0).
+# Let's say the ATC code is "M01AB05" and the time last taken was today (1).
 
-is_NSAID("M01AB05", 1)
+is_NSAID("M01AB05", 1) # Should return 1 (TRUE)
 
 }

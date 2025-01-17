@@ -21,7 +21,7 @@ A categorical value indicating whether the individual is in the lowest income qu
 This function checks if an individual's income category corresponds to the lowest income quintile.
 }
 \examples{
-# Example 1: Check if an income category of 3 (between $35,000 and $50,000) is in the lowest quintile
+# Example 1: Check if an income category of 3 (between $35,000-50,000) is in the lowest quintile
 in_lowest_income_qunitle(3)
 # Output: 2
 

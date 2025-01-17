@@ -62,11 +62,11 @@ This function determines the controlled adjusted hypertension status of a respon
 }
 \examples{
 
-# Example 1: Determine controlled adjusted hypertension status for a respondent with adjusted systolic BP = 150, adjusted diastolic BP = 95, and on medication.
+# Example 1: Respondent has adjusted SBP = 150, adjusted DBP = 95, and on medication.
 determine_controlled_adjusted_hypertension(SBP_adj = 150, DBP_adj = 95, ANYMED2 = 1)
-# Output: 2 (Hypertension not controlled due to high adjusted systolic and diastolic BP despite medication usage).
+# Output: 2 (Hypertension not controlled due to high adjusted SBP and DBP despite medication usage).
 
-# Example 2: Determine controlled adjusted hypertension status for a respondent with adjusted systolic BP = 120, adjusted diastolic BP = 80, and on medication.
+# Example 2: Respondent has adjusted SBP = 120, adjusted DBP = 80, and on medication.
 determine_controlled_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYMED2 = 1)
 # Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
 

@@ -29,10 +29,8 @@ Otherwise, it returns FALSE.
 }
 \examples{
 
-# Let's say for one respondent's medication, the ATC code is "C09AB03" and the time they last took it was yesterday. 
-# By passing in the code and integer time response (2 in this case) into the function, it can be checked if the 
-# given respondent's medication is an ACE inhibitor (1) or not (0).
+# Let's say the ATC code is "C09AB03" and the time last taken was yesterday (2). 
 
-is_ace_inhibitor("C09AB03", 2)
+is_ace_inhibitor("C09AB03", 2) # Should return 1 (TRUE)
 
 }

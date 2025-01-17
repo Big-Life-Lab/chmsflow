@@ -31,10 +31,8 @@ Otherwise, it returns FALSE.
 }
 \examples{
 
-# Let's say a for one respondent's medication, the ATC code is C07AB02 and the time they last took it was within the last 
-# month. By passing in the code and integer time response (4 in this case) into the function, it can be checked if the 
-# given respondent's medication is an anti-hypertensive drug (1) or not (0).
+# Let's say the ATC code is "C07AB02" and the time last taken was within last month (4).
 
-is_any_antiHTN_med("C07AB02", 4)
+is_any_antiHTN_med("C07AB02", 4) # Should return 1 (TRUE)
 
 }

@@ -26,7 +26,7 @@ diastolic blood pressure is returned as the final output.
 }
 \examples{
 
-# Example: Calculate adjusted diastolic blood pressure for a respondent with an average diastolic blood pressure of 80 mmHg.
+# Example: Adjust for a respondent with average diastolic blood pressure of 80 mmHg.
 adjust_DBP(BPMDPBPD = 80)
 # Output: 82
 

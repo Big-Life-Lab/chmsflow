@@ -26,7 +26,7 @@ systolic blood pressure is returned as the final output.
 }
 \examples{
 
-# Example: Calculate adjusted systolic blood pressure for a respondent with an average systolic blood pressure of 120 mmHg.
+# Example: Adjust for a respondent with average systolic blood pressure of 120 mmHg.
 adjust_SBP(BPMDPBPS = 120)
 # Output: 123
 

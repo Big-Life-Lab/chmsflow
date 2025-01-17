@@ -62,11 +62,11 @@ This function determines the hypertension status of a respondent based on their 
 }
 \examples{
 
-# Example 1: Determine hypertension status for a respondent with systolic BP = 150, diastolic BP = 95, and on medication.
+# Example 1: Respondent has systolic BP = 150, diastolic BP = 95, and on medication.
 determine_hypertension(BPMDPBPS = 150, BPMDPBPD = 95, ANYMED2 = 1)
 # Output: 1 (High blood pressure due to systolic BP, diastolic BP, and medication usage).
 
-# Example 2: Determine hypertension status for a respondent with systolic BP = 120, diastolic BP = 80, and not on medication.
+# Example 2: Respondent has systolic BP = 120, diastolic BP = 80, and not on medication.
 determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 2)
 # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
 

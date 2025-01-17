@@ -29,10 +29,8 @@ Otherwise, it returns FALSE.
 }
 \examples{
 
-# Let's say a for one respondent's medication, the ATC code is A10BB09 and the time they last took it was within the last 
-# week. By passing in the code and integer time response (3 in this case) into the function, it can be checked if the 
-# given respondent's medication is a diabetes drug (1) or not (0).
+# Let's say the ATC code is "A10BB09" and the time last taken was within last week (3).
 
-is_diabetes_drug("A10BB09", 3)
+is_diabetes_drug("A10BB09", 3) # Should return 1 (TRUE)
 
 }

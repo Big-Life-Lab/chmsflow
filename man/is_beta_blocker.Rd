@@ -25,18 +25,14 @@ timing of the last medication intake.
 This function identifies whether a medication is a beta blocker based on their ATC codes, which
 typically start with "C07". Additionally, specific sub-codes 'C07AA07', 'C07AA12', and 'C07AG02' are excluded
 from the beta blocker class. A respondent is classified as taking a beta blocker (return = 1) if the ATC code matches the pattern and is not in the exclusion list, and the
-medication was taken within the last month (NPI_25B <= 4), otherwise the respondent is not taking a betablocker (return = 0)
+medication was taken within the last month (NPI_25B <= 4), otherwise the respondent is not taking a beta blocker (return = 0)
 }
 \examples{
 
-# Suppose a CHMS respondent's medication has the ATC code "C07AA13", and they took it within the last week. By
-# passing the code and the integer time response (3 in this case) into the function, you can check whether the medication
-# is classified as a beta blocker (1 = TRUE) or not (0 = FALSE).
-
-# Example 1: Medication ATC code is "C07AA13", and it was taken within the last week (NPI_25B = 3)
+# Example 1: Medication ATC code is "C07AA13", and it was taken within the last week
 is_beta_blocker("C07AA13", 3) # Should return 1 (TRUE)
 
-# Example 2: Medication ATC code is "C07AA07" (excluded code), and it was taken within the last month (NPI_25B = 4)
+# Example 2: Medication ATC code is "C07AA07" (excluded code), and it was taken within last month
 is_beta_blocker("C07AA07", 4) # Should return 0 (FALSE)
 
 }

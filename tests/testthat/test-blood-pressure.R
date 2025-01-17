@@ -77,7 +77,7 @@ test_that("determine_controlled_hypertension works correctly", {
   expect_equal(determine_controlled_hypertension(128, 78, 1, CCC_32 = 1, DIABX = 1), 1)
   
   # Case 4: Invalid Input
-  expect_error(determine_controlled_hypertension(999, 999, 1))
+  expect_equal(determine_controlled_hypertension(999, 999, 1), haven::tagged_na("b"))
   
   # Case 5: No Hypertension
   expect_equal(determine_controlled_hypertension(120, 80, 0), 2)
@@ -95,7 +95,7 @@ test_that("determine_controlled_adjusted_hypertension works correctly", {
   expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, CKD = 1), 1)
   
   # Case 4: Invalid Input
-  expect_error(determine_controlled_adjusted_hypertension(999, 999, 1))
+  expect_equal(determine_controlled_adjusted_hypertension(999, 999, 1), haven::tagged_na("b"))
   
   # Case 5: No Hypertension
   expect_equal(determine_controlled_adjusted_hypertension(122, 80, 0), 2)

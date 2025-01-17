@@ -58,7 +58,7 @@ up being NA.
 }
 \examples{
 
-# Example: Calculate the average daily fruit and vegetable consumption for a respondent in CHMS cycles 3-6.
+# Example: Calculate average daily fruit and vegetable consumption for a cycle 3-6 respondent
 # Let's assume the following annual consumption frequencies for each item:
 # WSDD34Y (orange or grapefruit juice) = 50 times
 # WSDD35Y (other fruit juices) = 100 times
@@ -72,9 +72,8 @@ up being NA.
 # GFVD22Y (potatoes) = 120 times
 # GFVD23Y (other vegetables) = 90 times
 # Using the function:
-find_totalFV_cycles3to6(WSDD34Y = 50, WSDD35Y = 100, GFVD17AY = 150, GFVD17BY = 80, GFVD17CY = 40, GFVD17DY = 200,
-                        GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90)
+find_totalFV_cycles3to6(WSDD34Y = 50, WSDD35Y = 100, GFVD17AY = 150, GFVD17BY = 80, GFVD17CY = 40, 
+GFVD17DY = 200, GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90)
 # Output: 2.931507
-# The average daily consumption of fruits and vegetables in a year for this respondent is approximately 2.91 times per day based on CHMS cycles 3-6 data.
 
 }
