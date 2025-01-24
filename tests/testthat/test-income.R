@@ -1,4 +1,4 @@
-#test-income.R
+# test-income.R
 # Test for calculate_Hhld_Income
 test_that("calculate_Hhld_Income works correctly", {
   expect_equal(calculate_Hhld_Income(50000, 3), 29411.76, tolerance = 1e-2)

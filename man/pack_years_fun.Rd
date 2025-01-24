@@ -76,8 +76,10 @@ pack_years_fun(SMKDSTY = 1, CLC_AGE = 40, SMK_52 = 20, SMK_31 = 30)
 # Output: 30 (pack years)
 
 # Example 2: A former occasional smoker who smoked at least 100 cigarettes in their lifetime.
-pack_years_fun(SMKDSTY = 5, CLC_AGE = 50, SMKDSTP = 40, SMK_52 = 18, SMK_31 = NA, 
-SMK_41 = 15, SMK_53 = NA, SMK_23 = 3, SMK_21 = 25, SMK_11 = 1)
+pack_years_fun(
+  SMKDSTY = 5, CLC_AGE = 50, SMKDSTP = 40, SMK_52 = 18, SMK_31 = NA,
+  SMK_41 = 15, SMK_53 = NA, SMK_23 = 3, SMK_21 = 25, SMK_11 = 1
+)
 # Output: 0.0137 (pack years)
 
 }

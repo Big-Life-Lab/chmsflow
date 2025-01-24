@@ -72,8 +72,10 @@ up being NA.
 # GFVD22Y (potatoes) = 120 times
 # GFVD23Y (other vegetables) = 90 times
 # Using the function:
-find_totalFV_cycles3to6(WSDD34Y = 50, WSDD35Y = 100, GFVD17AY = 150, GFVD17BY = 80, GFVD17CY = 40, 
-GFVD17DY = 200, GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90)
+find_totalFV_cycles3to6(
+  WSDD34Y = 50, WSDD35Y = 100, GFVD17AY = 150, GFVD17BY = 80, GFVD17CY = 40,
+  GFVD17DY = 200, GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90
+)
 # Output: 2.931507
 
 }

@@ -54,7 +54,7 @@ The following are the columns that are listed in `variable_details.csv`. Many of
 1. **variable:** the name of the final transformed variable.
 
 ```{r, echo=FALSE, warning=FALSE}
-kable(variable_details[variable_details$variable == "clc_sex", 1], col.names = 'variable')
+kable(variable_details[variable_details$variable == "clc_sex", 1], col.names = "variable")
 ```
 
 2. **dummyVariable:** the dummy variable for each category in a transformed categorical variable. This is only applicable for categorical variables; for continuous variables it is set as `N/A`. The name of a dummy variable consists of the final variable name, the number of categories in the variable, and the category level for each category. Note that this column is not necessary for `rec_with_table()`.

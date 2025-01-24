@@ -29,7 +29,7 @@ Otherwise, it returns FALSE.
 }
 \examples{
 
-# Let's say the ATC code is "C09AB03" and the time last taken was yesterday (2). 
+# Let's say the ATC code is "C09AB03" and the time last taken was yesterday (2).
 
 is_ace_inhibitor("C09AB03", 2) # Should return 1 (TRUE)
 

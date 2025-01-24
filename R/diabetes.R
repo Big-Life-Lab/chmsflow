@@ -29,9 +29,8 @@
 #'
 #' @export
 determine_inclusive_diabetes <- function(diab_m, CCC_51, diab_drug2) {
-  
-  diabX <- haven::tagged_na("b")  # Default value as tagged NA
-  
+  diabX <- haven::tagged_na("b") # Default value as tagged NA
+
   # Case 1: All are not NA
   if (!is.na(diab_m) && !is.na(CCC_51) && !is.na(diab_drug2)) {
     if (diab_m == 1 || CCC_51 == 1 || diab_drug2 == 1) {
@@ -40,33 +39,33 @@ determine_inclusive_diabetes <- function(diab_m, CCC_51, diab_drug2) {
       diabX <- 2 # "No" if all are 2
     }
   }
-  
+
   # Case 2: All are NA
   else if (is.na(diab_m) && is.na(CCC_51) && is.na(diab_drug2)) {
     diabX <- haven::tagged_na("b")
   }
-  
+
   # Case 3: Two values are NA, check the remaining one
   else if (is.na(diab_m) && is.na(CCC_51)) {
     if (!is.na(diab_drug2) && diab_drug2 == 1) {
-      diabX <- 1 
+      diabX <- 1
     } else if (!is.na(diab_drug2) && diab_drug2 == 0) {
-      diabX <- haven::tagged_na("b")  
+      diabX <- haven::tagged_na("b")
     }
   } else if (is.na(diab_m) && is.na(diab_drug2)) {
     if (!is.na(CCC_51) && CCC_51 == 1) {
-      diabX <- 1 
+      diabX <- 1
     } else if (!is.na(CCC_51) && CCC_51 == 2) {
-      diabX <- 2  
+      diabX <- 2
     }
   } else if (is.na(CCC_51) && is.na(diab_drug2)) {
     if (!is.na(diab_m) && diab_m == 1) {
-      diabX <- 1 
+      diabX <- 1
     } else if (!is.na(diab_m) && diab_m == 2) {
-      diabX <- 2  
+      diabX <- 2
     }
   }
-  
+
   # Case 4: Only one value is NA, check the other two
   else if (is.na(diab_m)) {
     if (CCC_51 == 1 || diab_drug2 == 1) {
@@ -87,6 +86,6 @@ determine_inclusive_diabetes <- function(diab_m, CCC_51, diab_drug2) {
       diabX <- 2 # "No" if both non-NA values are 2
     }
   }
-  
+
   return(diabX)
 }

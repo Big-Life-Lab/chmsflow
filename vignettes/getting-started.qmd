@@ -24,8 +24,8 @@ At the RDC, each cycle is split into multiple components (e.g., household data, 
 Note that row headers for cycle 6 must be put to lower case prior to recoding.
 ```{r}
 # Create synthetic data with missing values
-n <- 100  # Number of observations
-set.seed(123)  # Set seed for reproducibility
+n <- 100 # Number of observations
+set.seed(123) # Set seed for reproducibility
 
 # Generate random ages between 18 and 75, with some missing values [996-999]
 ages <- sample(c(18:75), n, replace = TRUE)

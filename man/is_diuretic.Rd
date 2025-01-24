@@ -30,7 +30,7 @@ returns TRUE. Otherwise, it returns FALSE.
 }
 \examples{
 
-# Let's say the ATC code is "C03AA03" and the time last taken was within last week (3). 
+# Let's say the ATC code is "C03AA03" and the time last taken was within last week (3).
 
 is_diuretic("C03AA03", 3) # Should return 1 (TRUE)
 

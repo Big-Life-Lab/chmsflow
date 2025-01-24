@@ -123,7 +123,7 @@ cycle2_meds <- data.frame(
   mhr_233b = c(3, 2, 1, 4),
   mhr_234b = c(3, 2, 1, 4),
   mhr_235b = c(3, 2, 1, 4)
-) 
+)
 
 # Cycle 3 - long medication data
 cycle3 <- data.frame(
@@ -140,17 +140,17 @@ cycle3 <- data.frame(
   ccc_63 = c(2, 2, 2, 2),
   ccc_81 = c(1, 2, 2, 1),
   ccc_32 = c(2, 1, 1, 1)
-) 
+)
 
 num_vars_cycle3 <- ncol(cycle3) - 1
 clinicids <- unique(cycle3$clinicid)
 n_clinicids <- length(clinicids)
-  
+
 cycle3_meds <- data.frame(
   clinicid = rep(clinicids, each = num_vars_cycle3),
   meucatc = rep(c("C07AA05", "C09AA06", "C08CA01", "A10BC02"), length.out = num_vars_cycle3 * n_clinicids),
   npi_25b = rep(c(2, 3, 1, 3), length.out = num_vars_cycle3 * n_clinicids)
-) 
+)
 ```
 
 4. Recode medication variables for individual cycles.
@@ -164,7 +164,7 @@ head(cycle3_medication_data)
 
 # Recoding derived variable acemed for cycle2. Select vars by role used to avoid writing all med variables in one line
 cycle2_ace_medication_data <- recodeflow::rec_with_table(cycle2_meds, c("clinicid", "acemed", recodeflow:::select_vars_by_role("Drugs", variables)), variable_details = variable_details)
-head(select(cycle2_ace_medication_data, clinicid, acemed)) 
+head(select(cycle2_ace_medication_data, clinicid, acemed))
 
 # Recoding derived variable acemed for cycle3. Much simpler function used here.
 cycle3_ace_medication_data <- recodeflow::rec_with_table(cycle3_meds, c("clinicid", "meucatc", "npi_25b", "acemed"), variable_details = variable_details)
@@ -177,8 +177,8 @@ head(cycle3_ace_medication_data)
 cycle3_ace_medication_data <- cycle3_ace_medication_data %>%
   group_by(clinicid) %>%
   summarize(
-    meucatc = paste(unique(meucatc), collapse = ", "),  # Concatenate unique values of meucatc
-    npi_25b = paste(unique(npi_25b), collapse = ", "),  # Concatenate unique values of npi_25b
+    meucatc = paste(unique(meucatc), collapse = ", "), # Concatenate unique values of meucatc
+    npi_25b = paste(unique(npi_25b), collapse = ", "), # Concatenate unique values of npi_25b
     acemed = max(as.numeric(as.character(acemed))) # Find maximum of acemed
   )
 head(cycle3_ace_medication_data)
@@ -223,9 +223,9 @@ cycle3_htn_medication_data <- recodeflow::rec_with_table(cycle3_meds, c("clinici
 cycle3_htn_medication_data <- cycle3_htn_medication_data %>%
   group_by(clinicid) %>%
   summarize(
-    meucatc = paste(unique(meucatc), collapse = ", "),   # Concatenate unique values of meucatc
-    npi_25b = paste(unique(npi_25b), collapse = ", "),   # Concatenate unique values of npi_25b
-    anymed = max(as.numeric(as.character(anymed))),      # Find maximum of anymed
+    meucatc = paste(unique(meucatc), collapse = ", "), # Concatenate unique values of meucatc
+    npi_25b = paste(unique(npi_25b), collapse = ", "), # Concatenate unique values of npi_25b
+    anymed = max(as.numeric(as.character(anymed))), # Find maximum of anymed
     diab_drug = max(as.numeric(as.character(diab_drug))) # Find maximum of diab_drug
   )
 
