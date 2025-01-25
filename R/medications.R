@@ -119,7 +119,7 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 #'
 #' @export
 is_beta_blocker <- function(MEUCATC, NPI_25B) {
-  if (is.na(MEUCATC) | is.na(NPI_25B)) {
+  if (is.na(MEUCATC) || is.na(NPI_25B)) {
     return(haven::tagged_na("b"))
   }
 
@@ -157,7 +157,7 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
 #'
 #' @export
 is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
-  if (is.na(MEUCATC) | is.na(NPI_25B)) {
+  if (is.na(MEUCATC) || is.na(NPI_25B)) {
     return(haven::tagged_na("b"))
   }
 
@@ -191,7 +191,7 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 #'
 #' @export
 is_diuretic <- function(MEUCATC, NPI_25B) {
-  if (is.na(MEUCATC) | is.na(NPI_25B)) {
+  if (is.na(MEUCATC) || is.na(NPI_25B)) {
     return(haven::tagged_na("b"))
   }
 
@@ -224,7 +224,7 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 #'
 #' @export
 is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
-  if (is.na(MEUCATC) | is.na(NPI_25B)) {
+  if (is.na(MEUCATC) || is.na(NPI_25B)) {
     return(haven::tagged_na("b"))
   }
 
@@ -258,7 +258,7 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
 #'
 #' @export
 is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
-  if (is.na(MEUCATC) | is.na(NPI_25B)) {
+  if (is.na(MEUCATC) || is.na(NPI_25B)) {
     return(haven::tagged_na("b"))
   }
 
@@ -293,7 +293,7 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #'
 #' @export
 is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
-  if (is.na(MEUCATC) | is.na(NPI_25B)) {
+  if (is.na(MEUCATC) || is.na(NPI_25B)) {
     return(haven::tagged_na("b"))
   }
 
@@ -326,7 +326,7 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #'
 #' @export
 is_NSAID <- function(MEUCATC, NPI_25B) {
-  if (is.na(MEUCATC) | is.na(NPI_25B)) {
+  if (is.na(MEUCATC) || is.na(NPI_25B)) {
     return(haven::tagged_na("b"))
   }
 
@@ -359,7 +359,7 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
 #'
 #' @export
 is_diabetes_drug <- function(MEUCATC, NPI_25B) {
-  if (is.na(MEUCATC) | is.na(NPI_25B)) {
+  if (is.na(MEUCATC) || is.na(NPI_25B)) {
     return(haven::tagged_na("b"))
   }
 

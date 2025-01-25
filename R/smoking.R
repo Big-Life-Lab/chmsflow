@@ -59,34 +59,40 @@ pack_years_fun <- function(SMKDSTY, CLC_AGE, SMKDSTP, SMK_52, SMK_31, SMK_41, SM
   # PackYears for Daily Smoker
   pack_years <-
     ifelse(
-      SMKDSTY == 1, pmax(((CLC_AGE - SMK_52) *
-        (SMK_31 / 20)), 0.0137),
+      SMKDSTY == 1,
+      pmax(((CLC_AGE - SMK_52) * (SMK_31 / 20)), 0.0137),
       # PackYears for Occasional Smoker (former daily)
       ifelse(
-        SMKDSTY == 2, pmax(((CLC_AGE - SMK_52 -
-          SMKDSTP) * (SMK_53 / 20)), 0.0137) +
+        SMKDSTY == 2,
+        pmax(((CLC_AGE - SMK_52 - SMKDSTP) * (SMK_53 / 20)), 0.0137) +
           (pmax((SMK_41 * SMK_23 * (SMKDSTP / 12) / 30), 1) * SMKDSTP),
         # PackYears for Occasional Smoker (never daily)
         ifelse(
-          SMKDSTY == 3, (pmax((SMK_41 * SMK_23 * ((CLC_AGE - SMK_21) / 12) / 30), 1) / 20) *
+          SMKDSTY == 3,
+          (pmax((SMK_41 * SMK_23 * ((CLC_AGE - SMK_21) / 12) / 30), 1) / 20) *
             (CLC_AGE - SMK_21),
           # PackYears for former daily smoker (non-smoker now)
           ifelse(
-            SMKDSTY == 4, pmax(((CLC_AGE - SMK_52 -
-              SMKDSTP) *
-              (SMK_53 / 20)), 0.0137),
+            SMKDSTY == 4,
+            pmax(((CLC_AGE - SMK_52 - SMKDSTP) * (SMK_53 / 20)), 0.0137),
             # PackYears for former occasional smoker (non-smoker now) who
             # smoked at least 100 cigarettes lifetime
             ifelse(
-              SMKDSTY == 5 & SMK_11 == 1, 0.0137,
+              SMKDSTY == 5 & SMK_11 == 1,
+              0.0137,
               # PackYears for former occasional smoker (non-smoker now) who
               # have not smoked at least 100 cigarettes lifetime
               ifelse(
-                SMKDSTY == 5 & SMK_11 == 2, 0.007,
+                SMKDSTY == 5 & SMK_11 == 2,
+                0.007,
                 # Non-smoker
-                ifelse(SMKDSTY == 6, 0,
+                ifelse(
+                  SMKDSTY == 6,
+                  0,
                   # Account for NA(a)
-                  ifelse(SMKDSTY == "NA(a)", haven::tagged_na("a"),
+                  ifelse(
+                    SMKDSTY == "NA(a)",
+                    haven::tagged_na("a"),
                     haven::tagged_na("b")
                   )
                 )
