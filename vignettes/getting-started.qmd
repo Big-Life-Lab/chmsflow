@@ -9,8 +9,9 @@ devtools::document()
 devtools::install()
 ```
 
-2. Load worksheets (variables and variable details sheets).
+2. Load recodeflow and worksheets (variables and variable details sheets).
 ```{r}
+library(recodeflow)
 library(here) # Ensure here is set to your current working directory
 
 variables <- read.csv(here("inst", "extdata", "variables.csv"))
@@ -49,17 +50,17 @@ print(head(cycle4))
 4. Test recodeflow's rec_with_table on fake CHMS data.
 ```{r}
 # Recoding basic variables
-cycle4_ages <- recodeflow::rec_with_table(cycle4, "clc_age", variable_details = variable_details, log = TRUE)
+cycle4_ages <- rec_with_table(cycle4, "clc_age", variable_details = variable_details, log = TRUE)
 head(cycle4_ages)
 
-cycle4_sexes <- recodeflow::rec_with_table(cycle4, "clc_sex", variable_details = variable_details, log = TRUE)
+cycle4_sexes <- rec_with_table(cycle4, "clc_sex", variable_details = variable_details, log = TRUE)
 head(cycle4_sexes)
 
 # Recoding a transformed variable (cont to cat)
-cycle4_categorical_ages <- recodeflow::rec_with_table(cycle4, "agegroup4", variable_details = variable_details, log = TRUE)
+cycle4_categorical_ages <- rec_with_table(cycle4, "agegroup4", variable_details = variable_details, log = TRUE)
 head(cycle4_categorical_ages)
 
 # Recoding a derived variable
-cycle4_adjusted_SBPs <- recodeflow::rec_with_table(cycle4, c("bpmdpbps", "sbp_adj"), variable_details = variable_details, log = TRUE)
+cycle4_adjusted_SBPs <- rec_with_table(cycle4, c("bpmdpbps", "sbp_adj"), variable_details = variable_details, log = TRUE)
 head(cycle4_adjusted_SBPs)
 ```

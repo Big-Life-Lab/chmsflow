@@ -12,11 +12,11 @@ Description: Supporting the use of the Canadian Health Measures Survey (CHMS)
     and Variable Transformation Functions". Journal of Open Source Software, 
     3(26), 754. <doi:10.21105/joss.00754>.
 Depends: R (>= 3.1.0)
-Imports: haven, logger, recodeflow
+Imports: haven, logger
 License: MIT + file LICENSE
 URL: https://github.com/Big-Life-Lab/chmsflow
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Suggests: DT, kableExtra, knitr, rmarkdown, testthat (>= 3.0.0)
+Suggests: DT, kableExtra, knitr, recodeflow, rmarkdown, testthat (>= 3.0.0)
 LazyData: true
