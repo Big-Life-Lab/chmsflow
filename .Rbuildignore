@@ -1,6 +1,7 @@
 ^chmsflow\.Rproj$
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
+^data-raw$
 ^docs$
 ^pkgdown$
 ^Vignettes$

@@ -21,8 +21,8 @@ This vignette describes how the `variables.csv` worksheet is organized and how t
 Read `variables.csv`
 
 ```{r Read variables.csv, echo=FALSE, message=FALSE, warning=FALSE}
-library(readr)
-variables <- read.csv(file.path(getwd(), "../inst/extdata/variables.csv"))
+library(here)
+variables <- read.csv(here("inst", "extdata", "variables.csv"))
 
 cat(
   "There are", nrow(variables), "variables, grouped in", sum(!duplicated(variables$subject)),

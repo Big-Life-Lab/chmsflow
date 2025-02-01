@@ -119,8 +119,8 @@ incq,,Household income quntile,Adjusted household income quintile,Socioeconomic,
 incq1,,Lowest household income ,Lowest household income quintile (yes/no),Socioeconomic,Income,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",DerivedVar::[incq],
 lab_alkp,,Alkaline phosphatase,Alkaline phosphatase (U/L),Health behaviour,Alcohol,Continuous,U/L,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",[lab_alkp],Indicator of alcohol consumption
 lab_alt,,Alanine aminotransferase,Alanine aminotransferase (ALT) (U/L),Health behaviour,Alcohol,Continuous,U/L,"cycle1, cycle2, cycle4, cycle6",[lab_alt],Indicator of alcohol consumption
-lab_bcre,Test,Blood creatine,"Blood creatinine (Âµmol/L)	",Health status,Chronic disease,Continuous,µmol/L,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",[lab_bcre],
-lab_bpb,,Blood lead,"Blood lead (Âµmol/L)	",Health behaviour,Lead,Continuous,µmol/L,"cycle1, cycle2",[lab_bpb],
+lab_bcre,Test,Blood creatine,"Blood creatinine (umol/L)	",Health status,Chronic disease,Continuous,umol/L,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",[lab_bcre],
+lab_bpb,,Blood lead,"Blood lead (umol/L)	",Health behaviour,Lead,Continuous,umol/L,"cycle1, cycle2",[lab_bpb],
 lab_ca,,Calcium,Calcium (total) (mmol/L),Health behaviour,Diet,Continuous,mmol/L,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",[lab_ca],Indicator of dairy consumption
 lab_chol,,Total cholesterol,Total cholesterol (mmol/L),Health status,Chronic disease,Continuous,mmol/L,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",[lab_chol],
 lab_ggt,,Gamma-glutamyltransferase,Gamma-glutamyltransferase (GGT) (U/L),Health behaviour,Alcohol,Continuous,U/L,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",[lab_ggt],Indicator of alcohol consumption
