@@ -9,7 +9,7 @@ devtools::document()
 devtools::install()
 ```
 
-2. Test recodeflow's rec_with_table on chmsflow's synthetic CHMS data. Cycle data object always has to be called "cyclex" in order for recoding to work.
+2. Test recodeflow's rec_with_table on chmsflow's synthetic CHMS data. Cycle data object always has to be called "cyclex" in order for recoding to work properly.
 
 At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst's responsibility to merge their required components in one database named "cyclex". However, keep medication data separate from the rest of the cycle data (see recoding-medications.qmd). Note that row headers for cycle 6 must be put to lower case prior to recoding.
 ```{r}

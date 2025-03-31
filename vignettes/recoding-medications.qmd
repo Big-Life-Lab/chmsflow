@@ -11,7 +11,7 @@ devtools::install()
 
 2. Recode medication variables for individual cycles, with each cycle's medication data being separate from the rest of their respective data. 
 
-Medication data object always has to be called "cyclex_meds" in order for recoding to work, with rest of the data being called "cyclex" as stated in recoding-variables.qmd. 
+Medication data object always has to be called "cyclex_meds" in order for recoding to work properly, with rest of the data being called "cyclex" as stated in recoding-variables.qmd. 
 
 Note that row headers for medication data of cycles 1, 4, and 6 must be put to lower case prior to recoding.
 ```{r}
