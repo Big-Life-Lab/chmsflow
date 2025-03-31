@@ -145,10 +145,10 @@ usethis::use_data(cycle3_meds, overwrite = TRUE)
 n <- 1000
 set.seed(123)
 
-ages <- sample(c(18:75), n, replace = TRUE)
+ages <- sample(c(20:79), n, replace = TRUE)
 sexes <- sample(c(1:2), n, replace = TRUE)
-systolic_bps <- sample(c(80:215, 996:999), n, replace = TRUE)
-diastolic_bps <- sample(c(50:150, 996:999), n, replace = TRUE)
+systolic_bps <- sample(c(73:216, 996:999), n, replace = TRUE)
+diastolic_bps <- sample(c(42:154, 996:999), n, replace = TRUE)
 
 cycle4 <- data.frame(clc_age = ages, clc_sex = sexes, bpmdpbps = systolic_bps, bpmdpbpd = diastolic_bps)
 
@@ -156,29 +156,26 @@ usethis::use_data(cycle4, overwrite = TRUE)
 
 # cycle 5
 cycle5 <- data.frame(
-  ccc_51 = sample(1:2, 1000, replace = TRUE), # Binary
-  edudr04 = sample(1:3, 1000, replace = TRUE), # 3 categories
-  fmh_15 = sample(1:2, 1000, replace = TRUE), # Binary
-  gendmhi = sample(1:2, 1000, replace = TRUE), # Binary
-  gen_025 = sample(1:2, 1000, replace = TRUE), # Binary
-  gen_045 = sample(1:2, 1000, replace = TRUE), # Binary
-  clc_sex = sample(1:2, 1000, replace = TRUE), # Binary
-  wgt_full = runif(1000, 0, 1), # Continuous weights
-  clc_age = runif(1000, 18, 90), # Continuous
-  hwmdbmi = runif(1000, 18, 40), # Continuous
-  totalfv = runif(1000, 0, 10), # Continuous
-  slp_11 = runif(1000, 4, 12), # Continuous
-  diabx = sample(1:2, 1000, replace = TRUE), # Binary
+  ccc_51 = sample(1:2, 1000, replace = TRUE), # Binary self-reported diabetes
+  edudr04 = sample(1:4, 1000, replace = TRUE), # Categorical education
+  fmh_15 = sample(1:2, 1000, replace = TRUE), # Binary family history
+  gendmhi = sample(0:4, 1000, replace = TRUE), # Categorical self-rated mental health
+  gen_025 = sample(1:5, 1000, replace = TRUE), # Categorical self-perceived stress
+  gen_045 = sample(1:4, 1000, replace = TRUE), # Categorical sense of belonging
+  clc_sex = sample(1:2, 1000, replace = TRUE), # Binary sex
+  clc_age = sample(20:79, 1000, replace = TRUE), # Integer age
+  hwmdbmi = runif(1000, 9.47, 56.77), # Numeric body mass index
+  slp_11 = runif(1000, 2, 18), # Numeric sleep duration
   cycle = sample(1:6, 1000, replace = TRUE), # Cycle variable ranging from 1 to 6
-  ccc_32 = sample(1:2, 1000, replace = TRUE), # Binary
+  ccc_32 = sample(1:2, 1000, replace = TRUE), # Binary HTN medication (self-reported)
   alcdwky = sample(0:84, 1000, replace = TRUE), # Integer alcohol consumption per week
-  gendhdi = sample(0:4, 1000, replace = TRUE), # Categorical health-disease index
-  hwm_13kg = runif(1000, 40, 150), # Numeric weight in kg
-  hwm_14cx = runif(1000, 60, 200), # Numeric chest circumference in cm
-  img_03 = sample(1:2, 1000, replace = TRUE), # Binary image analysis variable
-  lab_bpb = runif(1000, 60, 160), # Numeric blood pressure measurement
-  lab_hba1 = runif(1000, 4, 14), # Numeric HbA1c
-  pgdcgt = sample(1:13, 1000, replace = TRUE) # Categorical food group codes (removed comma)
+  gendhdi = sample(0:4, 1000, replace = TRUE), # Categorical self-rated health
+  hwm_13kg = runif(1000, 42.0, 176.5), # Numeric weight in kg
+  hwm_14cx = runif(1000, 61.4, 162.5), # Numeric waist circumference in cm
+  img_03 = sample(1:2, 1000, replace = TRUE), # Binary immigration variable
+  lab_bpb = runif(1000, 0.009, 1.2), # Numeric blood lead measurement
+  lab_hba1 = runif(1000, 0.042, 0.130), # Numeric HbA1c
+  pgdcgt = sample(1:13, 1000, replace = TRUE) # Categorical ethnicity
 )
 
 usethis::use_data(cycle5, overwrite = TRUE)
