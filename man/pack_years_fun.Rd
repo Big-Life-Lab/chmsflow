@@ -7,12 +7,12 @@
 pack_years_fun(
   SMKDSTY,
   CLC_AGE,
-  SMKDSTP,
+  SMK_54,
   SMK_52,
   SMK_31,
   SMK_41,
   SMK_53,
-  SMK_23,
+  SMK_42,
   SMK_21,
   SMK_11
 )
@@ -30,7 +30,7 @@ pack_years_fun(
 
 \item{CLC_AGE}{A numeric value representing the respondent's age.}
 
-\item{SMKDSTP}{A numeric value representing the number of years since the respondent stopped smoking completely.}
+\item{SMK_54}{A numeric value representing the respondent's age when they stopped smoking daily.}
 
 \item{SMK_52}{A numeric value representing the respondent's age when they first started smoking daily.}
 
@@ -40,7 +40,7 @@ pack_years_fun(
 
 \item{SMK_53}{A numeric value representing the number of cigarettes smoked per day for former daily smokers.}
 
-\item{SMK_23}{A numeric value representing the number of days per month the respondent smoked at least 1 cigarette (for former daily or occasional smokers).}
+\item{SMK_42}{A numeric value representing the number of days in past month the respondent smoked at least 1 cigarette (for occasional smokers).}
 
 \item{SMK_21}{A numeric value representing the respondent's age when they first started smoking occasionally.}
 
@@ -53,16 +53,24 @@ pack_years_fun(
 \value{
 A numeric value representing the pack years for the respondent's smoking history.
 \itemize{
-\item If the input parameters are invalid or missing, the function returns NA.
-\item For different smoking statuses, the function calculates pack years as follows:
+\item If \code{CLC_AGE} is missing or negative, returns \code{tagged_na("b")}.
+\item For different smoking statuses (\code{SMKDSTY}), the function calculates pack years as follows:
 \itemize{
-\item Daily smoker: \code{ (CLC_AGE - SMK_52) * (SMK_31 / 20) } (minimum value 0.0137)
-\item Occasional smoker (former daily): \code{ ((CLC_AGE - SMK_52 - SMKDSTP) * (SMK_53 / 20)) + (pmax((SMK_41 * (SMK_23 * 12) / 30), 1) * SMKDSTP) }
-\item Occasional smoker (never daily): \code{ (pmax((SMK_41 * (SMK_23 * 12) / 30), 1) / 20) * (CLC_AGE - SMK_21) }
-\item Former daily smoker (non-smoker now): \code{ pmax(((CLC_AGE - SMK_52 - SMKDSTP) * (SMK_53 / 20)), 0.0137) }
-\item Former occasional smoker (non-smoker now) who smoked at least 100 cigarettes lifetime: 0.0137
-\item Former occasional smoker (non-smoker now) who have not smoked at least 100 cigarettes lifetime: 0.007
-\item Non-smoker: 0
+\item \strong{Daily smoker (1):} \code{pmax(((CLC_AGE - SMK_52) * (SMK_31 / 20)), 0.0137)}
+\item \strong{Occasional smoker (former daily) (2):}
+\code{pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137) + ((pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_54))}
+\item \strong{Occasional smoker (never daily) (3):}
+\code{(pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_21)}
+\item \strong{Former daily smoker (4):}
+\code{pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137)}
+\item \strong{Former occasional smoker (5)}:
+\itemize{
+\item If \code{SMK_11 == 1} (≥100 cigarettes): \code{0.0137}
+\item If \code{SMK_11 == 2} (<100 cigarettes): \code{0.007}
+}
+\item \strong{Non-smoker (6):} \code{0}
+\item If \code{SMKDSTY} is \code{NA(a)}, returns \code{tagged_na("a")}.
+\item For all other unexpected inputs, returns \code{tagged_na("b")}.
 }
 }
 }
@@ -77,8 +85,8 @@ pack_years_fun(SMKDSTY = 1, CLC_AGE = 40, SMK_52 = 20, SMK_31 = 30)
 
 # Example 2: A former occasional smoker who smoked at least 100 cigarettes in their lifetime.
 pack_years_fun(
-  SMKDSTY = 5, CLC_AGE = 50, SMKDSTP = 40, SMK_52 = 18, SMK_31 = NA,
-  SMK_41 = 15, SMK_53 = NA, SMK_23 = 3, SMK_21 = 25, SMK_11 = 1
+  SMKDSTY = 5, CLC_AGE = 50, SMK_54 = 40, SMK_52 = 18, SMK_31 = NA,
+  SMK_41 = 15, SMK_53 = NA, SMK_42 = 3, SMK_21 = 25, SMK_11 = 1
 )
 # Output: 0.0137 (pack years)
 

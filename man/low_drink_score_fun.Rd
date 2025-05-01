@@ -2,49 +2,61 @@
 % Please edit documentation in R/alcohol.R
 \name{low_drink_score_fun}
 \alias{low_drink_score_fun}
-\title{Calculate the low drink score for a CHMS respondent based on alcohol consumption.}
+\title{Calculate the Low Drink Score for a CHMS Respondent Based on Alcohol Consumption}
 \usage{
-low_drink_score_fun(CLC_SEX, ALCDWKY)
+low_drink_score_fun(CLC_SEX, ALC_11, ALCDWKY)
 }
 \arguments{
-\item{CLC_SEX}{An integer indicating the respondent's sex. 1 for male, 2 for female.}
+\item{CLC_SEX}{An integer indicating the respondent's sex (1 for male, 2 for female).}
+
+\item{ALC_11}{An integer indicating whether the respondent drank alcohol in the past year (1 for "Yes", 2 for "No").}
 
 \item{ALCDWKY}{An integer representing the number of standard drinks consumed by the respondent in a week.}
 }
 \value{
-If data of the wrong type is inputted (eg. a string for ALCDWKY), the function would return NA and remind the user to ensure all inputs are numeric.
-If data is out of bounds (eg. 3 for CLC_SEX which only is 1 or 2), the function would return NA and remind the user that input data is out of bounds.
-Otherwise, when numeric data within proper range is inputted, the function returns an integer representing the low drink score:
+An integer representing the low drink score, with:
 \itemize{
-\item 1 for "Low risk" (0 points).
-\item 2 for "Marginal risk" (1-2 points).
-\item 3 for "Medium risk" (3-4 points).
-\item 4 for "High risk" (5-9 points).
-\item NA for invalid input or non-response values.
+\item 1 for "Low risk" (0 points),
+\item 2 for "Marginal risk" (1–2 points),
+\item 3 for "Medium risk" (3–4 points), and
+\item 4 for "High risk" (5–9 points).
+If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 }
 \description{
-Calculate the low drink score for a CHMS respondent based on alcohol consumption.
+This function calculates a low drink score (step 1 only) for a respondent using
+Canada's Low-Risk Alcohol Drinking Guideline. The score is based solely on the
+number of standard drinks consumed per week and the respondent's sex. (Step 2,
+which would add additional points based on other drinking habits, is not included.)
 }
 \details{
-The low risk drinking score is based on the scoring system in
-Canada's Low-Risk Alcohol Drinking Guideline. The score is divided into two
-steps. Step 1 allocates points based on sex and the number of drinks
-that you usually have each week. In step 2, one point will be awarded for
-each item that is true related to drinking habits. The total score is
-obtained from adding the points in step 1 and step 2.
+The scoring is determined by first allocating points (referred to as \code{step1}) based on the weekly
+alcohol consumption and the respondent's sex:
+\itemize{
+\item If the respondent drank in the past year (ALC_11 == 1):
+\itemize{
+\item For ALCDWKY ≤ 10, assign 0 points.
+\item For ALCDWKY > 10 and ≤ 15: assign 0 points for males (CLC_SEX == 1) and 1 point for females (CLC_SEX == 2).
+\item For ALCDWKY > 15 and ≤ 20: assign 1 point for males and 3 points for females.
+\item For ALCDWKY > 20: assign 3 points.
+}
+\item For respondents who did not drink in the past year (ALC_11 == 2), 0 points are assigned.
+}
+
+These \code{step1} points are then mapped to the final categorical score as follows:
+\itemize{
+\item 0 points → score of 1 ("Low risk"),
+\item 1–2 points → score of 2 ("Marginal risk"),
+\item 3–4 points → score of 3 ("Medium risk"),
+\item 5–9 points → score of 4 ("High risk").
+}
 }
 \note{
-Step 2 is not included in this function because the questions in
-step 2 are not asked in any of the CHMS cycles. The score is only based on
-step 1.
-
-See https://osf.io/eprg7/ for more details on the guideline and score.
+This function does not include the additional points from step 2 of the guideline.
 }
 \examples{
-
-# Example: Determine low drink score for a male respondent who consumed 3 standard drinks per week.
-low_drink_score_fun(CLC_SEX = 1, ALCDWKY = 3)
-# Output: 1 (Low risk due to consuming 3 standard drinks per week).
+# Example: A male respondent who drank in the past year and consumes 3 standard drinks per week.
+low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3)
+# Expected output: 1 (Low risk)
 
 }

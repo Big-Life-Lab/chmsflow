@@ -2,59 +2,71 @@
 % Please edit documentation in R/alcohol.R
 \name{low_drink_score_fun1}
 \alias{low_drink_score_fun1}
-\title{Calculate the low drink score for a respondent based on alcohol consumption (with former and never categories included).}
+\title{Calculate Low Drink Score According to Canada's Low-Risk Drinking Guidelines}
 \usage{
-low_drink_score_fun1(CLC_SEX, ALCDWKY, ALC_17, ALC_11)
+low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18)
 }
 \arguments{
-\item{CLC_SEX}{An integer indicating the respondent's sex. 1 for male, 2 for female.}
+\item{CLC_SEX}{Integer. Respondent's sex (1 = male, 2 = female).}
 
-\item{ALCDWKY}{An integer representing the number of standard drinks consumed by the respondent in a week.}
+\item{ALC_11}{Integer. Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).}
 
-\item{ALC_17}{An integer indicating whether the respondent ever drank in their lifetime.
-1 for "Yes", 2 for "No".}
+\item{ALCDWKY}{Integer. Number of standard drinks consumed in a typical week (0–84).}
 
-\item{ALC_11}{An integer indicating whether the respondent drank alcohol in the past year.
-1 for "Yes", 2 for "No".}
+\item{ALC_17}{Integer. Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).}
+
+\item{ALC_18}{Integer. Whether the respondent regularly drank more than 12 drinks per week (1 = Yes, 2 = No).}
 }
 \value{
-If data of the wrong type is inputted (eg. a string for ALCDWKY), the function would return NA and remind the user to ensure all inputs are numeric.
-If data is out of bounds (eg. 3 for CLC_SEX which only is 1 or 2), the function would return NA and remind the user that input data is out of bounds.
-Otherwise, when numeric data within proper range is inputted, the function returns an integer representing the low drink score:
+An integer score:
 \itemize{
-\item 1 - Low risk - never drank (0 points)
-\item 2 - Low risk - former drinker (0 points)
-\item 3 - Marginal risk (1-2 points)
-\item 4 - Medium risk (3-4 points)
-\item 5 - High risk (5-9 points)
-\item NA if any input contains non-response values or is invalid.
+\item 1 = Never drank
+\item 2 = Low-risk (former or light) drinker
+\item 3 = Moderate drinker (1--2 points)
+\item 4 = Heavy drinker (3--4 points)
 }
+If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
-Calculate the low drink score for a respondent based on alcohol consumption (with former and never categories included).
+Computes a categorical alcohol consumption score based on Canada's Low-Risk Alcohol Drinking Guidelines (Step 1),
+while distinguishing between never, former, light, moderate, and heavy drinkers. The function uses information
+about weekly consumption, past-year use, lifetime drinking, and history of heavy drinking.
 }
 \details{
-The low risk drinking score is based on the scoring system in
-Canada's Low-Risk Alcohol Drinking Guideline. The score is divided into two
-steps. Step 1 allocates points based on sex and the number of drinks
-that you usually have each week. In step 2, one point will be awarded for
-each item that is true related to drinking habits. The total score is
-obtained from adding the points in step 1 and step 2.
+\strong{Step 1: Assign points based on weekly alcohol consumption.}
+\itemize{
+\item If the respondent drank in the past year (ALC_11 == 1):
+\itemize{
+\item 0 to 10 drinks/week: 0 points
+\item 11 to 15 drinks/week: 0 points for males, 1 point for females
+\item 16 to 20 drinks/week: 1 point for males, 3 points for females
+\item More than 20 drinks/week: 3 points for males, 5 points for females
+}
+\item If they did not drink in the past year (ALC_11 == 2): 0 points
+}
 
-This score has two 0 point categories: low risk (never drank) and low risk
-(former drinker). The two drinking groups are derived from 'ever had a drink
-in lifetime'. 'Ever had a drink in lifetime' is only available in CCHS
-2001-2008 and 2015-2018.
+\strong{Step 2: Determine the final categorical score.}
+\itemize{
+\item If Step 1 = 0:
+\itemize{
+\item If ALC_17 == 2 and ALC_11 == 2: score = 1
+\item If ALC_17 == 1 and ALC_11 == 2:
+\itemize{
+\item ALC_18 == 2: score = 1
+\item ALC_18 == 1: score = 2
+}
+\item If ALC_11 == 1: score = 2
+}
+\item If Step 1 = 1 or 2: score = 3
+\item If Step 1 is 3 or more: score = 4
+}
 }
 \note{
-Step 2 is not included in this function because the questions in
-step 2 are not asked in any of the CHMS cycles. The score is only based on
-step 1.
+This function uses only Step 1 of the guidelines, as Step 2 information is unavailable in CHMS.
 }
 \examples{
-
-# Example: A male respondent who drank 3 standard drinks per week and drank within past year.
-low_drink_score_fun1(CLC_SEX = 1, ALCDWKY = 3, ALC_17 = 1, ALC_11 = 1)
-# Output: 2 (Low risk due to consuming 3 standard drinks per week and having alcohol before).
+# Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
+low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = NA, ALC_18 = 2)
+# Expected output: 2
 
 }
