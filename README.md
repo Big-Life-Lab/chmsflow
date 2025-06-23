@@ -1,4 +1,4 @@
-# chmsflow <img src="man/figures/logo.svg" align="right" alt="" width="180"/>
+# chmsflow <img src="man/figures/logo.svg" align="right" width="180"/>
 
 *chmsflow* supports the use of the Canadian Health Measures Survey (CHMS) by transforming variables from each cycle into harmonized, consistent versions that span survey cycles 1-6.
 
@@ -17,7 +17,7 @@ The CHMS is a cross-sectional survey administered by Statistics Canada that coll
 See below for guide on how to load R packages at RDC:
 
 ```         
-    # Within quotations, define path to the directory where your package folders are located at RDC
+    # Within quotations, define path to the directory where your package folders are located at RDC (ensure all dependencies are also in directory as well)
     .libPaths("")
     
     # Load chmsflow package
