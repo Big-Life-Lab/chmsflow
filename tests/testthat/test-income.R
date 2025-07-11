@@ -20,6 +20,18 @@ test_that("categorize_income works correctly", {
   expect_equal(categorize_income(NA), haven::tagged_na("b"))
 })
 
+# Test suite for boundary cases in categorize_income
+test_that("categorize_income handles boundary cases correctly", {
+  expect_equal(categorize_income(21500), 1)
+  expect_equal(categorize_income(21500.01), 2)
+  expect_equal(categorize_income(35000), 2)
+  expect_equal(categorize_income(35000.01), 3)
+  expect_equal(categorize_income(50000), 3)
+  expect_equal(categorize_income(50000.01), 4)
+  expect_equal(categorize_income(70000), 4)
+  expect_equal(categorize_income(70000.01), 5)
+})
+
 # Test for in_lowest_income_qunitle
 test_that("in_lowest_income_qunitle works correctly", {
   expect_equal(in_lowest_income_qunitle(1), 1) # In the lowest income quintile
