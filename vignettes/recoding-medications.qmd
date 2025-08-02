@@ -3,17 +3,26 @@ title: "Recoding CHMS medication variables"
 format: html
 ---
 
-1. Install chmsflow locally.
-```{r}
-devtools::document()
-devtools::install()
+## 1. Load packages
+
+```{r eval= FALSE}
+# Install release version from CRAN
+install.packages("chmsflow")
+
+# Install the most recent version from GitHub
+devtools::install_github("Big-Life-Lab/chmsflow")
 ```
 
-2. Recode medication variables for individual cycles, with each cycle's medication data being separate from the rest of their respective data. 
+```{r results= 'hide', message = FALSE, warning=FALSE}
+library(chmsflow)
+```
 
-Medication data object always has to be called "cyclex_meds" in order for recoding to work properly, with rest of the data being called "cyclex" as stated in recoding-variables.qmd. 
+## 2. Recode medication variables for individual cycles
+
+Medication data object always has to be called "cyclex_meds" in order for recoding to work properly, with rest of the data being separated and called "cyclex" as stated in recoding-variables.qmd.
 
 Note that row headers for medication data of cycles 1, 4, and 6 must be put to lower case prior to recoding.
+
 ```{r}
 # Load recodeflow and dplyr
 library(recodeflow)
@@ -35,7 +44,8 @@ cycle3_ace_medication_data <- rec_with_table(cycle3_meds, c("clinicid", "meucatc
 head(cycle3_ace_medication_data)
 ```
 
-3. Merge recoded medication data from different cycles.
+## 3. Merge recoded medication data from different cycles
+
 ```{r}
 # Aggregating recoded cycle3 data by clinicid
 cycle3_ace_medication_data <- cycle3_ace_medication_data %>%
@@ -59,9 +69,10 @@ cycles2and3_ace_medication_data <- cycles2and3_ace_medication_data %>%
 head(cycles2and3_ace_medication_data)
 ```
 
-4. If you need medication variables in your analyis (especially to derive other variables), always recode them before recoding other variables.
+## 4. Example: Determine hypertension status by recoding medications
 
-Example: Determine hypertension status by recoding medications 
+If you need medication variables in your analyis (especially to derive other variables), always recode them before recoding other variables.
+
 ```{r}
 # Cycles 1-2
 # Recode medication variables first - anymed for hypertension and diab_drug for diabetes which is involved in determining hypertension status
