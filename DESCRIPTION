@@ -15,7 +15,7 @@ Depends:
     R (>= 3.5)
 Imports: haven, logger
 License: MIT + file LICENSE
-URL: https://github.com/Big-Life-Lab/chmsflow
+URL: https://github.com/Big-Life-Lab/chmsflow, https://big-life-lab.github.io/chmsflow/
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

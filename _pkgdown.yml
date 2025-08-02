@@ -1,20 +1,22 @@
+url: https://big-life-lab.github.io/chmsflow/
 destination: docs
-
 template:
   params:
     bootswatch: cosmo
-
 development:
   mode: auto
-
 home:
   links:
-    - text: Calculators
-      href: https://www.projectbiglife.ca 
-      
+  - text: Calculators
+    href: https://www.projectbiglife.ca
 navbar:
   structure:
-    left: [home, get_started, articles, reference, news]
+    left:
+    - home
+    - get_started
+    - articles
+    - reference
+    - news
     right: github
   components:
     get_started:
@@ -35,64 +37,64 @@ navbar:
     news:
       text: Changelog
       href: news/index.html
-
 reference:
-  - title: "Worksheets"
-    desc: variable and variable_details worksheets
-    contents: 
-    - variables
-    - variable_details
-  - title: "Derived variable functions"
-    desc: Functions for deriving custom CHMS variables
-    contents:
-    - adjust_DBP
-    - adjust_SBP
-    - calculate_GFR
-    - calculate_Hhld_Income
-    - calculate_WHR
-    - calculate_nonHDL
-    - categorize_GFR_to_CKD
-    - categorize_income
-    - categorize_minperweek
-    - categorize_nonHDL
-    - cycles1to2_ace_inhibitors
-    - cycles1to2_any_antiHTN_meds
-    - cycles1to2_beta_blockers
-    - cycles1to2_calcium_channel_blockers
-    - cycles1to2_diabetes_drugs
-    - cycles1to2_diuretics
-    - cycles1to2_nsaid
-    - cycles1to2_other_antiHTN_meds
-    - determine_CVD_Family_History
-    - determine_CVD_Personal_History
-    - determine_adjusted_hypertension
-    - determine_controlled_adjusted_hypertension
-    - determine_controlled_hypertension
-    - determine_gooddiet
-    - determine_hypertension
-    - determine_inclusive_diabetes
-    - find_totalFV_cycles1and2
-    - find_totalFV_cycles3to6
-    - find_week_accelerometer_average
-    - in_lowest_income_qunitle
-    - is_NSAID
-    - is_ace_inhibitor
-    - is_any_antiHTN_med
-    - is_beta_blocker
-    - is_calcium_channel_blocker
-    - is_diabetes_drug
-    - is_diuretic
-    - is_other_antiHTN_med
-    - is_taking_drug_class
-    - low_drink_score_fun
-    - low_drink_score_fun1
-    - minperday_to_minperweek
-    - pack_years_fun
-  - title: "Processing functions"
-    desc: Functions used to manipulate CHMS datasets
-    contents:
-    - rec_with_table
-  - title: "Utility functions"
-    desc: Utility functions that are used in other chmsflow functions
-    contents:
-    - if_else2
+- title: Worksheets
+  desc: variable and variable_details worksheets
+  contents:
+  - variables
+  - variable_details
+- title: Derived variable functions
+  desc: Functions for deriving custom CHMS variables
+  contents:
+  - adjust_DBP
+  - adjust_SBP
+  - calculate_GFR
+  - calculate_Hhld_Income
+  - calculate_WHR
+  - calculate_nonHDL
+  - categorize_GFR_to_CKD
+  - categorize_income
+  - categorize_minperweek
+  - categorize_nonHDL
+  - cycles1to2_ace_inhibitors
+  - cycles1to2_any_antiHTN_meds
+  - cycles1to2_beta_blockers
+  - cycles1to2_calcium_channel_blockers
+  - cycles1to2_diabetes_drugs
+  - cycles1to2_diuretics
+  - cycles1to2_nsaid
+  - cycles1to2_other_antiHTN_meds
+  - determine_CVD_Family_History
+  - determine_CVD_Personal_History
+  - determine_adjusted_hypertension
+  - determine_controlled_adjusted_hypertension
+  - determine_controlled_hypertension
+  - determine_gooddiet
+  - determine_hypertension
+  - determine_inclusive_diabetes
+  - find_totalFV_cycles1and2
+  - find_totalFV_cycles3to6
+  - find_week_accelerometer_average
+  - in_lowest_income_qunitle
+  - is_NSAID
+  - is_ace_inhibitor
+  - is_any_antiHTN_med
+  - is_beta_blocker
+  - is_calcium_channel_blocker
+  - is_diabetes_drug
+  - is_diuretic
+  - is_other_antiHTN_med
+  - is_taking_drug_class
+  - low_drink_score_fun
+  - low_drink_score_fun1
+  - minperday_to_minperweek
+  - pack_years_fun
+- title: Synthetic CHMS data
+  desc: Synthetic cycle and medication data for select CHMS cycles
+  contents:
+  - cycle2
+  - cycle2_meds
+  - cycle3
+  - cycle3_meds
+  - cycle4
+  - cycle5
