@@ -1,4 +1,4 @@
-# chmsflow <img src="man/figures/logo.svg" align="right" width="180"/>
+# chmsflow <img src="man/figures/logo.svg" align="right" width="180" alt = "chmsflow logo"/>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/Big-Life-Lab/chmsflow/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Big-Life-Lab/chmsflow/actions/workflows/R-CMD-check.yaml)
