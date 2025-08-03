@@ -21,6 +21,8 @@ This vignette describes how the `variables.csv` worksheet is organized and how t
 Read `variables.csv`
 
 ```{r Read variables.csv, echo=FALSE, message=FALSE, warning=FALSE}
+library(chmsflow)
+
 cat(
   "There are", nrow(variables), "variables, grouped in", sum(!duplicated(variables$subject)),
   "subjects and", sum(!duplicated(variables$section)), "sections that are available for

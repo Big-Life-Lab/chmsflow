@@ -71,7 +71,7 @@ head(cycles2and3_ace_medication_data)
 
 ## 4. Example: Determine hypertension status by recoding medications
 
-If you need medication variables in your analyis (especially to derive other variables), always recode them before recoding other variables.
+If you need medication variables in your analysis (especially to derive other variables), always recode them before recoding other variables.
 
 ```{r}
 # Cycles 1-2
