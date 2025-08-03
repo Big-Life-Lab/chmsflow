@@ -1,7 +1,9 @@
-# chmsflow <img src="man/figures/logo.svg" align="right" width="180" alt = "chmsflow logo"/>
+# chmsflow <img src="man/figures/logo.svg" alt="chmsflow logo" align="right" width="180"/>
 
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/Big-Life-Lab/chmsflow/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Big-Life-Lab/chmsflow/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
 *chmsflow* supports the use of the Canadian Health Measures Survey (CHMS) by transforming variables from each cycle into harmonized, consistent versions that span survey cycles 1-6 (2007 to 2019).
