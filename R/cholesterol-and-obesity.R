@@ -1,4 +1,4 @@
-#' @title Calculate Non-HDL Cholesterol Level
+#' @title Non-HDL cholesterol level
 #'
 #' @description This function calculates a respondent's non-HDL cholesterol level by subtracting their HDL cholesterol level
 #' from their total cholesterol level. It first checks whether the input values `LAB_CHOL` (total cholesterol)
@@ -36,9 +36,9 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
   return(nonHDL)
 }
 
-#' Non-HDL Cholesterol Categorization
+#' @title Categorical non-HDL cholesterol level
 #'
-#' This function categorizes individuals' non-HDL cholesterol levels based on a threshold value.
+#' @description This function categorizes individuals' non-HDL cholesterol levels based on a threshold value.
 #'
 #' @param nonHDL Numeric value representing an individual's non-HDL cholesterol level.
 #'
@@ -72,7 +72,7 @@ categorize_nonHDL <- function(nonHDL) {
   return(nonhdltodd)
 }
 
-#' @title Calculate Waist-to-Height Ratio (WHR)
+#' @title Waist-to-height ratio (WHR)
 #'
 #' @description This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent.
 #'

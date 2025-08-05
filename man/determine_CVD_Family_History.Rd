@@ -2,7 +2,7 @@
 % Please edit documentation in R/family-history.R
 \name{determine_CVD_Family_History}
 \alias{determine_CVD_Family_History}
-\title{Determine Cardiovascular Disease (CVD) Family History}
+\title{Cardiovascular Disease (CVD) family history}
 \usage{
 determine_CVD_Family_History(FMH_11, FMH_12, FMH_13, FMH_14)
 }

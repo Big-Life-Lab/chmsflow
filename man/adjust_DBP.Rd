@@ -2,7 +2,7 @@
 % Please edit documentation in R/blood-pressure.R
 \name{adjust_DBP}
 \alias{adjust_DBP}
-\title{Adjust diastolic blood pressure}
+\title{Adjusted diastolic blood pressure}
 \usage{
 adjust_DBP(BPMDPBPD)
 }

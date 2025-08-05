@@ -2,7 +2,7 @@
 % Please edit documentation in R/alcohol.R
 \name{low_drink_score_fun}
 \alias{low_drink_score_fun}
-\title{Calculate the Low Drink Score for a CHMS Respondent Based on Alcohol Consumption}
+\title{Low risk drinking score}
 \usage{
 low_drink_score_fun(CLC_SEX, ALC_11, ALCDWKY)
 }

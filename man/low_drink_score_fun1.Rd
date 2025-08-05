@@ -2,7 +2,7 @@
 % Please edit documentation in R/alcohol.R
 \name{low_drink_score_fun1}
 \alias{low_drink_score_fun1}
-\title{Calculate Low Drink Score According to Canada's Low-Risk Drinking Guidelines}
+\title{Low risk drinking score - former/never categories}
 \usage{
 low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18)
 }
@@ -47,18 +47,13 @@ about weekly consumption, past-year use, lifetime drinking, and history of heavy
 
 \strong{Step 2: Determine the final categorical score.}
 \itemize{
-\item If Step 1 = 0:
+\item If the point score from Step 1 is 0, the final category is determined based on lifetime and past-year drinking habits:
 \itemize{
-\item If ALC_17 == 2 and ALC_11 == 2: score = 1
-\item If ALC_17 == 1 and ALC_11 == 2:
-\itemize{
-\item ALC_18 == 2: score = 1
-\item ALC_18 == 1: score = 2
+\item A score of 1 (Never drinker) is assigned if the respondent either never drank alcohol in their lifetime or is a former drinker who did not regularly consume more than 12 drinks a week.
+\item A score of 2 (Low-risk drinker) is assigned if the respondent drank in the past year (but still scored 0 points) or is a former drinker with a history of regularly consuming more than 12 drinks a week.
 }
-\item If ALC_11 == 1: score = 2
-}
-\item If Step 1 = 1 or 2: score = 3
-\item If Step 1 is 3 or more: score = 4
+\item If the point score from Step 1 is 1 or 2, the respondent is classified as a \strong{Moderate drinker} (Score = 3).
+\item If the point score from Step 1 is 3 or more, the respondent is classified as a \strong{Heavy drinker} (Score = 4).
 }
 }
 \note{

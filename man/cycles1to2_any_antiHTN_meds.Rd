@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_any_antiHTN_meds}
 \alias{cycles1to2_any_antiHTN_meds}
-\title{Determine if a person is taking any anti-hypertensive medication in CHMS cycles 1 to 2.}
+\title{Any anti-hypertensive medications - cycles 1-2}
 \usage{
 cycles1to2_any_antiHTN_meds(
   atc_101a = NULL,

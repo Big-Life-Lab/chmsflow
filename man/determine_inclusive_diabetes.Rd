@@ -2,7 +2,7 @@
 % Please edit documentation in R/diabetes.R
 \name{determine_inclusive_diabetes}
 \alias{determine_inclusive_diabetes}
-\title{Determine Inclusive Diabetes Status}
+\title{Diabetes derived variable}
 \usage{
 determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2)
 }
@@ -22,7 +22,7 @@ An integer indicating the inclusive diabetes status:
 - If one parameter is \code{NA}, the function checks the remaining two for a decision.
 }
 \description{
-This function evaluates inclusive diabetes status based on three factors: \code{diab_m}, \code{CCC_51}, and \code{diab_drug2}.
+This function evaluates diabetes status based on three factors: \code{diab_m}, \code{CCC_51}, and \code{diab_drug2}.
 }
 \examples{
 

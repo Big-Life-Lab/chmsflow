@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_nsaid}
 \alias{cycles1to2_nsaid}
-\title{Determine if a person is taking non-steroidal anti-inflammatory drugs (NSAID) in CHMS cycles 1 to 2.}
+\title{Non-steroidal anti-inflammatory drugs (NSAIDs) - cycles 1-2}
 \usage{
 cycles1to2_nsaid(
   atc_101a = NULL,

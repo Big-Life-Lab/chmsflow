@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_diabetes_drug}
 \alias{is_diabetes_drug}
-\title{Determine if a CHMS respondent's medication is a diabetes drug.}
+\title{Diabetes medications}
 \usage{
 is_diabetes_drug(MEUCATC, NPI_25B)
 }

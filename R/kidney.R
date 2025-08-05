@@ -1,4 +1,4 @@
-#' @title Calculate the estimated glomerular filtration rate (GFR) based on serum creatine
+#' @title Estimated glomerular filtration rate (GFR)
 #'
 #' @description This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
 #'              where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age.
@@ -65,9 +65,9 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   return(GFR)
 }
 
-#' Categorize Glomerular Filtration Rate (GFR) to Chronic Kidney Disease (CKD) Stage
+#' @title Chronic kidney disease (CKD) derived variable
 #'
-#' This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
+#' @description This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
 #'
 #' @param GFR Numeric value representing the glomerular filtration rate.
 #'

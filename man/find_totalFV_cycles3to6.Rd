@@ -2,7 +2,7 @@
 % Please edit documentation in R/diet.R
 \name{find_totalFV_cycles3to6}
 \alias{find_totalFV_cycles3to6}
-\title{Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.}
+\title{Daily fruit and vegetable consumption in a year - cycles 3-6}
 \usage{
 find_totalFV_cycles3to6(
   WSDD34Y,

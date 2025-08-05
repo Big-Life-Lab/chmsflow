@@ -1,4 +1,4 @@
-#' @title Determine cardiovascular disease (CVD) personal history
+#' @title Cardiovascular disease (CVD) personal history
 #'
 #' @description This function determines a respondent's cardiovascular disease (CVD) personal history based on the presence or absence
 #' of specific conditions related to heart disease, heart attack, and stroke.
@@ -35,7 +35,7 @@ determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
   return(cardiov)
 }
 
-#' @title Determine Cardiovascular Disease (CVD) Family History
+#' @title Cardiovascular Disease (CVD) family history
 #'
 #' @description This function evaluates a respondent's family history of cardiovascular disease (CVD), based on data about diagnoses of heart disease and stroke in immediate family members and the ages at which these diagnoses occurred. It identifies premature CVD if any diagnosis occurred before age 60.
 #'

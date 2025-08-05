@@ -2,7 +2,7 @@
 % Please edit documentation in R/cholesterol-and-obesity.R
 \name{calculate_WHR}
 \alias{calculate_WHR}
-\title{Calculate Waist-to-Height Ratio (WHR)}
+\title{Waist-to-height ratio (WHR)}
 \usage{
 calculate_WHR(HWM_11CM, HWM_14CX)
 }

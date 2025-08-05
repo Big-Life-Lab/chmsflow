@@ -2,7 +2,7 @@
 % Please edit documentation in R/diet.R
 \name{determine_gooddiet}
 \alias{determine_gooddiet}
-\title{Diet Categorization}
+\title{Categorical diet indicator}
 \usage{
 determine_gooddiet(totalFV)
 }

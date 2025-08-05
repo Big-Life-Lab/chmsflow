@@ -2,7 +2,7 @@
 % Please edit documentation in R/blood-pressure.R
 \name{determine_adjusted_hypertension}
 \alias{determine_adjusted_hypertension}
-\title{Determine Adjusted Hypertension Status}
+\title{Hypertension derived variable with adjusted blood pressures}
 \usage{
 determine_adjusted_hypertension(
   SBP_adj,
@@ -58,7 +58,7 @@ An integer representing the hypertension status:
 }
 }
 \description{
-This function determines the adjusted hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage.
+This function determines the hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage.
 }
 \examples{
 

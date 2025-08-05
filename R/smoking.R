@@ -1,4 +1,4 @@
-#' @title Pack Years Calculation for Smoking History
+#' @title Smoking pack-years
 #'
 #' @description This function calculates an individual's smoking pack-years based on various CHMS smoking variables. Pack years is a measure used by researchers to quantify lifetime exposure to cigarette use.
 #'

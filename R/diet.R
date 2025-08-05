@@ -1,4 +1,4 @@
-#' @title Calculate daily fruit and vegetable consumption in a year for respondent in CHMS cycles 1-2.
+#' @title Daily fruit and vegetable consumption in a year - cycles 1-2
 #'
 #' @description This function calculates the daily fruit and vegetable consumption in a year for respondent in the Canadian Health Measures
 #' Survey (CHMS) cycles 1-2. It takes seven parameters, each representing the number of times per year a specific fruit or vegetable item
@@ -53,7 +53,7 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
   return(totalFV)
 }
 
-#' @title Calculate daily fruit and vegetable consumption in a year for respondents in CHMS cycles 3-6.
+#' @title Daily fruit and vegetable consumption in a year - cycles 3-6
 #'
 #' @description This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures
 #' Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or
@@ -115,7 +115,7 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
   return(totalFV)
 }
 
-#' @title Diet Categorization
+#' @title Categorical diet indicator
 #'
 #' @description This function categorizes individuals' diet quality based on their total fruit and vegetable consumption.
 #'

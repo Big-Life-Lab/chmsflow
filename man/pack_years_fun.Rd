@@ -2,7 +2,7 @@
 % Please edit documentation in R/smoking.R
 \name{pack_years_fun}
 \alias{pack_years_fun}
-\title{Pack Years Calculation for Smoking History}
+\title{Smoking pack-years}
 \usage{
 pack_years_fun(
   SMKDSTY,

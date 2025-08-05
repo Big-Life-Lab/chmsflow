@@ -2,7 +2,7 @@
 % Please edit documentation in R/income.R
 \name{in_lowest_income_qunitle}
 \alias{in_lowest_income_qunitle}
-\title{Check If in Lowest Income Quintile}
+\title{Lowest income quintile indicator}
 \usage{
 in_lowest_income_qunitle(incq)
 }

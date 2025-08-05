@@ -1,4 +1,4 @@
-#' @title Adjust systolic blood pressure
+#' @title Adjusted systolic blood pressure
 #'
 #' @description This function adjusts systolic blood pressure based on the respondent's systolic average blood pressure across
 #' six measurements. The adjustment is made using specific correction factors. The adjusted systolic blood pressure
@@ -33,7 +33,7 @@ adjust_SBP <- function(BPMDPBPS) {
   return(SBP_adj)
 }
 
-#' @title Adjust diastolic blood pressure
+#' @title Adjusted diastolic blood pressure
 #'
 #' @description This function adjusts diastolic blood pressure based on the respondent's diastolic average blood pressure across
 #' six measurements. The adjustment is made using specific correction factors. The adjusted diastolic blood pressure
@@ -68,7 +68,7 @@ adjust_DBP <- function(BPMDPBPD) {
   return(DBP_adj)
 }
 
-#' @title Determine Hypertension Status
+#' @title Hypertension derived variable
 #'
 #' @description
 #' This function determines the hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
@@ -177,10 +177,10 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
   return(highBP14090)
 }
 
-#' @title Determine Adjusted Hypertension Status
+#' @title Hypertension derived variable with adjusted blood pressures
 #'
 #' @description
-#' This function determines the adjusted hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage.
+#' This function determines the hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage.
 #'
 #' @param SBP_adj An integer representing the adjusted systolic blood pressure measurement of the respondent.
 #' @param DBP_adj An integer representing the adjusted diastolic blood pressure measurement of the respondent.
@@ -286,7 +286,7 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
   return(highBP14090_adj)
 }
 
-#' @title Determine Controlled Hypertension Status
+#' @title Controlled hypertension derived variable
 #'
 #' @description
 #' This function determines the controlled hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
@@ -388,10 +388,10 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
   return(Control14090)
 }
 
-#' @title Determine Controlled Adjusted Hypertension Status
+#' @title Controlled hypertension derived variable with adjusted blood pressures
 #'
 #' @description
-#' This function determines the controlled adjusted hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage.
+#' This function determines the controlled hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage.
 #'
 #' @param SBP_adj An integer representing the adjusted systolic blood pressure measurement of the respondent.
 #' @param DBP_adj An integer representing the adjusted diastolic blood pressure measurement of the respondent.

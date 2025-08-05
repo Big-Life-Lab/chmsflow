@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_diuretic}
 \alias{is_diuretic}
-\title{Determine if a CHMS respondent's medication is a diuretic.}
+\title{Diuretics}
 \usage{
 is_diuretic(MEUCATC, NPI_25B)
 }

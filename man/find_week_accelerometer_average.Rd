@@ -2,7 +2,7 @@
 % Please edit documentation in R/exercise.R
 \name{find_week_accelerometer_average}
 \alias{find_week_accelerometer_average}
-\title{Calculate the average minutes of exercise per day for week-long accelerometer data.}
+\title{Average minutes of exercise per day for week-long accelerometer data}
 \usage{
 find_week_accelerometer_average(
   AMMDMVA1,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/exercise.R
 \name{categorize_minperweek}
 \alias{categorize_minperweek}
-\title{Categorize Weekly Physical Activity}
+\title{Categorical weekly physical activity indicator}
 \usage{
 categorize_minperweek(minperweek)
 }

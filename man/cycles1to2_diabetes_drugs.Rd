@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_diabetes_drugs}
 \alias{cycles1to2_diabetes_drugs}
-\title{Determine if a person is taking diabetes drugs in CHMS cycles 1 to 2.}
+\title{Diabetes medications - cycles 1-2}
 \usage{
 cycles1to2_diabetes_drugs(
   atc_101a = NULL,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/cholesterol-and-obesity.R
 \name{categorize_nonHDL}
 \alias{categorize_nonHDL}
-\title{Non-HDL Cholesterol Categorization}
+\title{Categorical non-HDL cholesterol level}
 \usage{
 categorize_nonHDL(nonHDL)
 }

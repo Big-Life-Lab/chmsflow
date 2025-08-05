@@ -2,7 +2,7 @@
 % Please edit documentation in R/blood-pressure.R
 \name{determine_controlled_hypertension}
 \alias{determine_controlled_hypertension}
-\title{Determine Controlled Hypertension Status}
+\title{Controlled hypertension derived variable}
 \usage{
 determine_controlled_hypertension(
   BPMDPBPS,

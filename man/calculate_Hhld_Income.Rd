@@ -2,7 +2,7 @@
 % Please edit documentation in R/income.R
 \name{calculate_Hhld_Income}
 \alias{calculate_Hhld_Income}
-\title{Calculate adjusted total household income based on weighted household size.}
+\title{Adjusted total household income}
 \usage{
 calculate_Hhld_Income(THI_01, DHHDHSZ)
 }

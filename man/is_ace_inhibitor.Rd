@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_ace_inhibitor}
 \alias{is_ace_inhibitor}
-\title{Determine if a CHMS respondent's medication is an ACE inhibitor.}
+\title{ACE inhibitors}
 \usage{
 is_ace_inhibitor(MEUCATC, NPI_25B)
 }

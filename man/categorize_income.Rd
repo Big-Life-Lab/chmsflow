@@ -2,7 +2,7 @@
 % Please edit documentation in R/income.R
 \name{categorize_income}
 \alias{categorize_income}
-\title{Categorize Household Income}
+\title{Categorical adjusted household income}
 \usage{
 categorize_income(adj_hh_inc)
 }
@@ -21,7 +21,7 @@ A categorical value indicating the income category:
 }
 }
 \description{
-This function categorizes individuals' household income based on specified income ranges.
+This function categorizes individuals' adjusted household income based on specified income ranges.
 }
 \examples{
 # Example 1: Categorize a household income of $25,000

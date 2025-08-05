@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_calcium_channel_blocker}
 \alias{is_calcium_channel_blocker}
-\title{Determine if a CHMS respondent's medication is a calcium channel blocker.}
+\title{Calcium channel blockers}
 \usage{
 is_calcium_channel_blocker(MEUCATC, NPI_25B)
 }

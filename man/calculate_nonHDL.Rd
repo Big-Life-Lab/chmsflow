@@ -2,7 +2,7 @@
 % Please edit documentation in R/cholesterol-and-obesity.R
 \name{calculate_nonHDL}
 \alias{calculate_nonHDL}
-\title{Calculate Non-HDL Cholesterol Level}
+\title{Non-HDL cholesterol level}
 \usage{
 calculate_nonHDL(LAB_CHOL, LAB_HDL)
 }

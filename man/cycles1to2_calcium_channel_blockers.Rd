@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_calcium_channel_blockers}
 \alias{cycles1to2_calcium_channel_blockers}
-\title{Determine if a person is taking calcium channel blockers in CHMS cycles 1 to 2.}
+\title{Calcium channel blockers - cycles 1-2}
 \usage{
 cycles1to2_calcium_channel_blockers(
   atc_101a = NULL,

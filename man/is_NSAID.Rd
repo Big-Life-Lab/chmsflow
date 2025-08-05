@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_NSAID}
 \alias{is_NSAID}
-\title{Determine if a CHMS respondent's medication is a non-steroidal anti-inflammatory drug (NSAID).}
+\title{Non-steroidal anti-inflammatory drugs (NSAIDs)}
 \usage{
 is_NSAID(MEUCATC, NPI_25B)
 }

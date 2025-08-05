@@ -2,7 +2,7 @@
 % Please edit documentation in R/kidney.R
 \name{calculate_GFR}
 \alias{calculate_GFR}
-\title{Calculate the estimated glomerular filtration rate (GFR) based on serum creatine}
+\title{Estimated glomerular filtration rate (GFR)}
 \usage{
 calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
 }

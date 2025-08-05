@@ -2,7 +2,7 @@
 % Please edit documentation in R/exercise.R
 \name{minperday_to_minperweek}
 \alias{minperday_to_minperweek}
-\title{Convert minutes per day to minutes per week.}
+\title{Minutes per week from minutes per day}
 \usage{
 minperday_to_minperweek(MVPA_min)
 }

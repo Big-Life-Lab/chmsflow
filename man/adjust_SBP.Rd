@@ -2,7 +2,7 @@
 % Please edit documentation in R/blood-pressure.R
 \name{adjust_SBP}
 \alias{adjust_SBP}
-\title{Adjust systolic blood pressure}
+\title{Adjusted systolic blood pressure}
 \usage{
 adjust_SBP(BPMDPBPS)
 }

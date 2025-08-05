@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/Big-Life-Lab/chmsflow/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Big-Life-Lab/chmsflow/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: development](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable-1) [![](https://img.shields.io/cran/v/chmsflow?color=green)](https://CRAN.R-project.org/package=chmsflow) ![](https://img.shields.io/github/v/release/big-life-lab/chmsflow?color=green&label=GitHub) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![](https://cranlogs.r-pkg.org/badges/chmsflow)](https://cran.r-project.org/package=chmsflow) [![R-CMD-check](https://github.com/Big-Life-Lab/chmsflow/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Big-Life-Lab/chmsflow/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_beta_blockers}
 \alias{cycles1to2_beta_blockers}
-\title{Determine if a person is taking beta-blockers in CHMS cycles 1 to 2}
+\title{Beta blockers - cycles 1-2}
 \usage{
 cycles1to2_beta_blockers(
   atc_101a = NULL,
@@ -329,11 +329,11 @@ cycles1to2_beta_blockers(
 5 = More than a month ago, 6 = Never taken}
 }
 \value{
-bbmed, a numeric set to 1 if the person is taking beta-blockers, NA if no information is available, 0 otherwise.
+bbmed, a numeric set to 1 if the person is taking beta blockers, NA if no information is available, 0 otherwise.
 }
 \description{
-This function checks if a given medication for a CHMS respondent belongs to the beta-blocker drug class.
-The specific conditions for identifying a beta-blocker are based on Anatomical Therapeutic Chemical (ATC) codes
+This function checks if a given medication for a CHMS respondent belongs to the beta blocker drug class.
+The specific conditions for identifying a beta blocker are based on Anatomical Therapeutic Chemical (ATC) codes
 and the time when the medication was last taken.
 }
 \seealso{

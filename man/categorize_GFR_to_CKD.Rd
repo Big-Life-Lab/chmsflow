@@ -2,7 +2,7 @@
 % Please edit documentation in R/kidney.R
 \name{categorize_GFR_to_CKD}
 \alias{categorize_GFR_to_CKD}
-\title{Categorize Glomerular Filtration Rate (GFR) to Chronic Kidney Disease (CKD) Stage}
+\title{Chronic kidney disease (CKD) derived variable}
 \usage{
 categorize_GFR_to_CKD(GFR)
 }

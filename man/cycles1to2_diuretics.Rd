@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_diuretics}
 \alias{cycles1to2_diuretics}
-\title{Determine if a person is taking diuretics in CHMS cycles 1 to 2.}
+\title{Diuretics - cycles 1-2}
 \usage{
 cycles1to2_diuretics(
   atc_101a = NULL,

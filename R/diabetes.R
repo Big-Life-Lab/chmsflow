@@ -1,6 +1,6 @@
-#' @title Determine Inclusive Diabetes Status
+#' @title Diabetes derived variable
 #'
-#' @description This function evaluates inclusive diabetes status based on three factors: `diab_m`, `CCC_51`, and `diab_drug2`.
+#' @description This function evaluates diabetes status based on three factors: `diab_m`, `CCC_51`, and `diab_drug2`.
 #'
 #' @param diab_m An integer indicating whether the respondent has diabetes based on HbA1c level. 1 for "Yes", 2 for "No".
 #' @param CCC_51 An integer indicating whether the respondent self-reported diabetes. 1 for "Yes", 2 for "No".

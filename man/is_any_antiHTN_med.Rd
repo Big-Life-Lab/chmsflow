@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_any_antiHTN_med}
 \alias{is_any_antiHTN_med}
-\title{Determine if a CHMS respondent's medication is any anti-hypertensive drug.}
+\title{Any anti-hypertensive medications}
 \usage{
 is_any_antiHTN_med(MEUCATC, NPI_25B)
 }

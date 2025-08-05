@@ -1,4 +1,4 @@
-#' @title Calculate adjusted total household income based on weighted household size.
+#' @title Adjusted total household income
 #'
 #' @description This function calculates the adjusted total household income based on the respondent's income amount
 #'              and actual household size, taking into account the weighted household size.
@@ -58,9 +58,9 @@ calculate_Hhld_Income <- function(THI_01, DHHDHSZ) {
   return(adj_hh_inc)
 }
 
-#' Categorize Household Income
+#' @title Categorical adjusted household income
 #'
-#' This function categorizes individuals' household income based on specified income ranges.
+#' @description This function categorizes individuals' adjusted household income based on specified income ranges.
 #'
 #' @param adj_hh_inc Numeric value representing the adjusted household income.
 #'
@@ -103,9 +103,9 @@ categorize_income <- function(adj_hh_inc) {
   return(incq)
 }
 
-#' Check If in Lowest Income Quintile
+#' @title Lowest income quintile indicator
 #'
-#' This function checks if an individual's income category corresponds to the lowest income quintile.
+#' @description This function checks if an individual's income category corresponds to the lowest income quintile.
 #'
 #' @param incq Categorical value indicating the income category as defined by the categorize_income function.
 #'

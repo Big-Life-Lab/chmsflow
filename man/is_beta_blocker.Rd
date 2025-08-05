@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{is_beta_blocker}
 \alias{is_beta_blocker}
-\title{Determine if a CHMS respondent's medication belongs to the beta blocker class.}
+\title{Beta blockers}
 \usage{
 is_beta_blocker(MEUCATC, NPI_25B)
 }

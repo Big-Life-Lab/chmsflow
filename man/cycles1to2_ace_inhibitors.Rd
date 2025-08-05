@@ -2,7 +2,7 @@
 % Please edit documentation in R/medications.R
 \name{cycles1to2_ace_inhibitors}
 \alias{cycles1to2_ace_inhibitors}
-\title{Determine if a person is taking ACE inhibitors in CHMS cycles 1 to 2.}
+\title{ACE inhibitors - cycles 1-2}
 \usage{
 cycles1to2_ace_inhibitors(
   atc_101a = NULL,
