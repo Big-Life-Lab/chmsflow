@@ -1,6 +1,10 @@
 ---
 title: "Recoding CHMS variables - Getting Started!"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Recoding CHMS variables - Getting Started!}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## 1. Load packages

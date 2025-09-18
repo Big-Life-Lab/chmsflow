@@ -1,8 +1,8 @@
 ---
 title: "missing data (tagged_na)"
-output: html_document
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to use tagged_na}     
+  %\VignetteIndexEntry{missing data (tagged_na)}     
   %\VignetteEngine{knitr::rmarkdown} 
   %\VignetteEncoding{UTF-8}
 ---

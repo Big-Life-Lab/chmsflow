@@ -1,6 +1,10 @@
 ---
 title: "Recoding CHMS medication variables"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Recoding CHMS medication variables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## 1. Load packages
