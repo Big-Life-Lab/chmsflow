@@ -2,11 +2,11 @@ Package: chmsflow
 Type: Package
 Title: Transforming and Harmonizing CHMS Variables
 Version: 0.1.0
-Author: See Authors@R
+Author: Rafidul Islam [aut, cre], Douglas Manuel [aut], Therese Chan [aut]
 Maintainer: Rafidul Islam <raislam@ohri.ca>
 Authors@R: c(
     person("Rafidul", "Islam", email = "raislam@ohri.ca", role = c("aut", "cre")),
-    person("Douglas", "Manuel", email = "dmanuel@ohri.ca", role = c("aut")),    
+    person("Douglas", "Manuel", email = "dmanuel@ohri.ca", role = c("aut"), comment = c(ORCID = "0000-0003-0912-0845")),    
     person("Therese", "Chan", email = "TChan@bruyere.org", role = c("aut")))
 Description: Supporting the use of the Canadian Health Measures Survey (CHMS)
     by transforming variables from each cycle into harmonized, consistent 
