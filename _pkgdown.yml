@@ -23,14 +23,6 @@ navbar:
     get_started:
       text: Getting started
       href: articles/getting_started.html
-    articles:
-      text: Articles
-    reference:
-      text: Reference
-      href: reference/index.html
-    news:
-      text: Changelog
-      href: news/index.html
 
 articles:
 - title: "Getting Started"
