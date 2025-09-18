@@ -1,6 +1,7 @@
 url: https://big-life-lab.github.io/chmsflow/
 destination: docs
 template:
+  bootstrap: 5
   params:
     bootswatch: cosmo
 development:
@@ -21,7 +22,7 @@ navbar:
   components:
     get_started:
       text: Getting started
-      href: articles/getting-started.html
+      href: articles/getting_started.html
     articles:
       text: Articles
       menu:
@@ -31,6 +32,12 @@ navbar:
         href: articles/variable_details.html
       - text: Recoding medications
         href: articles/recoding-medications.html
+      - text: Derived variables
+        href: articles/derived_variables.html
+      - text: How to add variables
+        href: articles/how_to_add_variables.html
+      - text: How to used tagged_na
+        href: articles/tagged_na_usage.html
     reference:
       text: Reference
       href: reference/index.html
@@ -49,7 +56,7 @@ reference:
   - adjust_DBP
   - adjust_SBP
   - calculate_GFR
-  - calculate_Hhld_Income
+  - calculate_hhld_income
   - calculate_WHR
   - calculate_nonHDL
   - categorize_GFR_to_CKD
@@ -64,8 +71,8 @@ reference:
   - cycles1to2_diuretics
   - cycles1to2_nsaid
   - cycles1to2_other_antiHTN_meds
-  - determine_CVD_Family_History
-  - determine_CVD_Personal_History
+  - determine_CVD_family_history
+  - determine_CVD_personal_history
   - determine_adjusted_hypertension
   - determine_controlled_adjusted_hypertension
   - determine_controlled_hypertension
@@ -75,7 +82,7 @@ reference:
   - find_totalFV_cycles1and2
   - find_totalFV_cycles3to6
   - find_week_accelerometer_average
-  - in_lowest_income_qunitle
+  - in_lowest_income_quintile
   - is_NSAID
   - is_ace_inhibitor
   - is_any_antiHTN_med

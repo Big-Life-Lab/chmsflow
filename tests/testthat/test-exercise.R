@@ -39,3 +39,21 @@ test_that("categorize_minperweek handles various thresholds", {
   # Case 3: NA input
   expect_equal(categorize_minperweek(NA), haven::tagged_na("b"))
 })
+
+test_that("find_week_accelerometer_average handles single NA", {
+  expect_equal(find_week_accelerometer_average(30, 40, 25, 35, 20, 45, NA), haven::tagged_na("b"))
+})
+
+test_that("find_week_accelerometer_average handles negative inputs", {
+  expect_equal(find_week_accelerometer_average(30, 40, -25, 35, 20, 45, 50), haven::tagged_na("b"))
+})
+
+test_that("minperday_to_minperweek handles negative inputs", {
+  expect_equal(minperday_to_minperweek(-10), haven::tagged_na("b"))
+})
+
+test_that("categorize_minperweek handles more boundary cases", {
+  expect_equal(categorize_minperweek(150.0001), 1)
+  expect_equal(categorize_minperweek(149.9999), 2)
+  expect_equal(categorize_minperweek(-1), haven::tagged_na("b"))
+})

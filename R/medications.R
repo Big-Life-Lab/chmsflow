@@ -72,21 +72,22 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 
   logger::log_info(paste0("Adding variable '", class_var_name, "' to the data frame."))
 
-  # Initialize the class variable column
-  df[[class_var_name]] <- 0
+  # Apply the condition function to each pair of med and last_taken vars using mapply
+  class_values <- mapply(
+    FUN = function(med_var, last_taken_var) {
+      mapply(class_condition_fun, med_var, last_taken_var)
+    },
+    df[med_vars],
+    df[last_taken_vars],
+    SIMPLIFY = FALSE
+  )
 
-  # Apply the condition function to each pair of med and last_taken vars using a loop
-  for (i in seq_along(med_vars)) {
-    med_values <- df[[med_vars[i]]]
-    last_taken_values <- df[[last_taken_vars[i]]]
-    class_values <- numeric(nrow(df))
+  # Sum the results for each row
+  df[[class_var_name]] <- rowSums(do.call(cbind, class_values), na.rm = TRUE)
 
-    for (j in seq_along(med_values)) {
-      class_values[j] <- class_condition_fun(med_values[j], last_taken_values[j])
-    }
-
-    df[[class_var_name]] <- df[[class_var_name]] + class_values
-  }
+  # Handle cases where all values for a row are NA
+  all_na <- Reduce(`&`, lapply(class_values, is.na))
+  df[[class_var_name]][all_na] <- haven::tagged_na("b")
 
   return(df)
 }
@@ -297,7 +298,7 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
     return(haven::tagged_na("b"))
   }
 
-  as.numeric(grepl("^C0[2, 3, 7, 8, 9]", MEUCATC) && !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) && NPI_25B <= 4)
+  as.numeric(grepl("^(C02|C03|C07|C08|C09)", MEUCATC) && !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) && NPI_25B <= 4)
 }
 
 #' @title Non-steroidal anti-inflammatory drugs (NSAIDs)
@@ -568,7 +569,7 @@ cycles1to2_beta_blockers <- function(
 
   bbmed <- 0
 
-  if (bb$BBmed > 0 %in% TRUE) {
+  if (any(bb$BBmed > 0, na.rm = TRUE)) {
     bbmed <- 1
   } else if (all(is.na(bb$BBmed))) {
     bbmed <- haven::tagged_na("b")
@@ -778,7 +779,7 @@ cycles1to2_ace_inhibitors <- function(
 
   acemed <- 0
 
-  if (ace$ACEmed > 0 %in% TRUE) {
+  if (any(ace$ACEmed > 0, na.rm = TRUE)) {
     acemed <- 1
   } else if (all(is.na(ace$ACEmed))) {
     acemed <- haven::tagged_na("b")
@@ -988,7 +989,7 @@ cycles1to2_diuretics <- function(
 
   diurmed <- 0
 
-  if (diur$DIURmed > 0 %in% TRUE) {
+  if (any(diur$DIURmed > 0, na.rm = TRUE)) {
     diurmed <- 1
   } else if (all(is.na(diur$DIURmed))) {
     diurmed <- haven::tagged_na("b")
@@ -1198,9 +1199,8 @@ cycles1to2_calcium_channel_blockers <- function(
 
   ccbmed <- 0
 
-  if (ccb$CCBmed > 0 %in% TRUE) {
+  if (any(ccb$CCBmed > 0, na.rm = TRUE)) {
     ccbmed <- 1
-    return(ccbmed)
   } else if (all(is.na(ccb$CCBmed))) {
     ccbmed <- haven::tagged_na("b")
   }
@@ -1409,7 +1409,7 @@ cycles1to2_other_antiHTN_meds <- function(
 
   miscmed <- 0
 
-  if (misc$MISCmed > 0 %in% TRUE) {
+  if (any(misc$MISCmed > 0, na.rm = TRUE)) {
     miscmed <- 1
   } else if (all(is.na(misc$MISCmed))) {
     miscmed <- haven::tagged_na("b")
@@ -1619,7 +1619,7 @@ cycles1to2_any_antiHTN_meds <- function(
 
   anymed <- 0
 
-  if (anyHTN$ANYmed > 0 %in% TRUE) {
+  if (any(anyHTN$ANYmed > 0, na.rm = TRUE)) {
     anymed <- 1
   } else if (all(is.na(anyHTN$ANYmed))) {
     anymed <- haven::tagged_na("b")
@@ -1829,7 +1829,7 @@ cycles1to2_nsaid <- function(
 
   nsaid_drug <- 0
 
-  if (nsaid$NSAID > 0 %in% TRUE) {
+  if (any(nsaid$NSAID > 0, na.rm = TRUE)) {
     nsaid_drug <- 1
   } else if (all(is.na(nsaid$NSAID))) {
     nsaid_drug <- haven::tagged_na("b")
@@ -2039,7 +2039,7 @@ cycles1to2_diabetes_drugs <- function(
 
   diab_drug <- 0
 
-  if (diab$diabetes_drug > 0 %in% TRUE) {
+  if (any(diab$diabetes_drug > 0, na.rm = TRUE)) {
     diab_drug <- 1
   } else if (all(is.na(diab$diabetes_drug))) {
     diab_drug <- haven::tagged_na("b")

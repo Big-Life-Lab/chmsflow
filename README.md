@@ -6,6 +6,8 @@
 
 <!-- badges: end -->
 
+# WARNING: NOT RELEASED TO THE PUBLIC AND NOT FOR USE YET
+
 *chmsflow* supports the use of the Canadian Health Measures Survey (CHMS) by transforming variables from each cycle into harmonized, consistent versions that span survey cycles 1-6 (2007 to 2019).
 
 The CHMS is a cross-sectional survey administered by Statistics Canada that collects questionnaire and directly measured health information from community-dwelling individuals aged 3 to 79 living in the 10 provinces. There are approximately 5,700 respondents per cycle. Studies use multiple CHMS cycles to examine trends overtime and increase sample size to examine sub-groups that are too small to examine in a single cycle. CHMS data is not available to the public, but at Research Data Centres (RDCs) managed by Statistics Canada. Information about the survey is found [here](https://www.statcan.gc.ca/en/survey/household/5071), while information about accessing data at the RDC is found [here](https://crdcn.ca/publications-data/access-crdcn-data/).
@@ -85,7 +87,7 @@ Please follow [this guide](https://github.com/Big-Life-Lab/chmsflow/blob/dev/CON
 
 We encourage PRs for additional variable transformations and derived variables that you believe may be helpful to the broad CHMS community.
 
-Currently, *chmsflow* supports R through the `rec_with_table()` function of *recodeflow*. The CHMS community commonly uses SAS, Stata and other statistical packages. Please feel free to contribute to `chmsflow` by making a PR that creates versions of `rec_with_table()` for other statistical and programming languages.
+Currently, *chmsflow* supports R through and wraps around the `rec_with_table()` function of *recodeflow*. The CHMS community commonly uses SAS, Stata and other statistical packages. Please feel free to contribute to `chmsflow` by making a PR that creates versions of `rec_with_table()` for other statistical and programming languages.
 
 ## Statistics Canada Attribution
 

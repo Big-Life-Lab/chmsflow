@@ -2,9 +2,12 @@ Package: chmsflow
 Type: Package
 Title: Transforming and Harmonizing CHMS Variables
 Version: 0.1.0
+Author: See Authors@R
+Maintainer: Rafidul Islam <raislam@ohri.ca>
 Authors@R: c(
     person("Rafidul", "Islam", email = "raislam@ohri.ca", role = c("aut", "cre")),
-    person("Douglas", "Manuel", email = "dmanuel@ohri.ca", role = c("aut")))
+    person("Douglas", "Manuel", email = "dmanuel@ohri.ca", role = c("aut")),    
+    person("Therese", "Chan", email = "TChan@bruyere.org", role = c("aut")))
 Description: Supporting the use of the Canadian Health Measures Survey (CHMS)
     by transforming variables from each cycle into harmonized, consistent 
     versions that span survey cycles 1-6. This package uses rec_with_table(), 
@@ -16,6 +19,7 @@ Depends:
 Imports: haven, logger
 License: MIT + file LICENSE
 URL: https://github.com/Big-Life-Lab/chmsflow, https://big-life-lab.github.io/chmsflow/
+BugReports: https://github.com/Big-Life-Lab/chmsflow/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

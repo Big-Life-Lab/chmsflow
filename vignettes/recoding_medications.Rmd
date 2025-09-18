@@ -1,6 +1,6 @@
 ---
 title: "Recoding CHMS medication variables"
-format: rmarkdown::html_vignette
+output: rmarkdown::html_vignette
 ---
 
 ## 1. Load packages

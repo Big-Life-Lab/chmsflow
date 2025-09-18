@@ -1,13 +1,13 @@
 # test-income.R
-# Test for calculate_Hhld_Income
-test_that("calculate_Hhld_Income works correctly", {
-  expect_equal(calculate_Hhld_Income(50000, 3), 29411.76, tolerance = 1e-2)
-  expect_equal(calculate_Hhld_Income(75000, 2), 53571.43, tolerance = 1e-2)
-  expect_equal(calculate_Hhld_Income(90000, 1), 90000)
-  expect_equal(calculate_Hhld_Income(NA, 3), haven::tagged_na("b")) # Non-response income
-  expect_equal(calculate_Hhld_Income(50000, NA), haven::tagged_na("b")) # Non-response household size
-  expect_equal(calculate_Hhld_Income(NA, 3), haven::tagged_na("b"))
-  expect_equal(calculate_Hhld_Income(50000, NA), haven::tagged_na("b"))
+# Test for calculate_hhld_income
+test_that("calculate_hhld_income works correctly", {
+  expect_equal(calculate_hhld_income(50000, 3), 29411.76, tolerance = 1e-2)
+  expect_equal(calculate_hhld_income(75000, 2), 53571.43, tolerance = 1e-2)
+  expect_equal(calculate_hhld_income(90000, 1), 90000)
+  expect_equal(calculate_hhld_income(NA, 3), haven::tagged_na("b")) # Non-response income
+  expect_equal(calculate_hhld_income(50000, NA), haven::tagged_na("b")) # Non-response household size
+  expect_equal(calculate_hhld_income(NA, 3), haven::tagged_na("b"))
+  expect_equal(calculate_hhld_income(50000, NA), haven::tagged_na("b"))
 })
 
 # Test for categorize_income
@@ -32,9 +32,28 @@ test_that("categorize_income handles boundary cases correctly", {
   expect_equal(categorize_income(70000.01), 5)
 })
 
-# Test for in_lowest_income_qunitle
-test_that("in_lowest_income_qunitle works correctly", {
-  expect_equal(in_lowest_income_qunitle(1), 1) # In the lowest income quintile
-  expect_equal(in_lowest_income_qunitle(3), 2) # Not in the lowest income quintile
-  expect_equal(in_lowest_income_qunitle(NA), haven::tagged_na("b")) # Missing input
+# Test for in_lowest_income_quintile
+test_that("in_lowest_income_quintile works correctly", {
+  expect_equal(in_lowest_income_quintile(1), 1) # In the lowest income quintile
+  expect_equal(in_lowest_income_quintile(3), 2) # Not in the lowest income quintile
+  expect_equal(in_lowest_income_quintile(NA), haven::tagged_na("b")) # Missing input
+})
+
+test_that("calculate_hhld_income handles invalid inputs", {
+  expect_equal(calculate_hhld_income(-100, 3), haven::tagged_na("b"))
+  expect_equal(calculate_hhld_income(50000, -1), haven::tagged_na("b"))
+  expect_equal(calculate_hhld_income(50000, 0), haven::tagged_na("b"))
+})
+
+test_that("categorize_income handles invalid inputs", {
+  expect_equal(categorize_income(-100), haven::tagged_na("b"))
+})
+
+test_that("in_lowest_income_quintile covers all categories", {
+  expect_equal(in_lowest_income_quintile(1), 1)
+  expect_equal(in_lowest_income_quintile(2), 2)
+  expect_equal(in_lowest_income_quintile(3), 2)
+  expect_equal(in_lowest_income_quintile(4), 2)
+  expect_equal(in_lowest_income_quintile(5), 2)
+  expect_equal(in_lowest_income_quintile(haven::tagged_na("b")), haven::tagged_na("b"))
 })

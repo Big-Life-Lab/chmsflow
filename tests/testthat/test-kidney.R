@@ -38,3 +38,35 @@ test_that("categorize_GFR_to_CKD works correctly", {
   expect_equal(categorize_GFR_to_CKD(0), 1)
   expect_equal(categorize_GFR_to_CKD(61), 2)
 })
+
+test_that("calculate_GFR input boundaries are tested", {
+  # LAB_BCRE boundaries
+  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 14, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30)))
+  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 785, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30)))
+  expect_equal(calculate_GFR(LAB_BCRE = 13, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
+  expect_equal(calculate_GFR(LAB_BCRE = 786, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
+
+  # CLC_SEX boundaries
+  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30)))
+  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 30)))
+  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 0, CLC_AGE = 30), haven::tagged_na("b"))
+  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 3, CLC_AGE = 30), haven::tagged_na("b"))
+
+  # PGDCGT boundaries
+  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30)))
+  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 13, CLC_SEX = 1, CLC_AGE = 30)))
+  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 0, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
+  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 14, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
+
+  # CLC_AGE boundaries
+  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 3)))
+  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 79)))
+  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 2), haven::tagged_na("b"))
+  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 80), haven::tagged_na("b"))
+})
+
+test_that("categorize_GFR_to_CKD handles more boundary cases", {
+  expect_equal(categorize_GFR_to_CKD(60.0001), 2)
+  expect_equal(categorize_GFR_to_CKD(59.9999), 1)
+  expect_equal(categorize_GFR_to_CKD(-1), haven::tagged_na("b"))
+})

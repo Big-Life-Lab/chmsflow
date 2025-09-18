@@ -1,4 +1,4 @@
-# test-income.R
+# test-diet.R
 # Test for find_totalFV_cycles1and2
 test_that("find_totalFV_cycles1and2 calculates average daily FV consumption correctly", {
   # Normal cases
@@ -63,4 +63,16 @@ test_that("determine_gooddiet categorizes diet correctly", {
 
   # Missing input
   expect_equal(determine_gooddiet(NA), haven::tagged_na("b"))
+})
+
+test_that("find_totalFV_cycles1and2 handles negative inputs", {
+  expect_equal(find_totalFV_cycles1and2(-10, 150, 200, 100, 80, 120, 90), haven::tagged_na("b"))
+})
+
+test_that("find_totalFV_cycles3to6 handles negative inputs", {
+  expect_equal(find_totalFV_cycles3to6(-10, 100, 150, 80, 40, 200, 100, 80, 60, 120, 90), haven::tagged_na("b"))
+})
+
+test_that("determine_gooddiet handles negative inputs", {
+  expect_equal(determine_gooddiet(-1), haven::tagged_na("b"))
 })

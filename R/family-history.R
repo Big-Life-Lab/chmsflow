@@ -17,11 +17,11 @@
 #' @examples
 #'
 #' # Determine CVD personal history for a person with heart disease (CCC_61 = 1).
-#' determine_CVD_Personal_History(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
+#' determine_CVD_personal_history(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
 #' # Output: 1 (CVD personal history is "Yes" as heart disease is present).
 #'
 #' @export
-determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
+determine_CVD_personal_history <- function(CCC_61, CCC_63, CCC_81) {
   cardiov <- haven::tagged_na("b")
 
   if (is.na(CCC_61) && is.na(CCC_63) && is.na(CCC_81)) {
@@ -64,11 +64,11 @@ determine_CVD_Personal_History <- function(CCC_61, CCC_63, CCC_81) {
 #'
 #' @examples
 #' # Example 1: Premature CVD due to heart disease diagnosis at age 50
-#' determine_CVD_Family_History(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
+#' determine_CVD_family_history(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
 #' # Output: 1
 #'
 #' @export
-determine_CVD_Family_History <- function(FMH_11, FMH_12, FMH_13, FMH_14) {
+determine_CVD_family_history <- function(FMH_11, FMH_12, FMH_13, FMH_14) {
   famheart60 <- 0
   famstroke60 <- 0
   famCVD60 <- haven::tagged_na("b")

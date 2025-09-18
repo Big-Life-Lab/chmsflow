@@ -1,8 +1,13 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://big-life-lab.github.io/chmsflow/404.html</loc></url>
+<url><loc>https://big-life-lab.github.io/chmsflow/articles/derived_variables.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/articles/getting-started.html</loc></url>
+<url><loc>https://big-life-lab.github.io/chmsflow/articles/getting_started.html</loc></url>
+<url><loc>https://big-life-lab.github.io/chmsflow/articles/how_to_add_variables.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/articles/index.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/articles/recoding-medications.html</loc></url>
+<url><loc>https://big-life-lab.github.io/chmsflow/articles/recoding_medications.html</loc></url>
+<url><loc>https://big-life-lab.github.io/chmsflow/articles/tagged_na_usage.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/articles/variable_details.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/authors.html</loc></url>
@@ -47,6 +52,7 @@
 <url><loc>https://big-life-lab.github.io/chmsflow/reference/find_totalFV_cycles3to6.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/reference/find_week_accelerometer_average.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/reference/index.html</loc></url>
+<url><loc>https://big-life-lab.github.io/chmsflow/reference/in_lowest_income_quintile.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/reference/in_lowest_income_qunitle.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/reference/is_ace_inhibitor.html</loc></url>
 <url><loc>https://big-life-lab.github.io/chmsflow/reference/is_any_antiHTN_med.html</loc></url>

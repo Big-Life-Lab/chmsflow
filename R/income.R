@@ -20,23 +20,23 @@
 #' @examples
 #'
 #' # Example 1: Respondent with $50,000 income and a household size of 3.
-#' calculate_Hhld_Income(THI_01 = 50000, DHHDHSZ = 3)
+#' calculate_hhld_income(THI_01 = 50000, DHHDHSZ = 3)
 #' # Output: 29411.76
 #'
 #' # Example 2: Respondent with $75000 income and a household size of 2.
-#' calculate_Hhld_Income(THI_01 = 75000, DHHDHSZ = 2)
+#' calculate_hhld_income(THI_01 = 75000, DHHDHSZ = 2)
 #' # Output: 53571.43
 #'
 #' # Example 3: Respondent with $90000 income and a household size of 1.
-#' calculate_Hhld_Income(THI_01 = 90000, DHHDHSZ = 1)
+#' calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
 #' # Output: 90000
 #'
 #' @export
-calculate_Hhld_Income <- function(THI_01, DHHDHSZ) {
+calculate_hhld_income <- function(THI_01, DHHDHSZ) {
   # Step 1 - derive household adjustment based on household size
   hh_size_wt <- 0
 
-  if (is.na(DHHDHSZ) || DHHDHSZ < 0) {
+  if (is.na(DHHDHSZ) || DHHDHSZ <= 0) {
     return(haven::tagged_na("b"))
   }
 
@@ -110,21 +110,21 @@ categorize_income <- function(adj_hh_inc) {
 #' @param incq Categorical value indicating the income category as defined by the categorize_income function.
 #'
 #' @return A categorical value indicating whether the individual is in the lowest income quintile:
-#'   - 1: In the lowest income quartile
-#'   - 2: Not in the lowest income quartile
+#'   - 1: In the lowest income quntile
+#'   - 2: Not in the lowest income quntile
 #'   - NA(b): Missing or invalid input
 #'
 #' @examples
 #' # Example 1: Check if an income category of 3 (between $35,000-50,000) is in the lowest quintile
-#' in_lowest_income_qunitle(3)
+#' in_lowest_income_quintile(3)
 #' # Output: 2
 #'
 #' # Example 2: Check if an income category of 1 (below or equal to $21,500) is in the lowest quintile
-#' in_lowest_income_qunitle(1)
+#' in_lowest_income_quintile(1)
 #' # Output: 1
 #'
 #' @export
-in_lowest_income_qunitle <- function(incq) {
+in_lowest_income_quintile <- function(incq) {
   incq1 <- haven::tagged_na("b")
 
   if (is.na(incq) || (!is.na(incq) && incq == "NA(b)") || incq < 0) {

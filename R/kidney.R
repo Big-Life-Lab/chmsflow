@@ -3,14 +3,13 @@
 #' @description This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
 #'              where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age.
 #'
-#' @param LAB_BCRE Blood creatine (µmol/L). It should be a numeric value.
-#' @param PGDCGT Ethnicity (13 categories). It should be an integer value.
-#' @param CLC_SEX Sex (Male = 1, Female = 2). It should be an integer value.
-#' @param CLC_AGE Age (years). It should be a numeric value.
+#' @param LAB_BCRE Blood creatine (µmol/L). It should be a numeric value between 14 and 785.
+#' @param PGDCGT Ethnicity (13 categories). It should be an integer value between 1 and 13.
+#' @param CLC_SEX Sex (Male = 1, Female = 2). It should be an integer value of either 1 or 2.
+#' @param CLC_AGE Age (years). It should be a numeric value between 3 and 79.
 #'
 #' @return The calculated GFR as a numeric value. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
-#'         are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996), the GFR will be NA(b)
-#'         (Not Available).
+#'         are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996) or out of bounds, the GFR will be NA(b).
 #'
 #' @details The function uses the serum creatine level (LAB_BCRE) in µmol/L to calculate the estimated GFR. First, it
 #'          checks if any of the input parameters are non-response values. If any non-response values are found, the GFR
@@ -42,7 +41,7 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   GFR <- 0
   serumcreat <- 0
 
-  if (any(!LAB_BCRE %in% 0:9995) || (any(!CLC_SEX %in% c(1, 2)) || any(!PGDCGT %in% 1:13)) || any(!CLC_AGE %in% 0:995)) {
+  if (any(!LAB_BCRE %in% 14:785) || (any(!CLC_SEX %in% c(1, 2)) || any(!PGDCGT %in% 1:13)) || any(!CLC_AGE %in% 3:79)) {
     GFR <- haven::tagged_na("b") # GFR is NA if any non-responses found
   } else {
     serumcreat <- LAB_BCRE / 88.4 # Proceeds without non-responses

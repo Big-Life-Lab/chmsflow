@@ -7,18 +7,17 @@
 calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
 }
 \arguments{
-\item{LAB_BCRE}{Blood creatine (µmol/L). It should be a numeric value.}
+\item{LAB_BCRE}{Blood creatine (µmol/L). It should be a numeric value between 14 and 785.}
 
-\item{PGDCGT}{Ethnicity (13 categories). It should be an integer value.}
+\item{PGDCGT}{Ethnicity (13 categories). It should be an integer value between 1 and 13.}
 
-\item{CLC_SEX}{Sex (Male = 1, Female = 2). It should be an integer value.}
+\item{CLC_SEX}{Sex (Male = 1, Female = 2). It should be an integer value of either 1 or 2.}
 
-\item{CLC_AGE}{Age (years). It should be a numeric value.}
+\item{CLC_AGE}{Age (years). It should be a numeric value between 3 and 79.}
 }
 \value{
 The calculated GFR as a numeric value. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
-are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996), the GFR will be NA(b)
-(Not Available).
+are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996) or out of bounds, the GFR will be NA(b).
 }
 \description{
 This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,

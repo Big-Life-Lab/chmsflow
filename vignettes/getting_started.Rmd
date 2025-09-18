@@ -1,6 +1,6 @@
 ---
 title: "Recoding CHMS variables - Getting Started!"
-format: rmarkdown::html_vignette
+output: rmarkdown::html_vignette
 ---
 
 ## 1. Load packages
