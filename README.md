@@ -25,7 +25,7 @@ Imagine you want to use ethnicity for a study that spans all six cycles of the C
 *Calculate a harmonized ethnicity variable for CHMS cycle 3*
 
 ```         
-    # Load synthetic CHMS data - included in chmsflow
+    # Load CHMS dummy data - included in chmsflow
 
     cycle3_ethnicity <- recodeflow::rec_with_table(cycle3, "pgdcgt", variable_details = variable_details)
     
@@ -69,12 +69,12 @@ See below for guide on how to load R packages at RDC:
 1.  `variables.csv` - a list of variables that can be transformed across CHMS surveys.
 2.  `variable_details.csv` - information that describes how the variables are recoded.
 3.  Vignettes - that describe how to use R to transform or generate new derived variables that are listed in `variables.csv`. Transformations are performed using `rec_with_table()`. `variables.csv` and `variable_details.csv`.
-4.  Synthetic CHMS data - `chmsflow` includes synthetic data used for the vignettes and to imitate actual CHMS data housed at the RDC. The synthetic CHMS data is stored in /data as .RData files. They can be read as a package database.
+4.  CHMS dummy data - `chmsflow` includes dummy data used for the vignettes and to imitate actual CHMS data housed at the RDC. The CHMS dummy data is stored in /data as .RData files. They can be read as a package database.
 
 ```         
-# Read synthetic cycle 2 data
+# Read cycle 2 dummy data
 
-synthetic_cycle2_data <- cycle2
+cycle2_dummy_data <- cycle2
 ```
 
 ### Roadmap
@@ -91,6 +91,6 @@ Currently, *chmsflow* supports R through and wraps around the `rec_with_table()`
 
 ## Statistics Canada Attribution
 
-CHMS data used in this library is synthetic in nature and consists of no actual data.
+CHMS dummy data used in this library consists of no actual data.
 
 Adapted from Statistics Canada, Canadian Health Measures Survey Cycles 1-6 (2007 to 2019), accessed June 2023. This does not constitute an endorsement by Statistics Canada of this product.

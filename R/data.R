@@ -38,7 +38,7 @@ NULL
 
 #' CHMS Cycle 2
 #'
-#' This is synthetic data representing the second cycle of the Canadian
+#' This is dummy data representing the second cycle of the Canadian
 #' Health Measures Survey (CHMS). The CHMS survey is conducted by
 #' Statistics Canada.
 #'
@@ -55,7 +55,7 @@ NULL
 
 #' CHMS Cycle 2 Medications
 #'
-#' This synthetic data representing the medication portion of the
+#' This dummy data representing the medication portion of the
 #' second cycle of the Canadian Health Measures Survey (CHMS).
 #' The CHMS survey is conducted by Statistics Canada.
 #'
@@ -72,7 +72,7 @@ NULL
 
 #' CHMS Cycle 3
 #'
-#' This is synthetic data representing the third cycle of the Canadian
+#' This is dummy data representing the third cycle of the Canadian
 #' Health Measures Survey (CHMS). The CHMS survey is conducted by
 #' Statistics Canada.
 #'
@@ -89,7 +89,7 @@ NULL
 
 #' CHMS Cycle 3 Medications
 #'
-#' This synthetic data representing the medication portion of the
+#' This dummy data representing the medication portion of the
 #' third cycle of the Canadian Health Measures Survey (CHMS).
 #' The CHMS survey is conducted by Statistics Canada.
 #'
@@ -106,7 +106,7 @@ NULL
 
 #' CHMS Cycle 4
 #'
-#' This is synthetic data representing the fourth cycle of the Canadian
+#' This is dummy data representing the fourth cycle of the Canadian
 #' Health Measures Survey (CHMS). The CHMS survey is conducted by
 #' Statistics Canada.
 #'
@@ -123,7 +123,7 @@ NULL
 
 #' CHMS Cycle 5
 #'
-#' This is synthetic data representing the fifth cycle of the Canadian
+#' This is dummy data representing the fifth cycle of the Canadian
 #' Health Measures Survey (CHMS). The CHMS survey is conducted by
 #' Statistics Canada.
 #'

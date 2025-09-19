@@ -1,10 +1,6 @@
 ---
 title: "variables.csv"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{variables.csv}     
-  %\VignetteEngine{knitr::rmarkdown} 
-  %\VignetteEncoding{UTF-8}
+format: html
 ---
 
 ```{r setup, include=FALSE}
@@ -23,7 +19,7 @@ Read `variables.csv`
 ```{r Read variables.csv, echo=FALSE, message=FALSE, warning=FALSE}
 library(chmsflow)
 
-cat(
+catalogue(
   "There are", nrow(variables), "variables, grouped in", sum(!duplicated(variables$subject)),
   "subjects and", sum(!duplicated(variables$section)), "sections that are available for
     transformation in CHMS cycles 1-6.", "\n\n"
@@ -31,7 +27,7 @@ cat(
 ```
 
 ```{r, echo=FALSE}
-cat(
+catalogue(
   "You can search for variables in the table below. Try searching for the",
   sum(variables$subject == "Age"), "age variables that are used in the Transform
     CHMS variables vignette. All", sum(variables$subject == "Age"),
@@ -78,5 +74,6 @@ Derived variables follow the same naming conventions as CHMS variables when bein
 ## Contributing or customizing `variables.csv`
 
 We recommend that you copy `variables.csv` with the variables that you use for your project. You can include only the variables that you use for your project, thereby providing a reference for your project. `variables.csv` is a CSV file to allow use `chmsflow` within teams that do not use R or have programming experience. 
+
 
 You can create your own transformed or derived variables by using the chmsflow `variables.csv` as a template. We welcome [issues](https://github.com/Big-Life-Lab/chmsflow/issues) for comments to existing variables in `variables.csv. Also welcomed are PR for new transformations that you feel are helpful for others who use the CCHS data. See [Contributing](https://github.com/Big-Life-Lab/chmsflow/blob/dev/CONTRIBUTING.md).

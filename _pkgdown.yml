@@ -21,14 +21,14 @@ navbar:
     right: github
   components:
     get_started:
-      text: Getting started
-      href: articles/getting_started.html
+      text: Get started
+      href: articles/get_started.html
 
 articles:
-- title: "Getting Started"
+- title: "Get Started"
   desc: "Essential guides to get you started with chmsflow"
   contents:
-  - getting_started
+  - get_started
 - title: "Data Structure Guides"
   desc: "Understanding CHMS data structure and variables"
   contents:
@@ -94,8 +94,8 @@ reference:
   - low_drink_score_fun1
   - minperday_to_minperweek
   - pack_years_fun
-- title: Synthetic CHMS data
-  desc: Synthetic cycle and medication data for select CHMS cycles
+- title: CHMS dummy data
+  desc: Cycle and medication dummy data for select CHMS cycles
   contents:
   - cycle2
   - cycle2_meds
