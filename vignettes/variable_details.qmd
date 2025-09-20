@@ -1,6 +1,10 @@
 ---
 title: "variable_details.csv"
 format: html
+vignette: >
+  %\VignetteIndexEntry{variable_details.csv}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
@@ -166,5 +170,3 @@ The same naming convention applies to derived variables with the exception of tw
 
 2. In **recEnd**, write **Func::** followed with the name of the custom function used to create the derived variable.
 + `Func::derivedFunction`
-
-```

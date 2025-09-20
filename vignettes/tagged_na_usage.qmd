@@ -1,6 +1,10 @@
 ---
 title: "missing data (tagged_na)"
 format: html
+vignette: >
+  %\VignetteIndexEntry{missing data (tagged_na)}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

@@ -1,6 +1,10 @@
 ---
 title: "variables.csv"
 format: html
+vignette: >
+  %\VignetteIndexEntry{variables.csv}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
@@ -19,7 +23,7 @@ Read `variables.csv`
 ```{r Read variables.csv, echo=FALSE, message=FALSE, warning=FALSE}
 library(chmsflow)
 
-catalogue(
+cat(
   "There are", nrow(variables), "variables, grouped in", sum(!duplicated(variables$subject)),
   "subjects and", sum(!duplicated(variables$section)), "sections that are available for
     transformation in CHMS cycles 1-6.", "\n\n"
@@ -27,7 +31,7 @@ catalogue(
 ```
 
 ```{r, echo=FALSE}
-catalogue(
+cat(
   "You can search for variables in the table below. Try searching for the",
   sum(variables$subject == "Age"), "age variables that are used in the Transform
     CHMS variables vignette. All", sum(variables$subject == "Age"),

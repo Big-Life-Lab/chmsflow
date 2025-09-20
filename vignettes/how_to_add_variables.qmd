@@ -1,6 +1,10 @@
 ---
 title: "How to add variables to chmsflow"
 format: html
+vignette: >
+  %\VignetteIndexEntry{How to add variables to chmsflow}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

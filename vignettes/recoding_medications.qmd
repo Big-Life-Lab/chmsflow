@@ -1,6 +1,10 @@
 ---
 title: "Recoding CHMS medication variables"
 format: html
+vignette: >
+  %\VignetteIndexEntry{Recoding CHMS medication variables}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## 1. Load packages

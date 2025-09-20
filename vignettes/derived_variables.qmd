@@ -1,6 +1,10 @@
 ---
 title: "Derived variables"
 format: html
+vignette: >
+  %\VignetteIndexEntry{Derived variables}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
