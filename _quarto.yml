@@ -1,0 +1,13 @@
+project:
+  type: default
+  render: ['*.qmd']
+
+format:
+  html:
+    minimal: true
+    
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
