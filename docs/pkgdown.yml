@@ -3,13 +3,13 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   derived_variables: derived_variables.html
-  getting_started: getting_started.html
+  get_started: get_started.html
   how_to_add_variables: how_to_add_variables.html
   recoding_medications: recoding_medications.html
   tagged_na_usage: tagged_na_usage.html
   variable_details: variable_details.html
   variables_sheet: variables_sheet.html
-last_built: 2025-09-18T14:15Z
+last_built: 2025-09-21T21:28Z
 urls:
   reference: https://big-life-lab.github.io/chmsflow/reference
   article: https://big-life-lab.github.io/chmsflow/articles

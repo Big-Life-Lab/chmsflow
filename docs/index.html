@@ -37,7 +37,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="articles/getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/get_started.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -76,7 +76,7 @@
 </h2>
 <p><code>chmsflow</code> creates harmonized variables (where possible) between CHMS cycles. Searching ethnicity in <code>variables.csv</code> shows <code>pgdcgt</code> collects ethnicity across all cycles for all respondents.</p>
 <p><em>Calculate a harmonized ethnicity variable for CHMS cycle 3</em></p>
-<pre><code><span>    <span class="co"># Load synthetic CHMS data - included in chmsflow</span></span>
+<pre><code><span>    <span class="co"># Load CHMS dummy data - included in chmsflow</span></span>
 <span></span>
 <span>    <span class="va">cycle3_ethnicity</span> <span class="op">&lt;-</span> <span class="fu">recodeflow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle3</span>, <span class="st">"pgdcgt"</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span>
 <span>    </span></code></pre>
@@ -114,11 +114,11 @@ NOTE for pgdcgt: Respondents who respond as indigenous to previous question are 
 <li>
 <code>variable_details.csv</code> - information that describes how the variables are recoded.</li>
 <li>Vignettes - that describe how to use R to transform or generate new derived variables that are listed in <code>variables.csv</code>. Transformations are performed using <code>rec_with_table()</code>. <code>variables.csv</code> and <code>variable_details.csv</code>.</li>
-<li>Synthetic CHMS data - <code>chmsflow</code> includes synthetic data used for the vignettes and to imitate actual CHMS data housed at the RDC. The synthetic CHMS data is stored in /data as .RData files. They can be read as a package database.</li>
+<li>CHMS dummy data - <code>chmsflow</code> includes dummy data used for the vignettes and to imitate actual CHMS data housed at the RDC. The CHMS dummy data is stored in /data as .RData files. They can be read as a package database.</li>
 </ol>
-<pre><code><span><span class="co"># Read synthetic cycle 2 data</span></span>
+<pre><code><span><span class="co"># Read cycle 2 dummy data</span></span>
 <span></span>
-<span><span class="va">synthetic_cycle2_data</span> <span class="op">&lt;-</span> <span class="va">cycle2</span></span></code></pre>
+<span><span class="va">cycle2_dummy_data</span> <span class="op">&lt;-</span> <span class="va">cycle2</span></span></code></pre>
 <div class="section level3">
 <h3 id="roadmap">Roadmap<a class="anchor" aria-label="anchor" href="#roadmap"></a>
 </h3>
@@ -135,7 +135,7 @@ NOTE for pgdcgt: Respondents who respond as indigenous to previous question are 
 <div class="section level2">
 <h2 id="statistics-canada-attribution">Statistics Canada Attribution<a class="anchor" aria-label="anchor" href="#statistics-canada-attribution"></a>
 </h2>
-<p>CHMS data used in this library is synthetic in nature and consists of no actual data.</p>
+<p>CHMS dummy data used in this library consists of no actual data.</p>
 <p>Adapted from Statistics Canada, Canadian Health Measures Survey Cycles 1-6 (2007 to 2019), accessed June 2023. This does not constitute an endorsement by Statistics Canada of this product.</p>
 </div>
 </div>

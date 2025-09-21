@@ -15,7 +15,10 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Recoding CHMS medication variables">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="recoding_medications_files/libs/quarto-html/popper.min.js"></script><script src="recoding_medications_files/libs/quarto-html/tippy.umd.min.js"></script><link href="recoding_medications_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="recoding_medications_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Recoding CHMS medication variables">
+<meta property="og:image" content="https://big-life-lab.github.io/chmsflow/logo.svg">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -34,7 +37,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/get_started.html">Get started</a></li>
 <li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -46,126 +49,158 @@
 
 
   </div>
-</nav><div class="container template-article">
-
-
-
-
+</nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Recoding CHMS medication variables</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/main/vignettes/recoding_medications.Rmd" class="external-link"><code>vignettes/recoding_medications.Rmd</code></a></small>
-      <div class="d-none name"><code>recoding_medications.Rmd</code></div>
+
+
+
+
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/main/vignettes/recoding_medications.qmd" class="external-link"><code>vignettes/recoding_medications.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<div class="section level2">
-<h2 id="load-packages">1. Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+
+
+
+
+
+    <section class="level2"><h2 id="load-packages">1. Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install release version from CRAN</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"chmsflow"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Install the most recent version from GitHub</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Big-Life-Lab/chmsflow"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/chmsflow" class="external-link">chmsflow</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="recode-medication-variables-for-individual-cycles">2. Recode medication variables for individual cycles<a class="anchor" aria-label="anchor" href="#recode-medication-variables-for-individual-cycles"></a>
+</section><section class="level2"><h2 id="recode-medication-variables-for-individual-cycles">2. Recode medication variables for individual cycles<a class="anchor" aria-label="anchor" href="#recode-medication-variables-for-individual-cycles"></a>
 </h2>
-<p>Medication data object always has to be called “cyclex_meds” in order
-for recoding to work properly, with rest of the data being separated and
-called “cyclex” as stated in recoding-variables.qmd.</p>
-<p>Note that row headers for medication data of cycles 1, 4, and 6 must
-be put to lower case prior to recoding.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>Medication data object always has to be called “cyclex_meds” in order for recoding to work properly, with rest of the data being separated and called “cyclex” as stated in recoding-variables.qmd.</p>
+<p>Note that row headers for medication data of cycles 1, 4, and 6 must be put to lower case prior to recoding.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load recodeflow and dplyr</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/recodeflow" class="external-link">recodeflow</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'dplyr'</span></span></code></pre>
-<pre><code><span><span class="co">## The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     filter, lag</span></span></code></pre>
-<pre><code><span><span class="co">## The following objects are masked from 'package:base':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     intersect, setdiff, setequal, union</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Recoding basic variables from cycles 1 and 3</span></span>
 <span><span class="va">cycle2_medication_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle2_meds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clinicid"</span>, <span class="st">"atc_101a"</span>, <span class="st">"mhr_101b"</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using the passed data variable name as database_name</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in recode_call(variables = variables, data = data, database_name =</span></span>
-<span><span class="co">## database_name, : is missing from variable details therefore cannot be recoded</span></span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stderr">
+<pre><code>Using the passed data variable name as database_name</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
+database_name, : is missing from variable details therefore cannot be recoded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle2_medication_data</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   atc_101a clinicid mhr_101b</span></span>
-<span><span class="co">## 1  C07AA05        1        2</span></span>
-<span><span class="co">## 2  C09AA06        2        3</span></span>
-<span><span class="co">## 3  C08CA01        3        1</span></span>
-<span><span class="co">## 4  A10BC02        4        3</span></span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stdout">
+<pre><code>  atc_101a clinicid mhr_101b
+1  C07AA05        1        2
+2  C09AA06        2        3
+3  C08CA01        3        1
+4  A10BC02        4        3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cycle3_medication_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle3_meds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clinicid"</span>, <span class="st">"meucatc"</span>, <span class="st">"npi_25b"</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using the passed data variable name as database_name</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in recode_call(variables = variables, data = data, database_name =</span></span>
-<span><span class="co">## database_name, : is missing from variable details therefore cannot be recoded</span></span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stderr">
+<pre><code>Using the passed data variable name as database_name</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
+database_name, : is missing from variable details therefore cannot be recoded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle3_medication_data</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   clinicid meucatc npi_25b</span></span>
-<span><span class="co">## 1        1 C07AA05       2</span></span>
-<span><span class="co">## 2        1 C09AA06       3</span></span>
-<span><span class="co">## 3        1 C08CA01       1</span></span>
-<span><span class="co">## 4        1 A10BC02       3</span></span>
-<span><span class="co">## 5        1 C07AA05       2</span></span>
-<span><span class="co">## 6        1 C09AA06       3</span></span></code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stdout">
+<pre><code>  clinicid meucatc npi_25b
+1        1 C07AA05       2
+2        1 C09AA06       3
+3        1 C08CA01       1
+4        1 A10BC02       3
+5        1 C07AA05       2
+6        1 C09AA06       3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Recoding derived variable acemed for cycle2. Select vars by role used to avoid writing all med variables in one line</span></span>
 <span><span class="va">cycle2_ace_medication_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle2_meds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clinicid"</span>, <span class="st">"acemed"</span>, <span class="fu">recodeflow</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/select_vars_by_role.html" class="external-link">select_vars_by_role</a></span><span class="op">(</span><span class="st">"Drugs"</span>, <span class="va">variables</span><span class="op">)</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using the passed data variable name as database_name</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in recode_call(variables = variables, data = data, database_name =</span></span>
-<span><span class="co">## database_name, : is missing from variable details therefore cannot be recoded</span></span></code></pre>
-<pre><code><span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'ACEmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'ACEmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'ACEmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'ACEmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'ANYmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'ANYmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'ANYmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'ANYmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'diabetes_drug' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'diabetes_drug' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'diabetes_drug' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:06] Adding variable 'diabetes_drug' to the data frame.</span></span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stderr">
+<pre><code>Using the passed data variable name as database_name</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
+database_name, : is missing from variable details therefore cannot be recoded</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>INFO [2025-09-21 21:29:17] Adding variable 'ACEmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ACEmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ACEmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ACEmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ANYmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ANYmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ANYmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ANYmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'diabetes_drug' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'diabetes_drug' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'diabetes_drug' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'diabetes_drug' to the data frame.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">cycle2_ace_medication_data</span>, <span class="va">clinicid</span>, <span class="va">acemed</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   clinicid acemed</span></span>
-<span><span class="co">## 1        1      1</span></span>
-<span><span class="co">## 2        2      1</span></span>
-<span><span class="co">## 3        3      1</span></span>
-<span><span class="co">## 4        4      0</span></span></code></pre>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stdout">
+<pre><code>  clinicid acemed
+1        1      1
+2        2      1
+3        3      1
+4        4      0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Recoding derived variable acemed for cycle3. Much simpler function used here.</span></span>
 <span><span class="va">cycle3_ace_medication_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle3_meds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clinicid"</span>, <span class="st">"meucatc"</span>, <span class="st">"npi_25b"</span>, <span class="st">"acemed"</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using the passed data variable name as database_name</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in recode_call(variables = variables, data = data, database_name =</span></span>
-<span><span class="co">## database_name, : is missing from variable details therefore cannot be recoded</span></span></code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle3_ace_medication_data</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   clinicid meucatc npi_25b acemed</span></span>
-<span><span class="co">## 1        1 C07AA05       2      0</span></span>
-<span><span class="co">## 2        1 C09AA06       3      1</span></span>
-<span><span class="co">## 3        1 C08CA01       1      0</span></span>
-<span><span class="co">## 4        1 A10BC02       3      0</span></span>
-<span><span class="co">## 5        1 C07AA05       2      0</span></span>
-<span><span class="co">## 6        1 C09AA06       3      1</span></span></code></pre>
+<div class="cell-output cell-output-stderr">
+<pre><code>Using the passed data variable name as database_name</code></pre>
 </div>
-<div class="section level2">
-<h2 id="merge-recoded-medication-data-from-different-cycles">3. Merge recoded medication data from different cycles<a class="anchor" aria-label="anchor" href="#merge-recoded-medication-data-from-different-cycles"></a>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
+database_name, : is missing from variable details therefore cannot be recoded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle3_ace_medication_data</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  clinicid meucatc npi_25b acemed
+1        1 C07AA05       2      0
+2        1 C09AA06       3      1
+3        1 C08CA01       1      0
+4        1 A10BC02       3      0
+5        1 C07AA05       2      0
+6        1 C09AA06       3      1</code></pre>
+</div>
+</div>
+</section><section class="level2"><h2 id="merge-recoded-medication-data-from-different-cycles">3. Merge recoded medication data from different cycles<a class="anchor" aria-label="anchor" href="#merge-recoded-medication-data-from-different-cycles"></a>
 </h2>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Aggregating recoded cycle3 data by clinicid</span></span>
 <span><span class="va">cycle3_ace_medication_data</span> <span class="op">&lt;-</span> <span class="va">cycle3_ace_medication_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">clinicid</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -175,14 +210,16 @@ be put to lower case prior to recoding.</p>
 <span>    acemed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">acemed</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># Find maximum of acemed</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle3_ace_medication_data</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 4</span></span></span>
-<span><span class="co">##   clinicid meucatc                            npi_25b acemed</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>        1 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>        2 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>        3 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>        4 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</span></span></code></pre>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  clinicid meucatc                            npi_25b acemed
+     &lt;dbl&gt; &lt;chr&gt;                              &lt;chr&gt;    &lt;dbl&gt;
+1        1 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1
+2        2 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1
+3        3 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1
+4        4 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># De-factorizing acemed variable in recoded cycle2 data</span></span>
 <span><span class="va">cycle2_ace_medication_data</span><span class="op">$</span><span class="va">acemed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cycle2_ace_medication_data</span><span class="op">$</span><span class="va">acemed</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -193,85 +230,90 @@ be put to lower case prior to recoding.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>acemed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="va">acemed.x</span>, <span class="va">acemed.y</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">acemed.x</span>, <span class="va">acemed.y</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycles2and3_ace_medication_data</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   clinicid atc_101a atc_102a atc_103a atc_104a atc_105a atc_106a atc_107a</span></span>
-<span><span class="co">## 1        1  C07AA05  A01AB05  C02CC07  C03CA01  C09AA04  C09AA04  C09AA04</span></span>
-<span><span class="co">## 2        2  C09AA06  C09AA02  C08CA06  C03CA01  C07AB02  C07AB02  C07AB02</span></span>
-<span><span class="co">## 3        3  C08CA01  C07AB02  C07AB07  C09AA04  C08CA02  C08CA02  C08CA02</span></span>
-<span><span class="co">## 4        4  A10BC02  C03AA03  C07AB03  C08CA02  A10BD05  A10BD05  A10BD05</span></span>
-<span><span class="co">##   atc_108a atc_109a atc_110a atc_111a atc_112a atc_113a atc_114a atc_115a</span></span>
-<span><span class="co">## 1  C09AA04  C09AA04  C09AA04  C09AA04  C09AA04  C09AA04  C09AA04  C09AA04</span></span>
-<span><span class="co">## 2  C07AB02  C07AB02  C07AB02  C07AB02  C07AB02  C07AB02  C07AB02  C07AB02</span></span>
-<span><span class="co">## 3  C08CA02  C08CA02  C08CA02  C08CA02  C08CA02  C08CA02  C08CA02  C08CA02</span></span>
-<span><span class="co">## 4  A10BD05  A10BD05  A10BD05  A10BD05  A10BD05  A10BD05  A10BD05  A10BD05</span></span>
-<span><span class="co">##   atc_131a atc_132a atc_133a atc_134a atc_135a atc_201a atc_202a atc_203a</span></span>
-<span><span class="co">## 1  C07AA05  C03BA08  C03BC02  C02KX01  A01AB05  C03BA08  C07AA05  C03BA08</span></span>
-<span><span class="co">## 2  C09AA06  C07AA07  C08CA01  C02AA05  C09AA02  C07AA07  C09AA06  C07AA07</span></span>
-<span><span class="co">## 3  C08CA01  C07AA12  C07AA05  C07AG02  C07AB02  C07AA12  C08CA01  C07AA12</span></span>
-<span><span class="co">## 4  A10BC02  M01AG02  C07AA06  C07AA06  C03AA03  M01AG02  A10BC02  M01AG02</span></span>
-<span><span class="co">##   atc_204a atc_205a atc_206a atc_207a atc_208a atc_209a atc_210a atc_211a</span></span>
-<span><span class="co">## 1  C03BC02  C02KX01  A01AB05  C02CC07  C03CA01  C09AA04  C09AA04  C09AA04</span></span>
-<span><span class="co">## 2  C08CA01  C02AA05  C09AA02  C08CA06  C03CA01  C07AB02  C07AB02  C07AB02</span></span>
-<span><span class="co">## 3  C07AA05  C07AG02  C07AB02  C07AB07  C09AA04  C08CA02  C08CA02  C08CA02</span></span>
-<span><span class="co">## 4  C07AA06  C07AA06  C03AA03  C07AB03  C08CA02  A10BD05  A10BD05  A10BD05</span></span>
-<span><span class="co">##   atc_212a atc_213a atc_214a atc_215a atc_231a atc_232a atc_233a atc_234a</span></span>
-<span><span class="co">## 1  C09AA04  C09AA04  C09AA04  C09AA04  C02CC07  C03CA01  C09AA04  C09AA04</span></span>
-<span><span class="co">## 2  C07AB02  C07AB02  C07AB02  C07AB02  C08CA06  C03CA01  C07AB02  C07AB02</span></span>
-<span><span class="co">## 3  C08CA02  C08CA02  C08CA02  C08CA02  C07AB07  C09AA04  C08CA02  C08CA02</span></span>
-<span><span class="co">## 4  A10BD05  A10BD05  A10BD05  A10BD05  C07AB03  C08CA02  A10BD05  A10BD05</span></span>
-<span><span class="co">##   atc_235a mhr_101b mhr_102b mhr_103b mhr_104b mhr_105b mhr_106b mhr_107b</span></span>
-<span><span class="co">## 1  C09AA04        2        1        3        1        3        3        3</span></span>
-<span><span class="co">## 2  C07AB02        3        4        2        2        2        2        2</span></span>
-<span><span class="co">## 3  C08CA02        1        3        1        4        1        1        1</span></span>
-<span><span class="co">## 4  A10BD05        3        2        4        3        4        4        4</span></span>
-<span><span class="co">##   mhr_108b mhr_109b mhr_110b mhr_111b mhr_112b mhr_113b mhr_114b mhr_115b</span></span>
-<span><span class="co">## 1        3        3        3        3        3        3        3        3</span></span>
-<span><span class="co">## 2        2        2        2        2        2        2        2        2</span></span>
-<span><span class="co">## 3        1        1        1        1        1        1        1        1</span></span>
-<span><span class="co">## 4        4        4        4        4        4        4        4        4</span></span>
-<span><span class="co">##   mhr_131b mhr_132b mhr_133b mhr_134b mhr_135b mhr_201b mhr_202b mhr_203b</span></span>
-<span><span class="co">## 1        2        3        3        1        1        3        2        3</span></span>
-<span><span class="co">## 2        3        2        1        2        4        2        3        2</span></span>
-<span><span class="co">## 3        1        2        5        3        3        2        1        2</span></span>
-<span><span class="co">## 4        3        3        1        4        2        3        3        3</span></span>
-<span><span class="co">##   mhr_204b mhr_205b mhr_206b mhr_207b mhr_208b mhr_209b mhr_210b mhr_211b</span></span>
-<span><span class="co">## 1        3        1        1        3        1        3        3        3</span></span>
-<span><span class="co">## 2        1        2        4        2        2        2        2        2</span></span>
-<span><span class="co">## 3        5        3        3        1        4        1        1        1</span></span>
-<span><span class="co">## 4        1        4        2        4        3        4        4        4</span></span>
-<span><span class="co">##   mhr_212b mhr_213b mhr_214b mhr_215b mhr_231b mhr_232b mhr_233b mhr_234b</span></span>
-<span><span class="co">## 1        3        3        3        3        3        1        3        3</span></span>
-<span><span class="co">## 2        2        2        2        2        2        2        2        2</span></span>
-<span><span class="co">## 3        1        1        1        1        1        4        1        1</span></span>
-<span><span class="co">## 4        4        4        4        4        4        3        4        4</span></span>
-<span><span class="co">##   mhr_235b anymed diab_drug                            meucatc npi_25b acemed</span></span>
-<span><span class="co">## 1        3      1         0 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</span></span>
-<span><span class="co">## 2        2      1         0 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</span></span>
-<span><span class="co">## 3        1      1         0 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</span></span>
-<span><span class="co">## 4        4      1         1 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</span></span></code></pre>
+<div class="cell-output cell-output-stdout">
+<pre><code>  clinicid atc_101a atc_102a atc_103a atc_104a atc_105a atc_106a atc_107a
+1        1  C07AA05  A01AB05  C02CC07  C03CA01  C09AA04  C09AA04  C09AA04
+2        2  C09AA06  C09AA02  C08CA06  C03CA01  C07AB02  C07AB02  C07AB02
+3        3  C08CA01  C07AB02  C07AB07  C09AA04  C08CA02  C08CA02  C08CA02
+4        4  A10BC02  C03AA03  C07AB03  C08CA02  A10BD05  A10BD05  A10BD05
+  atc_108a atc_109a atc_110a atc_111a atc_112a atc_113a atc_114a atc_115a
+1  C09AA04  C09AA04  C09AA04  C09AA04  C09AA04  C09AA04  C09AA04  C09AA04
+2  C07AB02  C07AB02  C07AB02  C07AB02  C07AB02  C07AB02  C07AB02  C07AB02
+3  C08CA02  C08CA02  C08CA02  C08CA02  C08CA02  C08CA02  C08CA02  C08CA02
+4  A10BD05  A10BD05  A10BD05  A10BD05  A10BD05  A10BD05  A10BD05  A10BD05
+  atc_131a atc_132a atc_133a atc_134a atc_135a atc_201a atc_202a atc_203a
+1  C07AA05  C03BA08  C03BC02  C02KX01  A01AB05  C03BA08  C07AA05  C03BA08
+2  C09AA06  C07AA07  C08CA01  C02AA05  C09AA02  C07AA07  C09AA06  C07AA07
+3  C08CA01  C07AA12  C07AA05  C07AG02  C07AB02  C07AA12  C08CA01  C07AA12
+4  A10BC02  M01AG02  C07AA06  C07AA06  C03AA03  M01AG02  A10BC02  M01AG02
+  atc_204a atc_205a atc_206a atc_207a atc_208a atc_209a atc_210a atc_211a
+1  C03BC02  C02KX01  A01AB05  C02CC07  C03CA01  C09AA04  C09AA04  C09AA04
+2  C08CA01  C02AA05  C09AA02  C08CA06  C03CA01  C07AB02  C07AB02  C07AB02
+3  C07AA05  C07AG02  C07AB02  C07AB07  C09AA04  C08CA02  C08CA02  C08CA02
+4  C07AA06  C07AA06  C03AA03  C07AB03  C08CA02  A10BD05  A10BD05  A10BD05
+  atc_212a atc_213a atc_214a atc_215a atc_231a atc_232a atc_233a atc_234a
+1  C09AA04  C09AA04  C09AA04  C09AA04  C02CC07  C03CA01  C09AA04  C09AA04
+2  C07AB02  C07AB02  C07AB02  C07AB02  C08CA06  C03CA01  C07AB02  C07AB02
+3  C08CA02  C08CA02  C08CA02  C08CA02  C07AB07  C09AA04  C08CA02  C08CA02
+4  A10BD05  A10BD05  A10BD05  A10BD05  C07AB03  C08CA02  A10BD05  A10BD05
+  atc_235a mhr_101b mhr_102b mhr_103b mhr_104b mhr_105b mhr_106b mhr_107b
+1  C09AA04        2        1        3        1        3        3        3
+2  C07AB02        3        4        2        2        2        2        2
+3  C08CA02        1        3        1        4        1        1        1
+4  A10BD05        3        2        4        3        4        4        4
+  mhr_108b mhr_109b mhr_110b mhr_111b mhr_112b mhr_113b mhr_114b mhr_115b
+1        3        3        3        3        3        3        3        3
+2        2        2        2        2        2        2        2        2
+3        1        1        1        1        1        1        1        1
+4        4        4        4        4        4        4        4        4
+  mhr_131b mhr_132b mhr_133b mhr_134b mhr_135b mhr_201b mhr_202b mhr_203b
+1        2        3        3        1        1        3        2        3
+2        3        2        1        2        4        2        3        2
+3        1        2        5        3        3        2        1        2
+4        3        3        1        4        2        3        3        3
+  mhr_204b mhr_205b mhr_206b mhr_207b mhr_208b mhr_209b mhr_210b mhr_211b
+1        3        1        1        3        1        3        3        3
+2        1        2        4        2        2        2        2        2
+3        5        3        3        1        4        1        1        1
+4        1        4        2        4        3        4        4        4
+  mhr_212b mhr_213b mhr_214b mhr_215b mhr_231b mhr_232b mhr_233b mhr_234b
+1        3        3        3        3        3        1        3        3
+2        2        2        2        2        2        2        2        2
+3        1        1        1        1        1        4        1        1
+4        4        4        4        4        4        3        4        4
+  mhr_235b anymed diab_drug                            meucatc npi_25b acemed
+1        3      1         0 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1
+2        2      1         0 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1
+3        1      1         0 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1
+4        4      1         1 C07AA05, C09AA06, C08CA01, A10BC02 2, 3, 1      1</code></pre>
 </div>
-<div class="section level2">
-<h2 id="example-determine-hypertension-status-by-recoding-medications">4. Example: Determine hypertension status by recoding
-medications<a class="anchor" aria-label="anchor" href="#example-determine-hypertension-status-by-recoding-medications"></a>
+</div>
+</section><section class="level2"><h2 id="example-determine-hypertension-status-by-recoding-medications">4. Example: Determine hypertension status by recoding medications<a class="anchor" aria-label="anchor" href="#example-determine-hypertension-status-by-recoding-medications"></a>
 </h2>
-<p>If you need medication variables in your analysis (especially to
-derive other variables), always recode them before recoding other
-variables.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<p>If you need medication variables in your analysis (especially to derive other variables), always recode them before recoding other variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Cycles 1-2</span></span>
 <span><span class="co"># Recode medication variables first - anymed for hypertension and diab_drug for diabetes which is involved in determining hypertension status</span></span>
 <span><span class="va">cycle2_htn_medication_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle2_meds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clinicid"</span>, <span class="fu">recodeflow</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/select_vars_by_role.html" class="external-link">select_vars_by_role</a></span><span class="op">(</span><span class="st">"Drugs"</span>, <span class="va">variables</span><span class="op">)</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using the passed data variable name as database_name</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in recode_call(variables = variables, data = data, database_name =</span></span>
-<span><span class="co">## database_name, : is missing from variable details therefore cannot be recoded</span></span></code></pre>
-<pre><code><span><span class="co">## INFO [2025-09-18 14:16:07] Adding variable 'ANYmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:07] Adding variable 'ANYmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:07] Adding variable 'ANYmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:07] Adding variable 'ANYmed' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:07] Adding variable 'diabetes_drug' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:07] Adding variable 'diabetes_drug' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:07] Adding variable 'diabetes_drug' to the data frame.</span></span>
-<span><span class="co">## INFO [2025-09-18 14:16:07] Adding variable 'diabetes_drug' to the data frame.</span></span></code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stderr">
+<pre><code>Using the passed data variable name as database_name</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
+database_name, : is missing from variable details therefore cannot be recoded</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>INFO [2025-09-21 21:29:17] Adding variable 'ANYmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ANYmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ANYmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'ANYmed' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'diabetes_drug' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'diabetes_drug' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'diabetes_drug' to the data frame.
+INFO [2025-09-21 21:29:17] Adding variable 'diabetes_drug' to the data frame.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create dummy medication variable by duplicating recoded medication variable</span></span>
 <span><span class="va">cycle2_htn_medication_data</span><span class="op">$</span><span class="va">anymed2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cycle2_htn_medication_data</span><span class="op">$</span><span class="va">anymed</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">cycle2_htn_medication_data</span><span class="op">$</span><span class="va">diab_drug2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cycle2_htn_medication_data</span><span class="op">$</span><span class="va">diab_drug</span><span class="op">)</span><span class="op">)</span></span>
@@ -282,35 +324,47 @@ variables.</p>
 <span></span>
 <span><span class="co"># Recode hypertension (and diabetes) status using recoded, dummy medication variables</span></span>
 <span><span class="va">cycle2_htn_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu">recodeflow</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/select_vars_by_role.html" class="external-link">select_vars_by_role</a></span><span class="op">(</span><span class="st">"Test"</span>, <span class="va">variables</span><span class="op">)</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using the passed data variable name as database_name</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in recode_call(variables = variables, data = data, database_name =</span></span>
-<span><span class="co">## database_name, : is missing from variable details therefore cannot be recoded</span></span></code></pre>
-<pre><code><span><span class="co">## NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.</span></span></code></pre>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stderr">
+<pre><code>Using the passed data variable name as database_name</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
+database_name, : is missing from variable details therefore cannot be recoded</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle2_htn_data</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   anymed2 bpmdpbpd bpmdpbps ccc_32 ccc_51 ccc_61 ccc_63 ccc_81 clc_age clc_sex</span></span>
-<span><span class="co">## 1       1       95      140      2      1      2      2      1      20       1</span></span>
-<span><span class="co">## 2       1       85      130      1      2      2      2      2      30       2</span></span>
-<span><span class="co">## 3       1       75      120      1      2      2      2      2      40       1</span></span>
-<span><span class="co">## 4       1       65      110      1      2      2      2      1      50       2</span></span>
-<span><span class="co">##   diab_drug2 diab_m lab_bcre lab_hba1 pgdcgt cardiov      gfr ckd dbp_adj diabx</span></span>
-<span><span class="co">## 1          0      1       20     0.07      1       1 529.3541   2   94.45     1</span></span>
-<span><span class="co">## 2          0      2       30     0.06      1       2 226.5658   2   86.15     2</span></span>
-<span><span class="co">## 3          0      2       40     0.05      1       2 206.6563   2   77.85     2</span></span>
-<span><span class="co">## 4          1  NA(b)       50       NA      2       1 137.0664   2   69.55     1</span></span>
-<span><span class="co">##   sbp_adj highbp14090_adj</span></span>
-<span><span class="co">## 1   141.6               1</span></span>
-<span><span class="co">## 2   132.3               1</span></span>
-<span><span class="co">## 3   123.0               1</span></span>
-<span><span class="co">## 4   113.7               1</span></span></code></pre>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stdout">
+<pre><code>  anymed2 bpmdpbpd bpmdpbps ccc_32 ccc_51 ccc_61 ccc_63 ccc_81 clc_age clc_sex
+1       1       95      140      2      1      2      2      1      20       1
+2       1       85      130      1      2      2      2      2      30       2
+3       1       75      120      1      2      2      2      2      40       1
+4       1       65      110      1      2      2      2      1      50       2
+  diab_drug2 diab_m lab_bcre lab_hba1 pgdcgt cardiov      gfr ckd dbp_adj diabx
+1          0      1       20     0.07      1       1 529.3541   2   94.45     1
+2          0      2       30     0.06      1       2 226.5658   2   86.15     2
+3          0      2       40     0.05      1       2 206.6563   2   77.85     2
+4          1  NA(b)       50       NA      2       1 137.0664   2   69.55     1
+  sbp_adj highbp14090_adj
+1   141.6               1
+2   132.3               1
+3   123.0               1
+4   113.7               1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Cycles 3-6</span></span>
 <span><span class="co"># Recode medication variables first - - anymed for hypertension and diab_drug for diabetes which is involved in determining hypertension status</span></span>
 <span><span class="va">cycle3_htn_medication_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle3_meds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clinicid"</span>, <span class="st">"meucatc"</span>, <span class="st">"npi_25b"</span>, <span class="st">"anymed"</span>, <span class="st">"diab_drug"</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using the passed data variable name as database_name</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in recode_call(variables = variables, data = data, database_name =</span></span>
-<span><span class="co">## database_name, : is missing from variable details therefore cannot be recoded</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="cell-output cell-output-stderr">
+<pre><code>Using the passed data variable name as database_name</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
+database_name, : is missing from variable details therefore cannot be recoded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Aggregating recoded cycle3 data by clinicid</span></span>
 <span><span class="va">cycle3_htn_medication_data</span> <span class="op">&lt;-</span> <span class="va">cycle3_htn_medication_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">clinicid</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -332,32 +386,122 @@ variables.</p>
 <span></span>
 <span><span class="co"># Recode hypertension (and diabetes) status using recoded, dummy medication variables</span></span>
 <span><span class="va">cycle3_htn_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu">recodeflow</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/select_vars_by_role.html" class="external-link">select_vars_by_role</a></span><span class="op">(</span><span class="st">"Test"</span>, <span class="va">variables</span><span class="op">)</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using the passed data variable name as database_name</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in recode_call(variables = variables, data = data, database_name =</span></span>
-<span><span class="co">## database_name, : is missing from variable details therefore cannot be recoded</span></span></code></pre>
-<pre><code><span><span class="co">## NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle3_htn_data</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   anymed2 bpmdpbpd bpmdpbps ccc_32 ccc_51 ccc_61 ccc_63 ccc_81 clc_age clc_sex</span></span>
-<span><span class="co">## 1       1       95      140      2      1      2      2      1      20       1</span></span>
-<span><span class="co">## 2       1       85      130      1      2      2      2      2      30       2</span></span>
-<span><span class="co">## 3       1       75      120      1      2      2      2      2      40       1</span></span>
-<span><span class="co">## 4       1       65      110      1      2      2      2      1      50       2</span></span>
-<span><span class="co">##   diab_drug2 diab_m lab_bcre lab_hba1 pgdcgt cardiov      gfr ckd dbp_adj diabx</span></span>
-<span><span class="co">## 1          1      1       20     0.07      1       1 529.3541   2   94.45     1</span></span>
-<span><span class="co">## 2          1      2       30     0.06      1       2 226.5658   2   86.15     1</span></span>
-<span><span class="co">## 3          1      2       40     0.05      1       2 206.6563   2   77.85     1</span></span>
-<span><span class="co">## 4          1  NA(b)       50       NA      2       1 137.0664   2   69.55     1</span></span>
-<span><span class="co">##   sbp_adj highbp14090_adj</span></span>
-<span><span class="co">## 1   141.6               1</span></span>
-<span><span class="co">## 2   132.3               1</span></span>
-<span><span class="co">## 3   123.0               1</span></span>
-<span><span class="co">## 4   113.7               1</span></span></code></pre>
+<div class="cell-output cell-output-stderr">
+<pre><code>Using the passed data variable name as database_name</code></pre>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
+database_name, : is missing from variable details therefore cannot be recoded</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle3_htn_data</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  anymed2 bpmdpbpd bpmdpbps ccc_32 ccc_51 ccc_61 ccc_63 ccc_81 clc_age clc_sex
+1       1       95      140      2      1      2      2      1      20       1
+2       1       85      130      1      2      2      2      2      30       2
+3       1       75      120      1      2      2      2      2      40       1
+4       1       65      110      1      2      2      2      1      50       2
+  diab_drug2 diab_m lab_bcre lab_hba1 pgdcgt cardiov      gfr ckd dbp_adj diabx
+1          1      1       20     0.07      1       1 529.3541   2   94.45     1
+2          1      2       30     0.06      1       2 226.5658   2   86.15     1
+3          1      2       40     0.05      1       2 206.6563   2   77.85     1
+4          1  NA(b)       50       NA      2       1 137.0664   2   69.55     1
+  sbp_adj highbp14090_adj
+1   141.6               1
+2   132.3               1
+3   123.0               1
+4   113.7               1</code></pre>
+</div>
+</div>
+</section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
-
 
 
     <footer><div class="pkgdown-footer-left">
