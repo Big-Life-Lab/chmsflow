@@ -30,7 +30,9 @@ jobs:
         run: pip install codecov-cli
       
       - name: Run tests and generate coverage report
-        run: covr::covr(filename = "coverage.xml")
+        run: |
+          cov <- covr::package_coverage()
+          covr::to_cobertura(cov, "coverage.xml")
         shell: Rscript {0}
 
       - name: Upload coverage report to Codecov
