@@ -20,7 +20,7 @@ test_that("is_taking_drug_class works correctly", {
     dplyr::case_when(
       is.na(med_code) | is.na(last_taken) ~ 0,
       startsWith(med_code, "C07") & !(med_code %in% c("C07AA07", "C07AA12", "C07AG02")) & last_taken <= 4 ~ 1,
-      TRUE ~ 0
+      .default = 0
     )
   }
 

@@ -76,7 +76,7 @@ categorize_nonHDL <- function(nonHDL) {
     is.na(nonHDL) | nonHDL < 0 ~ haven::tagged_na("b"),
     nonHDL >= 4.3 ~ 1,
     nonHDL < 4.3 ~ 2,
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }
 

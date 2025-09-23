@@ -164,6 +164,6 @@ determine_gooddiet <- function(totalFV) {
     is.na(totalFV) | totalFV < 0 ~ haven::tagged_na("b"),
     totalFV >= 5 ~ 1,
     totalFV < 5 ~ 2,
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }

@@ -95,7 +95,7 @@ pack_years_fun <- function(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK
     SMKDSTY == 5 & SMK_11 == 2 ~ 0.007,
     SMKDSTY == 6 ~ 0,
     SMKDSTY == "NA(a)" ~ haven::tagged_na("a"),
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
   return(pack_years)
 }

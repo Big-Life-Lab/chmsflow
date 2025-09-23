@@ -70,6 +70,6 @@ determine_inclusive_diabetes <- function(diab_m, CCC_51, diab_drug2) {
     is.na(diab_m) & CCC_51 == 2 & diab_drug2 == 0 ~ 2,
     is.na(CCC_51) & diab_m == 2 & diab_drug2 == 0 ~ 2,
     is.na(diab_drug2) & diab_m == 2 & CCC_51 == 2 ~ 2,
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }

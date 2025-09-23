@@ -107,6 +107,6 @@ determine_CVD_family_history <- function(FMH_11, FMH_12, FMH_13, FMH_14) {
     # If both are 0, then no premature CVD
     famheart60 == 0 & famstroke60 == 0 ~ 2,
     # Otherwise, if there are NAs that prevent a clear determination, return NA(b)
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }

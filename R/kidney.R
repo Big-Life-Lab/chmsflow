@@ -68,7 +68,7 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
     CLC_SEX == 2 & PGDCGT != 2 ~ 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (0.742),
     CLC_SEX == 1 & PGDCGT == 2 ~ 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (1.210),
     CLC_SEX == 1 & PGDCGT != 2 ~ 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)),
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 
   return(GFR)
@@ -110,7 +110,7 @@ categorize_GFR_to_CKD <- function(GFR) {
     is.na(GFR) | GFR < 0 ~ haven::tagged_na("b"),
     GFR <= 60 ~ 1,
     GFR > 60 ~ 2,
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
   return(CKD)
 }

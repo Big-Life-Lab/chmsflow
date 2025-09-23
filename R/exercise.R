@@ -130,6 +130,6 @@ categorize_minperweek <- function(minperweek) {
     is.na(minperweek) | minperweek < 0 ~ haven::tagged_na("b"),
     minperweek >= 150 ~ 1,
     minperweek < 150 ~ 2,
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }

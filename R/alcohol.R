@@ -94,7 +94,7 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
     step1 %in% 1:2 ~ 2L,
     step1 %in% 3:4 ~ 3L,
     step1 %in% 5:9 ~ 4L,
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }
 
@@ -178,6 +178,6 @@ low_drink_score_fun1 <- function(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18) {
     step1 == 0 & ALC_11 == 1 ~ 2L,
     step1 %in% c(1, 2) ~ 3L,
     step1 %in% 3:9 ~ 4L,
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }

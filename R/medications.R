@@ -123,7 +123,7 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C07") & !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02")) & NPI_25B <= 4 ~ 1,
-    TRUE ~ 0
+    .default = 0
   )
 }
 
@@ -157,7 +157,7 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C09") & NPI_25B <= 4 ~ 1,
-    TRUE ~ 0
+    .default = 0
   )
 }
 
@@ -191,7 +191,7 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C03") & !(MEUCATC %in% c("C03BA08", "C03CA01")) & NPI_25B <= 4 ~ 1,
-    TRUE ~ 0
+    .default = 0
   )
 }
 
@@ -225,7 +225,7 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C08") & NPI_25B <= 4 ~ 1,
-    TRUE ~ 0
+    .default = 0
   )
 }
 
@@ -259,7 +259,7 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C02") & !(MEUCATC %in% c("C02KX01")) & NPI_25B <= 4 ~ 1,
-    TRUE ~ 0
+    .default = 0
   )
 }
 
@@ -293,7 +293,7 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
     grepl("^(C02|C03|C07|C08|C09)", MEUCATC) & !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) & NPI_25B <= 4 ~ 1,
-    TRUE ~ 0
+    .default = 0
   )
 }
 
@@ -327,7 +327,7 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "M01A") & NPI_25B <= 4 ~ 1,
-    TRUE ~ 0
+    .default = 0
   )
 }
 
@@ -361,7 +361,7 @@ is_diabetes_drug <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "A10") & NPI_25B <= 4 ~ 1,
-    TRUE ~ 0
+    .default = 0
   )
 }
 

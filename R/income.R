@@ -116,7 +116,7 @@ categorize_income <- function(adj_hh_inc) {
     adj_hh_inc > 35000 & adj_hh_inc <= 50000 ~ 3,
     adj_hh_inc > 50000 & adj_hh_inc <= 70000 ~ 4,
     adj_hh_inc > 70000 ~ 5,
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }
 

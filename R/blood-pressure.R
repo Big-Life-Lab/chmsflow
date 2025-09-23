@@ -412,9 +412,9 @@ determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2
     ANYMED2_adjusted == 1 ~ dplyr::case_when(
       highsys140_adj == 1 | highdias90_adj == 1 ~ 2, # Not controlled
       highsys140_adj == 2 & highdias90_adj == 2 ~ 1, # Controlled
-      TRUE ~ haven::tagged_na("b")
+      .default = haven::tagged_na("b")
     ),
     ANYMED2_adjusted != 1 ~ 2, # Not on medication, so not controlled hypertension
-    TRUE ~ haven::tagged_na("b")
+    .default = haven::tagged_na("b")
   )
 }
