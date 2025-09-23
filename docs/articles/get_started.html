@@ -83,7 +83,7 @@
 </section><section class="level2"><h2 id="transform-variables-into-harmonized-versions">2. Transform variables into harmonized versions<a class="anchor" aria-label="anchor" href="#transform-variables-into-harmonized-versions"></a>
 </h2>
 <p>Use <code><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table()</a></code> of recodeflow to transform the variables of a CHMS dataset. Cycle data object always has to be called “cyclex” in order for recoding to work properly.</p>
-<p>At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst’s responsibility to merge their required components in one database named “cyclex”. However, keep medication data separate from the rest of the cycle data (<a href="recoding-medications.html">see here</a>). Note that row headers for cycle 6 must be put to lower case prior to recoding.</p>
+<p>At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst’s responsibility to merge their required components in one database named “cyclex”. However, keep medication data separate from the rest of the cycle data (<a href="recoding_medications.html">see here</a>). Note that row headers for cycle 6 must be put to lower case prior to recoding.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load recodeflow</span></span>
