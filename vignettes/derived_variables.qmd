@@ -1,9 +1,9 @@
 ---
 title: "Derived variables"
-output: rmarkdown::html_vignette
+format: html
 vignette: >
-  %\VignetteIndexEntry{Derived variables}     
-  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteIndexEntry{Derived variables}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 

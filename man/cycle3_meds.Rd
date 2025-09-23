@@ -8,7 +8,7 @@
 \item{cycle3_meds}{a data frame}
 }
 \description{
-This synthetic data representing the medication portion of the
+This dummy data representing the medication portion of the
 third cycle of the Canadian Health Measures Survey (CHMS).
 The CHMS survey is conducted by Statistics Canada.
 }

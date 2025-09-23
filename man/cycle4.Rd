@@ -8,7 +8,7 @@
 \item{cycle4}{a data frame}
 }
 \description{
-This is synthetic data representing the fourth cycle of the Canadian
+This is dummy data representing the fourth cycle of the Canadian
 Health Measures Survey (CHMS). The CHMS survey is conducted by
 Statistics Canada.
 }

@@ -1,9 +1,9 @@
 ---
 title: "How to add variables to chmsflow"
-output: rmarkdown::html_vignette
+format: html
 vignette: >
-  %\VignetteIndexEntry{How to add variables to chmsflow}     
-  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteIndexEntry{How to add variables to chmsflow}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -33,8 +33,8 @@ When adding variables that already exist across CHMS cycles, there are two works
 This example will show how the existing CHMS age variable was developed using `variable_details.csv` and `variables.csv`. **Note** this variable is different from the derived age variable that is also included in _chmsflow_. For this article, a sample `variable_details.csv` & `variables.csv` will be loaded to demonstrate how to add variables.
 
 ```{r}
-variables <- read.csv(file.path(getwd(), "../inst/extdata/variables.csv"))
-variable_details <- read.csv(file.path(getwd(), "../inst/extdata/variable-details.csv"))
+variables <- read.csv(system.file("extdata", "variables.csv", package = "chmsflow"))
+variable_details <- read.csv(system.file("extdata", "variable-details.csv", package = "chmsflow"))
 ```
 
 ### Specifying the variable on `variable_details.csv`

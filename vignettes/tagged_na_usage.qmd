@@ -1,9 +1,9 @@
 ---
 title: "missing data (tagged_na)"
-output: rmarkdown::html_vignette
+format: html
 vignette: >
-  %\VignetteIndexEntry{missing data (tagged_na)}     
-  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteIndexEntry{missing data (tagged_na)}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -89,12 +89,12 @@ identified as having smoked at one point in their lives, but had values of
 pack-years as pack-years cannot be calculated due to missing values.
 
 On the other hand, there are certain derived variables that use variables that
-are applicable to all respondents. For example, [BMI](https://big-life-lab.github.io/chmsflow/reference/bmi_fun.html) uses CHMS
-height and weight variables which are asked to all CHMS respondents. In this
+are applicable to all respondents. For example, [WHR](https://big-life-lab.github.io/chmsflow/reference/calculate_WHR.html) uses CHMS
+height and waist circumference variables which are asked to all CHMS respondents. In this
 scenario, all NA variables would be tagged as `NA(b)` as these variables are
 applicable to everyone, and respondents with NA values would be classified as
 missing. 
 
 When creating deriving variables, it is important to examine the base CHMS
 variables to check for the presence of `NA(a)` and `NA(b)`. This can be done
-by reviewing the [CHMS documentation](https://osf.io/g6d84/).
+by reviewing CHMS documentation.
