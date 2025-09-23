@@ -15,28 +15,28 @@ find_totalFV_cycles1and2(
 )
 }
 \arguments{
-\item{WSDD14Y}{A numeric representing the number of times per year fruit juice was consumed.}
+\item{WSDD14Y}{\link{numeric} A numeric vector representing the number of times per year fruit juice was consumed.}
 
-\item{GFVD17Y}{A numeric representing the number of times per year fruit (excluding juice) was consumed.}
+\item{GFVD17Y}{\link{numeric} A numeric vector representing the number of times per year fruit (excluding juice) was consumed.}
 
-\item{GFVD18Y}{A numeric representing the number of times per year tomato or tomato sauce was consumed.}
+\item{GFVD18Y}{\link{numeric} A numeric vector representing the number of times per year tomato or tomato sauce was consumed.}
 
-\item{GFVD19Y}{A numeric representing the number of times per year lettuce or green leafy salad was consumed.}
+\item{GFVD19Y}{\link{numeric} A numeric vector representing the number of times per year lettuce or green leafy salad was consumed.}
 
-\item{GFVD20Y}{A numeric representing the number of times per year spinach, mustard greens, and cabbage were consumed.}
+\item{GFVD20Y}{\link{numeric} A numeric vector representing the number of times per year spinach, mustard greens, and cabbage were consumed.}
 
-\item{GFVD22Y}{A numeric representing the number of times per year potatoes were consumed.}
+\item{GFVD22Y}{\link{numeric} A numeric vector representing the number of times per year potatoes were consumed.}
 
-\item{GFVD23Y}{A numeric representing the number of times per year other vegetables were consumed.}
+\item{GFVD23Y}{\link{numeric} A numeric vector representing the number of times per year other vegetables were consumed.}
 }
 \value{
-A numeric representing the average times per day fruits and vegetables were consumed in a year.
+\link{numeric} The average times per day fruits and vegetables were consumed in a year.
 }
 \description{
 This function calculates the daily fruit and vegetable consumption in a year for respondent in the Canadian Health Measures
 Survey (CHMS) cycles 1-2. It takes seven parameters, each representing the number of times per year a specific fruit or vegetable item
 was consumed. The function then sums up the consumption frequencies of all these items and divides the total by 365 to
-obtain the average daily consumption of fruits and vegetables in a year.
+obtain the average daily consumption of fruits and vegetables in a year. This function supports vector operations.
 }
 \details{
 The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
@@ -45,7 +45,7 @@ fruits and vegetables in a year. NA(b) is only returned if all the parameters ar
 up being NA.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Calculate average daily fruit and vegetable consumption for a cycle 1-2 respondent.
 # Let's assume the following annual consumption frequencies for each item:
 # WSDD14Y (fruit juice) = 50 times
@@ -61,5 +61,12 @@ find_totalFV_cycles1and2(
   GFVD22Y = 120, GFVD23Y = 90
 )
 # Output: 2.164384
+
+# Vector usage: Multiple respondents
+find_totalFV_cycles1and2(
+  WSDD14Y = c(50, 60), GFVD17Y = c(150, 160), GFVD18Y = c(200, 210), GFVD19Y = c(100, 110),
+  GFVD20Y = c(80, 90), GFVD22Y = c(120, 130), GFVD23Y = c(90, 100)
+)
+# Returns: c(2.164384, 2.356164)
 
 }

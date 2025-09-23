@@ -12,6 +12,22 @@ test_that("find_week_accelerometer_average handles various cases", {
 
   # Case 4: All days are NA
   expect_equal(find_week_accelerometer_average(NA, NA, NA, NA, NA, NA, NA), haven::tagged_na("b"))
+
+  # Vector usage
+  expect_equal(find_week_accelerometer_average(c(30, 20), c(40, 30), c(25, 35), c(35, 45), c(20, 25), c(45, 55), c(50, 60)), c(35, 38.57142857142857), tolerance = 1e-7)
+
+  # Database usage (simulated)
+  df_accel <- data.frame(
+    AMMDMVA1 = c(30, NA),
+    AMMDMVA2 = c(40, NA),
+    AMMDMVA3 = c(25, NA),
+    AMMDMVA4 = c(35, NA),
+    AMMDMVA5 = c(20, NA),
+    AMMDMVA6 = c(45, NA),
+    AMMDMVA7 = c(50, NA)
+  )
+  expected_output_accel <- c(35, haven::tagged_na("b"))
+  expect_equal(df_accel %>% dplyr::mutate(avg_exercise = find_week_accelerometer_average(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7)) %>% dplyr::pull(avg_exercise), expected_output_accel)
 })
 
 # Test minperday_to_minperweek
@@ -24,6 +40,16 @@ test_that("minperday_to_minperweek handles various inputs", {
 
   # Case 3: Zero input
   expect_equal(minperday_to_minperweek(0), 0)
+
+  # Vector usage
+  expect_equal(minperday_to_minperweek(c(35, 40, 20, NA, -10)), c(245, 280, 140, haven::tagged_na("b"), haven::tagged_na("b")))
+
+  # Database usage (simulated)
+  df_minperweek <- data.frame(
+    MVPA_min = c(35, 40, 20, NA, -10)
+  )
+  expected_output_minperweek <- c(245, 280, 140, haven::tagged_na("b"), haven::tagged_na("b"))
+  expect_equal(df_minperweek %>% dplyr::mutate(min_per_week = minperday_to_minperweek(MVPA_min)) %>% dplyr::pull(min_per_week), expected_output_minperweek)
 })
 
 # Test categorize_minperweek
@@ -38,6 +64,16 @@ test_that("categorize_minperweek handles various thresholds", {
 
   # Case 3: NA input
   expect_equal(categorize_minperweek(NA), haven::tagged_na("b"))
+
+  # Vector usage
+  expect_equal(categorize_minperweek(c(180, 120, 150, NA, -1)), c(1, 2, 1, haven::tagged_na("b"), haven::tagged_na("b")))
+
+  # Database usage (simulated)
+  df_cat_minperweek <- data.frame(
+    minperweek = c(180, 120, 150, NA, -1)
+  )
+  expected_output_cat_minperweek <- c(1, 2, 1, haven::tagged_na("b"), haven::tagged_na("b"))
+  expect_equal(df_cat_minperweek %>% dplyr::mutate(pa_category = categorize_minperweek(minperweek)) %>% dplyr::pull(pa_category), expected_output_cat_minperweek)
 })
 
 test_that("find_week_accelerometer_average handles single NA", {

@@ -7,28 +7,37 @@
 determine_CVD_personal_history(CCC_61, CCC_63, CCC_81)
 }
 \arguments{
-\item{CCC_61}{An integer representing the respondent's personal history of heart disease. 1 for "Yes" if the person has
+\item{CCC_61}{\link{integer} An integer representing the respondent's personal history of heart disease. 1 for "Yes" if the person has
 heart disease, 2 for "No" if the person does not have heart disease.}
 
-\item{CCC_63}{An integer representing the respondent's personal history of heart attack. 1 for "Yes" if the person had
+\item{CCC_63}{\link{integer} An integer representing the respondent's personal history of heart attack. 1 for "Yes" if the person had
 a heart attack, 2 for "No" if the person did not have a heart attack.}
 
-\item{CCC_81}{An integer representing the respondent's personal history of stroke. 1 for "Yes" if the person had a stroke,
+\item{CCC_81}{\link{integer} An integer representing the respondent's personal history of stroke. 1 for "Yes" if the person had a stroke,
 2 for "No" if the person did not have a stroke.}
 }
 \value{
-An integer indicating the CVD personal history: 1 for "Yes" if the person had heart disease, heart attack,
+\link{integer} The CVD personal history: 1 for "Yes" if the person had heart disease, heart attack,
 or stroke; 2 for "No" if the person had neither of the conditions; and NA if all the input variables are a
 non-response.
 }
 \description{
 This function determines a respondent's cardiovascular disease (CVD) personal history based on the presence or absence
-of specific conditions related to heart disease, heart attack, and stroke.
+of specific conditions related to heart disease, heart attack, and stroke. This function supports vector operations.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Determine CVD personal history for a person with heart disease (CCC_61 = 1).
 determine_CVD_personal_history(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
 # Output: 1 (CVD personal history is "Yes" as heart disease is present).
+
+# Vector usage: Multiple respondents
+determine_CVD_personal_history(CCC_61 = c(1, 2, 2), CCC_63 = c(2, 1, 2), CCC_81 = c(2, 2, 1))
+# Returns: c(1, 1, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(cvd_personal_history = determine_CVD_personal_history(CCC_61, CCC_63, CCC_81))
 
 }

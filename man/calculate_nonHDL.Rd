@@ -7,12 +7,12 @@
 calculate_nonHDL(LAB_CHOL, LAB_HDL)
 }
 \arguments{
-\item{LAB_CHOL}{A numeric representing a respondent's total cholesterol level in mmol/L.}
+\item{LAB_CHOL}{\link{numeric} A numeric representing a respondent's total cholesterol level in mmol/L.}
 
-\item{LAB_HDL}{A numeric representing a respondent's HDL cholesterol level in mmol/L.}
+\item{LAB_HDL}{\link{numeric} A numeric representing a respondent's HDL cholesterol level in mmol/L.}
 }
 \value{
-A numeric representing the calculated non-HDL cholesterol level (in mmol.L) if both \code{LAB_CHOL} and
+\link{numeric} The calculated non-HDL cholesterol level (in mmol.L) if both \code{LAB_CHOL} and
 \code{LAB_HDL} are below the specified thresholds; otherwise, it returns NA(b) to indicate that the calculation is not applicable.
 }
 \description{
@@ -20,7 +20,7 @@ This function calculates a respondent's non-HDL cholesterol level by subtracting
 from their total cholesterol level. It first checks whether the input values \code{LAB_CHOL} (total cholesterol)
 and \code{LAB_HDL} (HDL cholesterol) are both less than certain thresholds (99.6 mmol/L and 9.96 mmol/L, respectively).
 If both conditions are met, it calculates the non-HDL cholesterol level; otherwise, it sets the non-HDL value to
-NA to indicate that the calculation is not applicable.
+NA to indicate that the calculation is not applicable. This function supports vector operations.
 }
 \details{
 The function calculates the non-HDL cholesterol level by subtracting the HDL cholesterol level from the total cholesterol level.
@@ -29,9 +29,18 @@ If both conditions are met and neither input is missing, the non-HDL cholesterol
 is not met or if either input is missing (NA), the function returns NA(b) to indicate that the calculation is not applicable.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Respondent has total cholesterol of 50 mmol/L and HDL cholesterol of 5 mmol/L.
 calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
 # Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
+
+# Vector usage: Multiple respondents
+calculate_nonHDL(LAB_CHOL = c(50, 60, 70), LAB_HDL = c(5, 10, 15))
+# Returns: c(45, 50, 55)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(non_hdl = calculate_nonHDL(LAB_CHOL, LAB_HDL))
 
 }

@@ -15,59 +15,64 @@ determine_hypertension(
 )
 }
 \arguments{
-\item{BPMDPBPS}{An integer representing the systolic blood pressure measurement of the respondent.}
+\item{BPMDPBPS}{\link{integer} An integer representing the systolic blood pressure measurement of the respondent.}
 
-\item{BPMDPBPD}{An integer representing the diastolic blood pressure measurement of the respondent.}
+\item{BPMDPBPD}{\link{integer} An integer representing the diastolic blood pressure measurement of the respondent.}
 
-\item{ANYMED2}{An integer indicating whether the respondent is on medication for hypertension.
+\item{ANYMED2}{\link{integer} An integer indicating whether the respondent is on medication for hypertension.
 \itemize{
 \item 1: Yes
 \item 0: No
 }}
 
-\item{CCC_32}{An optional integer indicating whether the respondent is actually on medication for hypertension.
+\item{CCC_32}{\link{integer} An optional integer indicating whether the respondent is actually on medication for hypertension.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
 }}
 
-\item{CARDIOV}{An optional integer indicating the presence of cardiovascular disease, affecting medication status.
+\item{CARDIOV}{\link{integer} An optional integer indicating the presence of cardiovascular disease, affecting medication status.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
 }}
 
-\item{DIABX}{An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.
+\item{DIABX}{\link{integer} An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
 }}
 
-\item{CKD}{An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
+\item{CKD}{\link{integer} An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
 }}
 }
 \value{
-An integer representing the hypertension status:
+\link{integer} The hypertension status:
 \itemize{
-\item 1: High blood pressure (BP ≥ 140/90 mmHg (or ≥ 130/80 mmHg if diabetes or CKD) or on hypertension medication)
+\item 1: High blood pressure (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) or on hypertension medication)
 \item 2: Normal blood pressure (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
 \item NA(b): Invalid input or non-response
 }
 }
 \description{
-This function determines the hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
+This function determines the hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage. This function supports vector operations.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example 1: Respondent has systolic BP = 150, diastolic BP = 95, and on medication.
 determine_hypertension(BPMDPBPS = 150, BPMDPBPD = 95, ANYMED2 = 1)
 # Output: 1 (High blood pressure due to systolic BP, diastolic BP, and medication usage).
 
 # Example 2: Respondent has systolic BP = 120, diastolic BP = 80, and not on medication.
-determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 2)
+determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 0)
 # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
+
+# Vector usage: Multiple respondents
+determine_hypertension(BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85), 
+ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1))
+# Returns: c(1, 2, 1)
 
 }

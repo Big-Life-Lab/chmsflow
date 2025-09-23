@@ -7,22 +7,22 @@
 calculate_WHR(HWM_11CM, HWM_14CX)
 }
 \arguments{
-\item{HWM_11CM}{A numeric value representing the height of the respondent in centimeters.}
+\item{HWM_11CM}{\link{numeric} A numeric representing the height of the respondent in centimeters.}
 
-\item{HWM_14CX}{A numeric value representing the waist circumference of the respondent in centimeters.}
+\item{HWM_14CX}{\link{numeric} A numeric representing the waist circumference of the respondent in centimeters.}
 }
 \value{
-A numeric value representing the WHR:
+\link{numeric} The WHR:
 \itemize{
 \item If both \code{HWM_11CM} and \code{HWM_14CX} are provided, the function returns the WHR (waist circumference divided by height).
 \item If either \code{HWM_11CM} or \code{HWM_14CX} is missing, the function returns a tagged NA (\code{NA(b)}) indicating an invalid input or non-response.
 }
 }
 \description{
-This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent.
+This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent. This function supports vector operations.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example 1: Calculate WHR for a respondent with height = 170 cm and waist circumference = 85 cm.
 calculate_WHR(HWM_11CM = 170, HWM_14CX = 85)
 # Output: 0.5 (85/170)
@@ -30,5 +30,14 @@ calculate_WHR(HWM_11CM = 170, HWM_14CX = 85)
 # Example 2: Calculate WHR for a respondent with missing height.
 calculate_WHR(HWM_11CM = NA, HWM_14CX = 85)
 # Output: NA(b)
+
+# Vector usage: Multiple respondents
+calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
+# Returns: c(0.5, 0.5, 0.5)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(whr = calculate_WHR(HWM_11CM, HWM_14CX))
 
 }

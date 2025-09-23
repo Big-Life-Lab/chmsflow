@@ -7,15 +7,15 @@
 adjust_SBP(BPMDPBPS)
 }
 \arguments{
-\item{BPMDPBPS}{A numeric representing the respondent's systolic average blood pressure (in mmHg) across six measurements.}
+\item{BPMDPBPS}{\link{numeric} A numeric representing the respondent's systolic average blood pressure (in mmHg) across six measurements.}
 }
 \value{
-The adjusted systolic blood pressure as a numeric value.
+\link{numeric} The adjusted systolic blood pressure as a numeric.
 }
 \description{
 This function adjusts systolic blood pressure based on the respondent's systolic average blood pressure across
 six measurements. The adjustment is made using specific correction factors. The adjusted systolic blood pressure
-is returned as a numeric value.
+is returned as a numeric value. This function supports vector operations.
 }
 \details{
 The function calculates the adjusted systolic blood pressure (SBP_adj) based on the value of BPMDPBPS. If
@@ -25,9 +25,18 @@ adjusted systolic blood pressure is set to NA(b), indicating that the measuremen
 systolic blood pressure is returned as the final output.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Adjust for a respondent with average systolic blood pressure of 120 mmHg.
 adjust_SBP(BPMDPBPS = 120)
 # Output: 123
+
+# Vector usage: Multiple respondents
+adjust_SBP(BPMDPBPS = c(120, 130, 140))
+# Returns: c(123, 132.3, 141.6)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(sbp_adj = adjust_SBP(BPMDPBPS))
 
 }

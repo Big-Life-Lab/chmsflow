@@ -7,33 +7,27 @@
 low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18)
 }
 \arguments{
-\item{CLC_SEX}{Integer. Respondent's sex (1 = male, 2 = female).}
+\item{CLC_SEX}{\link{integer} Respondent's sex (1 = male, 2 = female).}
 
-\item{ALC_11}{Integer. Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).}
+\item{ALC_11}{\link{integer} Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).}
 
-\item{ALCDWKY}{Integer. Number of standard drinks consumed in a typical week (0–84).}
+\item{ALCDWKY}{\link{integer} Number of standard drinks consumed in a typical week (0–84).}
 
-\item{ALC_17}{Integer. Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).}
+\item{ALC_17}{\link{integer} Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).}
 
-\item{ALC_18}{Integer. Whether the respondent regularly drank more than 12 drinks per week (1 = Yes, 2 = No).}
+\item{ALC_18}{\link{integer} Whether the respondent regularly drank more than 12 drinks per week (1 = Yes, 2 = No).}
 }
 \value{
-An integer score:
-\itemize{
-\item 1 = Never drank
-\item 2 = Low-risk (former or light) drinker
-\item 3 = Moderate drinker (1--2 points)
-\item 4 = Heavy drinker (3--4 points)
-}
+\link{integer} Score: 1 = Never drank, 2 = Low-risk (former or light) drinker, 3 = Moderate drinker (1--2 points), 4 = Heavy drinker (3--4 points).
 If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 Computes a categorical alcohol consumption score based on Canada's Low-Risk Alcohol Drinking Guidelines (Step 1),
 while distinguishing between never, former, light, moderate, and heavy drinkers. The function uses information
-about weekly consumption, past-year use, lifetime drinking, and history of heavy drinking.
+about weekly consumption, past-year use, lifetime drinking, and history of heavy drinking. This function supports vector operations.
 }
 \details{
-\strong{Step 1: Assign points based on weekly alcohol consumption.}
+Step 1: Assign points based on weekly alcohol consumption.
 \itemize{
 \item If the respondent drank in the past year (ALC_11 == 1):
 \itemize{
@@ -45,23 +39,35 @@ about weekly consumption, past-year use, lifetime drinking, and history of heavy
 \item If they did not drink in the past year (ALC_11 == 2): 0 points
 }
 
-\strong{Step 2: Determine the final categorical score.}
+Step 2: Determine the final categorical score.
 \itemize{
 \item If the point score from Step 1 is 0, the final category is determined based on lifetime and past-year drinking habits:
 \itemize{
 \item A score of 1 (Never drinker) is assigned if the respondent either never drank alcohol in their lifetime or is a former drinker who did not regularly consume more than 12 drinks a week.
 \item A score of 2 (Low-risk drinker) is assigned if the respondent drank in the past year (but still scored 0 points) or is a former drinker with a history of regularly consuming more than 12 drinks a week.
 }
-\item If the point score from Step 1 is 1 or 2, the respondent is classified as a \strong{Moderate drinker} (Score = 3).
-\item If the point score from Step 1 is 3 or more, the respondent is classified as a \strong{Heavy drinker} (Score = 4).
+\item If the point score from Step 1 is 1 or 2, the respondent is classified as a Moderate drinker (Score = 3).
+\item If the point score from Step 1 is 3 or more, the respondent is classified as a Heavy drinker (Score = 4).
+If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 }
 \note{
 This function uses only Step 1 of the guidelines, as Step 2 information is unavailable in CHMS.
 }
 \examples{
+# Scalar usage: Single respondent
 # Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
-low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = NA, ALC_18 = 2)
+low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = 1, ALC_18 = 2)
 # Expected output: 2
+
+# Vector usage: Multiple respondents
+low_drink_score_fun1(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), 
+ALCDWKY = c(3, 12, NA), ALC_17 = c(1, 1, 1), ALC_18 = c(2, 2, 1))
+# Returns: c(2, 3, 2)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(low_drink_score1 = low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18))
 
 }

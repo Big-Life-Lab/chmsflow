@@ -1,12 +1,12 @@
 #' @title Adjusted total household income
 #'
 #' @description This function calculates the adjusted total household income based on the respondent's income amount
-#'              and actual household size, taking into account the weighted household size.
+#'              and actual household size, taking into account the weighted household size. This function supports vector operations.
 #'
-#' @param THI_01 A numeric representing the respondent's household income amount in dollars.
-#' @param DHHDHSZ An integer representing the respondent's actual household size in persons.
+#' @param THI_01 [numeric] A numeric representing the respondent's household income amount in dollars.
+#' @param DHHDHSZ [integer] An integer representing the respondent's actual household size in persons.
 #'
-#' @return The calculated adjusted total household income as a numeric value. If any of the input parameters (THI_01,
+#' @return [numeric] The calculated adjusted total household income as a numeric. If any of the input parameters (THI_01,
 #'         DHHDHSZ) are non-response values (THI_01 >= 996, DHHDHSZ >= 996), the adjusted household income will be
 #'         NA(b) (Not Available).
 #'
@@ -18,7 +18,7 @@
 #'          (adj_hh_inc) is returned as the final output.
 #'
 #' @examples
-#'
+#' # Scalar usage: Single respondent
 #' # Example 1: Respondent with $50,000 income and a household size of 3.
 #' calculate_hhld_income(THI_01 = 50000, DHHDHSZ = 3)
 #' # Output: 29411.76
@@ -31,40 +31,44 @@
 #' calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
 #' # Output: 90000
 #'
+#' # Vector usage: Multiple respondents
+#' calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))
+#' # Returns: c(29411.76, 53571.43, 90000)
+#'
+#' # Database usage: Applied to survey datasets
+#' library(dplyr)
+#' # dataset %>%
+#' #   mutate(adj_hh_income = calculate_hhld_income(THI_01, DHHDHSZ))
+#'
 #' @export
 calculate_hhld_income <- function(THI_01, DHHDHSZ) {
-  # Step 1 - derive household adjustment based on household size
-  hh_size_wt <- 0
-
-  if (is.na(DHHDHSZ) || DHHDHSZ <= 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  for (i in 1:DHHDHSZ) {
-    if (i == 1) {
-      hh_size_wt <- hh_size_wt + 1
-    } else if (i == 2) {
-      hh_size_wt <- hh_size_wt + 0.4
-    } else if (i >= 3) {
-      hh_size_wt <- hh_size_wt + 0.3
+  hh_size_wt <- sapply(DHHDHSZ, function(size) {
+    if (is.na(size) || size <= 0) {
+      return(NA)
+    } else if (size == 1) {
+      return(1)
+    } else if (size == 2) {
+      return(1 + 0.4)
+    } else {
+      return(1 + 0.4 + (size - 2) * 0.3)
     }
-  }
+  })
 
-  # Step 2 - Adjust total household income based on household size
   adj_hh_inc <- THI_01 / hh_size_wt
-  if (is.na(adj_hh_inc) || adj_hh_inc < 0) {
-    adj_hh_inc <- haven::tagged_na("b")
-  }
-  return(adj_hh_inc)
+
+  dplyr::case_when(
+    is.na(adj_hh_inc) | adj_hh_inc < 0 ~ haven::tagged_na("b"),
+    TRUE ~ adj_hh_inc
+  )
 }
 
 #' @title Categorical adjusted household income
 #'
-#' @description This function categorizes individuals' adjusted household income based on specified income ranges.
+#' @description This function categorizes individuals' adjusted household income based on specified income ranges. This function supports vector operations.
 #'
-#' @param adj_hh_inc Numeric value representing the adjusted household income.
+#' @param adj_hh_inc [numeric] A numeric representing the adjusted household income.
 #'
-#' @return A categorical value indicating the income category:
+#' @return [integer] The income category:
 #'   - 1: Below or equal to $21,500
 #'   - 2: Above $21,500 and up to $35,000
 #'   - 3: Above $35,000 and up to $50,000
@@ -73,6 +77,7 @@ calculate_hhld_income <- function(THI_01, DHHDHSZ) {
 #'   - NA(b): Missing or invalid input
 #'
 #' @examples
+#' # Scalar usage: Single respondent
 #' # Example 1: Categorize a household income of $25,000
 #' categorize_income(25000)
 #' # Output: 2
@@ -81,40 +86,41 @@ calculate_hhld_income <- function(THI_01, DHHDHSZ) {
 #' categorize_income(45000)
 #' # Output: 3
 #'
+#' # Vector usage: Multiple respondents
+#' categorize_income(c(25000, 45000, 80000))
+#' # Returns: c(2, 3, 5)
+#'
+#' # Database usage: Applied to survey datasets
+#' library(dplyr)
+#' # dataset %>%
+#' #   mutate(income_category = categorize_income(adj_hh_income))
+#'
 #' @export
 categorize_income <- function(adj_hh_inc) {
-  incq <- haven::tagged_na("b")
-
-  if (is.na(adj_hh_inc) || adj_hh_inc < 0) {
-    return(incq)
-  } else {
-    if (adj_hh_inc <= 21500) {
-      incq <- 1
-    } else if (adj_hh_inc > 21500 && adj_hh_inc <= 35000) {
-      incq <- 2
-    } else if (adj_hh_inc > 35000 && adj_hh_inc <= 50000) {
-      incq <- 3
-    } else if (adj_hh_inc > 50000 && adj_hh_inc <= 70000) {
-      incq <- 4
-    } else if (adj_hh_inc > 70000) {
-      incq <- 5
-    }
-  }
-  return(incq)
+  dplyr::case_when(
+    is.na(adj_hh_inc) | adj_hh_inc < 0 ~ haven::tagged_na("b"),
+    adj_hh_inc <= 21500 ~ 1,
+    adj_hh_inc > 21500 & adj_hh_inc <= 35000 ~ 2,
+    adj_hh_inc > 35000 & adj_hh_inc <= 50000 ~ 3,
+    adj_hh_inc > 50000 & adj_hh_inc <= 70000 ~ 4,
+    adj_hh_inc > 70000 ~ 5,
+    TRUE ~ haven::tagged_na("b")
+  )
 }
 
 #' @title Lowest income quintile indicator
 #'
-#' @description This function checks if an individual's income category corresponds to the lowest income quintile.
+#' @description This function checks if an individual's income category corresponds to the lowest income quintile. This function supports vector operations.
 #'
-#' @param incq Categorical value indicating the income category as defined by the categorize_income function.
+#' @param incq [integer] A categorical vector indicating the income category as defined by the categorize_income function.
 #'
-#' @return A categorical value indicating whether the individual is in the lowest income quintile:
+#' @return [integer] Whether the individual is in the lowest income quintile:
 #'   - 1: In the lowest income quntile
 #'   - 2: Not in the lowest income quntile
 #'   - NA(b): Missing or invalid input
 #'
 #' @examples
+#' # Scalar usage: Single respondent
 #' # Example 1: Check if an income category of 3 (between $35,000-50,000) is in the lowest quintile
 #' in_lowest_income_quintile(3)
 #' # Output: 2
@@ -123,18 +129,20 @@ categorize_income <- function(adj_hh_inc) {
 #' in_lowest_income_quintile(1)
 #' # Output: 1
 #'
+#' # Vector usage: Multiple respondents
+#' in_lowest_income_quintile(c(3, 1, 5))
+#' # Returns: c(2, 1, 2)
+#'
+#' # Database usage: Applied to survey datasets
+#' library(dplyr)
+#' # dataset %>%
+#' #   mutate(in_lowest_quintile = in_lowest_income_quintile(income_category))
+#'
 #' @export
 in_lowest_income_quintile <- function(incq) {
-  incq1 <- haven::tagged_na("b")
-
-  if (is.na(incq) || (!is.na(incq) && incq == "NA(b)") || incq < 0) {
-    return(incq1)
-  } else {
-    if (incq == 1) {
-      incq1 <- 1
-    } else {
-      incq1 <- 2
-    }
-  }
-  return(incq1)
+  dplyr::case_when(
+    is.na(incq) | incq < 0 | incq == "NA(b)" ~ haven::tagged_na("b"),
+    incq == 1 ~ 1,
+    TRUE ~ 2
+  )
 }

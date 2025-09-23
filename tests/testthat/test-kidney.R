@@ -19,6 +19,19 @@ test_that("calculate_GFR works correctly", {
 
   # Boundary cases
   expect_equal(calculate_GFR(LAB_BCRE = 0, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
+
+  # Vector usage
+  expect_equal(calculate_GFR(LAB_BCRE = c(80, 70, 90, NA, 14, 785), PGDCGT = c(1, 2, 1, 1, 1, 1), CLC_SEX = c(2, 2, 1, 1, 1, 1), CLC_AGE = c(45, 35, 50, 30, 3, 79)), c(67.27905, 99.94114, 77.474217, haven::tagged_na("b"), 175 * ((14 / 88.4)^(-1.154)) * ((3)^(-0.203)), 175 * ((785 / 88.4)^(-1.154)) * ((79)^(-0.203))), tolerance = 1e-5)
+
+  # Database usage (simulated)
+  df_gfr <- data.frame(
+    LAB_BCRE = c(80, 70, 90, NA, 14, 785),
+    PGDCGT = c(1, 2, 1, 1, 1, 1),
+    CLC_SEX = c(2, 2, 1, 1, 1, 1),
+    CLC_AGE = c(45, 35, 50, 30, 3, 79)
+  )
+  expected_output_gfr <- c(67.27905, 99.94114, 77.47422, haven::tagged_na("b"), 175 * ((14 / 88.4)^(-1.154)) * ((3)^(-0.203)), 175 * ((785 / 88.4)^(-1.154)) * ((79)^(-0.203)))
+  expect_equal(df_gfr %>% dplyr::mutate(gfr = calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)) %>% dplyr::pull(gfr), expected_output_gfr, tolerance = 1e-5)
 })
 
 # Test categorize_GFR_to_CKD
@@ -37,6 +50,16 @@ test_that("categorize_GFR_to_CKD works correctly", {
   # Boundary cases
   expect_equal(categorize_GFR_to_CKD(0), 1)
   expect_equal(categorize_GFR_to_CKD(61), 2)
+
+  # Vector usage
+  expect_equal(categorize_GFR_to_CKD(c(45, 75, 60, NA, -1)), c(1, 2, 1, haven::tagged_na("b"), haven::tagged_na("b")))
+
+  # Database usage (simulated)
+  df_ckd <- data.frame(
+    GFR = c(45, 75, 60, NA, -1)
+  )
+  expected_output_ckd <- c(1, 2, 1, haven::tagged_na("b"), haven::tagged_na("b"))
+  expect_equal(df_ckd %>% dplyr::mutate(ckd = categorize_GFR_to_CKD(GFR)) %>% dplyr::pull(ckd), expected_output_ckd)
 })
 
 test_that("calculate_GFR input boundaries are tested", {

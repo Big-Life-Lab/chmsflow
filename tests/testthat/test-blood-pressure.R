@@ -12,6 +12,16 @@ test_that("adjust_SBP calculates adjusted systolic blood pressure correctly", {
 
   # Case: NA input
   expect_equal(adjust_SBP(NA), haven::tagged_na("b"))
+
+  # Vector usage
+  expect_equal(adjust_SBP(c(120, 130, 140, NA, -5, 996)), c(123, 132.3, 141.6, haven::tagged_na("b"), haven::tagged_na("b"), haven::tagged_na("b")))
+
+  # Database usage (simulated)
+  df_sbp <- data.frame(
+    BPMDPBPS = c(120, 130, 140, NA, -5, 996)
+  )
+  expected_output_sbp <- c(123, 132.3, 141.6, haven::tagged_na("b"), haven::tagged_na("b"), haven::tagged_na("b"))
+  expect_equal(df_sbp %>% dplyr::mutate(sbp_adj = adjust_SBP(BPMDPBPS)) %>% dplyr::pull(sbp_adj), expected_output_sbp)
 })
 
 # Test suite for the adjust_DBP function
@@ -27,6 +37,16 @@ test_that("adjust_DBP calculates adjusted diastolic blood pressure correctly", {
 
   # Case: NA input
   expect_equal(adjust_DBP(NA), haven::tagged_na("b"))
+
+  # Vector usage
+  expect_equal(adjust_DBP(c(80, 90, 100, NA, -5, 996)), c(82, 90.3, 98.6, haven::tagged_na("b"), haven::tagged_na("b"), haven::tagged_na("b")))
+
+  # Database usage (simulated)
+  df_dbp <- data.frame(
+    BPMDPBPD = c(80, 90, 100, NA, -5, 996)
+  )
+  expected_output_dbp <- c(82, 90.3, 98.6, haven::tagged_na("b"), haven::tagged_na("b"), haven::tagged_na("b"))
+  expect_equal(df_dbp %>% dplyr::mutate(dbp_adj = adjust_DBP(BPMDPBPD)) %>% dplyr::pull(dbp_adj), expected_output_dbp)
 })
 
 # Test suite for the determine_hypertension function
@@ -45,6 +65,19 @@ test_that("determine_hypertension identifies hypertension status correctly", {
 
   # Case: Adjusted ANYMED2 due to conditions
   expect_equal(determine_hypertension(120, 80, 1, CCC_32 = 2, CARDIOV = 1), 2)
+
+  # Vector usage
+  expect_equal(determine_hypertension(BPMDPBPS = c(150, 120, 135, NA, 120), BPMDPBPD = c(95, 80, 85, NA, 70), ANYMED2 = c(1, 0, 1, 1, 1), DIABX = c(2, 2, 1, 2, 1)), c(1, 2, 1, 1, 2))
+
+  # Database usage (simulated)
+  df_hyp <- data.frame(
+    BPMDPBPS = c(150, 120, 135, NA, 120),
+    BPMDPBPD = c(95, 80, 85, NA, 70),
+    ANYMED2 = c(1, 0, 1, 1, 1),
+    DIABX = c(2, 2, 1, 2, 1)
+  )
+  expected_output_hyp <- c(1, 2, 1, 1, 2)
+  expect_equal(df_hyp %>% dplyr::mutate(hypertension = determine_hypertension(BPMDPBPS, BPMDPBPD, ANYMED2, DIABX = DIABX)) %>% dplyr::pull(hypertension), expected_output_hyp)
 })
 
 # Test suite for the determine_adjusted_hypertension function
@@ -63,6 +96,22 @@ test_that("determine_adjusted_hypertension identifies adjusted hypertension stat
 
   # Case: Adjusted ANYMED2 due to conditions
   expect_equal(determine_adjusted_hypertension(120, 80, 1, CCC_32 = 2, CARDIOV = 1), 2)
+
+  # Case: User-reported failing case
+  expect_equal(determine_adjusted_hypertension(SBP_adj = 130, DBP_adj = 75, ANYMED2 = 0), 2)
+
+  # Vector usage
+  expect_equal(determine_adjusted_hypertension(SBP_adj = c(150, 120, 135, NA, 120), DBP_adj = c(95, 80, 85, NA, 70), ANYMED2 = c(1, 0, 1, 1, 1), DIABX = c(2, 2, 1, 2, 1)), c(1, 2, 1, 1, 2))
+
+  # Database usage (simulated)
+  df_adj_hyp <- data.frame(
+    SBP_adj = c(150, 120, 135, NA, 120),
+    DBP_adj = c(95, 80, 85, NA, 70),
+    ANYMED2 = c(1, 0, 1, 1, 1),
+    DIABX = c(2, 2, 1, 2, 1)
+  )
+  expected_output_adj_hyp <- c(1, 2, 1, 1, 2)
+  expect_equal(df_adj_hyp %>% dplyr::mutate(hypertension = determine_adjusted_hypertension(SBP_adj, DBP_adj, ANYMED2, DIABX = DIABX)) %>% dplyr::pull(hypertension), expected_output_adj_hyp)
 })
 
 # Test suite for the determine_controlled_hypertension function
@@ -81,6 +130,19 @@ test_that("determine_controlled_hypertension works correctly", {
 
   # Case 5: No Hypertension
   expect_equal(determine_controlled_hypertension(120, 80, 0), 2)
+
+  # Vector usage
+  expect_equal(determine_controlled_hypertension(BPMDPBPS = c(150, 120, 135, NA, 120), BPMDPBPD = c(95, 80, 85, NA, 70), ANYMED2 = c(1, 1, 1, 1, 1), DIABX = c(2, 2, 1, 2, 1)), c(2, 1, 2, haven::tagged_na("b"), 2))
+
+  # Database usage (simulated)
+  df_ctrl_hyp <- data.frame(
+    BPMDPBPS = c(150, 120, 135, NA, 120),
+    BPMDPBPD = c(95, 80, 85, NA, 70),
+    ANYMED2 = c(1, 1, 1, 1, 1),
+    DIABX = c(2, 2, 1, 2, 1)
+  )
+  expected_output_ctrl_hyp <- c(2, 1, 2, haven::tagged_na("b"), 2)
+  expect_equal(df_ctrl_hyp %>% dplyr::mutate(controlled_hypertension = determine_controlled_hypertension(BPMDPBPS, BPMDPBPD, ANYMED2, DIABX = DIABX)) %>% dplyr::pull(controlled_hypertension), expected_output_ctrl_hyp)
 })
 
 # Test suite for the determine_controlled_adjusted_hypertension function
@@ -99,6 +161,19 @@ test_that("determine_controlled_adjusted_hypertension works correctly", {
 
   # Case 5: No Hypertension
   expect_equal(determine_controlled_adjusted_hypertension(122, 80, 0), 2)
+
+  # Vector usage
+  expect_equal(determine_controlled_adjusted_hypertension(SBP_adj = c(150, 120, 135, NA, 120), DBP_adj = c(95, 80, 85, NA, 70), ANYMED2 = c(1, 1, 1, 1, 1), DIABX = c(2, 2, 1, 2, 1)), c(2, 1, 2, haven::tagged_na("b"), 2))
+
+  # Database usage (simulated)
+  df_ctrl_adj_hyp <- data.frame(
+    SBP_adj = c(150, 120, 135, NA, 120),
+    DBP_adj = c(95, 80, 85, NA, 70),
+    ANYMED2 = c(1, 1, 1, 1, 1),
+    DIABX = c(2, 2, 1, 2, 1)
+  )
+  expected_output_ctrl_adj_hyp <- c(2, 1, 2, haven::tagged_na("b"), 2)
+  expect_equal(df_ctrl_adj_hyp %>% dplyr::mutate(controlled_adj_hypertension = determine_controlled_adjusted_hypertension(SBP_adj, DBP_adj, ANYMED2, DIABX = DIABX)) %>% dplyr::pull(controlled_adj_hypertension), expected_output_ctrl_adj_hyp)
 })
 
 # Test suite for boundary cases in determine_hypertension

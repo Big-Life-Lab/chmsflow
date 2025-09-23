@@ -7,10 +7,10 @@
 categorize_GFR_to_CKD(GFR)
 }
 \arguments{
-\item{GFR}{Numeric value representing the glomerular filtration rate.}
+\item{GFR}{\link{numeric} A numeric representing the glomerular filtration rate.}
 }
 \value{
-A categorical value indicating the CKD stage:
+\link{integer} The CKD stage:
 \itemize{
 \item 1: GFR of 60 or below (indicating CKD)
 \item 2: GFR above 60 (not indicating CKD)
@@ -18,9 +18,10 @@ A categorical value indicating the CKD stage:
 }
 }
 \description{
-This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
+This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD). This function supports vector operations.
 }
 \examples{
+# Scalar usage: Single respondent
 # Example 1: Categorize a GFR of 45
 categorize_GFR_to_CKD(45)
 # Output: 1
@@ -28,5 +29,14 @@ categorize_GFR_to_CKD(45)
 # Example 2: Categorize a GFR of 75
 categorize_GFR_to_CKD(75)
 # Output: 2
+
+# Vector usage: Multiple respondents
+categorize_GFR_to_CKD(c(45, 75, 60))
+# Returns: c(1, 2, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(ckd = categorize_GFR_to_CKD(gfr))
 
 }

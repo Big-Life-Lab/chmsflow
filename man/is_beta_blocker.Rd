@@ -7,32 +7,36 @@
 is_beta_blocker(MEUCATC, NPI_25B)
 }
 \arguments{
-\item{MEUCATC}{A character vector representing the Anatomical Therapeutic Chemical (ATC) code of the medication.}
+\item{MEUCATC}{\link{character} ATC code of the medication.}
 
-\item{NPI_25B}{An integer representing the CHMS response for the time when the medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-A numeric, 1 if medication is in the beta blocker class and 0 if it is not.
+\link{numeric} 1 if medication is a beta blocker, 0 otherwise.
 }
 \description{
-This function determines whether a given medication, taken by a CHMS respondent,
-is classified as a beta blocker. The identification is based on Anatomical Therapeutic Chemical (ATC) codes and the
-timing of the last medication intake.
+This function determines whether a given medication is a beta blocker.
+This function now supports vector operations for batch processing.
 }
 \details{
-This function identifies whether a medication is a beta blocker based on their ATC codes, which
-typically start with "C07". Additionally, specific sub-codes 'C07AA07', 'C07AA12', and 'C07AG02' are excluded
-from the beta blocker class. A respondent is classified as taking a beta blocker (return = 1) if the ATC code matches the pattern and is not in the exclusion list, and the
-medication was taken within the last month (NPI_25B <= 4), otherwise the respondent is not taking a beta blocker (return = 0)
+Identifies beta blockers based on ATC codes starting with "C07", excluding specific sub-codes.
 }
 \examples{
+# Scalar usage: Single respondent
+is_beta_blocker("C07AA13", 3)
+# Returns: 1
 
-# Example 1: Medication ATC code is "C07AA13", and it was taken within the last week
-is_beta_blocker("C07AA13", 3) # Should return 1 (TRUE)
+# Vector usage: Multiple respondents
+is_beta_blocker(c("C07AA13", "C07AA07"), c(3, 4))
+# Returns: c(1, 0)
 
-# Example 2: Medication ATC code is "C07AA07" (excluded code), and it was taken within last month
-is_beta_blocker("C07AA07", 4) # Should return 0 (FALSE)
-
+# Database usage: Apply to survey data
+library(dplyr)
+survey_data <- data.frame(
+  MEUCATC = c("C07AA13", "C07AA07", "C01AA05"),
+  NPI_25B = c(3, 4, 2)
+)
+survey_data \%>\%
+  mutate(is_bb = is_beta_blocker(MEUCATC, NPI_25B)) \%>\%
+  select(is_bb)
 }

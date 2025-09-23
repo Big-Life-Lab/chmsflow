@@ -15,28 +15,28 @@ is_taking_drug_class(
 )
 }
 \arguments{
-\item{df}{The data frame containing medication and last taken information.}
+\item{df}{\link{data.frame} The data frame containing medication and last taken information.}
 
-\item{class_var_name}{The name of the new variable representing the drug class.}
+\item{class_var_name}{\link{character} The name of the new variable representing the drug class.}
 
-\item{med_vars}{A character vector containing the names of medication variables in the data frame.}
+\item{med_vars}{\link{character} A character vector containing the names of medication variables in the data frame.}
 
-\item{last_taken_vars}{A character vector containing the names of last taken variables in the data frame.}
+\item{last_taken_vars}{\link{character} A character vector containing the names of last taken variables in the data frame.}
 
-\item{class_condition_fun}{A custom condition function that determines whether a medication belongs to the drug class.
+\item{class_condition_fun}{\link{function} A custom condition function that determines whether a medication belongs to the drug class.
 The function should accept two arguments: med_code (character) and last_taken (numeric).
 It should return an integer, 1 if the medication belongs to the class, 0 otherwise.}
 
-\item{log_level}{The log level for logging messages (default is "INFO").}
+\item{log_level}{\link{character} The log level for logging messages (default is "INFO").}
 
-\item{overwrite}{Logical value indicating whether to overwrite the 'class_var_name' if it already exists in the data frame (default is FALSE).}
+\item{overwrite}{\link{logical} Logical value indicating whether to overwrite the 'class_var_name' if it already exists in the data frame (default is FALSE).}
 }
 \value{
-The input data frame 'df' with an additional column representing the drug class.
+\link{data.frame} The input data frame 'df' with an additional column representing the drug class.
 }
 \description{
-This function calculates the number of occurrences of a specific drug class in the data frame.
-The calculation is based on custom conditions specified by the user.
+This function calculates the number of occurrences of a specific drug class in a data frame.
+The calculation is based on custom conditions specified by the user. This function supports vector operations.
 }
 \details{
 The 'class_condition_fun' is applied to each pair of medication and last taken variables.

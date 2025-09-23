@@ -19,36 +19,36 @@ find_totalFV_cycles3to6(
 )
 }
 \arguments{
-\item{WSDD34Y}{A numeric representing the number of times per year orange or grapefruit juice was consumed.}
+\item{WSDD34Y}{\link{numeric} A numeric vector representing the number of times per year orange or grapefruit juice was consumed.}
 
-\item{WSDD35Y}{A numeric representing the number of times per year other fruit juices were consumed.}
+\item{WSDD35Y}{\link{numeric} A numeric vector representing the number of times per year other fruit juices were consumed.}
 
-\item{GFVD17AY}{A numeric representing the number of times per year citrus fruits were consumed.}
+\item{GFVD17AY}{\link{numeric} A numeric vector representing the number of times per year citrus fruits were consumed.}
 
-\item{GFVD17BY}{A numeric representing the number of times per year strawberries were consumed (in summer).}
+\item{GFVD17BY}{\link{numeric} A numeric vector representing the number of times per year strawberries were consumed (in summer).}
 
-\item{GFVD17CY}{A numeric representing the number of times per year strawberries were consumed (outside summer).}
+\item{GFVD17CY}{\link{numeric} A numeric vector representing the number of times per year strawberries were consumed (outside summer).}
 
-\item{GFVD17DY}{A numeric representing the number of times per year other fruits were consumed.}
+\item{GFVD17DY}{\link{numeric} A numeric vector representing the number of times per year other fruits were consumed.}
 
-\item{GFVD18Y}{A numeric representing the number of times per year tomato or tomato sauce was consumed.}
+\item{GFVD18Y}{\link{numeric} A numeric vector representing the number of times per year tomato or tomato sauce was consumed.}
 
-\item{GFVD19Y}{A numeric representing the number of times per year lettuce or green leafy salad was consumed.}
+\item{GFVD19Y}{\link{numeric} A numeric vector representing the number of times per year lettuce or green leafy salad was consumed.}
 
-\item{GFVD20Y}{A numeric representing the number of times per year spinach, mustard greens, and cabbage were consumed.}
+\item{GFVD20Y}{\link{numeric} A numeric vector representing the number of times per year spinach, mustard greens, and cabbage were consumed.}
 
-\item{GFVD22Y}{A numeric representing the number of times per year potatoes were consumed.}
+\item{GFVD22Y}{\link{numeric} A numeric vector representing the number of times per year potatoes were consumed.}
 
-\item{GFVD23Y}{A numeric representing the number of times per year other vegetables were consumed.}
+\item{GFVD23Y}{\link{numeric} A numeric vector representing the number of times per year other vegetables were consumed.}
 }
 \value{
-A numeric representing the average times per day fruits and vegetables were consumed in a year.
+\link{numeric} The average times per day fruits and vegetables were consumed in a year.
 }
 \description{
 This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures
 Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or
 vegetable item was consumed. The function then sums up the consumption frequencies of all these items and divides the total
-by 365 to obtain the average daily consumption of fruits and vegetables in a year.
+by 365 to obtain the average daily consumption of fruits and vegetables in a year. This function supports vector operations.
 }
 \details{
 The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
@@ -57,7 +57,7 @@ fruits and vegetables in a year. NA(b) is only returned if all the parameters ar
 up being NA.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Calculate average daily fruit and vegetable consumption for a cycle 3-6 respondent
 # Let's assume the following annual consumption frequencies for each item:
 # WSDD34Y (orange or grapefruit juice) = 50 times
@@ -77,5 +77,13 @@ find_totalFV_cycles3to6(
   GFVD17DY = 200, GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90
 )
 # Output: 2.931507
+
+# Vector usage: Multiple respondents
+find_totalFV_cycles3to6(
+  WSDD34Y = c(50, 60), WSDD35Y = c(100, 110), GFVD17AY = c(150, 160), GFVD17BY = c(80, 90),
+  GFVD17CY = c(40, 50), GFVD17DY = c(200, 210), GFVD18Y = c(100, 110), GFVD19Y = c(80, 90),
+  GFVD20Y = c(60, 70), GFVD22Y = c(120, 130), GFVD23Y = c(90, 100)
+)
+# Returns: c(2.931507, 3.232877)
 
 }

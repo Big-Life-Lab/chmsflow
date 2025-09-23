@@ -7,20 +7,20 @@
 determine_CVD_family_history(FMH_11, FMH_12, FMH_13, FMH_14)
 }
 \arguments{
-\item{FMH_11}{Integer: Indicates whether an immediate family member was diagnosed with heart disease.
+\item{FMH_11}{\link{integer} An integer: Indicates whether an immediate family member was diagnosed with heart disease.
 - 1 for "Yes"
 - 2 for "No".}
 
-\item{FMH_12}{Numeric: Represents the youngest age at diagnosis of heart disease in an immediate family member.}
+\item{FMH_12}{\link{numeric} A numeric: Represents the youngest age at diagnosis of heart disease in an immediate family member.}
 
-\item{FMH_13}{Integer: Indicates whether an immediate family member was diagnosed with stroke.
+\item{FMH_13}{\link{integer} An integer: Indicates whether an immediate family member was diagnosed with stroke.
 - 1 for "Yes"
 - 2 for "No".}
 
-\item{FMH_14}{Numeric: Represents the youngest age at diagnosis of stroke in an immediate family member.}
+\item{FMH_14}{\link{numeric} A numeric: Represents the youngest age at diagnosis of stroke in an immediate family member.}
 }
 \value{
-An integer indicating the CVD family history:
+\link{integer} The CVD family history:
 \itemize{
 \item 1: "Yes" — Family history of premature CVD exists (diagnosis before age 60).
 \item 2: "No" — No family history of premature CVD.
@@ -28,7 +28,7 @@ An integer indicating the CVD family history:
 }
 }
 \description{
-This function evaluates a respondent's family history of cardiovascular disease (CVD), based on data about diagnoses of heart disease and stroke in immediate family members and the ages at which these diagnoses occurred. It identifies premature CVD if any diagnosis occurred before age 60.
+This function evaluates a respondent's family history of cardiovascular disease (CVD), based on data about diagnoses of heart disease and stroke in immediate family members and the ages at which these diagnoses occurred. It identifies premature CVD if any diagnosis occurred before age 60. This function supports vector operations.
 }
 \details{
 \itemize{
@@ -36,7 +36,7 @@ This function evaluates a respondent's family history of cardiovascular disease 
 \item If either \code{FMH_11} or \code{FMH_13} indicates a diagnosis (\code{1} for "Yes"), the corresponding age (\code{FMH_12} for heart disease and \code{FMH_14} for stroke) is evaluated:
 \itemize{
 \item Ages between 0 and 59 indicate premature CVD.
-\item Ages between 60 and 100 indicate late-onset CVD.
+\item Ages between 60 and 79 indicate late-onset CVD.
 \item Ages outside this range or invalid inputs (997, 998, 999) result in \code{NA(b)}.
 }
 \item If both \code{FMH_11} and \code{FMH_13} are \code{2} ("No"), there is no family history of CVD (\code{2}).
@@ -44,8 +44,19 @@ This function evaluates a respondent's family history of cardiovascular disease 
 }
 }
 \examples{
+# Scalar usage: Single respondent
 # Example 1: Premature CVD due to heart disease diagnosis at age 50
 determine_CVD_family_history(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
 # Output: 1
+
+# Vector usage: Multiple respondents
+determine_CVD_family_history(FMH_11 = c(1, 2, 1), FMH_12 = c(50, NA, 70), 
+FMH_13 = c(2, 1, 2), FMH_14 = c(NA, 55, NA))
+# Returns: c(1, 1, 2)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(cvd_family_history = determine_CVD_family_history(FMH_11, FMH_12, FMH_13, FMH_14))
 
 }

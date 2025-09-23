@@ -4,12 +4,12 @@
 #' from their total cholesterol level. It first checks whether the input values `LAB_CHOL` (total cholesterol)
 #' and `LAB_HDL` (HDL cholesterol) are both less than certain thresholds (99.6 mmol/L and 9.96 mmol/L, respectively).
 #' If both conditions are met, it calculates the non-HDL cholesterol level; otherwise, it sets the non-HDL value to
-#' NA to indicate that the calculation is not applicable.
+#' NA to indicate that the calculation is not applicable. This function supports vector operations.
 #'
-#' @param LAB_CHOL A numeric representing a respondent's total cholesterol level in mmol/L.
-#' @param LAB_HDL A numeric representing a respondent's HDL cholesterol level in mmol/L.
+#' @param LAB_CHOL [numeric] A numeric representing a respondent's total cholesterol level in mmol/L.
+#' @param LAB_HDL [numeric] A numeric representing a respondent's HDL cholesterol level in mmol/L.
 #'
-#' @return A numeric representing the calculated non-HDL cholesterol level (in mmol.L) if both `LAB_CHOL` and
+#' @return [numeric] The calculated non-HDL cholesterol level (in mmol.L) if both `LAB_CHOL` and
 #' `LAB_HDL` are below the specified thresholds; otherwise, it returns NA(b) to indicate that the calculation is not applicable.
 #'
 #' @details The function calculates the non-HDL cholesterol level by subtracting the HDL cholesterol level from the total cholesterol level.
@@ -18,36 +18,41 @@
 #' is not met or if either input is missing (NA), the function returns NA(b) to indicate that the calculation is not applicable.
 #'
 #' @examples
-#'
+#' # Scalar usage: Single respondent
 #' # Example: Respondent has total cholesterol of 50 mmol/L and HDL cholesterol of 5 mmol/L.
 #' calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
 #' # Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
 #'
+#' # Vector usage: Multiple respondents
+#' calculate_nonHDL(LAB_CHOL = c(50, 60, 70), LAB_HDL = c(5, 10, 15))
+#' # Returns: c(45, 50, 55)
+#'
+#' # Database usage: Applied to survey datasets
+#' library(dplyr)
+#' # dataset %>%
+#' #   mutate(non_hdl = calculate_nonHDL(LAB_CHOL, LAB_HDL))
+#'
 #' @export
 calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
-  nonHDL <- 0
-
-  if (LAB_CHOL >= 0 && LAB_CHOL < 99.6 && LAB_HDL >= 0 && LAB_HDL < 9.96 && !is.na(LAB_CHOL) && !is.na(LAB_HDL)) {
-    nonHDL <- LAB_CHOL - LAB_HDL
-  } else {
-    nonHDL <- haven::tagged_na("b")
-  }
-
-  return(nonHDL)
+  dplyr::case_when(
+    is.na(LAB_CHOL) | is.na(LAB_HDL) | LAB_CHOL < 1.88 | LAB_CHOL > 13.58 | LAB_HDL < 0.49 | LAB_HDL > 3.74 ~ haven::tagged_na("b"),
+    TRUE ~ LAB_CHOL - LAB_HDL
+  )
 }
 
 #' @title Categorical non-HDL cholesterol level
 #'
-#' @description This function categorizes individuals' non-HDL cholesterol levels based on a threshold value.
+#' @description This function categorizes individuals' non-HDL cholesterol levels based on a threshold value. This function supports vector operations.
 #'
-#' @param nonHDL Numeric value representing an individual's non-HDL cholesterol level.
+#' @param nonHDL [numeric] A numeric representing an individual's non-HDL cholesterol level.
 #'
-#' @return A categorical value indicating the non-HDL cholesterol category:
+#' @return [integer] A categorical indicating the non-HDL cholesterol category:
 #'   - 1: High non-HDL cholesterol (nonHDL >= 4.3)
 #'   - 2: Normal non-HDL cholesterol (nonHDL < 4.3)
 #'   - NA(b): Missing or invalid input
 #'
 #' @examples
+#' # Scalar usage: Single respondent
 #' # Example 1: Categorize a nonHDL value of 5.0 as high non-HDL cholesterol
 #' categorize_nonHDL(5.0)
 #' # Output: 1
@@ -56,35 +61,38 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
 #' categorize_nonHDL(3.8)
 #' # Output: 2
 #'
+#' # Vector usage: Multiple respondents
+#' categorize_nonHDL(c(5.0, 3.8, 4.3))
+#' # Returns: c(1, 2, 1)
+#'
+#' # Database usage: Applied to survey datasets
+#' library(dplyr)
+#' # dataset %>%
+#' #   mutate(non_hdl_category = categorize_nonHDL(non_hdl))
+#'
 #' @export
 categorize_nonHDL <- function(nonHDL) {
-  nonhdltodd <- 0
-
-  if (is.na(nonHDL) || nonHDL < 0) {
-    nonhdltodd <- haven::tagged_na("b")
-  } else {
-    if (nonHDL >= 4.3) {
-      nonhdltodd <- 1
-    } else {
-      nonhdltodd <- 2
-    }
-  }
-  return(nonhdltodd)
+  dplyr::case_when(
+    is.na(nonHDL) | nonHDL < 0 ~ haven::tagged_na("b"),
+    nonHDL >= 4.3 ~ 1,
+    nonHDL < 4.3 ~ 2,
+    TRUE ~ haven::tagged_na("b")
+  )
 }
 
 #' @title Waist-to-height ratio (WHR)
 #'
-#' @description This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent.
+#' @description This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent. This function supports vector operations.
 #'
-#' @param HWM_11CM A numeric value representing the height of the respondent in centimeters.
-#' @param HWM_14CX A numeric value representing the waist circumference of the respondent in centimeters.
+#' @param HWM_11CM [numeric] A numeric representing the height of the respondent in centimeters.
+#' @param HWM_14CX [numeric] A numeric representing the waist circumference of the respondent in centimeters.
 #'
-#' @return A numeric value representing the WHR:
+#' @return [numeric] The WHR:
 #'   - If both `HWM_11CM` and `HWM_14CX` are provided, the function returns the WHR (waist circumference divided by height).
 #'   - If either `HWM_11CM` or `HWM_14CX` is missing, the function returns a tagged NA (`NA(b)`) indicating an invalid input or non-response.
 #'
 #' @examples
-#'
+#' # Scalar usage: Single respondent
 #' # Example 1: Calculate WHR for a respondent with height = 170 cm and waist circumference = 85 cm.
 #' calculate_WHR(HWM_11CM = 170, HWM_14CX = 85)
 #' # Output: 0.5 (85/170)
@@ -93,15 +101,19 @@ categorize_nonHDL <- function(nonHDL) {
 #' calculate_WHR(HWM_11CM = NA, HWM_14CX = 85)
 #' # Output: NA(b)
 #'
+#' # Vector usage: Multiple respondents
+#' calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
+#' # Returns: c(0.5, 0.5, 0.5)
+#'
+#' # Database usage: Applied to survey datasets
+#' library(dplyr)
+#' # dataset %>%
+#' #   mutate(whr = calculate_WHR(HWM_11CM, HWM_14CX))
+#'
 #' @export
 calculate_WHR <- function(HWM_11CM, HWM_14CX) {
-  WHR <- 0
-
-  if (HWM_11CM < 0 || is.na(HWM_11CM) || HWM_14CX < 0 || is.na(HWM_14CX)) {
-    WHR <- haven::tagged_na("b")
-  } else {
-    WHR <- HWM_14CX / HWM_11CM
-  }
-
-  return(WHR)
+  dplyr::case_when(
+    is.na(HWM_11CM) | is.na(HWM_14CX) | HWM_11CM < 0 | HWM_14CX < 0 ~ haven::tagged_na("b"),
+    TRUE ~ HWM_14CX / HWM_11CM
+  )
 }

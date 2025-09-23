@@ -7,21 +7,21 @@
 calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
 }
 \arguments{
-\item{LAB_BCRE}{Blood creatine (µmol/L). It should be a numeric value between 14 and 785.}
+\item{LAB_BCRE}{\link{numeric} Blood creatine (µmol/L). It should be a numeric between 14 and 785.}
 
-\item{PGDCGT}{Ethnicity (13 categories). It should be an integer value between 1 and 13.}
+\item{PGDCGT}{\link{integer} Ethnicity (13 categories). It should be an integer between 1 and 13.}
 
-\item{CLC_SEX}{Sex (Male = 1, Female = 2). It should be an integer value of either 1 or 2.}
+\item{CLC_SEX}{\link{integer} Sex (Male = 1, Female = 2). It should be an integer of either 1 or 2.}
 
-\item{CLC_AGE}{Age (years). It should be a numeric value between 3 and 79.}
+\item{CLC_AGE}{\link{numeric} Age (years). It should be a numeric between 3 and 79.}
 }
 \value{
-The calculated GFR as a numeric value. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
+\link{numeric} The calculated GFR. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
 are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996) or out of bounds, the GFR will be NA(b).
 }
 \description{
 This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
-where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age.
+where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age. This function supports vector operations.
 }
 \details{
 The function uses the serum creatine level (LAB_BCRE) in µmol/L to calculate the estimated GFR. First, it
@@ -41,7 +41,7 @@ formula used for each combination of ethnicity and sex is as follows:
 }\if{html}{\out{</div>}}
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example 1: Calculate GFR for a 45-year-old white female with serum creatine of 80 µmol/L.
 calculate_GFR(LAB_BCRE = 80, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 45)
 # Output: GFR = 67.27905
@@ -49,5 +49,15 @@ calculate_GFR(LAB_BCRE = 80, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 45)
 # Example 2: Calculate GFR for a 35-year-old black female with serum creatine of 70 µmol/L.
 calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35)
 # Output: GFR = 99.94114
+
+# Vector usage: Multiple respondents
+calculate_GFR(LAB_BCRE = c(80, 70, 90), PGDCGT = c(1, 2, 1), 
+CLC_SEX = c(2, 2, 1), CLC_AGE = c(45, 35, 50))
+# Returns: c(67.27905, 99.94114, 70.38001)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(gfr = calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE))
 
 }

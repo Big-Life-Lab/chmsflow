@@ -103,4 +103,16 @@ test_that("determine_inclusive_diabetes covers all combinations", {
   expect_equal(determine_inclusive_diabetes(NA, NA, 1), 1)
   expect_equal(determine_inclusive_diabetes(NA, NA, 0), haven::tagged_na("b"))
   expect_equal(determine_inclusive_diabetes(NA, NA, NA), haven::tagged_na("b"))
+
+  # Vector usage
+  expect_equal(determine_inclusive_diabetes(diab_m = c(1, 2, 2, NA, 2), CCC_51 = c(2, 1, 2, NA, 2), diab_drug2 = c(0, 0, 1, 1, NA)), c(1, 1, 1, 1, 2))
+
+  # Database usage (simulated)
+  df_diabetes <- data.frame(
+    diab_m = c(1, 2, 2, NA, 2),
+    CCC_51 = c(2, 1, 2, NA, 2),
+    diab_drug2 = c(0, 0, 1, 1, NA)
+  )
+  expected_output_diabetes <- c(1, 1, 1, 1, 2)
+  expect_equal(df_diabetes %>% dplyr::mutate(diabetes_status = determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2)) %>% dplyr::pull(diabetes_status), expected_output_diabetes)
 })

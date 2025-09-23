@@ -7,31 +7,36 @@
 is_other_antiHTN_med(MEUCATC, NPI_25B)
 }
 \arguments{
-\item{MEUCATC}{A character vector representing the Anatomical Therapeutic Chemical (ATC) code of the medication.}
+\item{MEUCATC}{\link{character} ATC code of the medication.}
 
-\item{NPI_25B}{An integer representing the CHMS response for the time when the medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-A numeric, 1 if medication is in another anti-hypertensive drug class and 0 if it is not.
+\link{numeric} 1 if medication is another anti-hypertensive drug, 0 otherwise.
 }
 \description{
-This function checks if a given medication for a CHMS respondent belongs to another anti-hypertensive drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.
+This function checks if a given medication is another anti-hypertensive drug.
+This function now supports vector operations for batch processing.
 }
 \details{
-This function uses the \code{startsWith} function to identify other anti-hypertensive drugs based on their ATC
-codes, which typically start with "C02". The sub-code 'C02KX01' is excluded from the class. If the ATC code
-matches the pattern and is not in the exclusion list, and the medication was taken within the last month
-(NPI_25B <= 4), the medication is considered another anti-hypertensive drug, and the function returns
-TRUE. Otherwise, it returns FALSE.
+Identifies other anti-hypertensive drugs based on ATC codes starting with "C02", excluding a specific sub-code.
 }
 \examples{
+# Scalar usage: Single respondent
+is_other_antiHTN_med("C02AC04", 3)
+# Returns: 1
 
-# Let's say the ATC code is "C02AC04" and the time last taken was within last week (3).
+# Vector usage: Multiple respondents
+is_other_antiHTN_med(c("C02AC04", "C02KX01"), c(3, 2))
+# Returns: c(1, 0)
 
-is_other_antiHTN_med("C02AC04", 3) # Should return 1 (TRUE)
-
+# Database usage: Apply to survey data
+library(dplyr)
+survey_data <- data.frame(
+  MEUCATC = c("C02AC04", "C02KX01", "C02AB01"),
+  NPI_25B = c(3, 2, 1)
+)
+survey_data \%>\%
+  mutate(is_other_antihtn = is_other_antiHTN_med(MEUCATC, NPI_25B)) \%>\%
+  select(is_other_antihtn)
 }

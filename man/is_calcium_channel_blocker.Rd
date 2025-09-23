@@ -7,30 +7,36 @@
 is_calcium_channel_blocker(MEUCATC, NPI_25B)
 }
 \arguments{
-\item{MEUCATC}{A character vector representing the Anatomical Therapeutic Chemical (ATC) code of the medication.}
+\item{MEUCATC}{\link{character} ATC code of the medication.}
 
-\item{NPI_25B}{An integer representing the CHMS response for the time when the medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-A numeric, 1 if medication is in the calcium channel blocker class and 0 if it is not.
+\link{numeric} 1 if medication is a calcium channel blocker, 0 otherwise.
 }
 \description{
-This function checks if a given medication for a CHMS respondent belongs to the calcium channel blocker drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.
+This function checks if a given medication is a calcium channel blocker.
+This function now supports vector operations for batch processing.
 }
 \details{
-This function uses the \code{startsWith} function to identify calcium channel blockers based on their ATC codes,
-which typically start with "C08". If the ATC code matches the pattern and the medication was taken within
-the last month (NPI_25B <= 4), the medication is considered a calcium channel blocker, and the
-function returns TRUE. Otherwise, it returns FALSE.
+Identifies calcium channel blockers based on ATC codes starting with "C08".
 }
 \examples{
+# Scalar usage: Single respondent
+is_calcium_channel_blocker("C08CA05", 1)
+# Returns: 1
 
-# Let's say the ATC code is "C08CA05" and the time last taken was today (1).
+# Vector usage: Multiple respondents
+is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2))
+# Returns: c(1, 0)
 
-is_calcium_channel_blocker("C08CA05", 1) # Should return 1 (TRUE)
-
+# Database usage: Apply to survey data
+library(dplyr)
+survey_data <- data.frame(
+  MEUCATC = c("C08CA05", "C01AA05", "C08DB01"),
+  NPI_25B = c(1, 2, 4)
+)
+survey_data \%>\%
+  mutate(is_ccb = is_calcium_channel_blocker(MEUCATC, NPI_25B)) \%>\%
+  select(is_ccb)
 }

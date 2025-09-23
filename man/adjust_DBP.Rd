@@ -7,15 +7,15 @@
 adjust_DBP(BPMDPBPD)
 }
 \arguments{
-\item{BPMDPBPD}{A numeric representing the respondent's diastolic average blood pressure (in mmHg) across six measurements.}
+\item{BPMDPBPD}{\link{numeric} A numeric representing the respondent's diastolic average blood pressure (in mmHg) across six measurements.}
 }
 \value{
-The adjusted diastolic blood pressure as a numeric value.
+\link{numeric} The adjusted diastolic blood pressure as a numeric.
 }
 \description{
 This function adjusts diastolic blood pressure based on the respondent's diastolic average blood pressure across
 six measurements. The adjustment is made using specific correction factors. The adjusted diastolic blood pressure
-is returned as a numeric value.
+is returned as a numeric value. This function supports vector operations.
 }
 \details{
 The function calculates the adjusted diastolic blood pressure (DBP_adj) based on the value of BPMDPBPD. If
@@ -25,9 +25,18 @@ adjusted diastolic blood pressure is set to NA(b), indicating that the measureme
 diastolic blood pressure is returned as the final output.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Adjust for a respondent with average diastolic blood pressure of 80 mmHg.
 adjust_DBP(BPMDPBPD = 80)
 # Output: 82
+
+# Vector usage: Multiple respondents
+adjust_DBP(BPMDPBPD = c(80, 90, 100))
+# Returns: c(82, 90.3, 98.6)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(dbp_adj = adjust_DBP(BPMDPBPD))
 
 }

@@ -7,10 +7,10 @@
 determine_gooddiet(totalFV)
 }
 \arguments{
-\item{totalFV}{Numeric value representing the average times per day fruits and vegetables were consumed in a year.}
+\item{totalFV}{\link{numeric} A numeric vector representing the average times per day fruits and vegetables were consumed in a year.}
 }
 \value{
-A categorical value indicating the diet quality:
+\link{integer} A categorical indicating the diet quality:
 \itemize{
 \item 1: Good diet (totalFV >= 5)
 \item 2: Poor diet (totalFV < 5)
@@ -18,9 +18,10 @@ A categorical value indicating the diet quality:
 }
 }
 \description{
-This function categorizes individuals' diet quality based on their total fruit and vegetable consumption.
+This function categorizes individuals' diet quality based on their total fruit and vegetable consumption. This function supports vector operations.
 }
 \examples{
+# Scalar usage: Single respondent
 # Example 1: Categorize a totalFV value of 3 as poor diet
 determine_gooddiet(3)
 # Output: 2
@@ -28,5 +29,14 @@ determine_gooddiet(3)
 # Example 2: Categorize a totalFV value of 7 as good diet
 determine_gooddiet(7)
 # Output: 1
+
+# Vector usage: Multiple respondents
+determine_gooddiet(c(3, 7, 5))
+# Returns: c(2, 1, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(diet_quality = determine_gooddiet(total_fv))
 
 }

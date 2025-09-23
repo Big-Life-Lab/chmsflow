@@ -7,11 +7,11 @@
 categorize_minperweek(minperweek)
 }
 \arguments{
-\item{minperweek}{Numeric value representing an individual's minutes of moderate-to-vigorous
+\item{minperweek}{\link{numeric} A numeric representing an individual's minutes of moderate-to-vigorous
 physical activity (MVPA) per week.}
 }
 \value{
-A categorical value indicating the physical activity category:
+\link{integer} A categorical indicating the physical activity category:
 \itemize{
 \item 1: Meets or exceeds the recommended 150 minutes of MVPA per week (minperweek >= 150)
 \item 2: Below the recommended 150 minutes of MVPA per week (minperweek < 150)
@@ -19,9 +19,10 @@ A categorical value indicating the physical activity category:
 }
 }
 \description{
-This function categorizes individuals' weekly physical activity levels based on a threshold value.
+This function categorizes individuals' weekly physical activity levels based on a threshold value. This function supports vector operations.
 }
 \examples{
+# Scalar usage: Single respondent
 # Example 1: Categorize 180 minutes of MVPA per week as meeting the recommendation
 categorize_minperweek(180)
 # Output: 1
@@ -29,5 +30,14 @@ categorize_minperweek(180)
 # Example 2: Categorize 120 minutes of MVPA per week as below the recommendation
 categorize_minperweek(120)
 # Output: 2
+
+# Vector usage: Multiple respondents
+categorize_minperweek(c(180, 120, 150))
+# Returns: c(1, 2, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(pa_category = categorize_minperweek(min_per_week))
 
 }

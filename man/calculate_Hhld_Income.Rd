@@ -7,18 +7,18 @@
 calculate_hhld_income(THI_01, DHHDHSZ)
 }
 \arguments{
-\item{THI_01}{A numeric representing the respondent's household income amount in dollars.}
+\item{THI_01}{\link{numeric} A numeric representing the respondent's household income amount in dollars.}
 
-\item{DHHDHSZ}{An integer representing the respondent's actual household size in persons.}
+\item{DHHDHSZ}{\link{integer} An integer representing the respondent's actual household size in persons.}
 }
 \value{
-The calculated adjusted total household income as a numeric value. If any of the input parameters (THI_01,
+\link{numeric} The calculated adjusted total household income as a numeric. If any of the input parameters (THI_01,
 DHHDHSZ) are non-response values (THI_01 >= 996, DHHDHSZ >= 996), the adjusted household income will be
 NA(b) (Not Available).
 }
 \description{
 This function calculates the adjusted total household income based on the respondent's income amount
-and actual household size, taking into account the weighted household size.
+and actual household size, taking into account the weighted household size. This function supports vector operations.
 }
 \details{
 The function first calculates the weighted household size (hh_size_wt) based on the respondent's actual
@@ -29,7 +29,7 @@ respondent's total household income (THI_01) by dividing it by hh_size_wt. The a
 (adj_hh_inc) is returned as the final output.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example 1: Respondent with $50,000 income and a household size of 3.
 calculate_hhld_income(THI_01 = 50000, DHHDHSZ = 3)
 # Output: 29411.76
@@ -41,5 +41,14 @@ calculate_hhld_income(THI_01 = 75000, DHHDHSZ = 2)
 # Example 3: Respondent with $90000 income and a household size of 1.
 calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
 # Output: 90000
+
+# Vector usage: Multiple respondents
+calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))
+# Returns: c(29411.76, 53571.43, 90000)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(adj_hh_income = calculate_hhld_income(THI_01, DHHDHSZ))
 
 }

@@ -15,35 +15,40 @@ find_week_accelerometer_average(
 )
 }
 \arguments{
-\item{AMMDMVA1}{A numeric representing minutes of exercise on Day 1 of accelerometer measurement.}
+\item{AMMDMVA1}{\link{numeric} A numeric representing minutes of exercise on Day 1 of accelerometer measurement.}
 
-\item{AMMDMVA2}{A numeric representing minutes of exercise on Day 2 of accelerometer measurement.}
+\item{AMMDMVA2}{\link{numeric} A numeric representing minutes of exercise on Day 2 of accelerometer measurement.}
 
-\item{AMMDMVA3}{A numeric representing minutes of exercise on Day 3 of accelerometer measurement.}
+\item{AMMDMVA3}{\link{numeric} A numeric representing minutes of exercise on Day 3 of accelerometer measurement.}
 
-\item{AMMDMVA4}{A numeric representing minutes of exercise on Day 4 of accelerometer measurement.}
+\item{AMMDMVA4}{\link{numeric} A numeric representing minutes of exercise on Day 4 of accelerometer measurement.}
 
-\item{AMMDMVA5}{A numeric representing minutes of exercise on Day 5 of accelerometer measurement.}
+\item{AMMDMVA5}{\link{numeric} A numeric representing minutes of exercise on Day 5 of accelerometer measurement.}
 
-\item{AMMDMVA6}{A numeric representing minutes of exercise on Day 6 of accelerometer measurement.}
+\item{AMMDMVA6}{\link{numeric} A numeric representing minutes of exercise on Day 6 of accelerometer measurement.}
 
-\item{AMMDMVA7}{A numeric representing minutes of exercise on Day 7 of accelerometer measurement.}
+\item{AMMDMVA7}{\link{numeric} A numeric representing minutes of exercise on Day 7 of accelerometer measurement.}
 }
 \value{
-A numeric representing the average minutes of exercise per day across a week of accelerometer use.
+\link{numeric} The average minutes of exercise per day across a week of accelerometer use.
 }
 \description{
 This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
 parameters, each representing the minutes of exercise on a specific day (Day 1 to Day 7) of accelerometer measurement.
-The function computes the average of these values to obtain the average minutes of exercise per day.
+The function computes the average of these values to obtain the average minutes of exercise per day. This function supports vector operations.
 }
 \details{
 The function calculates the average minutes of exercise per day by taking the mean of the seven input parameters.
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Calculate the average minutes of exercise per day for a week of accelerometer data.
 find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
 # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
+
+# Vector usage: Multiple respondents
+find_week_accelerometer_average(c(30, 20), c(40, 30), c(25, 35), c(35, 45), 
+c(20, 25), c(45, 55), c(50, 60))
+# Returns: c(35, 39.28571)
 
 }

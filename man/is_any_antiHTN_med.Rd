@@ -7,32 +7,36 @@
 is_any_antiHTN_med(MEUCATC, NPI_25B)
 }
 \arguments{
-\item{MEUCATC}{A character vector representing the Anatomical Therapeutic Chemical (ATC) code of the medication.}
+\item{MEUCATC}{\link{character} ATC code of the medication.}
 
-\item{NPI_25B}{An integer representing the CHMS response for the time when the medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-A numeric, 1 if medication is in any anti-hypertensive drug class and 0 if it is not.
+\link{numeric} 1 if medication is an anti-hypertensive drug, 0 otherwise.
 }
 \description{
-This function checks if a given medication for a CHMS respondent belongs to any anti-hypertensive drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.
+This function checks if a given medication is any anti-hypertensive drug.
+This function now supports vector operations for batch processing.
 }
 \details{
-This function first identifies any anti-hypertensive drugs based on their ATC codes using the regular expression
-"C02-3" and "CO7-9" which matches ATC codes that start with "C02", "C03", "C07", "C08", and "C09". Specific sub-codes
-'C07AA07', 'C07AA12', 'C07AG02', 'C03BA08', 'C03CA01', and 'C02KX01' are excluded from the class. If the ATC
-code matches the pattern and is not in the exclusion list, and the medication was taken within the last month
-(NPI_25B <= 4), the medication is considered an anti-hypertensive drug, and the function returns TRUE.
-Otherwise, it returns FALSE.
+Identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03", "C07", "C08", or "C09", excluding specific sub-codes.
 }
 \examples{
+# Scalar usage: Single respondent
+is_any_antiHTN_med("C07AB02", 4)
+# Returns: 1
 
-# Let's say the ATC code is "C07AB02" and the time last taken was within last month (4).
+# Vector usage: Multiple respondents
+is_any_antiHTN_med(c("C07AB02", "C07AA07"), c(4, 2))
+# Returns: c(1, 0)
 
-is_any_antiHTN_med("C07AB02", 4) # Should return 1 (TRUE)
-
+# Database usage: Apply to survey data
+library(dplyr)
+survey_data <- data.frame(
+  MEUCATC = c("C07AB02", "C07AA07", "C09AA02"),
+  NPI_25B = c(4, 2, 3)
+)
+survey_data \%>\%
+  mutate(is_any_antihtn = is_any_antiHTN_med(MEUCATC, NPI_25B)) \%>\%
+  select(is_any_antihtn)
 }

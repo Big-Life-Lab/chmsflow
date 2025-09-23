@@ -3,17 +3,17 @@
 #' @description This function calculates the daily fruit and vegetable consumption in a year for respondent in the Canadian Health Measures
 #' Survey (CHMS) cycles 1-2. It takes seven parameters, each representing the number of times per year a specific fruit or vegetable item
 #' was consumed. The function then sums up the consumption frequencies of all these items and divides the total by 365 to
-#' obtain the average daily consumption of fruits and vegetables in a year.
+#' obtain the average daily consumption of fruits and vegetables in a year. This function supports vector operations.
 #'
-#' @param WSDD14Y A numeric representing the number of times per year fruit juice was consumed.
-#' @param GFVD17Y A numeric representing the number of times per year fruit (excluding juice) was consumed.
-#' @param GFVD18Y A numeric representing the number of times per year tomato or tomato sauce was consumed.
-#' @param GFVD19Y A numeric representing the number of times per year lettuce or green leafy salad was consumed.
-#' @param GFVD20Y A numeric representing the number of times per year spinach, mustard greens, and cabbage were consumed.
-#' @param GFVD22Y A numeric representing the number of times per year potatoes were consumed.
-#' @param GFVD23Y A numeric representing the number of times per year other vegetables were consumed.
+#' @param WSDD14Y [numeric] A numeric vector representing the number of times per year fruit juice was consumed.
+#' @param GFVD17Y [numeric] A numeric vector representing the number of times per year fruit (excluding juice) was consumed.
+#' @param GFVD18Y [numeric] A numeric vector representing the number of times per year tomato or tomato sauce was consumed.
+#' @param GFVD19Y [numeric] A numeric vector representing the number of times per year lettuce or green leafy salad was consumed.
+#' @param GFVD20Y [numeric] A numeric vector representing the number of times per year spinach, mustard greens, and cabbage were consumed.
+#' @param GFVD22Y [numeric] A numeric vector representing the number of times per year potatoes were consumed.
+#' @param GFVD23Y [numeric] A numeric vector representing the number of times per year other vegetables were consumed.
 #'
-#' @return A numeric representing the average times per day fruits and vegetables were consumed in a year.
+#' @return [numeric] The average times per day fruits and vegetables were consumed in a year.
 #'
 #' @details The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 #'          frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
@@ -21,7 +21,7 @@
 #'          up being NA.
 #'
 #' @examples
-#'
+#' # Scalar usage: Single respondent
 #' # Example: Calculate average daily fruit and vegetable consumption for a cycle 1-2 respondent.
 #' # Let's assume the following annual consumption frequencies for each item:
 #' # WSDD14Y (fruit juice) = 50 times
@@ -38,19 +38,23 @@
 #' )
 #' # Output: 2.164384
 #'
+#' # Vector usage: Multiple respondents
+#' find_totalFV_cycles1and2(
+#'   WSDD14Y = c(50, 60), GFVD17Y = c(150, 160), GFVD18Y = c(200, 210), GFVD19Y = c(100, 110),
+#'   GFVD20Y = c(80, 90), GFVD22Y = c(120, 130), GFVD23Y = c(90, 100)
+#' )
+#' # Returns: c(2.164384, 2.356164)
+#'
 #' @export
 find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
-  totalFV <- 0
+  measurements <- cbind(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)
+  totalFV <- rowSums(measurements, na.rm = TRUE) / 365
 
-  if (all(is.na(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)))) {
-    totalFV <- haven::tagged_na("b")
-  } else if (all(!is.na(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y))) && any(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) < 0)) {
-    totalFV <- haven::tagged_na("b")
-  } else {
-    totalFV <- sum(c(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y), na.rm = TRUE) / 365
-  }
-
-  return(totalFV)
+  dplyr::case_when(
+    rowSums(is.na(measurements)) == ncol(measurements) ~ haven::tagged_na("b"),
+    rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
+    TRUE ~ totalFV
+  )
 }
 
 #' @title Daily fruit and vegetable consumption in a year - cycles 3-6
@@ -58,21 +62,21 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' @description This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures
 #' Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or
 #' vegetable item was consumed. The function then sums up the consumption frequencies of all these items and divides the total
-#' by 365 to obtain the average daily consumption of fruits and vegetables in a year.
+#' by 365 to obtain the average daily consumption of fruits and vegetables in a year. This function supports vector operations.
 #'
-#' @param WSDD34Y A numeric representing the number of times per year orange or grapefruit juice was consumed.
-#' @param WSDD35Y A numeric representing the number of times per year other fruit juices were consumed.
-#' @param GFVD17AY A numeric representing the number of times per year citrus fruits were consumed.
-#' @param GFVD17BY A numeric representing the number of times per year strawberries were consumed (in summer).
-#' @param GFVD17CY A numeric representing the number of times per year strawberries were consumed (outside summer).
-#' @param GFVD17DY A numeric representing the number of times per year other fruits were consumed.
-#' @param GFVD18Y A numeric representing the number of times per year tomato or tomato sauce was consumed.
-#' @param GFVD19Y A numeric representing the number of times per year lettuce or green leafy salad was consumed.
-#' @param GFVD20Y A numeric representing the number of times per year spinach, mustard greens, and cabbage were consumed.
-#' @param GFVD22Y A numeric representing the number of times per year potatoes were consumed.
-#' @param GFVD23Y A numeric representing the number of times per year other vegetables were consumed.
+#' @param WSDD34Y [numeric] A numeric vector representing the number of times per year orange or grapefruit juice was consumed.
+#' @param WSDD35Y [numeric] A numeric vector representing the number of times per year other fruit juices were consumed.
+#' @param GFVD17AY [numeric] A numeric vector representing the number of times per year citrus fruits were consumed.
+#' @param GFVD17BY [numeric] A numeric vector representing the number of times per year strawberries were consumed (in summer).
+#' @param GFVD17CY [numeric] A numeric vector representing the number of times per year strawberries were consumed (outside summer).
+#' @param GFVD17DY [numeric] A numeric vector representing the number of times per year other fruits were consumed.
+#' @param GFVD18Y [numeric] A numeric vector representing the number of times per year tomato or tomato sauce was consumed.
+#' @param GFVD19Y [numeric] A numeric vector representing the number of times per year lettuce or green leafy salad was consumed.
+#' @param GFVD20Y [numeric] A numeric vector representing the number of times per year spinach, mustard greens, and cabbage were consumed.
+#' @param GFVD22Y [numeric] A numeric vector representing the number of times per year potatoes were consumed.
+#' @param GFVD23Y [numeric] A numeric vector representing the number of times per year other vegetables were consumed.
 #'
-#' @return A numeric representing the average times per day fruits and vegetables were consumed in a year.
+#' @return [numeric] The average times per day fruits and vegetables were consumed in a year.
 #'
 #' @details The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 #'          frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
@@ -80,7 +84,7 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #'          up being NA.
 #'
 #' @examples
-#'
+#' # Scalar usage: Single respondent
 #' # Example: Calculate average daily fruit and vegetable consumption for a cycle 3-6 respondent
 #' # Let's assume the following annual consumption frequencies for each item:
 #' # WSDD34Y (orange or grapefruit juice) = 50 times
@@ -101,32 +105,39 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' )
 #' # Output: 2.931507
 #'
+#' # Vector usage: Multiple respondents
+#' find_totalFV_cycles3to6(
+#'   WSDD34Y = c(50, 60), WSDD35Y = c(100, 110), GFVD17AY = c(150, 160), GFVD17BY = c(80, 90),
+#'   GFVD17CY = c(40, 50), GFVD17DY = c(200, 210), GFVD18Y = c(100, 110), GFVD19Y = c(80, 90),
+#'   GFVD20Y = c(60, 70), GFVD22Y = c(120, 130), GFVD23Y = c(90, 100)
+#' )
+#' # Returns: c(2.931507, 3.232877)
+#'
 #' @export
 find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
-  totalFV <- 0
+  measurements <- cbind(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)
+  totalFV <- rowSums(measurements, na.rm = TRUE) / 365
 
-  if (all(is.na(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)))) {
-    totalFV <- haven::tagged_na("b")
-  } else if (all(!is.na(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y))) && any(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) < 0)) {
-    totalFV <- haven::tagged_na("b")
-  } else {
-    totalFV <- sum(c(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y), na.rm = TRUE) / 365
-  }
-  return(totalFV)
+  dplyr::case_when(
+    rowSums(is.na(measurements)) == ncol(measurements) ~ haven::tagged_na("b"),
+    rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
+    TRUE ~ totalFV
+  )
 }
 
 #' @title Categorical diet indicator
 #'
-#' @description This function categorizes individuals' diet quality based on their total fruit and vegetable consumption.
+#' @description This function categorizes individuals' diet quality based on their total fruit and vegetable consumption. This function supports vector operations.
 #'
-#' @param totalFV Numeric value representing the average times per day fruits and vegetables were consumed in a year.
+#' @param totalFV [numeric] A numeric vector representing the average times per day fruits and vegetables were consumed in a year.
 #'
-#' @return A categorical value indicating the diet quality:
+#' @return [integer] A categorical indicating the diet quality:
 #'   - 1: Good diet (totalFV >= 5)
 #'   - 2: Poor diet (totalFV < 5)
 #'   - NA(b): Missing or invalid input
 #'
 #' @examples
+#' # Scalar usage: Single respondent
 #' # Example 1: Categorize a totalFV value of 3 as poor diet
 #' determine_gooddiet(3)
 #' # Output: 2
@@ -135,18 +146,21 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 #' determine_gooddiet(7)
 #' # Output: 1
 #'
+#' # Vector usage: Multiple respondents
+#' determine_gooddiet(c(3, 7, 5))
+#' # Returns: c(2, 1, 1)
+#'
+#' # Database usage: Applied to survey datasets
+#' library(dplyr)
+#' # dataset %>%
+#' #   mutate(diet_quality = determine_gooddiet(total_fv))
+#'
 #' @export
 determine_gooddiet <- function(totalFV) {
-  gooddiet <- 0
-
-  if (is.na(totalFV) || totalFV < 0) {
-    gooddiet <- haven::tagged_na("b")
-  } else {
-    if (totalFV >= 5) {
-      gooddiet <- 1
-    } else {
-      gooddiet <- 2
-    }
-  }
-  return(gooddiet)
+  dplyr::case_when(
+    is.na(totalFV) | totalFV < 0 ~ haven::tagged_na("b"),
+    totalFV >= 5 ~ 1,
+    totalFV < 5 ~ 2,
+    TRUE ~ haven::tagged_na("b")
+  )
 }

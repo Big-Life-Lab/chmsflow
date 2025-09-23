@@ -16,13 +16,13 @@ Description: Supporting the use of the Canadian Health Measures Survey (CHMS)
     3(26), 754. <doi:10.21105/joss.00754>.
 Depends: 
     R (>= 3.5)
-Imports: haven, logger
+Imports: haven, logger, dplyr
 License: MIT + file LICENSE
 URL: https://github.com/Big-Life-Lab/chmsflow, https://big-life-lab.github.io/chmsflow/
 BugReports: https://github.com/Big-Life-Lab/chmsflow/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Suggests: dplyr, DT, kableExtra, knitr, readr, recodeflow, rmarkdown, testthat (>= 3.0.0)
+Suggests: DT, kableExtra, knitr, readr, recodeflow, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 LazyData: true

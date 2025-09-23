@@ -7,10 +7,10 @@
 categorize_nonHDL(nonHDL)
 }
 \arguments{
-\item{nonHDL}{Numeric value representing an individual's non-HDL cholesterol level.}
+\item{nonHDL}{\link{numeric} A numeric representing an individual's non-HDL cholesterol level.}
 }
 \value{
-A categorical value indicating the non-HDL cholesterol category:
+\link{integer} A categorical indicating the non-HDL cholesterol category:
 \itemize{
 \item 1: High non-HDL cholesterol (nonHDL >= 4.3)
 \item 2: Normal non-HDL cholesterol (nonHDL < 4.3)
@@ -18,9 +18,10 @@ A categorical value indicating the non-HDL cholesterol category:
 }
 }
 \description{
-This function categorizes individuals' non-HDL cholesterol levels based on a threshold value.
+This function categorizes individuals' non-HDL cholesterol levels based on a threshold value. This function supports vector operations.
 }
 \examples{
+# Scalar usage: Single respondent
 # Example 1: Categorize a nonHDL value of 5.0 as high non-HDL cholesterol
 categorize_nonHDL(5.0)
 # Output: 1
@@ -28,5 +29,14 @@ categorize_nonHDL(5.0)
 # Example 2: Categorize a nonHDL value of 3.8 as normal non-HDL cholesterol
 categorize_nonHDL(3.8)
 # Output: 2
+
+# Vector usage: Multiple respondents
+categorize_nonHDL(c(5.0, 3.8, 4.3))
+# Returns: c(1, 2, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(non_hdl_category = categorize_nonHDL(non_hdl))
 
 }
