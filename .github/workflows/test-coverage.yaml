@@ -26,14 +26,19 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
-      - name: Test coverage
-        run: |
-          covr::codecov(
-            quiet = FALSE,
-            clean = FALSE,
-            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
-          )
+      - name: Install Codecov CLI
+        run: pip install codecov-cli
+      
+      - name: Run tests and generate coverage report
+        run: covr::covr(filename = "coverage.xml")
         shell: Rscript {0}
+
+      - name: Upload coverage report to Codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          codecov-cli upload-process -f "coverage.xml" -t "$CODECOV_TOKEN"
+        shell: bash
 
       - name: Show testthat output
         if: always()
