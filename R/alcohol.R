@@ -4,7 +4,7 @@
 #' This function calculates a low drink score (step 1 only) for a respondent using
 #' Canada's Low-Risk Alcohol Drinking Guideline. The score is based solely on the
 #' number of standard drinks consumed per week and the respondent's sex. (Step 2,
-#' which would add additional points based on other drinking habits, is not included.). This function supports vector operations.
+#' which would add additional points based on other drinking habits, is not included.).
 #'
 #' @param CLC_SEX [integer] An integer indicating the respondent's sex (1 for male, 2 for female).
 #' @param ALC_11 [integer] An integer indicating whether the respondent drank alcohol in the past year (1 for "Yes", 2 for "No").
@@ -33,8 +33,27 @@
 #'   - 3–4 points -> score of 3 ("Medium risk"),
 #'   - 5–9 points -> score of 4 ("High risk").
 #'
+#' @details
+#' This function implements Canada's Low-Risk Alcohol Drinking Guidelines (Step 1 only) to assess 
+#' alcohol consumption risk. The scoring system considers both the quantity of alcohol consumed 
+#' and biological sex differences in alcohol metabolism.
+#' 
+#' **Risk Categories:**
+#' - Low risk (0 points): Safe consumption levels
+#' - Marginal risk (1-2 points): Slightly elevated risk
+#' - Medium risk (3-4 points): Moderate health concerns
+#' - High risk (5-9 points): Significant health risks
+#' 
+#' **Sex-Based Differences:**
+#' Women generally have lower tolerance thresholds due to physiological differences in 
+#' alcohol metabolism, reflected in the sex-specific point allocations.
+#' 
+#' **Non-response Handling:**
+#' Invalid inputs or survey non-response values result in tagged NA ("b").
+#'
 #' @note
-#' This function does not include the additional points from step 2 of the guideline.
+#' This function implements only Step 1 of the guidelines. Step 2 (additional drinking pattern 
+#' assessments) is not included due to data limitations in the survey.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -42,7 +61,7 @@
 #' low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3)
 #' # Expected output: 1 (Low risk)
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA))
 #' # Returns: c(1, 2, 1)
 #'
@@ -51,6 +70,9 @@
 #' # dataset %>%
 #' #   mutate(low_drink_score = low_drink_score_fun(CLC_SEX, ALC_11, ALCDWKY))
 #'
+#' @seealso [low_drink_score_fun1()] for extended categorization including former/never drinkers
+#' @references Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
+#' @keywords survey health alcohol substance-use
 #' @export
 low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
   step1 <- dplyr::case_when(
@@ -81,7 +103,7 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #' @description
 #' Computes a categorical alcohol consumption score based on Canada's Low-Risk Alcohol Drinking Guidelines (Step 1),
 #' while distinguishing between never, former, light, moderate, and heavy drinkers. The function uses information
-#' about weekly consumption, past-year use, lifetime drinking, and history of heavy drinking. This function supports vector operations.
+#' about weekly consumption, past-year use, lifetime drinking, and history of heavy drinking.
 #'
 #' @param CLC_SEX [integer] Respondent's sex (1 = male, 2 = female).
 #' @param ALC_11 [integer] Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).
@@ -118,7 +140,7 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #' low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = 1, ALC_18 = 2)
 #' # Expected output: 2
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' low_drink_score_fun1(
 #'   CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2),
 #'   ALCDWKY = c(3, 12, NA), ALC_17 = c(1, 1, 1), ALC_18 = c(2, 2, 1)
@@ -130,6 +152,9 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #' # dataset %>%
 #' #   mutate(low_drink_score1 = low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18))
 #'
+#' @seealso [low_drink_score_fun()] for basic risk scoring without drinking history
+#' @references Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
+#' @keywords survey health alcohol substance-use
 #' @export
 low_drink_score_fun1 <- function(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18) {
   step1 <- dplyr::case_when(

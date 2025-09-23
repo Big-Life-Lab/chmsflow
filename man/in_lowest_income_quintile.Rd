@@ -18,7 +18,7 @@ in_lowest_income_quintile(incq)
 }
 }
 \description{
-This function checks if an individual's income category corresponds to the lowest income quintile. This function supports vector operations.
+This function checks if an individual's income category corresponds to the lowest income quintile.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -30,7 +30,7 @@ in_lowest_income_quintile(3)
 in_lowest_income_quintile(1)
 # Output: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 in_lowest_income_quintile(c(3, 1, 5))
 # Returns: c(2, 1, 2)
 

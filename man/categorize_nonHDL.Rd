@@ -18,7 +18,7 @@ categorize_nonHDL(nonHDL)
 }
 }
 \description{
-This function categorizes individuals' non-HDL cholesterol levels based on a threshold value. This function supports vector operations.
+This function categorizes individuals' non-HDL cholesterol levels based on a threshold value.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -30,7 +30,7 @@ categorize_nonHDL(5.0)
 categorize_nonHDL(3.8)
 # Output: 2
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 categorize_nonHDL(c(5.0, 3.8, 4.3))
 # Returns: c(1, 2, 1)
 

@@ -35,10 +35,23 @@ find_week_accelerometer_average(
 \description{
 This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
 parameters, each representing the minutes of exercise on a specific day (Day 1 to Day 7) of accelerometer measurement.
-The function computes the average of these values to obtain the average minutes of exercise per day. This function supports vector operations.
+The function computes the average of these values to obtain the average minutes of exercise per day.
 }
 \details{
 The function calculates the average minutes of exercise per day by taking the mean of the seven input parameters.
+
+This function processes physical activity data from accelerometer measurements
+to create a weekly activity summary.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Data Quality Requirements:**
+     - Requires complete 7-day data (missing days result in tagged NA)
+     - This conservative approach ensures reliable activity estimates
+     - Zero values are preserved (represent valid no-activity days)
+     
+     **Clinical Context:**
+     Accelerometer data provides objective measures of moderate-to-vigorous physical activity (MVPA),
+     crucial for assessing adherence to physical activity guidelines.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -46,9 +59,22 @@ The function calculates the average minutes of exercise per day by taking the me
 find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
 # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
 
-# Vector usage: Multiple respondents
-find_week_accelerometer_average(c(30, 20), c(40, 30), c(25, 35), c(35, 45), 
-c(20, 25), c(45, 55), c(50, 60))
+# Multiple respondents
+find_week_accelerometer_average(
+  c(30, 20), c(40, 30), c(25, 35), c(35, 45),
+  c(20, 25), c(45, 55), c(50, 60)
+)
 # Returns: c(35, 39.28571)
 
 }
+\references{
+Physical Activity Guidelines for Adults, Health Canada
+}
+\seealso{
+\code{\link[=minperday_to_minperweek]{minperday_to_minperweek()}} for activity unit conversion, \code{\link[=categorize_minperweek]{categorize_minperweek()}} for activity level classification
+}
+\keyword{accelerometer}
+\keyword{exercise}
+\keyword{health}
+\keyword{physical-activity}
+\keyword{survey}

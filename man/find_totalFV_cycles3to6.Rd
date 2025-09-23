@@ -48,7 +48,7 @@ find_totalFV_cycles3to6(
 This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures
 Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or
 vegetable item was consumed. The function then sums up the consumption frequencies of all these items and divides the total
-by 365 to obtain the average daily consumption of fruits and vegetables in a year. This function supports vector operations.
+by 365 to obtain the average daily consumption of fruits and vegetables in a year.
 }
 \details{
 The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
@@ -78,7 +78,7 @@ find_totalFV_cycles3to6(
 )
 # Output: 2.931507
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 find_totalFV_cycles3to6(
   WSDD34Y = c(50, 60), WSDD35Y = c(100, 110), GFVD17AY = c(150, 160), GFVD17BY = c(80, 90),
   GFVD17CY = c(40, 50), GFVD17DY = c(200, 210), GFVD18Y = c(100, 110), GFVD19Y = c(80, 90),

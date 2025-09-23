@@ -58,7 +58,7 @@ determine_controlled_hypertension(
 }
 }
 \description{
-This function determines the controlled hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage. This function supports vector operations.
+This function determines the controlled hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -70,9 +70,11 @@ determine_controlled_hypertension(BPMDPBPS = 150, BPMDPBPD = 95, ANYMED2 = 1)
 determine_controlled_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 1)
 # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 
-# Vector usage: Multiple respondents
-determine_controlled_hypertension(BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85), 
-ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1))
+# Multiple respondents
+determine_controlled_hypertension(
+  BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85),
+  ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)
+)
 # Returns: c(2, 1, 2)
 
 }

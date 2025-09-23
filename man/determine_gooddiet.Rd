@@ -18,7 +18,7 @@ determine_gooddiet(totalFV)
 }
 }
 \description{
-This function categorizes individuals' diet quality based on their total fruit and vegetable consumption. This function supports vector operations.
+This function categorizes individuals' diet quality based on their total fruit and vegetable consumption.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -30,7 +30,7 @@ determine_gooddiet(3)
 determine_gooddiet(7)
 # Output: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 determine_gooddiet(c(3, 7, 5))
 # Returns: c(2, 1, 1)
 

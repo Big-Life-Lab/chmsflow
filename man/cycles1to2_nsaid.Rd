@@ -253,7 +253,7 @@ cycles1to2_nsaid(
 }
 \description{
 This function checks if a person is taking any NSAIDs based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }
 \details{
 The function identifies NSAIDs based on ATC codes starting with "M01A". It checks all medication variables provided in the input data frame.
@@ -263,7 +263,7 @@ The function identifies NSAIDs based on ATC codes starting with "M01A". It check
 cycles1to2_nsaid(atc_101a = "M01AB05", mhr_101b = 1)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 cycles1to2_nsaid(
   atc_101a = c("M01AB05", "A10BB09", "M01AE01"),
   mhr_101b = c(1, 3, 2)

@@ -253,7 +253,7 @@ cycles1to2_beta_blockers(
 }
 \description{
 This function checks if a person is taking beta blockers based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }
 \details{
 The function identifies beta blockers based on ATC codes starting with "C07", excluding specific sub-codes. It checks all medication variables provided in the input data frame.
@@ -263,7 +263,7 @@ The function identifies beta blockers based on ATC codes starting with "C07", ex
 cycles1to2_beta_blockers(atc_101a = "C07AA13", mhr_101b = 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 cycles1to2_beta_blockers(
   atc_101a = c("C07AA13", "C01AA05", "C07AB02"),
   mhr_101b = c(3, 1, 4)

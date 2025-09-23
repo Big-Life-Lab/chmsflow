@@ -21,7 +21,7 @@ categorize_income(adj_hh_inc)
 }
 }
 \description{
-This function categorizes individuals' adjusted household income based on specified income ranges. This function supports vector operations.
+This function categorizes individuals' adjusted household income based on specified income ranges.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -33,7 +33,7 @@ categorize_income(25000)
 categorize_income(45000)
 # Output: 3
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 categorize_income(c(25000, 45000, 80000))
 # Returns: c(2, 3, 5)
 

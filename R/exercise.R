@@ -2,7 +2,7 @@
 #'
 #' @description This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
 #' parameters, each representing the minutes of exercise on a specific day (Day 1 to Day 7) of accelerometer measurement.
-#' The function computes the average of these values to obtain the average minutes of exercise per day. This function supports vector operations.
+#' The function computes the average of these values to obtain the average minutes of exercise per day.
 #'
 #' @param AMMDMVA1 [numeric] A numeric representing minutes of exercise on Day 1 of accelerometer measurement.
 #' @param AMMDMVA2 [numeric] A numeric representing minutes of exercise on Day 2 of accelerometer measurement.
@@ -22,13 +22,28 @@
 #' find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
 #' # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' find_week_accelerometer_average(
 #'   c(30, 20), c(40, 30), c(25, 35), c(35, 45),
 #'   c(20, 25), c(45, 55), c(50, 60)
 #' )
 #' # Returns: c(35, 39.28571)
 #'
+#' @details This function processes physical activity data from accelerometer measurements 
+#'          to create a weekly activity summary.
+#'          
+#'          **Data Quality Requirements:**
+#'          - Requires complete 7-day data (missing days result in tagged NA)
+#'          - This conservative approach ensures reliable activity estimates
+#'          - Zero values are preserved (represent valid no-activity days)
+#'          
+#'          **Clinical Context:**
+#'          Accelerometer data provides objective measures of moderate-to-vigorous physical activity (MVPA),
+#'          crucial for assessing adherence to physical activity guidelines.
+#'
+#' @seealso [minperday_to_minperweek()] for activity unit conversion, [categorize_minperweek()] for activity level classification
+#' @references Physical Activity Guidelines for Adults, Health Canada
+#' @keywords survey health exercise accelerometer physical-activity
 #' @export
 find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7) {
   measurements <- cbind(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7)
@@ -45,7 +60,7 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
 #' @title Minutes per week from minutes per day
 #'
 #' @description This function takes the average minutes of exercise per day across a week of accelerometer use as an input (`MVPA_min`) and
-#' calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value. This function supports vector operations.
+#' calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value.
 #'
 #' @param MVPA_min [numeric] A numeric representing the average minutes of exercise per day across a week of accelerometer use.
 #'
@@ -60,7 +75,7 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
 #' minperday_to_minperweek(35)
 #' # Output: 245 (The equivalent minutes of exercise per one week is 245 minutes.)
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' minperday_to_minperweek(c(35, 40, 20))
 #' # Returns: c(245, 280, 140)
 #'
@@ -80,7 +95,7 @@ minperday_to_minperweek <- function(MVPA_min) {
 
 #' @title Categorical weekly physical activity indicator
 #'
-#' @description This function categorizes individuals' weekly physical activity levels based on a threshold value. This function supports vector operations.
+#' @description This function categorizes individuals' weekly physical activity levels based on a threshold value.
 #'
 #' @param minperweek [numeric] A numeric representing an individual's minutes of moderate-to-vigorous
 #'   physical activity (MVPA) per week.
@@ -100,7 +115,7 @@ minperday_to_minperweek <- function(MVPA_min) {
 #' categorize_minperweek(120)
 #' # Output: 2
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' categorize_minperweek(c(180, 120, 150))
 #' # Returns: c(1, 2, 1)
 #'

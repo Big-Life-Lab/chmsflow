@@ -70,9 +70,11 @@ determine_adjusted_hypertension(SBP_adj = 150, DBP_adj = 95, ANYMED2 = 1)
 determine_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYMED2 = 2)
 # Output: 2 (Normal blood pressure as adjusted BP is below 140/90 mmHg and not on medication).
 
-# Vector usage: Multiple respondents
-determine_adjusted_hypertension(SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85), 
-ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1))
+# Multiple respondents
+determine_adjusted_hypertension(
+  SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85),
+  ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1)
+)
 # Returns: c(1, 2, 1)
 
 }

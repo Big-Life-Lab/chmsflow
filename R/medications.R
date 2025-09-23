@@ -1,7 +1,7 @@
 #' @title Number of occurrences of a specific drug class based on given conditions
 #'
 #' @description This function calculates the number of occurrences of a specific drug class in a data frame.
-#' The calculation is based on custom conditions specified by the user. This function supports vector operations.
+#' The calculation is based on custom conditions specified by the user.
 #'
 #' @param df [data.frame] The data frame containing medication and last taken information.
 #' @param class_var_name [character] The name of the new variable representing the drug class.
@@ -95,7 +95,7 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 
 #' @title Beta blockers
 #' @description This function determines whether a given medication is a beta blocker.
-#' This function now supports vector operations for batch processing.
+#' This function processes multiple inputs efficiently.
 #' @param MEUCATC [character] ATC code of the medication.
 #' @param NPI_25B [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is a beta blocker, 0 otherwise.
@@ -105,7 +105,7 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 #' is_beta_blocker("C07AA13", 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' is_beta_blocker(c("C07AA13", "C07AA07"), c(3, 4))
 #' # Returns: c(1, 0)
 #'
@@ -129,7 +129,7 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
 
 #' @title ACE inhibitors
 #' @description This function checks if a given medication is an ACE inhibitor.
-#' This function now supports vector operations for batch processing.
+#' This function processes multiple inputs efficiently.
 #' @param MEUCATC [character] ATC code of the medication.
 #' @param NPI_25B [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is an ACE inhibitor, 0 otherwise.
@@ -139,7 +139,7 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
 #' is_ace_inhibitor("C09AB03", 2)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1))
 #' # Returns: c(1, 0)
 #'
@@ -163,7 +163,7 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 
 #' @title Diuretics
 #' @description This function checks if a given medication is a diuretic.
-#' This function now supports vector operations for batch processing.
+#' This function processes multiple inputs efficiently.
 #' @param MEUCATC [character] ATC code of the medication.
 #' @param NPI_25B [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is a diuretic, 0 otherwise.
@@ -173,7 +173,7 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 #' is_diuretic("C03AA03", 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' is_diuretic(c("C03AA03", "C03BA08"), c(3, 2))
 #' # Returns: c(1, 0)
 #'
@@ -197,7 +197,7 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 
 #' @title Calcium channel blockers
 #' @description This function checks if a given medication is a calcium channel blocker.
-#' This function now supports vector operations for batch processing.
+#' This function processes multiple inputs efficiently.
 #' @param MEUCATC [character] ATC code of the medication.
 #' @param NPI_25B [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is a calcium channel blocker, 0 otherwise.
@@ -207,7 +207,7 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 #' is_calcium_channel_blocker("C08CA05", 1)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2))
 #' # Returns: c(1, 0)
 #'
@@ -231,7 +231,7 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
 
 #' @title Other anti-hypertensive medications
 #' @description This function checks if a given medication is another anti-hypertensive drug.
-#' This function now supports vector operations for batch processing.
+#' This function processes multiple inputs efficiently.
 #' @param MEUCATC [character] ATC code of the medication.
 #' @param NPI_25B [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is another anti-hypertensive drug, 0 otherwise.
@@ -241,7 +241,7 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
 #' is_other_antiHTN_med("C02AC04", 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' is_other_antiHTN_med(c("C02AC04", "C02KX01"), c(3, 2))
 #' # Returns: c(1, 0)
 #'
@@ -265,7 +265,7 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
 
 #' @title Any anti-hypertensive medications
 #' @description This function checks if a given medication is any anti-hypertensive drug.
-#' This function now supports vector operations for batch processing.
+#' This function processes multiple inputs efficiently.
 #' @param MEUCATC [character] ATC code of the medication.
 #' @param NPI_25B [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is an anti-hypertensive drug, 0 otherwise.
@@ -275,7 +275,7 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' is_any_antiHTN_med("C07AB02", 4)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' is_any_antiHTN_med(c("C07AB02", "C07AA07"), c(4, 2))
 #' # Returns: c(1, 0)
 #'
@@ -299,7 +299,7 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
 
 #' @title Non-steroidal anti-inflammatory drugs (NSAIDs)
 #' @description This function checks if a given medication is an NSAID.
-#' This function now supports vector operations for batch processing.
+#' This function processes multiple inputs efficiently.
 #' @param MEUCATC [character] ATC code of the medication.
 #' @param NPI_25B [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is an NSAID, 0 otherwise.
@@ -309,7 +309,7 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' is_NSAID("M01AB05", 1)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' is_NSAID(c("M01AB05", "A10BB09"), c(1, 3))
 #' # Returns: c(1, 0)
 #'
@@ -333,7 +333,7 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
 
 #' @title Diabetes medications
 #' @description This function checks if a given medication is a diabetes drug.
-#' This function now supports vector operations for batch processing.
+#' This function processes multiple inputs efficiently.
 #' @param MEUCATC [character] ATC code of the medication.
 #' @param NPI_25B [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is a diabetes drug, 0 otherwise.
@@ -343,7 +343,7 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
 #' is_diabetes_drug("A10BB09", 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' is_diabetes_drug(c("A10BB09", "C09AA02"), c(3, 2))
 #' # Returns: c(1, 0)
 #'
@@ -368,7 +368,7 @@ is_diabetes_drug <- function(MEUCATC, NPI_25B) {
 #' @title Beta blockers - cycles 1-2
 #'
 #' @description This function checks if a person is taking beta blockers based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 #'
 #' @param atc_101a [character] ATC code of respondent's first prescription medication.
 #' @param atc_102a [character] ATC code of respondent's second prescription medication.
@@ -461,7 +461,7 @@ is_diabetes_drug <- function(MEUCATC, NPI_25B) {
 #' cycles1to2_beta_blockers(atc_101a = "C07AA13", mhr_101b = 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' cycles1to2_beta_blockers(
 #'   atc_101a = c("C07AA13", "C01AA05", "C07AB02"),
 #'   mhr_101b = c(3, 1, 4)
@@ -550,7 +550,7 @@ cycles1to2_beta_blockers <- function(
 #' @title ACE inhibitors - cycles 1-2
 #'
 #' @description This function checks if a person is taking ACE inhibitors based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 #'
 #' @param atc_101a [character] ATC code of respondent's first prescription medication.
 #' @param atc_102a [character] ATC code of respondent's second prescription medication.
@@ -642,7 +642,7 @@ cycles1to2_beta_blockers <- function(
 #' cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' cycles1to2_ace_inhibitors(
 #'   atc_101a = c("C09AA02", "C01AA05", "C09AB03"),
 #'   mhr_101b = c(3, 1, 2)
@@ -732,7 +732,7 @@ cycles1to2_ace_inhibitors <- function(
 #' @title Diuretics - cycles 1-2
 #'
 #' @description This function checks if a person is taking diuretics based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 #'
 #' @param atc_101a [character] ATC code of respondent's first prescription medication.
 #' @param atc_102a [character] ATC code of respondent's second prescription medication.
@@ -824,7 +824,7 @@ cycles1to2_ace_inhibitors <- function(
 #' cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' cycles1to2_diuretics(
 #'   atc_101a = c("C03AA03", "C03BA08", "C01AA05"),
 #'   mhr_101b = c(3, 2, 1)
@@ -913,7 +913,7 @@ cycles1to2_diuretics <- function(
 #' @title Calcium channel blockers - cycles 1-2
 #'
 #' @description This function checks if a person is taking calcium channel blockers based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 #'
 #' @param atc_101a [character] ATC code of respondent's first prescription medication.
 #' @param atc_102a [character] ATC code of respondent's second prescription medication.
@@ -1005,7 +1005,7 @@ cycles1to2_diuretics <- function(
 #' cycles1to2_calcium_channel_blockers(atc_101a = "C08CA05", mhr_101b = 1)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' cycles1to2_calcium_channel_blockers(
 #'   atc_101a = c("C08CA05", "C01AA05", "C08DB01"),
 #'   mhr_101b = c(1, 2, 4)
@@ -1094,7 +1094,7 @@ cycles1to2_calcium_channel_blockers <- function(
 #' @title Other anti-hypertensive medications - cycles 1-2
 #'
 #' @description This function checks if a person is taking another type of anti-hypertensive medication based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 #'
 #' @param atc_101a [character] ATC code of respondent's first prescription medication.
 #' @param atc_102a [character] ATC code of respondent's second prescription medication.
@@ -1186,7 +1186,7 @@ cycles1to2_calcium_channel_blockers <- function(
 #' cycles1to2_other_antiHTN_meds(atc_101a = "C02AC04", mhr_101b = 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' cycles1to2_other_antiHTN_meds(
 #'   atc_101a = c("C02AC04", "C02KX01", "C02AB01"),
 #'   mhr_101b = c(3, 2, 1)
@@ -1275,7 +1275,7 @@ cycles1to2_other_antiHTN_meds <- function(
 #' @title Any anti-hypertensive medications - cycles 1-2
 #'
 #' @description This function checks if a person is taking any anti-hypertensive medication based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 #'
 #' @param atc_101a [character] ATC code of respondent's first prescription medication.
 #' @param atc_102a [character] ATC code of respondent's second prescription medication.
@@ -1367,7 +1367,7 @@ cycles1to2_other_antiHTN_meds <- function(
 #' cycles1to2_any_antiHTN_meds(atc_101a = "C07AB02", mhr_101b = 4)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' cycles1to2_any_antiHTN_meds(
 #'   atc_101a = c("C07AB02", "C07AA07", "C09AA02"),
 #'   mhr_101b = c(4, 2, 3)
@@ -1471,7 +1471,7 @@ cycles1to2_any_antiHTN_meds <- function(
 #' @title Non-steroidal anti-inflammatory drugs (NSAIDs) - cycles 1-2
 #'
 #' @description This function checks if a person is taking any NSAIDs based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 #'
 #' @param atc_101a [character] ATC code of respondent's first prescription medication.
 #' @param atc_102a [character] ATC code of respondent's second prescription medication.
@@ -1563,7 +1563,7 @@ cycles1to2_any_antiHTN_meds <- function(
 #' cycles1to2_nsaid(atc_101a = "M01AB05", mhr_101b = 1)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' cycles1to2_nsaid(
 #'   atc_101a = c("M01AB05", "A10BB09", "M01AE01"),
 #'   mhr_101b = c(1, 3, 2)
@@ -1652,7 +1652,7 @@ cycles1to2_nsaid <- function(
 #' @title Diabetes medications - cycles 1-2
 #'
 #' @description This function checks if a person is taking diabetes drugs based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+#' and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 #'
 #' @param atc_101a [character] ATC code of respondent's first prescription medication.
 #' @param atc_102a [character] ATC code of respondent's second prescription medication.
@@ -1744,7 +1744,7 @@ cycles1to2_nsaid <- function(
 #' cycles1to2_diabetes_drugs(atc_101a = "A10BB09", mhr_101b = 3)
 #' # Returns: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' cycles1to2_diabetes_drugs(
 #'   atc_101a = c("A10BB09", "C09AA02", "A10BA02"),
 #'   mhr_101b = c(3, 2, 1)

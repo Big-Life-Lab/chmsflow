@@ -16,7 +16,7 @@ is_other_antiHTN_med(MEUCATC, NPI_25B)
 }
 \description{
 This function checks if a given medication is another anti-hypertensive drug.
-This function now supports vector operations for batch processing.
+This function processes multiple inputs efficiently.
 }
 \details{
 Identifies other anti-hypertensive drugs based on ATC codes starting with "C02", excluding a specific sub-code.
@@ -26,7 +26,7 @@ Identifies other anti-hypertensive drugs based on ATC codes starting with "C02",
 is_other_antiHTN_med("C02AC04", 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 is_other_antiHTN_med(c("C02AC04", "C02KX01"), c(3, 2))
 # Returns: c(1, 0)
 

@@ -18,15 +18,25 @@ NA(b) (Not Available).
 }
 \description{
 This function calculates the adjusted total household income based on the respondent's income amount
-and actual household size, taking into account the weighted household size. This function supports vector operations.
+and actual household size, taking into account the weighted household size.
 }
 \details{
-The function first calculates the weighted household size (hh_size_wt) based on the respondent's actual
-household size (DHHDHSZ). It uses a loop to iterate from 1 to DHHDHSZ and assigns weights to each household
-member based on their count. If the household size (i) is 1, the weight is 1; if i is 2, the weight is 0.4; if
-i is greater than or equal to 3, the weight is 0.3. The weighted household size is then used to adjust the
-respondent's total household income (THI_01) by dividing it by hh_size_wt. The adjusted household income
-(adj_hh_inc) is returned as the final output.
+This function applies equivalence scales to adjust household income for household size,
+allowing for meaningful income comparisons across different household compositions.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Equivalence Scale Logic:**
+     - First adult: Weight = 1.0 (full weight)
+     - Second adult: Weight = 0.4 (economies of scale)
+     - Additional members: Weight = 0.3 each (further economies)
+     
+     **Examples:**
+     - Single person: weight = 1.0
+     - Two adults: weight = 1.4 (1.0 + 0.4)
+     - Family of four: weight = 2.0 (1.0 + 0.4 + 0.3 + 0.3)
+     
+     **Non-response Handling:**
+     Income values >= 996 or household size <= 0 indicate survey non-response and result in tagged NA ("b").
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -42,7 +52,7 @@ calculate_hhld_income(THI_01 = 75000, DHHDHSZ = 2)
 calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
 # Output: 90000
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))
 # Returns: c(29411.76, 53571.43, 90000)
 
@@ -52,3 +62,14 @@ library(dplyr)
 #   mutate(adj_hh_income = calculate_hhld_income(THI_01, DHHDHSZ))
 
 }
+\references{
+OECD equivalence scales for income adjustment
+}
+\seealso{
+\code{\link[=categorize_income]{categorize_income()}} for income classification, \code{\link[=in_lowest_income_quintile]{in_lowest_income_quintile()}} for poverty indicators
+}
+\keyword{demographics}
+\keyword{household}
+\keyword{income}
+\keyword{socioeconomic}
+\keyword{survey}

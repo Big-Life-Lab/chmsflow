@@ -22,7 +22,28 @@ determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2)
 - If one parameter is \code{NA}, the function checks the remaining two for a decision.
 }
 \description{
-This function evaluates diabetes status based on three factors: \code{diab_m}, \code{CCC_51}, and \code{diab_drug2}. This function supports vector operations.
+This function evaluates diabetes status using a comprehensive approach that combines
+laboratory measurements, self-reported diagnosis, and medication usage to create an inclusive
+diabetes classification.
+}
+\details{
+This function classifies diabetes status based that considers:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Data Sources:**
+     - Laboratory: HbA1c levels indicating diabetes (diab_m)
+     - Self-report: Participant-reported diabetes diagnosis (CCC_51)
+     - Medication: Current diabetes medication usage (diab_drug2)
+     
+     **Classification Logic:**
+     - ANY positive indicator results in diabetes classification
+     - ALL negative indicators required for "no diabetes" classification
+     - Sophisticated missing data handling preserves available information
+     
+     **Missing Data Strategy:**
+     The function maximizes data utility by making classifications based on available 
+     information when some parameters are missing, only returning NA when insufficient 
+     data exists for classification.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -38,7 +59,7 @@ determine_inclusive_diabetes(diab_m = 2, CCC_51 = 2, diab_drug2 = 0)
 determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
 # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 determine_inclusive_diabetes(diab_m = c(1, 2, 2), CCC_51 = c(2, 1, 2), diab_drug2 = c(0, 0, 1))
 # Returns: c(1, 1, 1)
 
@@ -48,3 +69,13 @@ library(dplyr)
 #   mutate(diabetes_status = determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2))
 
 }
+\references{
+Clinical guidelines for diabetes diagnosis and classification
+}
+\seealso{
+Related health condition functions: \code{\link[=determine_hypertension]{determine_hypertension()}}, \code{\link[=calculate_GFR]{calculate_GFR()}}
+}
+\keyword{diabetes}
+\keyword{endocrine}
+\keyword{health}
+\keyword{survey}

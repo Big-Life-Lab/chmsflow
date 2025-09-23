@@ -15,14 +15,17 @@ adjust_SBP(BPMDPBPS)
 \description{
 This function adjusts systolic blood pressure based on the respondent's systolic average blood pressure across
 six measurements. The adjustment is made using specific correction factors. The adjusted systolic blood pressure
-is returned as a numeric value. This function supports vector operations.
+is returned as a numeric value.
 }
 \details{
-The function calculates the adjusted systolic blood pressure (SBP_adj) based on the value of BPMDPBPS. If
-BPMDPBPS is greater than or equal to 0 and less than 996, the adjustment is made using the formula:
-SBP_adj = 11.4 + (0.93 * BPMDPBPS). Otherwise, if BPMDPBPS is a non-response value (BPMDPBPS >= 996), the
-adjusted systolic blood pressure is set to NA(b), indicating that the measurement is not available. The adjusted
-systolic blood pressure is returned as the final output.
+Blood pressure measurements in survey settings may require adjustment to account for
+measurement conditions and equipment differences. This function applies a standardized adjustment
+using the formula: SBP_adj = 11.4 + (0.93 * BPMDPBPS).
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     Non-response handling: Values >= 996 indicate survey non-response and are converted to 
+     tagged NA ("b") to distinguish from missing measurements. Negative values are also 
+     treated as invalid and converted to tagged NA.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -30,7 +33,7 @@ systolic blood pressure is returned as the final output.
 adjust_SBP(BPMDPBPS = 120)
 # Output: 123
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 adjust_SBP(BPMDPBPS = c(120, 130, 140))
 # Returns: c(123, 132.3, 141.6)
 
@@ -40,3 +43,9 @@ library(dplyr)
 #   mutate(sbp_adj = adjust_SBP(BPMDPBPS))
 
 }
+\seealso{
+\code{\link[=adjust_DBP]{adjust_DBP()}} for diastolic blood pressure adjustment, \code{\link[=determine_hypertension]{determine_hypertension()}} for hypertension classification
+}
+\keyword{cardiovascular}
+\keyword{health}
+\keyword{survey}

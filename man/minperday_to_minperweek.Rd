@@ -14,7 +14,7 @@ minperday_to_minperweek(MVPA_min)
 }
 \description{
 This function takes the average minutes of exercise per day across a week of accelerometer use as an input (\code{MVPA_min}) and
-calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value. This function supports vector operations.
+calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value.
 }
 \details{
 The function simply multiplies the average minutes of exercise per day (\code{MVPA_min}) by 7 to obtain the equivalent
@@ -26,7 +26,7 @@ minutes of exercise per one week of accelerometer use.
 minperday_to_minperweek(35)
 # Output: 245 (The equivalent minutes of exercise per one week is 245 minutes.)
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 minperday_to_minperweek(c(35, 40, 20))
 # Returns: c(245, 280, 140)
 

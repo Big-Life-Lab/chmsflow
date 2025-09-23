@@ -3,7 +3,7 @@
 #' @description This function calculates the daily fruit and vegetable consumption in a year for respondent in the Canadian Health Measures
 #' Survey (CHMS) cycles 1-2. It takes seven parameters, each representing the number of times per year a specific fruit or vegetable item
 #' was consumed. The function then sums up the consumption frequencies of all these items and divides the total by 365 to
-#' obtain the average daily consumption of fruits and vegetables in a year. This function supports vector operations.
+#' obtain the average daily consumption of fruits and vegetables in a year.
 #'
 #' @param WSDD14Y [numeric] A numeric vector representing the number of times per year fruit juice was consumed.
 #' @param GFVD17Y [numeric] A numeric vector representing the number of times per year fruit (excluding juice) was consumed.
@@ -38,13 +38,16 @@
 #' )
 #' # Output: 2.164384
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' find_totalFV_cycles1and2(
 #'   WSDD14Y = c(50, 60), GFVD17Y = c(150, 160), GFVD18Y = c(200, 210), GFVD19Y = c(100, 110),
 #'   GFVD20Y = c(80, 90), GFVD22Y = c(120, 130), GFVD23Y = c(90, 100)
 #' )
 #' # Returns: c(2.164384, 2.356164)
 #'
+#' @seealso [find_totalFV_cycles3to6()] for cycles 3-6 fruit and vegetable consumption, [determine_gooddiet()] for overall diet quality
+#' @references Health Canada food guide and dietary recommendations
+#' @keywords survey nutrition diet fruit-vegetable health
 #' @export
 find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
   measurements <- cbind(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)
@@ -62,7 +65,7 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' @description This function calculates the daily fruit and vegetable consumption in a year for respondents in the Canadian Health Measures
 #' Survey (CHMS) cycles 3-6. It takes eleven parameters, each representing the number of times per year a specific fruit or
 #' vegetable item was consumed. The function then sums up the consumption frequencies of all these items and divides the total
-#' by 365 to obtain the average daily consumption of fruits and vegetables in a year. This function supports vector operations.
+#' by 365 to obtain the average daily consumption of fruits and vegetables in a year.
 #'
 #' @param WSDD34Y [numeric] A numeric vector representing the number of times per year orange or grapefruit juice was consumed.
 #' @param WSDD35Y [numeric] A numeric vector representing the number of times per year other fruit juices were consumed.
@@ -105,7 +108,7 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' )
 #' # Output: 2.931507
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' find_totalFV_cycles3to6(
 #'   WSDD34Y = c(50, 60), WSDD35Y = c(100, 110), GFVD17AY = c(150, 160), GFVD17BY = c(80, 90),
 #'   GFVD17CY = c(40, 50), GFVD17DY = c(200, 210), GFVD18Y = c(100, 110), GFVD19Y = c(80, 90),
@@ -127,7 +130,7 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 
 #' @title Categorical diet indicator
 #'
-#' @description This function categorizes individuals' diet quality based on their total fruit and vegetable consumption. This function supports vector operations.
+#' @description This function categorizes individuals' diet quality based on their total fruit and vegetable consumption.
 #'
 #' @param totalFV [numeric] A numeric vector representing the average times per day fruits and vegetables were consumed in a year.
 #'
@@ -146,7 +149,7 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 #' determine_gooddiet(7)
 #' # Output: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' determine_gooddiet(c(3, 7, 5))
 #' # Returns: c(2, 1, 1)
 #'

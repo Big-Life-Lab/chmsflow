@@ -16,7 +16,7 @@ is_diuretic(MEUCATC, NPI_25B)
 }
 \description{
 This function checks if a given medication is a diuretic.
-This function now supports vector operations for batch processing.
+This function processes multiple inputs efficiently.
 }
 \details{
 Identifies diuretics based on ATC codes starting with "C03", excluding specific sub-codes.
@@ -26,7 +26,7 @@ Identifies diuretics based on ATC codes starting with "C03", excluding specific 
 is_diuretic("C03AA03", 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 is_diuretic(c("C03AA03", "C03BA08"), c(3, 2))
 # Returns: c(1, 0)
 

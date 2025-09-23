@@ -16,7 +16,7 @@ is_diabetes_drug(MEUCATC, NPI_25B)
 }
 \description{
 This function checks if a given medication is a diabetes drug.
-This function now supports vector operations for batch processing.
+This function processes multiple inputs efficiently.
 }
 \details{
 Identifies diabetes drugs based on ATC codes starting with "A10".
@@ -26,7 +26,7 @@ Identifies diabetes drugs based on ATC codes starting with "A10".
 is_diabetes_drug("A10BB09", 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 is_diabetes_drug(c("A10BB09", "C09AA02"), c(3, 2))
 # Returns: c(1, 0)
 

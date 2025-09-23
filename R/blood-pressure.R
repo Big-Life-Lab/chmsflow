@@ -2,17 +2,19 @@
 #'
 #' @description This function adjusts systolic blood pressure based on the respondent's systolic average blood pressure across
 #' six measurements. The adjustment is made using specific correction factors. The adjusted systolic blood pressure
-#' is returned as a numeric value. This function supports vector operations.
+#' is returned as a numeric value.
 #'
 #' @param BPMDPBPS [numeric] A numeric representing the respondent's systolic average blood pressure (in mmHg) across six measurements.
 #'
 #' @return [numeric] The adjusted systolic blood pressure as a numeric.
 #'
-#' @details The function calculates the adjusted systolic blood pressure (SBP_adj) based on the value of BPMDPBPS. If
-#'          BPMDPBPS is greater than or equal to 0 and less than 996, the adjustment is made using the formula:
-#'          SBP_adj = 11.4 + (0.93 * BPMDPBPS). Otherwise, if BPMDPBPS is a non-response value (BPMDPBPS >= 996), the
-#'          adjusted systolic blood pressure is set to NA(b), indicating that the measurement is not available. The adjusted
-#'          systolic blood pressure is returned as the final output.
+#' @details Blood pressure measurements in survey settings may require adjustment to account for 
+#'          measurement conditions and equipment differences. This function applies a standardized adjustment
+#'          using the formula: SBP_adj = 11.4 + (0.93 * BPMDPBPS).
+#'          
+#'          Non-response handling: Values >= 996 indicate survey non-response and are converted to 
+#'          tagged NA ("b") to distinguish from missing measurements. Negative values are also 
+#'          treated as invalid and converted to tagged NA.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -20,7 +22,7 @@
 #' adjust_SBP(BPMDPBPS = 120)
 #' # Output: 123
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' adjust_SBP(BPMDPBPS = c(120, 130, 140))
 #' # Returns: c(123, 132.3, 141.6)
 #'
@@ -29,6 +31,8 @@
 #' # dataset %>%
 #' #   mutate(sbp_adj = adjust_SBP(BPMDPBPS))
 #'
+#' @seealso [adjust_DBP()] for diastolic blood pressure adjustment, [determine_hypertension()] for hypertension classification
+#' @keywords survey health cardiovascular
 #' @export
 adjust_SBP <- function(BPMDPBPS) {
   dplyr::case_when(
@@ -41,17 +45,19 @@ adjust_SBP <- function(BPMDPBPS) {
 #'
 #' @description This function adjusts diastolic blood pressure based on the respondent's diastolic average blood pressure across
 #' six measurements. The adjustment is made using specific correction factors. The adjusted diastolic blood pressure
-#' is returned as a numeric value. This function supports vector operations.
+#' is returned as a numeric value.
 #'
 #' @param BPMDPBPD [numeric] A numeric representing the respondent's diastolic average blood pressure (in mmHg) across six measurements.
 #'
 #' @return [numeric] The adjusted diastolic blood pressure as a numeric.
 #'
-#' @details The function calculates the adjusted diastolic blood pressure (DBP_adj) based on the value of BPMDPBPD. If
-#'          BPMDPBPD is greater than or equal to 0 and less than 996, the adjustment is made using the formula:
-#'          DBP_adj = 15.6 + (0.83 * BPMDPBPD). Otherwise, if BPMDPBPD is a non-response value (BPMDPBPD >= 996), the
-#'          adjusted diastolic blood pressure is set to NA(b), indicating that the measurement is not available. The adjusted
-#'          diastolic blood pressure is returned as the final output.
+#' @details Blood pressure measurements in survey settings may require adjustment to account for 
+#'          measurement conditions and equipment differences. This function applies a standardized adjustment
+#'          using the formula: DBP_adj = 15.6 + (0.83 * BPMDPBPD).
+#'          
+#'          Non-response handling: Values >= 996 indicate survey non-response and are converted to 
+#'          tagged NA ("b") to distinguish from missing measurements. Negative values are also 
+#'          treated as invalid and converted to tagged NA.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -59,7 +65,7 @@ adjust_SBP <- function(BPMDPBPS) {
 #' adjust_DBP(BPMDPBPD = 80)
 #' # Output: 82
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' adjust_DBP(BPMDPBPD = c(80, 90, 100))
 #' # Returns: c(82, 90.3, 98.6)
 #'
@@ -68,6 +74,8 @@ adjust_SBP <- function(BPMDPBPS) {
 #' # dataset %>%
 #' #   mutate(dbp_adj = adjust_DBP(BPMDPBPD))
 #'
+#' @seealso [adjust_SBP()] for systolic blood pressure adjustment, [determine_hypertension()] for hypertension classification
+#' @keywords survey health cardiovascular
 #' @export
 adjust_DBP <- function(BPMDPBPD) {
   dplyr::case_when(
@@ -79,7 +87,7 @@ adjust_DBP <- function(BPMDPBPD) {
 #' @title Hypertension derived variable
 #'
 #' @description
-#' This function determines the hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage. This function supports vector operations.
+#' This function determines the hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
 #'
 #' @param BPMDPBPS [integer] An integer representing the systolic blood pressure measurement of the respondent.
 #' @param BPMDPBPD [integer] An integer representing the diastolic blood pressure measurement of the respondent.
@@ -114,13 +122,30 @@ adjust_DBP <- function(BPMDPBPD) {
 #' determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 0)
 #' # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' determine_hypertension(
 #'   BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85),
 #'   ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1)
 #' )
 #' # Returns: c(1, 2, 1)
 #'
+#' @details This function implements clinical guidelines for hypertension classification:
+#'          
+#'          **Blood Pressure Thresholds:**
+#'          - General population: >= 140/90 mmHg indicates hypertension
+#'          - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
+#'          
+#'          **Medication Logic:**
+#'          - Anyone taking hypertension medication is classified as hypertensive
+#'          - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
+#'          
+#'          **Non-response Handling:**
+#'          - Values >= 996 indicate survey non-response codes
+#'          - Invalid blood pressure readings result in tagged NA ("b")
+#'
+#' @seealso [adjust_SBP()], [adjust_DBP()] for blood pressure adjustment, [determine_adjusted_hypertension()] for adjusted BP classification
+#' @references Clinical guidelines for blood pressure classification and management
+#' @keywords survey health cardiovascular hypertension
 #' @export
 determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
   ANYMED2 <- dplyr::case_when(
@@ -192,7 +217,7 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
 #' determine_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYMED2 = 2)
 #' # Output: 2 (Normal blood pressure as adjusted BP is below 140/90 mmHg and not on medication).
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' determine_adjusted_hypertension(
 #'   SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85),
 #'   ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1)
@@ -235,7 +260,7 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #' @title Controlled hypertension derived variable
 #'
 #' @description
-#' This function determines the controlled hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage. This function supports vector operations.
+#' This function determines the controlled hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
 #'
 #' @param BPMDPBPS [integer] An integer representing the systolic blood pressure measurement of the respondent.
 #' @param BPMDPBPD [integer] An integer representing the diastolic blood pressure measurement of the respondent.
@@ -270,7 +295,7 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #' determine_controlled_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 1)
 #' # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' determine_controlled_hypertension(
 #'   BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85),
 #'   ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)
@@ -316,7 +341,7 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #' @title Controlled hypertension derived variable with adjusted blood pressures
 #'
 #' @description
-#' This function determines the controlled hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage. This function supports vector operations.
+#' This function determines the controlled hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage.
 #'
 #' @param SBP_adj [integer] An integer representing the adjusted systolic blood pressure measurement of the respondent.
 #' @param DBP_adj [integer] An integer representing the adjusted diastolic blood pressure measurement of the respondent.
@@ -351,7 +376,7 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #' determine_controlled_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYMED2 = 1)
 #' # Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' determine_controlled_adjusted_hypertension(
 #'   SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85),
 #'   ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)

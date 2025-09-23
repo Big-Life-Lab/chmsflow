@@ -27,7 +27,7 @@ If inputs are invalid or out of bounds, the function returns a tagged NA.
 This function calculates a low drink score (step 1 only) for a respondent using
 Canada's Low-Risk Alcohol Drinking Guideline. The score is based solely on the
 number of standard drinks consumed per week and the respondent's sex. (Step 2,
-which would add additional points based on other drinking habits, is not included.). This function supports vector operations.
+which would add additional points based on other drinking habits, is not included.).
 }
 \details{
 The scoring is determined by first allocating points (referred to as \code{step1}) based on the weekly
@@ -50,9 +50,29 @@ These \code{step1} points are then mapped to the final categorical score as foll
 \item 3–4 points -> score of 3 ("Medium risk"),
 \item 5–9 points -> score of 4 ("High risk").
 }
+
+This function implements Canada's Low-Risk Alcohol Drinking Guidelines (Step 1 only) to assess
+alcohol consumption risk. The scoring system considers both the quantity of alcohol consumed
+and biological sex differences in alcohol metabolism.
+
+\strong{Risk Categories:}
+\itemize{
+\item Low risk (0 points): Safe consumption levels
+\item Marginal risk (1-2 points): Slightly elevated risk
+\item Medium risk (3-4 points): Moderate health concerns
+\item High risk (5-9 points): Significant health risks
+}
+
+\strong{Sex-Based Differences:}
+Women generally have lower tolerance thresholds due to physiological differences in
+alcohol metabolism, reflected in the sex-specific point allocations.
+
+\strong{Non-response Handling:}
+Invalid inputs or survey non-response values result in tagged NA ("b").
 }
 \note{
-This function does not include the additional points from step 2 of the guideline.
+This function implements only Step 1 of the guidelines. Step 2 (additional drinking pattern
+assessments) is not included due to data limitations in the survey.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -60,7 +80,7 @@ This function does not include the additional points from step 2 of the guidelin
 low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3)
 # Expected output: 1 (Low risk)
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA))
 # Returns: c(1, 2, 1)
 
@@ -70,3 +90,13 @@ library(dplyr)
 #   mutate(low_drink_score = low_drink_score_fun(CLC_SEX, ALC_11, ALCDWKY))
 
 }
+\references{
+Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
+}
+\seealso{
+\code{\link[=low_drink_score_fun1]{low_drink_score_fun1()}} for extended categorization including former/never drinkers
+}
+\keyword{alcohol}
+\keyword{health}
+\keyword{substance-use}
+\keyword{survey}

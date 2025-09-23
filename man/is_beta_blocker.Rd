@@ -16,7 +16,7 @@ is_beta_blocker(MEUCATC, NPI_25B)
 }
 \description{
 This function determines whether a given medication is a beta blocker.
-This function now supports vector operations for batch processing.
+This function processes multiple inputs efficiently.
 }
 \details{
 Identifies beta blockers based on ATC codes starting with "C07", excluding specific sub-codes.
@@ -26,7 +26,7 @@ Identifies beta blockers based on ATC codes starting with "C07", excluding speci
 is_beta_blocker("C07AA13", 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 is_beta_blocker(c("C07AA13", "C07AA07"), c(3, 4))
 # Returns: c(1, 0)
 

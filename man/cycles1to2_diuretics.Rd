@@ -253,7 +253,7 @@ cycles1to2_diuretics(
 }
 \description{
 This function checks if a person is taking diuretics based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }
 \details{
 The function identifies diuretics based on ATC codes starting with "C03", excluding specific sub-codes. It checks all medication variables provided in the input data frame.
@@ -263,7 +263,7 @@ The function identifies diuretics based on ATC codes starting with "C03", exclud
 cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 cycles1to2_diuretics(
   atc_101a = c("C03AA03", "C03BA08", "C01AA05"),
   mhr_101b = c(3, 2, 1)

@@ -75,7 +75,25 @@ pack_years_fun(
 }
 }
 \description{
-This function calculates an individual's smoking pack-years based on various CHMS smoking variables. Pack years is a measure used by researchers to quantify lifetime exposure to cigarette use. This function supports vector operations.
+This function calculates an individual's smoking pack-years based on various CHMS smoking variables. Pack years is a measure used by researchers to quantify lifetime exposure to cigarette use.
+}
+\details{
+Pack-years is a standardized measure of lifetime cigarette exposure used in epidemiological
+research and clinical practice. The calculation varies by smoking pattern:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Smoking Patterns:**
+     - Daily smokers: Consistent daily consumption over time period
+     - Occasional smokers: Variable consumption adjusted for frequency
+     - Former smokers: Historical consumption during smoking periods
+     
+     **Minimum Values:**
+     The function applies minimum pack-year values (0.0137 or 0.007) to prevent 
+     underestimation of health risks for light smokers.
+     
+     **Clinical Significance:**
+     Pack-years data is crucial for lung cancer screening guidelines, COPD risk 
+     assessment, and cardiovascular disease evaluation.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -86,7 +104,7 @@ pack_years_fun(
 )
 # Output: 0.0137 (pack years)
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 pack_years_fun(
   SMKDSTY = c(1, 5, 6),
   CLC_AGE = c(40, 50, 60),
@@ -102,6 +120,15 @@ pack_years_fun(
 # Returns: c(30, 0.0137, 0)
 
 }
+\references{
+Guidelines for lung cancer screening and smoking cessation programs
+}
 \seealso{
 https://big-life-lab.github.io/cchsflow/reference/pack_years_fun.html
 }
+\keyword{epidemiology}
+\keyword{health}
+\keyword{smoking}
+\keyword{substance-use}
+\keyword{survey}
+\keyword{tobacco}

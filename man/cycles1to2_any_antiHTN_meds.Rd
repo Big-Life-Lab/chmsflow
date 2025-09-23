@@ -253,7 +253,7 @@ cycles1to2_any_antiHTN_meds(
 }
 \description{
 This function checks if a person is taking any anti-hypertensive medication based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }
 \details{
 The function identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03", "C07", "C08", or "C09", excluding specific sub-codes. It checks all medication variables provided in the input data frame.
@@ -263,7 +263,7 @@ The function identifies anti-hypertensive drugs based on ATC codes starting with
 cycles1to2_any_antiHTN_meds(atc_101a = "C07AB02", mhr_101b = 4)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 cycles1to2_any_antiHTN_meds(
   atc_101a = c("C07AB02", "C07AA07", "C09AA02"),
   mhr_101b = c(4, 2, 3)
@@ -279,8 +279,10 @@ survey_data <- data.frame(
   mhr_102b = c(1, as.numeric(NA), 1)
 )
 survey_data \%>\%
-  mutate(is_taking_any_antihtn = 
-  cycles1to2_any_antiHTN_meds(atc_101a, atc_102a, mhr_101b, mhr_102b)) \%>\%
+  mutate(
+    is_taking_any_antihtn =
+      cycles1to2_any_antiHTN_meds(atc_101a, atc_102a, mhr_101b, mhr_102b)
+  ) \%>\%
   select(is_taking_any_antihtn)
 
 }

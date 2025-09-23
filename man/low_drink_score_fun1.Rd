@@ -24,7 +24,7 @@ If inputs are invalid or out of bounds, the function returns a tagged NA.
 \description{
 Computes a categorical alcohol consumption score based on Canada's Low-Risk Alcohol Drinking Guidelines (Step 1),
 while distinguishing between never, former, light, moderate, and heavy drinkers. The function uses information
-about weekly consumption, past-year use, lifetime drinking, and history of heavy drinking. This function supports vector operations.
+about weekly consumption, past-year use, lifetime drinking, and history of heavy drinking.
 }
 \details{
 Step 1: Assign points based on weekly alcohol consumption.
@@ -60,9 +60,11 @@ This function uses only Step 1 of the guidelines, as Step 2 information is unava
 low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = 1, ALC_18 = 2)
 # Expected output: 2
 
-# Vector usage: Multiple respondents
-low_drink_score_fun1(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), 
-ALCDWKY = c(3, 12, NA), ALC_17 = c(1, 1, 1), ALC_18 = c(2, 2, 1))
+# Multiple respondents
+low_drink_score_fun1(
+  CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2),
+  ALCDWKY = c(3, 12, NA), ALC_17 = c(1, 1, 1), ALC_18 = c(2, 2, 1)
+)
 # Returns: c(2, 3, 2)
 
 # Database usage: Applied to survey datasets
@@ -71,3 +73,13 @@ library(dplyr)
 #   mutate(low_drink_score1 = low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18))
 
 }
+\references{
+Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
+}
+\seealso{
+\code{\link[=low_drink_score_fun]{low_drink_score_fun()}} for basic risk scoring without drinking history
+}
+\keyword{alcohol}
+\keyword{health}
+\keyword{substance-use}
+\keyword{survey}

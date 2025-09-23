@@ -253,7 +253,7 @@ cycles1to2_other_antiHTN_meds(
 }
 \description{
 This function checks if a person is taking another type of anti-hypertensive medication based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }
 \details{
 The function identifies other anti-hypertensive drugs based on ATC codes starting with "C02", excluding a specific sub-code. It checks all medication variables provided in the input data frame.
@@ -263,7 +263,7 @@ The function identifies other anti-hypertensive drugs based on ATC codes startin
 cycles1to2_other_antiHTN_meds(atc_101a = "C02AC04", mhr_101b = 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 cycles1to2_other_antiHTN_meds(
   atc_101a = c("C02AC04", "C02KX01", "C02AB01"),
   mhr_101b = c(3, 2, 1)

@@ -253,7 +253,7 @@ cycles1to2_diabetes_drugs(
 }
 \description{
 This function checks if a person is taking diabetes drugs based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }
 \details{
 The function identifies diabetes drugs based on ATC codes starting with "A10". It checks all medication variables provided in the input data frame.
@@ -263,7 +263,7 @@ The function identifies diabetes drugs based on ATC codes starting with "A10". I
 cycles1to2_diabetes_drugs(atc_101a = "A10BB09", mhr_101b = 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 cycles1to2_diabetes_drugs(
   atc_101a = c("A10BB09", "C09AA02", "A10BA02"),
   mhr_101b = c(3, 2, 1)

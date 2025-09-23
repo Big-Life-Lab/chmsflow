@@ -16,7 +16,7 @@ is_ace_inhibitor(MEUCATC, NPI_25B)
 }
 \description{
 This function checks if a given medication is an ACE inhibitor.
-This function now supports vector operations for batch processing.
+This function processes multiple inputs efficiently.
 }
 \details{
 Identifies ACE inhibitors based on ATC codes starting with "C09".
@@ -26,7 +26,7 @@ Identifies ACE inhibitors based on ATC codes starting with "C09".
 is_ace_inhibitor("C09AB03", 2)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1))
 # Returns: c(1, 0)
 

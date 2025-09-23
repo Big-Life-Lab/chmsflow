@@ -20,7 +20,7 @@ This function calculates a respondent's non-HDL cholesterol level by subtracting
 from their total cholesterol level. It first checks whether the input values \code{LAB_CHOL} (total cholesterol)
 and \code{LAB_HDL} (HDL cholesterol) are both less than certain thresholds (99.6 mmol/L and 9.96 mmol/L, respectively).
 If both conditions are met, it calculates the non-HDL cholesterol level; otherwise, it sets the non-HDL value to
-NA to indicate that the calculation is not applicable. This function supports vector operations.
+NA to indicate that the calculation is not applicable.
 }
 \details{
 The function calculates the non-HDL cholesterol level by subtracting the HDL cholesterol level from the total cholesterol level.
@@ -34,7 +34,7 @@ is not met or if either input is missing (NA), the function returns NA(b) to ind
 calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
 # Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 calculate_nonHDL(LAB_CHOL = c(50, 60, 70), LAB_HDL = c(5, 10, 15))
 # Returns: c(45, 50, 55)
 

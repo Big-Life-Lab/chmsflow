@@ -1,7 +1,7 @@
 #' @title Adjusted total household income
 #'
 #' @description This function calculates the adjusted total household income based on the respondent's income amount
-#'              and actual household size, taking into account the weighted household size. This function supports vector operations.
+#'              and actual household size, taking into account the weighted household size.
 #'
 #' @param THI_01 [numeric] A numeric representing the respondent's household income amount in dollars.
 #' @param DHHDHSZ [integer] An integer representing the respondent's actual household size in persons.
@@ -10,12 +10,21 @@
 #'         DHHDHSZ) are non-response values (THI_01 >= 996, DHHDHSZ >= 996), the adjusted household income will be
 #'         NA(b) (Not Available).
 #'
-#' @details The function first calculates the weighted household size (hh_size_wt) based on the respondent's actual
-#'          household size (DHHDHSZ). It uses a loop to iterate from 1 to DHHDHSZ and assigns weights to each household
-#'          member based on their count. If the household size (i) is 1, the weight is 1; if i is 2, the weight is 0.4; if
-#'          i is greater than or equal to 3, the weight is 0.3. The weighted household size is then used to adjust the
-#'          respondent's total household income (THI_01) by dividing it by hh_size_wt. The adjusted household income
-#'          (adj_hh_inc) is returned as the final output.
+#' @details This function applies equivalence scales to adjust household income for household size, 
+#'          allowing for meaningful income comparisons across different household compositions.
+#'          
+#'          **Equivalence Scale Logic:**
+#'          - First adult: Weight = 1.0 (full weight)
+#'          - Second adult: Weight = 0.4 (economies of scale)
+#'          - Additional members: Weight = 0.3 each (further economies)
+#'          
+#'          **Examples:**
+#'          - Single person: weight = 1.0
+#'          - Two adults: weight = 1.4 (1.0 + 0.4)
+#'          - Family of four: weight = 2.0 (1.0 + 0.4 + 0.3 + 0.3)
+#'          
+#'          **Non-response Handling:**
+#'          Income values >= 996 or household size <= 0 indicate survey non-response and result in tagged NA ("b").
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -31,7 +40,7 @@
 #' calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
 #' # Output: 90000
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))
 #' # Returns: c(29411.76, 53571.43, 90000)
 #'
@@ -40,6 +49,9 @@
 #' # dataset %>%
 #' #   mutate(adj_hh_income = calculate_hhld_income(THI_01, DHHDHSZ))
 #'
+#' @seealso [categorize_income()] for income classification, [in_lowest_income_quintile()] for poverty indicators
+#' @references OECD equivalence scales for income adjustment
+#' @keywords survey socioeconomic income household demographics
 #' @export
 calculate_hhld_income <- function(THI_01, DHHDHSZ) {
   hh_size_wt <- sapply(DHHDHSZ, function(size) {
@@ -64,7 +76,7 @@ calculate_hhld_income <- function(THI_01, DHHDHSZ) {
 
 #' @title Categorical adjusted household income
 #'
-#' @description This function categorizes individuals' adjusted household income based on specified income ranges. This function supports vector operations.
+#' @description This function categorizes individuals' adjusted household income based on specified income ranges.
 #'
 #' @param adj_hh_inc [numeric] A numeric representing the adjusted household income.
 #'
@@ -86,7 +98,7 @@ calculate_hhld_income <- function(THI_01, DHHDHSZ) {
 #' categorize_income(45000)
 #' # Output: 3
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' categorize_income(c(25000, 45000, 80000))
 #' # Returns: c(2, 3, 5)
 #'
@@ -110,7 +122,7 @@ categorize_income <- function(adj_hh_inc) {
 
 #' @title Lowest income quintile indicator
 #'
-#' @description This function checks if an individual's income category corresponds to the lowest income quintile. This function supports vector operations.
+#' @description This function checks if an individual's income category corresponds to the lowest income quintile.
 #'
 #' @param incq [integer] A categorical vector indicating the income category as defined by the categorize_income function.
 #'
@@ -129,7 +141,7 @@ categorize_income <- function(adj_hh_inc) {
 #' in_lowest_income_quintile(1)
 #' # Output: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' in_lowest_income_quintile(c(3, 1, 5))
 #' # Returns: c(2, 1, 2)
 #'

@@ -253,7 +253,7 @@ cycles1to2_ace_inhibitors(
 }
 \description{
 This function checks if a person is taking ACE inhibitors based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
-and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken. This function now supports vector operations.
+and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
 }
 \details{
 The function identifies ACE inhibitors based on ATC codes starting with "C09". It checks all medication variables provided in the input data frame.
@@ -263,7 +263,7 @@ The function identifies ACE inhibitors based on ATC codes starting with "C09". I
 cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = 3)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 cycles1to2_ace_inhibitors(
   atc_101a = c("C09AA02", "C01AA05", "C09AB03"),
   mhr_101b = c(3, 1, 2)

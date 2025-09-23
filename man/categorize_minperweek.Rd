@@ -19,7 +19,7 @@ physical activity (MVPA) per week.}
 }
 }
 \description{
-This function categorizes individuals' weekly physical activity levels based on a threshold value. This function supports vector operations.
+This function categorizes individuals' weekly physical activity levels based on a threshold value.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -31,7 +31,7 @@ categorize_minperweek(180)
 categorize_minperweek(120)
 # Output: 2
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 categorize_minperweek(c(180, 120, 150))
 # Returns: c(1, 2, 1)
 

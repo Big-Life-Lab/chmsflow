@@ -4,7 +4,7 @@
 #' from their total cholesterol level. It first checks whether the input values `LAB_CHOL` (total cholesterol)
 #' and `LAB_HDL` (HDL cholesterol) are both less than certain thresholds (99.6 mmol/L and 9.96 mmol/L, respectively).
 #' If both conditions are met, it calculates the non-HDL cholesterol level; otherwise, it sets the non-HDL value to
-#' NA to indicate that the calculation is not applicable. This function supports vector operations.
+#' NA to indicate that the calculation is not applicable.
 #'
 #' @param LAB_CHOL [numeric] A numeric representing a respondent's total cholesterol level in mmol/L.
 #' @param LAB_HDL [numeric] A numeric representing a respondent's HDL cholesterol level in mmol/L.
@@ -23,7 +23,7 @@
 #' calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
 #' # Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' calculate_nonHDL(LAB_CHOL = c(50, 60, 70), LAB_HDL = c(5, 10, 15))
 #' # Returns: c(45, 50, 55)
 #'
@@ -42,7 +42,7 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
 
 #' @title Categorical non-HDL cholesterol level
 #'
-#' @description This function categorizes individuals' non-HDL cholesterol levels based on a threshold value. This function supports vector operations.
+#' @description This function categorizes individuals' non-HDL cholesterol levels based on a threshold value.
 #'
 #' @param nonHDL [numeric] A numeric representing an individual's non-HDL cholesterol level.
 #'
@@ -61,7 +61,7 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
 #' categorize_nonHDL(3.8)
 #' # Output: 2
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' categorize_nonHDL(c(5.0, 3.8, 4.3))
 #' # Returns: c(1, 2, 1)
 #'
@@ -82,7 +82,7 @@ categorize_nonHDL <- function(nonHDL) {
 
 #' @title Waist-to-height ratio (WHR)
 #'
-#' @description This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent. This function supports vector operations.
+#' @description This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent.
 #'
 #' @param HWM_11CM [numeric] A numeric representing the height of the respondent in centimeters.
 #' @param HWM_14CX [numeric] A numeric representing the waist circumference of the respondent in centimeters.
@@ -101,7 +101,7 @@ categorize_nonHDL <- function(nonHDL) {
 #' calculate_WHR(HWM_11CM = NA, HWM_14CX = 85)
 #' # Output: NA(b)
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
 #' # Returns: c(0.5, 0.5, 0.5)
 #'

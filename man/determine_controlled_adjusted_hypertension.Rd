@@ -58,7 +58,7 @@ determine_controlled_adjusted_hypertension(
 }
 }
 \description{
-This function determines the controlled hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage. This function supports vector operations.
+This function determines the controlled hypertension status of a respondent based on their adjusted systolic and diastolic blood pressure measurements and medication usage.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -70,9 +70,11 @@ determine_controlled_adjusted_hypertension(SBP_adj = 150, DBP_adj = 95, ANYMED2 
 determine_controlled_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYMED2 = 1)
 # Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
 
-# Vector usage: Multiple respondents
-determine_controlled_adjusted_hypertension(SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85), 
-ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1))
+# Multiple respondents
+determine_controlled_adjusted_hypertension(
+  SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85),
+  ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)
+)
 # Returns: c(2, 1, 2)
 
 }

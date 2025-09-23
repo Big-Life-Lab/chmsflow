@@ -1,7 +1,7 @@
 #' @title Cardiovascular disease (CVD) personal history
 #'
 #' @description This function determines a respondent's cardiovascular disease (CVD) personal history based on the presence or absence
-#' of specific conditions related to heart disease, heart attack, and stroke. This function supports vector operations.
+#' of specific conditions related to heart disease, heart attack, and stroke.
 #'
 #' @param CCC_61 [integer] An integer representing the respondent's personal history of heart disease. 1 for "Yes" if the person has
 #'               heart disease, 2 for "No" if the person does not have heart disease.
@@ -20,7 +20,7 @@
 #' determine_CVD_personal_history(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
 #' # Output: 1 (CVD personal history is "Yes" as heart disease is present).
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' determine_CVD_personal_history(CCC_61 = c(1, 2, 2), CCC_63 = c(2, 1, 2), CCC_81 = c(2, 2, 1))
 #' # Returns: c(1, 1, 1)
 #'
@@ -40,7 +40,7 @@ determine_CVD_personal_history <- function(CCC_61, CCC_63, CCC_81) {
 
 #' @title Cardiovascular Disease (CVD) family history
 #'
-#' @description This function evaluates a respondent's family history of cardiovascular disease (CVD), based on data about diagnoses of heart disease and stroke in immediate family members and the ages at which these diagnoses occurred. It identifies premature CVD if any diagnosis occurred before age 60. This function supports vector operations.
+#' @description This function evaluates a respondent's family history of cardiovascular disease (CVD), based on data about diagnoses of heart disease and stroke in immediate family members and the ages at which these diagnoses occurred. It identifies premature CVD if any diagnosis occurred before age 60.
 #'
 #' @param FMH_11 [integer] An integer: Indicates whether an immediate family member was diagnosed with heart disease.
 #'               - 1 for "Yes"
@@ -71,7 +71,7 @@ determine_CVD_personal_history <- function(CCC_61, CCC_63, CCC_81) {
 #' determine_CVD_family_history(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
 #' # Output: 1
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' determine_CVD_family_history(
 #'   FMH_11 = c(1, 2, 1), FMH_12 = c(50, NA, 70),
 #'   FMH_13 = c(2, 1, 2), FMH_14 = c(NA, 55, NA)

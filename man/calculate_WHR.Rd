@@ -19,7 +19,7 @@ calculate_WHR(HWM_11CM, HWM_14CX)
 }
 }
 \description{
-This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent. This function supports vector operations.
+This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -31,7 +31,7 @@ calculate_WHR(HWM_11CM = 170, HWM_14CX = 85)
 calculate_WHR(HWM_11CM = NA, HWM_14CX = 85)
 # Output: NA(b)
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
 # Returns: c(0.5, 0.5, 0.5)
 

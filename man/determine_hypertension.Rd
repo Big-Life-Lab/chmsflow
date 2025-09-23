@@ -58,7 +58,23 @@ determine_hypertension(
 }
 }
 \description{
-This function determines the hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage. This function supports vector operations.
+This function determines the hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
+}
+\details{
+This function implements clinical guidelines for hypertension classification:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Blood Pressure Thresholds:**
+     - General population: >= 140/90 mmHg indicates hypertension
+     - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
+     
+     **Medication Logic:**
+     - Anyone taking hypertension medication is classified as hypertensive
+     - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
+     
+     **Non-response Handling:**
+     - Values >= 996 indicate survey non-response codes
+     - Invalid blood pressure readings result in tagged NA ("b")
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -70,9 +86,21 @@ determine_hypertension(BPMDPBPS = 150, BPMDPBPD = 95, ANYMED2 = 1)
 determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 0)
 # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
 
-# Vector usage: Multiple respondents
-determine_hypertension(BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85), 
-ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1))
+# Multiple respondents
+determine_hypertension(
+  BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85),
+  ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1)
+)
 # Returns: c(1, 2, 1)
 
 }
+\references{
+Clinical guidelines for blood pressure classification and management
+}
+\seealso{
+\code{\link[=adjust_SBP]{adjust_SBP()}}, \code{\link[=adjust_DBP]{adjust_DBP()}} for blood pressure adjustment, \code{\link[=determine_adjusted_hypertension]{determine_adjusted_hypertension()}} for adjusted BP classification
+}
+\keyword{cardiovascular}
+\keyword{health}
+\keyword{hypertension}
+\keyword{survey}

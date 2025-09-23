@@ -1,7 +1,7 @@
 #' @title Estimated glomerular filtration rate (GFR)
 #'
 #' @description This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
-#'              where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age. This function supports vector operations.
+#'              where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age.
 #'
 #' @param LAB_BCRE [numeric] Blood creatine (µmol/L). It should be a numeric between 14 and 785.
 #' @param PGDCGT [integer] Ethnicity (13 categories). It should be an integer between 1 and 13.
@@ -11,20 +11,27 @@
 #' @return [numeric] The calculated GFR. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
 #'         are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996) or out of bounds, the GFR will be NA(b).
 #'
-#' @details The function uses the serum creatine level (LAB_BCRE) in µmol/L to calculate the estimated GFR. First, it
-#'          checks if any of the input parameters are non-response values. If any non-response values are found, the GFR
-#'          will be set to NA, and the function will return immediately. Otherwise, it proceeds with the calculation by
-#'          converting the serum creatine to mg/dL (serumcreat = LAB_BCRE / 88.4). Based on the respondent's ethnicity
-#'          (PGDCGT), sex (CLC_SEX), and age (CLC_AGE), the appropriate formula is applied to calculate the GFR. The
-#'          formula used for each combination of ethnicity and sex is as follows:
-#'
-#'          - Female and Black (PGDCGT == 2, CLC_SEX == 2): GFR = 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) *
-#'                                                         (0.742) * (1.210)
-#'          - Female and not Black (PGDCGT != 2, CLC_SEX == 2): GFR = 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) *
-#'                                                             (0.742)
-#'          - Male and Black (PGDCGT == 2, CLC_SEX == 1): GFR = 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) *
-#'                                                       (1.210)
-#'          - Male and not Black (PGDCGT != 2, CLC_SEX == 1): GFR = 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203))
+#' @details This function implements the Modification of Diet in Renal Disease (MDRD) equation 
+#'          to estimate glomerular filtration rate, a key indicator of kidney function.
+#'          
+#'          **Clinical Significance:**
+#'          GFR estimates are essential for:
+#'          - Chronic kidney disease (CKD) classification
+#'          - Medication dosing adjustments
+#'          - Cardiovascular risk assessment
+#'          
+#'          **Formula Application:**
+#'          Base: GFR = 175 × (creatinine^-1.154) × (age^-0.203)
+#'          Adjustments:
+#'          - Female: × 0.742
+#'          - Black ethnicity: × 1.210
+#'          
+#'          **Unit Conversion:**
+#'          Serum creatinine converted from µmol/L to mg/dL (÷ 88.4)
+#'          
+#'          **Non-response Handling:**
+#'          Values >= 996 (LAB_BCRE), >= 96 (PGDCGT), >= 6 (CLC_SEX), >= 996 (CLC_AGE) 
+#'          indicate survey non-response and result in tagged NA ("b").
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -36,7 +43,7 @@
 #' calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35)
 #' # Output: GFR = 99.94114
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' calculate_GFR(
 #'   LAB_BCRE = c(80, 70, 90), PGDCGT = c(1, 2, 1),
 #'   CLC_SEX = c(2, 2, 1), CLC_AGE = c(45, 35, 50)
@@ -48,6 +55,9 @@
 #' # dataset %>%
 #' #   mutate(gfr = calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE))
 #'
+#' @seealso [categorize_GFR_to_CKD()] for CKD classification based on GFR values
+#' @references Levey AS, et al. A more accurate method to estimate glomerular filtration rate from serum creatinine. Ann Intern Med. 1999
+#' @keywords survey health kidney nephrology clinical-chemistry
 #' @export
 calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   serumcreat <- LAB_BCRE / 88.4
@@ -66,7 +76,7 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
 
 #' @title Chronic kidney disease (CKD) derived variable
 #'
-#' @description This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD). This function supports vector operations.
+#' @description This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
 #'
 #' @param GFR [numeric] A numeric representing the glomerular filtration rate.
 #'
@@ -85,7 +95,7 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
 #' categorize_GFR_to_CKD(75)
 #' # Output: 2
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' categorize_GFR_to_CKD(c(45, 75, 60))
 #' # Returns: c(1, 2, 1)
 #'

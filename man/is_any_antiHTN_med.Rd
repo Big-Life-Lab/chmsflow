@@ -16,7 +16,7 @@ is_any_antiHTN_med(MEUCATC, NPI_25B)
 }
 \description{
 This function checks if a given medication is any anti-hypertensive drug.
-This function now supports vector operations for batch processing.
+This function processes multiple inputs efficiently.
 }
 \details{
 Identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03", "C07", "C08", or "C09", excluding specific sub-codes.
@@ -26,7 +26,7 @@ Identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03"
 is_any_antiHTN_med("C07AB02", 4)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 is_any_antiHTN_med(c("C07AB02", "C07AA07"), c(4, 2))
 # Returns: c(1, 0)
 

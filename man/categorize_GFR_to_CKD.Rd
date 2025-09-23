@@ -18,7 +18,7 @@ categorize_GFR_to_CKD(GFR)
 }
 }
 \description{
-This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD). This function supports vector operations.
+This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
 }
 \examples{
 # Scalar usage: Single respondent
@@ -30,7 +30,7 @@ categorize_GFR_to_CKD(45)
 categorize_GFR_to_CKD(75)
 # Output: 2
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 categorize_GFR_to_CKD(c(45, 75, 60))
 # Returns: c(1, 2, 1)
 

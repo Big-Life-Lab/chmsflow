@@ -23,7 +23,7 @@ non-response.
 }
 \description{
 This function determines a respondent's cardiovascular disease (CVD) personal history based on the presence or absence
-of specific conditions related to heart disease, heart attack, and stroke. This function supports vector operations.
+of specific conditions related to heart disease, heart attack, and stroke.
 }
 \examples{
 # Scalar usage: Single respondent
@@ -31,7 +31,7 @@ of specific conditions related to heart disease, heart attack, and stroke. This 
 determine_CVD_personal_history(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
 # Output: 1 (CVD personal history is "Yes" as heart disease is present).
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 determine_CVD_personal_history(CCC_61 = c(1, 2, 2), CCC_63 = c(2, 1, 2), CCC_81 = c(2, 2, 1))
 # Returns: c(1, 1, 1)
 

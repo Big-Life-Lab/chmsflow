@@ -1,6 +1,6 @@
 #' @title Smoking pack-years
 #'
-#' @description This function calculates an individual's smoking pack-years based on various CHMS smoking variables. Pack years is a measure used by researchers to quantify lifetime exposure to cigarette use. This function supports vector operations.
+#' @description This function calculates an individual's smoking pack-years based on various CHMS smoking variables. Pack years is a measure used by researchers to quantify lifetime exposure to cigarette use.
 #'
 #' @param SMKDSTY [integer] An integer representing the smoking status of the respondent:
 #'   - 1: Daily smoker
@@ -47,7 +47,7 @@
 #' )
 #' # Output: 0.0137 (pack years)
 #'
-#' # Vector usage: Multiple respondents
+#' # Multiple respondents
 #' pack_years_fun(
 #'   SMKDSTY = c(1, 5, 6),
 #'   CLC_AGE = c(40, 50, 60),
@@ -64,7 +64,25 @@
 #'
 #' @export
 #'
+#' @details Pack-years is a standardized measure of lifetime cigarette exposure used in epidemiological 
+#'          research and clinical practice. The calculation varies by smoking pattern:
+#'          
+#'          **Smoking Patterns:**
+#'          - Daily smokers: Consistent daily consumption over time period
+#'          - Occasional smokers: Variable consumption adjusted for frequency
+#'          - Former smokers: Historical consumption during smoking periods
+#'          
+#'          **Minimum Values:**
+#'          The function applies minimum pack-year values (0.0137 or 0.007) to prevent 
+#'          underestimation of health risks for light smokers.
+#'          
+#'          **Clinical Significance:**
+#'          Pack-years data is crucial for lung cancer screening guidelines, COPD risk 
+#'          assessment, and cardiovascular disease evaluation.
+#'
 #' @seealso https://big-life-lab.github.io/cchsflow/reference/pack_years_fun.html
+#' @references Guidelines for lung cancer screening and smoking cessation programs
+#' @keywords survey health smoking tobacco substance-use epidemiology
 pack_years_fun <- function(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11) {
   pack_years <- dplyr::case_when(
     is.na(CLC_AGE) | CLC_AGE < 0 ~ haven::tagged_na("b"),

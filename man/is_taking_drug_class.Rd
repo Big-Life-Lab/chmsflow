@@ -36,7 +36,7 @@ It should return an integer, 1 if the medication belongs to the class, 0 otherwi
 }
 \description{
 This function calculates the number of occurrences of a specific drug class in a data frame.
-The calculation is based on custom conditions specified by the user. This function supports vector operations.
+The calculation is based on custom conditions specified by the user.
 }
 \details{
 The 'class_condition_fun' is applied to each pair of medication and last taken variables.

@@ -16,7 +16,7 @@ is_calcium_channel_blocker(MEUCATC, NPI_25B)
 }
 \description{
 This function checks if a given medication is a calcium channel blocker.
-This function now supports vector operations for batch processing.
+This function processes multiple inputs efficiently.
 }
 \details{
 Identifies calcium channel blockers based on ATC codes starting with "C08".
@@ -26,7 +26,7 @@ Identifies calcium channel blockers based on ATC codes starting with "C08".
 is_calcium_channel_blocker("C08CA05", 1)
 # Returns: 1
 
-# Vector usage: Multiple respondents
+# Multiple respondents
 is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2))
 # Returns: c(1, 0)
 
