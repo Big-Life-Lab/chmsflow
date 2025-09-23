@@ -11,26 +11,26 @@
 #' @return [numeric] The calculated GFR. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
 #'         are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996) or out of bounds, the GFR will be NA(b).
 #'
-#' @details This function implements the Modification of Diet in Renal Disease (MDRD) equation 
+#' @details This function implements the Modification of Diet in Renal Disease (MDRD) equation
 #'          to estimate glomerular filtration rate, a key indicator of kidney function.
-#'          
+#'
 #'          **Clinical Significance:**
 #'          GFR estimates are essential for:
 #'          - Chronic kidney disease (CKD) classification
 #'          - Medication dosing adjustments
 #'          - Cardiovascular risk assessment
-#'          
+#'
 #'          **Formula Application:**
 #'          Base: GFR = 175 × (creatinine^-1.154) × (age^-0.203)
 #'          Adjustments:
 #'          - Female: × 0.742
 #'          - Black ethnicity: × 1.210
-#'          
+#'
 #'          **Unit Conversion:**
 #'          Serum creatinine converted from µmol/L to mg/dL (÷ 88.4)
-#'          
+#'
 #'          **Non-response Handling:**
-#'          Values >= 996 (LAB_BCRE), >= 96 (PGDCGT), >= 6 (CLC_SEX), >= 996 (CLC_AGE) 
+#'          Values >= 996 (LAB_BCRE), >= 96 (PGDCGT), >= 6 (CLC_SEX), >= 996 (CLC_AGE)
 #'          indicate survey non-response and result in tagged NA ("b").
 #'
 #' @examples

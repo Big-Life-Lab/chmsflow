@@ -34,25 +34,25 @@
 #'   - 5–9 points -> score of 4 ("High risk").
 #'
 #' @details
-#' This function implements Canada's Low-Risk Alcohol Drinking Guidelines (Step 1 only) to assess 
-#' alcohol consumption risk. The scoring system considers both the quantity of alcohol consumed 
+#' This function implements Canada's Low-Risk Alcohol Drinking Guidelines (Step 1 only) to assess
+#' alcohol consumption risk. The scoring system considers both the quantity of alcohol consumed
 #' and biological sex differences in alcohol metabolism.
-#' 
+#'
 #' **Risk Categories:**
 #' - Low risk (0 points): Safe consumption levels
 #' - Marginal risk (1-2 points): Slightly elevated risk
 #' - Medium risk (3-4 points): Moderate health concerns
 #' - High risk (5-9 points): Significant health risks
-#' 
+#'
 #' **Sex-Based Differences:**
-#' Women generally have lower tolerance thresholds due to physiological differences in 
+#' Women generally have lower tolerance thresholds due to physiological differences in
 #' alcohol metabolism, reflected in the sex-specific point allocations.
-#' 
+#'
 #' **Non-response Handling:**
 #' Invalid inputs or survey non-response values result in tagged NA ("b").
 #'
 #' @note
-#' This function implements only Step 1 of the guidelines. Step 2 (additional drinking pattern 
+#' This function implements only Step 1 of the guidelines. Step 2 (additional drinking pattern
 #' assessments) is not included due to data limitations in the survey.
 #'
 #' @examples

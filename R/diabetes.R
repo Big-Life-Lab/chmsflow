@@ -1,7 +1,7 @@
 #' @title Diabetes derived variable
 #'
-#' @description This function evaluates diabetes status using a comprehensive approach that combines 
-#' laboratory measurements, self-reported diagnosis, and medication usage to create an inclusive 
+#' @description This function evaluates diabetes status using a comprehensive approach that combines
+#' laboratory measurements, self-reported diagnosis, and medication usage to create an inclusive
 #' diabetes classification.
 #'
 #' @param diab_m [integer] An integer indicating whether the respondent has diabetes based on HbA1c level. 1 for "Yes", 2 for "No".
@@ -39,20 +39,20 @@
 #' #   mutate(diabetes_status = determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2))
 #'
 #' @details This function classifies diabetes status based that considers:
-#'          
+#'
 #'          **Data Sources:**
 #'          - Laboratory: HbA1c levels indicating diabetes (diab_m)
 #'          - Self-report: Participant-reported diabetes diagnosis (CCC_51)
 #'          - Medication: Current diabetes medication usage (diab_drug2)
-#'          
+#'
 #'          **Classification Logic:**
 #'          - ANY positive indicator results in diabetes classification
 #'          - ALL negative indicators required for "no diabetes" classification
 #'          - Sophisticated missing data handling preserves available information
-#'          
+#'
 #'          **Missing Data Strategy:**
-#'          The function maximizes data utility by making classifications based on available 
-#'          information when some parameters are missing, only returning NA when insufficient 
+#'          The function maximizes data utility by making classifications based on available
+#'          information when some parameters are missing, only returning NA when insufficient
 #'          data exists for classification.
 #'
 #' @seealso Related health condition functions: [determine_hypertension()], [calculate_GFR()]

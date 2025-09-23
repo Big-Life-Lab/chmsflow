@@ -8,12 +8,12 @@
 #'
 #' @return [numeric] The adjusted systolic blood pressure as a numeric.
 #'
-#' @details Blood pressure measurements in survey settings may require adjustment to account for 
+#' @details Blood pressure measurements in survey settings may require adjustment to account for
 #'          measurement conditions and equipment differences. This function applies a standardized adjustment
 #'          using the formula: SBP_adj = 11.4 + (0.93 * BPMDPBPS).
-#'          
-#'          Non-response handling: Values >= 996 indicate survey non-response and are converted to 
-#'          tagged NA ("b") to distinguish from missing measurements. Negative values are also 
+#'
+#'          Non-response handling: Values >= 996 indicate survey non-response and are converted to
+#'          tagged NA ("b") to distinguish from missing measurements. Negative values are also
 #'          treated as invalid and converted to tagged NA.
 #'
 #' @examples
@@ -51,12 +51,12 @@ adjust_SBP <- function(BPMDPBPS) {
 #'
 #' @return [numeric] The adjusted diastolic blood pressure as a numeric.
 #'
-#' @details Blood pressure measurements in survey settings may require adjustment to account for 
+#' @details Blood pressure measurements in survey settings may require adjustment to account for
 #'          measurement conditions and equipment differences. This function applies a standardized adjustment
 #'          using the formula: DBP_adj = 15.6 + (0.83 * BPMDPBPD).
-#'          
-#'          Non-response handling: Values >= 996 indicate survey non-response and are converted to 
-#'          tagged NA ("b") to distinguish from missing measurements. Negative values are also 
+#'
+#'          Non-response handling: Values >= 996 indicate survey non-response and are converted to
+#'          tagged NA ("b") to distinguish from missing measurements. Negative values are also
 #'          treated as invalid and converted to tagged NA.
 #'
 #' @examples
@@ -130,15 +130,15 @@ adjust_DBP <- function(BPMDPBPD) {
 #' # Returns: c(1, 2, 1)
 #'
 #' @details This function implements clinical guidelines for hypertension classification:
-#'          
+#'
 #'          **Blood Pressure Thresholds:**
 #'          - General population: >= 140/90 mmHg indicates hypertension
 #'          - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
-#'          
+#'
 #'          **Medication Logic:**
 #'          - Anyone taking hypertension medication is classified as hypertensive
 #'          - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
-#'          
+#'
 #'          **Non-response Handling:**
 #'          - Values >= 996 indicate survey non-response codes
 #'          - Invalid blood pressure readings result in tagged NA ("b")

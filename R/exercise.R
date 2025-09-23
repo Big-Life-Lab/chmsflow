@@ -29,14 +29,14 @@
 #' )
 #' # Returns: c(35, 39.28571)
 #'
-#' @details This function processes physical activity data from accelerometer measurements 
+#' @details This function processes physical activity data from accelerometer measurements
 #'          to create a weekly activity summary.
-#'          
+#'
 #'          **Data Quality Requirements:**
 #'          - Requires complete 7-day data (missing days result in tagged NA)
 #'          - This conservative approach ensures reliable activity estimates
 #'          - Zero values are preserved (represent valid no-activity days)
-#'          
+#'
 #'          **Clinical Context:**
 #'          Accelerometer data provides objective measures of moderate-to-vigorous physical activity (MVPA),
 #'          crucial for assessing adherence to physical activity guidelines.

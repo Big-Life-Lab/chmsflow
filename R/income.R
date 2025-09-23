@@ -10,19 +10,19 @@
 #'         DHHDHSZ) are non-response values (THI_01 >= 996, DHHDHSZ >= 996), the adjusted household income will be
 #'         NA(b) (Not Available).
 #'
-#' @details This function applies equivalence scales to adjust household income for household size, 
+#' @details This function applies equivalence scales to adjust household income for household size,
 #'          allowing for meaningful income comparisons across different household compositions.
-#'          
+#'
 #'          **Equivalence Scale Logic:**
 #'          - First adult: Weight = 1.0 (full weight)
 #'          - Second adult: Weight = 0.4 (economies of scale)
 #'          - Additional members: Weight = 0.3 each (further economies)
-#'          
+#'
 #'          **Examples:**
 #'          - Single person: weight = 1.0
 #'          - Two adults: weight = 1.4 (1.0 + 0.4)
 #'          - Family of four: weight = 2.0 (1.0 + 0.4 + 0.3 + 0.3)
-#'          
+#'
 #'          **Non-response Handling:**
 #'          Income values >= 996 or household size <= 0 indicate survey non-response and result in tagged NA ("b").
 #'

@@ -64,20 +64,20 @@
 #'
 #' @export
 #'
-#' @details Pack-years is a standardized measure of lifetime cigarette exposure used in epidemiological 
+#' @details Pack-years is a standardized measure of lifetime cigarette exposure used in epidemiological
 #'          research and clinical practice. The calculation varies by smoking pattern:
-#'          
+#'
 #'          **Smoking Patterns:**
 #'          - Daily smokers: Consistent daily consumption over time period
 #'          - Occasional smokers: Variable consumption adjusted for frequency
 #'          - Former smokers: Historical consumption during smoking periods
-#'          
+#'
 #'          **Minimum Values:**
-#'          The function applies minimum pack-year values (0.0137 or 0.007) to prevent 
+#'          The function applies minimum pack-year values (0.0137 or 0.007) to prevent
 #'          underestimation of health risks for light smokers.
-#'          
+#'
 #'          **Clinical Significance:**
-#'          Pack-years data is crucial for lung cancer screening guidelines, COPD risk 
+#'          Pack-years data is crucial for lung cancer screening guidelines, COPD risk
 #'          assessment, and cardiovascular disease evaluation.
 #'
 #' @seealso https://big-life-lab.github.io/cchsflow/reference/pack_years_fun.html
