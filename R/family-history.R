@@ -72,8 +72,10 @@ determine_CVD_personal_history <- function(CCC_61, CCC_63, CCC_81) {
 #' # Output: 1
 #'
 #' # Vector usage: Multiple respondents
-#' determine_CVD_family_history(FMH_11 = c(1, 2, 1), FMH_12 = c(50, NA, 70), 
-#' FMH_13 = c(2, 1, 2), FMH_14 = c(NA, 55, NA))
+#' determine_CVD_family_history(
+#'   FMH_11 = c(1, 2, 1), FMH_12 = c(50, NA, 70),
+#'   FMH_13 = c(2, 1, 2), FMH_14 = c(NA, 55, NA)
+#' )
 #' # Returns: c(1, 1, 2)
 #'
 #' # Database usage: Applied to survey datasets

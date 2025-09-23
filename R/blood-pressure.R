@@ -115,8 +115,10 @@ adjust_DBP <- function(BPMDPBPD) {
 #' # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
 #'
 #' # Vector usage: Multiple respondents
-#' determine_hypertension(BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85), 
-#' ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1))
+#' determine_hypertension(
+#'   BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85),
+#'   ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1)
+#' )
 #' # Returns: c(1, 2, 1)
 #'
 #' @export
@@ -191,8 +193,10 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
 #' # Output: 2 (Normal blood pressure as adjusted BP is below 140/90 mmHg and not on medication).
 #'
 #' # Vector usage: Multiple respondents
-#' determine_adjusted_hypertension(SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85), 
-#' ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1))
+#' determine_adjusted_hypertension(
+#'   SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85),
+#'   ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1)
+#' )
 #' # Returns: c(1, 2, 1)
 #'
 #' @export
@@ -267,8 +271,10 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #' # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 #'
 #' # Vector usage: Multiple respondents
-#' determine_controlled_hypertension(BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85), 
-#' ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1))
+#' determine_controlled_hypertension(
+#'   BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85),
+#'   ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)
+#' )
 #' # Returns: c(2, 1, 2)
 #'
 #' @export
@@ -346,8 +352,10 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #' # Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
 #'
 #' # Vector usage: Multiple respondents
-#' determine_controlled_adjusted_hypertension(SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85), 
-#' ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1))
+#' determine_controlled_adjusted_hypertension(
+#'   SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85),
+#'   ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)
+#' )
 #' # Returns: c(2, 1, 2)
 #'
 #' @export

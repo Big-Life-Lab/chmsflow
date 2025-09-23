@@ -23,8 +23,10 @@
 #' # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
 #'
 #' # Vector usage: Multiple respondents
-#' find_week_accelerometer_average(c(30, 20), c(40, 30), c(25, 35), c(35, 45), 
-#' c(20, 25), c(45, 55), c(50, 60))
+#' find_week_accelerometer_average(
+#'   c(30, 20), c(40, 30), c(25, 35), c(35, 45),
+#'   c(20, 25), c(45, 55), c(50, 60)
+#' )
 #' # Returns: c(35, 39.28571)
 #'
 #' @export

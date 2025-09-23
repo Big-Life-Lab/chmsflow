@@ -1383,8 +1383,10 @@ cycles1to2_other_antiHTN_meds <- function(
 #'   mhr_102b = c(1, as.numeric(NA), 1)
 #' )
 #' survey_data %>%
-#'   mutate(is_taking_any_antihtn = 
-#'   cycles1to2_any_antiHTN_meds(atc_101a, atc_102a, mhr_101b, mhr_102b)) %>%
+#'   mutate(
+#'     is_taking_any_antihtn =
+#'       cycles1to2_any_antiHTN_meds(atc_101a, atc_102a, mhr_101b, mhr_102b)
+#'   ) %>%
 #'   select(is_taking_any_antihtn)
 #'
 #' @seealso `is_any_antiHTN_med`

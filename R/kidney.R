@@ -37,8 +37,10 @@
 #' # Output: GFR = 99.94114
 #'
 #' # Vector usage: Multiple respondents
-#' calculate_GFR(LAB_BCRE = c(80, 70, 90), PGDCGT = c(1, 2, 1), 
-#' CLC_SEX = c(2, 2, 1), CLC_AGE = c(45, 35, 50))
+#' calculate_GFR(
+#'   LAB_BCRE = c(80, 70, 90), PGDCGT = c(1, 2, 1),
+#'   CLC_SEX = c(2, 2, 1), CLC_AGE = c(45, 35, 50)
+#' )
 #' # Returns: c(67.27905, 99.94114, 70.38001)
 #'
 #' # Database usage: Applied to survey datasets

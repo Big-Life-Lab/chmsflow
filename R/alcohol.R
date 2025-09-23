@@ -119,8 +119,10 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #' # Expected output: 2
 #'
 #' # Vector usage: Multiple respondents
-#' low_drink_score_fun1(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), 
-#' ALCDWKY = c(3, 12, NA), ALC_17 = c(1, 1, 1), ALC_18 = c(2, 2, 1))
+#' low_drink_score_fun1(
+#'   CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2),
+#'   ALCDWKY = c(3, 12, NA), ALC_17 = c(1, 1, 1), ALC_18 = c(2, 2, 1)
+#' )
 #' # Returns: c(2, 3, 2)
 #'
 #' # Database usage: Applied to survey datasets
