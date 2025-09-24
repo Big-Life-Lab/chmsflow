@@ -14,3 +14,5 @@
 ^.lintr
 ^doc$
 ^Meta$
+^.quarto
+^_freeze
