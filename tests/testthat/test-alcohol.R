@@ -10,7 +10,7 @@ test_that("low_drink_score_fun returns correct scores", {
   expect_equal(low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 25), 3) # Medium risk for male
   expect_equal(low_drink_score_fun(CLC_SEX = 2, ALC_11 = 1, ALCDWKY = 25), 3) # Medium risk for female
   expect_equal(low_drink_score_fun(CLC_SEX = 1, ALC_11 = 2, ALCDWKY = NA), 1) # Never drinker - low risk
-  expect_true(is.na(low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA))) # Check for NA
+  expect_true(is.na(low_drink_score_fun(1, 6, NA))) # Check for NA
 
   # Vector usage
   expect_equal(low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA)), c(1, 2, 1))
@@ -39,6 +39,9 @@ test_that("low_drink_score_fun1 returns correct scores", {
   expect_equal(low_drink_score_fun1(CLC_SEX = 1, ALCDWKY = 25, ALC_17 = 1, ALC_11 = 1, ALC_18 = 2), 4) # Heavy drinker, male
   expect_equal(low_drink_score_fun1(CLC_SEX = 2, ALCDWKY = 25, ALC_17 = 1, ALC_11 = 1, ALC_18 = 2), 4) # Heavy drinker, female
   expect_true(is.na(low_drink_score_fun1(CLC_SEX = 1, ALCDWKY = 996, ALC_17 = 1, ALC_11 = 1, ALC_18 = 1))) # Invalid input
+
+  # Case: NA inputs
+  expect_true(is.na(low_drink_score_fun1(1, 6, NA, NA, NA)))
 
   # Vector usage
   expect_equal(low_drink_score_fun1(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA), ALC_17 = c(1, 1, 1), ALC_18 = c(2, 2, 1)), c(2, 3, 2))

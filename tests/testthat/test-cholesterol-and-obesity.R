@@ -20,6 +20,9 @@ test_that("calculate_nonHDL works correctly", {
   # Valid inputs with zero HDL cholesterol (should be NA(b) due to new lower bound)
   expect_equal(calculate_nonHDL(5, 0), haven::tagged_na("b"))
 
+  # Non-response values
+  expect_true(is.na(calculate_nonHDL(99.98, 9.98)))
+
   # Vector usage
   expect_equal(calculate_nonHDL(LAB_CHOL = c(5, 10, 1.87, 13.59, NA), LAB_HDL = c(1, 2, 1, 1, NA)), c(4, 8, haven::tagged_na("b"), haven::tagged_na("b"), haven::tagged_na("b")))
 
@@ -76,6 +79,9 @@ test_that("calculate_WHR works correctly", {
 
   # Edge case: Zero height (should handle division by zero)
   expect_equal(calculate_WHR(0, 85), Inf)
+
+  # Non-response values
+  expect_true(is.na(calculate_WHR(999.98, 999.8)))
 
   # Vector usage
   expect_equal(calculate_WHR(HWM_11CM = c(170, 180, 160, NA, 170, 0), HWM_14CX = c(85, 90, 80, 85, NA, 85)), c(0.5, 0.5, 0.5, haven::tagged_na("b"), haven::tagged_na("b"), Inf))

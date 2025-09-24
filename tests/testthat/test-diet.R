@@ -23,6 +23,9 @@ test_that("find_totalFV_cycles1and2 calculates average daily FV consumption corr
     haven::tagged_na("b")
   )
 
+  # Non-response values
+  expect_true(is.na(find_totalFV_cycles1and2(9998, 9998, 9998, 9998, 9998, 9998, 9998)))
+
   # Vector usage
   expect_equal(
     find_totalFV_cycles1and2(
@@ -74,6 +77,9 @@ test_that("find_totalFV_cycles3to6 calculates average daily FV consumption corre
     find_totalFV_cycles3to6(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
     haven::tagged_na("b")
   )
+
+  # Non-response values
+  expect_true(is.na(find_totalFV_cycles3to6(9998, 9998, 9998, 9998, 9998, 9998, 9998, 9998, 9998, 9998, 9998)))
 
   # Vector usage
   expect_equal(

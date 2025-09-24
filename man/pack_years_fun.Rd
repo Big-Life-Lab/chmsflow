@@ -85,13 +85,13 @@ research and clinical practice. The calculation varies by smoking pattern:
      - Daily smokers: Consistent daily consumption over time period
      - Occasional smokers: Variable consumption adjusted for frequency
      - Former smokers: Historical consumption during smoking periods
-     
+
      **Minimum Values:**
-     The function applies minimum pack-year values (0.0137 or 0.007) to prevent 
+     The function applies minimum pack-year values (0.0137 or 0.007) to prevent
      underestimation of health risks for light smokers.
-     
+
      **Clinical Significance:**
-     Pack-years data is crucial for lung cancer screening guidelines, COPD risk 
+     Pack-years data is crucial for lung cancer screening guidelines, COPD risk
      assessment, and cardiovascular disease evaluation.
 }\if{html}{\out{</div>}}
 }
@@ -103,6 +103,13 @@ pack_years_fun(
   SMK_41 = 15, SMK_53 = NA, SMK_42 = 3, SMK_21 = 25, SMK_11 = 1
 )
 # Output: 0.0137 (pack years)
+
+# Example: Respondent has non-response values for all inputs.
+pack_years_fun(
+  SMKDSTY = 98, CLC_AGE = 998, SMK_54 = 98, SMK_52 = 98, SMK_31 = 98,
+  SMK_41 = 98, SMK_53 = 98, SMK_42 = 98, SMK_21 = 98, SMK_11 = 8
+)
+# Output: NA
 
 # Multiple respondents
 pack_years_fun(

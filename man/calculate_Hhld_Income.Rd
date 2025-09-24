@@ -28,12 +28,12 @@ allowing for meaningful income comparisons across different household compositio
      - First adult: Weight = 1.0 (full weight)
      - Second adult: Weight = 0.4 (economies of scale)
      - Additional members: Weight = 0.3 each (further economies)
-     
+
      **Examples:**
      - Single person: weight = 1.0
      - Two adults: weight = 1.4 (1.0 + 0.4)
      - Family of four: weight = 2.0 (1.0 + 0.4 + 0.3 + 0.3)
-     
+
      **Non-response Handling:**
      Income values >= 996 or household size <= 0 indicate survey non-response and result in tagged NA ("b").
 }\if{html}{\out{</div>}}
@@ -51,6 +51,10 @@ calculate_hhld_income(THI_01 = 75000, DHHDHSZ = 2)
 # Example 3: Respondent with $90000 income and a household size of 1.
 calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
 # Output: 90000
+
+# Example 4: Respondent has non-response values for all inputs.
+calculate_hhld_income(THI_01 = 99999998, DHHDHSZ = 98)
+# Output: NA
 
 # Multiple respondents
 calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))

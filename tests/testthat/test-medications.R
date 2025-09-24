@@ -85,6 +85,9 @@ test_that("is_beta_blocker works correctly", {
   # Scalar usage
   expect_equal(is_beta_blocker("C07AA13", 3), 1)
 
+  # Non-response values
+  expect_true(is.na(is_beta_blocker("9999996", 6)))
+
   # Vector usage
   expect_equal(is_beta_blocker(c("C07AA13", "C07AA07"), c(3, 4)), c(1, 0))
 
@@ -106,6 +109,9 @@ test_that("is_beta_blocker works correctly", {
 test_that("is_ace_inhibitor works correctly", {
   # Scalar usage
   expect_equal(is_ace_inhibitor("C09AB03", 2), 1)
+
+  # Non-response values
+  expect_true(is.na(is_ace_inhibitor("9999996", 6)))
 
   # Vector usage
   expect_equal(is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1)), c(1, 0))
@@ -129,6 +135,9 @@ test_that("is_diuretic works correctly", {
   # Scalar usage
   expect_equal(is_diuretic("C03AA03", 3), 1)
 
+  # Non-response values
+  expect_true(is.na(is_diuretic("9999996", 6)))
+
   # Vector usage
   expect_equal(is_diuretic(c("C03AA03", "C03BA08"), c(3, 2)), c(1, 0))
 
@@ -150,6 +159,9 @@ test_that("is_diuretic works correctly", {
 test_that("is_calcium_channel_blocker works correctly", {
   # Scalar usage
   expect_equal(is_calcium_channel_blocker("C08CA05", 1), 1)
+
+  # Non-response values
+  expect_true(is.na(is_calcium_channel_blocker("9999996", 6)))
 
   # Vector usage
   expect_equal(is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2)), c(1, 0))
@@ -173,6 +185,9 @@ test_that("is_other_antiHTN_med works correctly", {
   # Scalar usage
   expect_equal(is_other_antiHTN_med("C02AC04", 3), 1)
 
+  # Non-response values
+  expect_true(is.na(is_other_antiHTN_med("9999996", 6)))
+
   # Vector usage
   expect_equal(is_other_antiHTN_med(c("C02AC04", "C02KX01"), c(3, 2)), c(1, 0))
 
@@ -194,6 +209,9 @@ test_that("is_other_antiHTN_med works correctly", {
 test_that("is_any_antiHTN_med works correctly", {
   # Scalar usage
   expect_equal(is_any_antiHTN_med("C07AB02", 4), 1)
+
+  # Non-response values
+  expect_true(is.na(is_any_antiHTN_med("9999996", 6)))
 
   # Vector usage
   expect_equal(is_any_antiHTN_med(c("C07AB02", "C07AA07"), c(4, 2)), c(1, 0))
@@ -217,6 +235,9 @@ test_that("is_NSAID works correctly", {
   # Scalar usage
   expect_equal(is_NSAID("M01AB05", 1), 1)
 
+  # Non-response values
+  expect_true(is.na(is_NSAID("9999996", 6)))
+
   # Vector usage
   expect_equal(is_NSAID(c("M01AB05", "A10BB09"), c(1, 3)), c(1, 0))
 
@@ -238,6 +259,9 @@ test_that("is_NSAID works correctly", {
 test_that("is_diabetes_drug works correctly", {
   # Scalar usage
   expect_equal(is_diabetes_drug("A10BB09", 3), 1)
+
+  # Non-response values
+  expect_true(is.na(is_diabetes_drug("9999996", 6)))
 
   # Vector usage
   expect_equal(is_diabetes_drug(c("A10BB09", "C09AA02"), c(3, 2)), c(1, 0))
@@ -318,21 +342,21 @@ test_that("cycles1to2_beta_blockers works correctly with restored parameters", {
     atc_234a = as.character(NA), mhr_234b = as.numeric(NA),
     atc_235a = as.character(NA), mhr_235b = as.numeric(NA)
   )
-  db_result <- survey_data %>%
-    mutate(is_taking_bb = cycles1to2_beta_blockers(
-      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a, atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a, atc_206a, atc_207a, atc_208a, atc_209a, atc_210a, atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a, atc_231a, atc_232a, atc_233a, atc_234a, atc_235a,
-      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b, mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b, mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b, mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b, mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b, mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-    )) %>%
-    select(is_taking_bb)
+    db_result <- survey_data %>%
+      mutate(is_taking_bb = cycles1to2_beta_blockers(
+        atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a, atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+        atc_201a, atc_202a, atc_203a, atc_204a, atc_205a, atc_206a, atc_207a, atc_208a, atc_209a, atc_210a, atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+        atc_131a, atc_132a, atc_133a, atc_134a, atc_135a, atc_231a, atc_232a, atc_233a, atc_234a, atc_235a,
+        mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b, mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b, mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+        mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b, mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b, mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+        mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b, mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+      )) %>% 
+      select(is_taking_bb)
+  
+    expect_equal(db_result$is_taking_bb, c(1, 0, 1))
+  })
 
-  expect_equal(db_result$is_taking_bb, c(1, 0, 1))
-})
-
-# 11. Test cycles1to2_ace_inhibitors
+  # 11. Test cycles1to2_ace_inhibitors
 # ----------------------------------------------------------------------------
 test_that("cycles1to2_ace_inhibitors works correctly with restored parameters", {
   # Scalar usage

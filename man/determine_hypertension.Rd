@@ -66,11 +66,11 @@ This function implements clinical guidelines for hypertension classification:
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     **Blood Pressure Thresholds:**
      - General population: >= 140/90 mmHg indicates hypertension
      - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
-     
+
      **Medication Logic:**
      - Anyone taking hypertension medication is classified as hypertensive
      - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
-     
+
      **Non-response Handling:**
      - Values >= 996 indicate survey non-response codes
      - Invalid blood pressure readings result in tagged NA ("b")
@@ -85,6 +85,10 @@ determine_hypertension(BPMDPBPS = 150, BPMDPBPD = 95, ANYMED2 = 1)
 # Example 2: Respondent has systolic BP = 120, diastolic BP = 80, and not on medication.
 determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 0)
 # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
+
+# Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
+determine_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+# Output: NA (Non-response values for BP result in NA).
 
 # Multiple respondents
 determine_hypertension(

@@ -47,6 +47,13 @@
 #' )
 #' # Output: 0.0137 (pack years)
 #'
+#' # Example: Respondent has non-response values for all inputs.
+#' pack_years_fun(
+#'   SMKDSTY = 98, CLC_AGE = 998, SMK_54 = 98, SMK_52 = 98, SMK_31 = 98,
+#'   SMK_41 = 98, SMK_53 = 98, SMK_42 = 98, SMK_21 = 98, SMK_11 = 8
+#' )
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' pack_years_fun(
 #'   SMKDSTY = c(1, 5, 6),

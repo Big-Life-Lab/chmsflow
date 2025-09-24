@@ -16,6 +16,9 @@ test_that("determine_CVD_personal_history works correctly", {
   # Non-response: All inputs are missing
   expect_equal(determine_CVD_personal_history(CCC_61 = NA, CCC_63 = NA, CCC_81 = NA), haven::tagged_na("b"))
 
+  # Non-response values
+  expect_true(is.na(determine_CVD_personal_history(8, 8, 8)))
+
   # Mixed responses: One missing, others valid
   expect_equal(determine_CVD_personal_history(CCC_61 = 1, CCC_63 = NA, CCC_81 = 2), 1)
   expect_equal(determine_CVD_personal_history(CCC_61 = 2, CCC_63 = 2, CCC_81 = NA), 2)
@@ -56,6 +59,9 @@ test_that("determine_CVD_family_history works correctly", {
 
   # Non-response for all inputs
   expect_equal(determine_CVD_family_history(FMH_11 = NA, FMH_12 = NA, FMH_13 = NA, FMH_14 = NA), haven::tagged_na("b"))
+
+  # Non-response values
+  expect_true(is.na(determine_CVD_family_history(8, 998, 8, 998)))
 
   # Mixed responses: Heart disease missing, stroke present
   expect_equal(determine_CVD_family_history(FMH_11 = NA, FMH_12 = NA, FMH_13 = 1, FMH_14 = 55), 1)

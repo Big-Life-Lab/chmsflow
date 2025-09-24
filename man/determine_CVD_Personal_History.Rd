@@ -31,6 +31,10 @@ of specific conditions related to heart disease, heart attack, and stroke.
 determine_CVD_personal_history(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
 # Output: 1 (CVD personal history is "Yes" as heart disease is present).
 
+# Example: Respondent has non-response values for all inputs.
+determine_CVD_personal_history(CCC_61 = 8, CCC_63 = 8, CCC_81 = 8)
+# Output: NA
+
 # Multiple respondents
 determine_CVD_personal_history(CCC_61 = c(1, 2, 2), CCC_63 = c(2, 1, 2), CCC_81 = c(2, 2, 1))
 # Returns: c(1, 1, 1)

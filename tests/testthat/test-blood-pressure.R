@@ -66,6 +66,9 @@ test_that("determine_hypertension identifies hypertension status correctly", {
   # Case: Adjusted ANYMED2 due to conditions
   expect_equal(determine_hypertension(120, 80, 1, CCC_32 = 2, CARDIOV = 1), 2)
 
+  # Case: Non-response BP values
+  expect_equal(determine_hypertension(996, 996, 0), NA_real_)
+
   # Vector usage
   expect_equal(determine_hypertension(BPMDPBPS = c(150, 120, 135, NA, 120), BPMDPBPD = c(95, 80, 85, NA, 70), ANYMED2 = c(1, 0, 1, 1, 1), DIABX = c(2, 2, 1, 2, 1)), c(1, 2, 1, 1, 2))
 
@@ -100,6 +103,9 @@ test_that("determine_adjusted_hypertension identifies adjusted hypertension stat
   # Case: User-reported failing case
   expect_equal(determine_adjusted_hypertension(SBP_adj = 130, DBP_adj = 75, ANYMED2 = 0), 2)
 
+  # Case: Non-response BP values
+  expect_equal(determine_adjusted_hypertension(996, 996, 0), NA_real_)
+
   # Vector usage
   expect_equal(determine_adjusted_hypertension(SBP_adj = c(150, 120, 135, NA, 120), DBP_adj = c(95, 80, 85, NA, 70), ANYMED2 = c(1, 0, 1, 1, 1), DIABX = c(2, 2, 1, 2, 1)), c(1, 2, 1, 1, 2))
 
@@ -127,6 +133,9 @@ test_that("determine_controlled_hypertension works correctly", {
 
   # Case 4: Invalid Input
   expect_equal(determine_controlled_hypertension(999, 999, 1), haven::tagged_na("b"))
+
+  # Case: Non-response BP values
+  expect_equal(determine_controlled_hypertension(996, 996, 0), NA_real_)
 
   # Case 5: No Hypertension
   expect_equal(determine_controlled_hypertension(120, 80, 0), 2)
@@ -158,6 +167,9 @@ test_that("determine_controlled_adjusted_hypertension works correctly", {
 
   # Case 4: Invalid Input
   expect_equal(determine_controlled_adjusted_hypertension(999, 999, 1), haven::tagged_na("b"))
+
+  # Case: Non-response BP values
+  expect_equal(determine_controlled_adjusted_hypertension(996, 996, 0), NA_real_)
 
   # Case 5: No Hypertension
   expect_equal(determine_controlled_adjusted_hypertension(122, 80, 0), 2)

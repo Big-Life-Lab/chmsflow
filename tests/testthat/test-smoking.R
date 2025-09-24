@@ -73,6 +73,13 @@ test_that("Returns tagged NA when CLC_AGE is NA or invalid", {
   expect_equal(pack_years_fun(SMKDSTY = 1, CLC_AGE = -5, SMK_52 = 20, SMK_31 = 20, SMK_54 = 0, SMK_41 = 0, SMK_53 = 0, SMK_42 = 0, SMK_21 = 0, SMK_11 = 0), haven::tagged_na("b"))
 })
 
+test_that("pack_years_fun handles non-response inputs", {
+  expect_true(is.na(pack_years_fun(
+    SMKDSTY = 98, CLC_AGE = 998, SMK_54 = 98, SMK_52 = 98, SMK_31 = 98,
+    SMK_41 = 98, SMK_53 = 98, SMK_42 = 98, SMK_21 = 98, SMK_11 = 8
+  )))
+})
+
 test_that("pack_years_fun handles NA inputs for smoking variables", {
   # Daily smoker with NA for SMK_52
   expect_true(is.na(pack_years_fun(SMKDSTY = 1, CLC_AGE = 40, SMK_52 = NA, SMK_31 = 10, SMK_54 = 0, SMK_41 = 0, SMK_53 = 0, SMK_42 = 0, SMK_21 = 0, SMK_11 = 0)))

@@ -13,6 +13,9 @@ test_that("find_week_accelerometer_average handles various cases", {
   # Case 4: All days are NA
   expect_equal(find_week_accelerometer_average(NA, NA, NA, NA, NA, NA, NA), haven::tagged_na("b"))
 
+  # Non-response values
+  expect_true(is.na(find_week_accelerometer_average(9998, 9998, 9998, 9998, 9998, 9998, 9998)))
+
   # Vector usage
   expect_equal(find_week_accelerometer_average(c(30, 20), c(40, 30), c(25, 35), c(35, 45), c(20, 25), c(45, 55), c(50, 60)), c(35, 38.57142857142857), tolerance = 1e-7)
 

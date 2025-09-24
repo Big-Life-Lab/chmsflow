@@ -32,18 +32,18 @@ to estimate glomerular filtration rate, a key indicator of kidney function.
      - Chronic kidney disease (CKD) classification
      - Medication dosing adjustments
      - Cardiovascular risk assessment
-     
+
      **Formula Application:**
      Base: GFR = 175 × (creatinine^-1.154) × (age^-0.203)
      Adjustments:
      - Female: × 0.742
      - Black ethnicity: × 1.210
-     
+
      **Unit Conversion:**
      Serum creatinine converted from µmol/L to mg/dL (÷ 88.4)
-     
+
      **Non-response Handling:**
-     Values >= 996 (LAB_BCRE), >= 96 (PGDCGT), >= 6 (CLC_SEX), >= 996 (CLC_AGE) 
+     Values >= 996 (LAB_BCRE), >= 96 (PGDCGT), >= 6 (CLC_SEX), >= 996 (CLC_AGE)
      indicate survey non-response and result in tagged NA ("b").
 }\if{html}{\out{</div>}}
 }
@@ -56,6 +56,10 @@ calculate_GFR(LAB_BCRE = 80, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 45)
 # Example 2: Calculate GFR for a 35-year-old black female with serum creatine of 70 µmol/L.
 calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35)
 # Output: GFR = 99.94114
+
+# Example 3: Respondent has non-response values for all inputs.
+calculate_GFR(LAB_BCRE = 9998, PGDCGT = 98, CLC_SEX = 8, CLC_AGE = 998)
+# Output: NA
 
 # Multiple respondents
 calculate_GFR(

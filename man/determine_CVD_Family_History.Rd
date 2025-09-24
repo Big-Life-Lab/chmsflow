@@ -49,6 +49,10 @@ This function evaluates a respondent's family history of cardiovascular disease 
 determine_CVD_family_history(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
 # Output: 1
 
+# Example 2: Respondent has non-response values for all inputs.
+determine_CVD_family_history(FMH_11 = 8, FMH_12 = 998, FMH_13 = 8, FMH_14 = 998)
+# Output: NA
+
 # Multiple respondents
 determine_CVD_family_history(
   FMH_11 = c(1, 2, 1), FMH_12 = c(50, NA, 70),

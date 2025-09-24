@@ -33,15 +33,15 @@ This function classifies diabetes status based that considers:
      - Laboratory: HbA1c levels indicating diabetes (diab_m)
      - Self-report: Participant-reported diabetes diagnosis (CCC_51)
      - Medication: Current diabetes medication usage (diab_drug2)
-     
+
      **Classification Logic:**
      - ANY positive indicator results in diabetes classification
      - ALL negative indicators required for "no diabetes" classification
      - Sophisticated missing data handling preserves available information
-     
+
      **Missing Data Strategy:**
-     The function maximizes data utility by making classifications based on available 
-     information when some parameters are missing, only returning NA when insufficient 
+     The function maximizes data utility by making classifications based on available
+     information when some parameters are missing, only returning NA when insufficient
      data exists for classification.
 }\if{html}{\out{</div>}}
 }
@@ -58,6 +58,10 @@ determine_inclusive_diabetes(diab_m = 2, CCC_51 = 2, diab_drug2 = 0)
 # Example: Determine inclusive diabetes status when only one parameter is NA.
 determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
 # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
+
+# Example: Respondent has non-response values for all inputs.
+determine_inclusive_diabetes(diab_m = 9.998, CCC_51 = 8, diab_drug2 = 9)
+# Output: NA
 
 # Multiple respondents
 determine_inclusive_diabetes(diab_m = c(1, 2, 2), CCC_51 = c(2, 1, 2), diab_drug2 = c(0, 0, 1))

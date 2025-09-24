@@ -26,6 +26,10 @@ Identifies diabetes drugs based on ATC codes starting with "A10".
 is_diabetes_drug("A10BB09", 3)
 # Returns: 1
 
+# Example: Respondent has non-response values for all inputs.
+is_diabetes_drug("9999998", 8)
+# Returns: NA
+
 # Multiple respondents
 is_diabetes_drug(c("A10BB09", "C09AA02"), c(3, 2))
 # Returns: c(1, 0)

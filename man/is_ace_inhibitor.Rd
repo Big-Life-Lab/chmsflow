@@ -26,6 +26,10 @@ Identifies ACE inhibitors based on ATC codes starting with "C09".
 is_ace_inhibitor("C09AB03", 2)
 # Returns: 1
 
+# Example: Respondent has non-response values for all inputs.
+is_ace_inhibitor("9999998", 8)
+# Returns: NA
+
 # Multiple respondents
 is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1))
 # Returns: c(1, 0)

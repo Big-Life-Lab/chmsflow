@@ -80,6 +80,10 @@ assessments) is not included due to data limitations in the survey.
 low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3)
 # Expected output: 1 (Low risk)
 
+# Example: A male respondent who drank in the past year and has an NA value for weekly drinks.
+low_drink_score_fun(1, 6, NA)
+# Expected output: NA
+
 # Multiple respondents
 low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA))
 # Returns: c(1, 2, 1)

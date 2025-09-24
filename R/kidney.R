@@ -43,6 +43,10 @@
 #' calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35)
 #' # Output: GFR = 99.94114
 #'
+#' # Example 3: Respondent has non-response values for all inputs.
+#' calculate_GFR(LAB_BCRE = 9998, PGDCGT = 98, CLC_SEX = 8, CLC_AGE = 998)
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' calculate_GFR(
 #'   LAB_BCRE = c(80, 70, 90), PGDCGT = c(1, 2, 1),
@@ -94,6 +98,10 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
 #' # Example 2: Categorize a GFR of 75
 #' categorize_GFR_to_CKD(75)
 #' # Output: 2
+#'
+#' # Example 3: Respondent has a non-response value for GFR.
+#' categorize_GFR_to_CKD(9998)
+#' # Output: NA
 #'
 #' # Multiple respondents
 #' categorize_GFR_to_CKD(c(45, 75, 60))

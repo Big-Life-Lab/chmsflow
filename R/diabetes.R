@@ -29,6 +29,10 @@
 #' determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
 #' # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
 #'
+#' # Example: Respondent has non-response values for all inputs.
+#' determine_inclusive_diabetes(diab_m = 9.998, CCC_51 = 8, diab_drug2 = 9)
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' determine_inclusive_diabetes(diab_m = c(1, 2, 2), CCC_51 = c(2, 1, 2), diab_drug2 = c(0, 0, 1))
 #' # Returns: c(1, 1, 1)

@@ -62,6 +62,13 @@ find_totalFV_cycles1and2(
 )
 # Output: 2.164384
 
+# Example: Respondent has non-response values for all inputs.
+find_totalFV_cycles1and2(
+  WSDD14Y = 9998, GFVD17Y = 9998, GFVD18Y = 9998, GFVD19Y = 9998, GFVD20Y = 9998,
+  GFVD22Y = 9998, GFVD23Y = 9998
+)
+# Output: NA
+
 # Multiple respondents
 find_totalFV_cycles1and2(
   WSDD14Y = c(50, 60), GFVD17Y = c(150, 160), GFVD18Y = c(200, 210), GFVD19Y = c(100, 110),

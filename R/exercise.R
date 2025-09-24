@@ -22,6 +22,10 @@
 #' find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
 #' # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
 #'
+#' # Example: Respondent has non-response values for all inputs.
+#' find_week_accelerometer_average(9998, 9998, 9998, 9998, 9998, 9998, 9998)
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' find_week_accelerometer_average(
 #'   c(30, 20), c(40, 30), c(25, 35), c(35, 45),
@@ -52,6 +56,7 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
 
   dplyr::case_when(
     rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
+    rowSums(measurements >= 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
     is.na(MVPA_min) ~ haven::tagged_na("b"),
     TRUE ~ MVPA_min
   )

@@ -61,6 +61,10 @@
 #' low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3)
 #' # Expected output: 1 (Low risk)
 #'
+#' # Example: A male respondent who drank in the past year and has an NA value for weekly drinks.
+#' low_drink_score_fun(1, 6, NA)
+#' # Expected output: NA
+#'
 #' # Multiple respondents
 #' low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA))
 #' # Returns: c(1, 2, 1)
@@ -136,9 +140,13 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #'
 #' @examples
 #' # Scalar usage: Single respondent
-#' # Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
+#' # Example: Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
 #' low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = 1, ALC_18 = 2)
 #' # Expected output: 2
+#'
+#' # Example: A male respondent who drank in the past year and has NA values for other inputs.
+#' low_drink_score_fun1(1, 6, NA, NA, NA)
+#' # Expected output: NA
 #'
 #' # Multiple respondents
 #' low_drink_score_fun1(

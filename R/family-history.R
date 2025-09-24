@@ -20,6 +20,10 @@
 #' determine_CVD_personal_history(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
 #' # Output: 1 (CVD personal history is "Yes" as heart disease is present).
 #'
+#' # Example: Respondent has non-response values for all inputs.
+#' determine_CVD_personal_history(CCC_61 = 8, CCC_63 = 8, CCC_81 = 8)
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' determine_CVD_personal_history(CCC_61 = c(1, 2, 2), CCC_63 = c(2, 1, 2), CCC_81 = c(2, 2, 1))
 #' # Returns: c(1, 1, 1)
@@ -32,7 +36,7 @@
 #' @export
 determine_CVD_personal_history <- function(CCC_61, CCC_63, CCC_81) {
   dplyr::case_when(
-    is.na(CCC_61) & is.na(CCC_63) & is.na(CCC_81) ~ haven::tagged_na("b"),
+    (is.na(CCC_61) | CCC_61 > 2) & (is.na(CCC_63) | CCC_63 > 2) & (is.na(CCC_81) | CCC_81 > 2) ~ haven::tagged_na("b"),
     (CCC_61 == 1) | (CCC_63 == 1) | (CCC_81 == 1) ~ 1,
     TRUE ~ 2
   )
@@ -70,6 +74,10 @@ determine_CVD_personal_history <- function(CCC_61, CCC_63, CCC_81) {
 #' # Example 1: Premature CVD due to heart disease diagnosis at age 50
 #' determine_CVD_family_history(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
 #' # Output: 1
+#'
+#' # Example 2: Respondent has non-response values for all inputs.
+#' determine_CVD_family_history(FMH_11 = 8, FMH_12 = 998, FMH_13 = 8, FMH_14 = 998)
+#' # Output: NA
 #'
 #' # Multiple respondents
 #' determine_CVD_family_history(

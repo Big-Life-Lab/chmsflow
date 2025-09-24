@@ -26,6 +26,10 @@ Identifies diuretics based on ATC codes starting with "C03", excluding specific 
 is_diuretic("C03AA03", 3)
 # Returns: 1
 
+# Example: Respondent has non-response values for all inputs.
+is_diuretic("9999998", 8)
+# Returns: NA
+
 # Multiple respondents
 is_diuretic(c("C03AA03", "C03BA08"), c(3, 2))
 # Returns: c(1, 0)

@@ -12,6 +12,9 @@ test_that("determine_inclusive_diabetes handles all inputs present", {
 test_that("determine_inclusive_diabetes handles all inputs NA", {
   # Case 3: All inputs are NA
   expect_equal(determine_inclusive_diabetes(NA, NA, NA), haven::tagged_na("b"))
+
+  # Non-response values
+  expect_true(is.na(determine_inclusive_diabetes(9.998, 8, 9)))
 })
 
 test_that("determine_inclusive_diabetes handles two inputs NA", {

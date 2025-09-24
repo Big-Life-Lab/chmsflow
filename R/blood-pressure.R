@@ -22,6 +22,10 @@
 #' adjust_SBP(BPMDPBPS = 120)
 #' # Output: 123
 #'
+#' # Example: Adjust for a respondent with a non-response systolic blood pressure of 996.
+#' adjust_SBP(BPMDPBPS = 996)
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' adjust_SBP(BPMDPBPS = c(120, 130, 140))
 #' # Returns: c(123, 132.3, 141.6)
@@ -64,6 +68,10 @@ adjust_SBP <- function(BPMDPBPS) {
 #' # Example: Adjust for a respondent with average diastolic blood pressure of 80 mmHg.
 #' adjust_DBP(BPMDPBPD = 80)
 #' # Output: 82
+#'
+#' # Example: Adjust for a respondent with a non-response diastolic blood pressure of 996.
+#' adjust_DBP(BPMDPBPD = 996)
+#' # Output: NA
 #'
 #' # Multiple respondents
 #' adjust_DBP(BPMDPBPD = c(80, 90, 100))
@@ -121,6 +129,10 @@ adjust_DBP <- function(BPMDPBPD) {
 #' # Example 2: Respondent has systolic BP = 120, diastolic BP = 80, and not on medication.
 #' determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 0)
 #' # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
+#'
+#' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
+#' determine_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+#' # Output: NA (Non-response values for BP result in NA).
 #'
 #' # Multiple respondents
 #' determine_hypertension(
@@ -217,6 +229,10 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
 #' determine_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYMED2 = 2)
 #' # Output: 2 (Normal blood pressure as adjusted BP is below 140/90 mmHg and not on medication).
 #'
+#' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
+#' determine_adjusted_hypertension(SBP_adj = 996, DBP_adj = 996, ANYMED2 = 0)
+#' # Output: NA (Non-response values for BP result in NA).
+#'
 #' # Multiple respondents
 #' determine_adjusted_hypertension(
 #'   SBP_adj = c(150, 120, 135), DBP_adj = c(95, 80, 85),
@@ -294,6 +310,10 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #' # Example 2: Respondent has systolic BP = 120, diastolic BP = 80, and on medication.
 #' determine_controlled_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 1)
 #' # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
+#'
+#' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
+#' determine_controlled_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+#' # Output: NA (Non-response values for BP result in NA).
 #'
 #' # Multiple respondents
 #' determine_controlled_hypertension(
@@ -375,6 +395,10 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #' # Example 2: Respondent has adjusted SBP = 120, adjusted DBP = 80, and on medication.
 #' determine_controlled_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYMED2 = 1)
 #' # Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
+#'
+#' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
+#' determine_controlled_adjusted_hypertension(SBP_adj = 996, DBP_adj = 996, ANYMED2 = 0)
+#' # Output: NA (Non-response values for BP result in NA).
 #'
 #' # Multiple respondents
 #' determine_controlled_adjusted_hypertension(

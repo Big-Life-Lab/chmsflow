@@ -11,6 +11,9 @@ test_that("calculate_GFR works correctly", {
   expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 6, CLC_AGE = 30), haven::tagged_na("b"))
   expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 996), haven::tagged_na("b"))
 
+  # Non-response values
+  expect_true(is.na(calculate_GFR(9998, 98, 8, 998)))
+
   # Invalid inputs
   expect_equal(calculate_GFR(LAB_BCRE = NA, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
   expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = NA, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))

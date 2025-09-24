@@ -47,7 +47,7 @@ to create a weekly activity summary.
      - Requires complete 7-day data (missing days result in tagged NA)
      - This conservative approach ensures reliable activity estimates
      - Zero values are preserved (represent valid no-activity days)
-     
+
      **Clinical Context:**
      Accelerometer data provides objective measures of moderate-to-vigorous physical activity (MVPA),
      crucial for assessing adherence to physical activity guidelines.
@@ -58,6 +58,10 @@ to create a weekly activity summary.
 # Example: Calculate the average minutes of exercise per day for a week of accelerometer data.
 find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
 # Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
+
+# Example: Respondent has non-response values for all inputs.
+find_week_accelerometer_average(9998, 9998, 9998, 9998, 9998, 9998, 9998)
+# Output: NA
 
 # Multiple respondents
 find_week_accelerometer_average(

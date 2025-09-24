@@ -56,9 +56,13 @@ This function uses only Step 1 of the guidelines, as Step 2 information is unava
 }
 \examples{
 # Scalar usage: Single respondent
-# Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
+# Example: Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
 low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = 1, ALC_18 = 2)
 # Expected output: 2
+
+# Example: A male respondent who drank in the past year and has NA values for other inputs.
+low_drink_score_fun1(1, 6, NA, NA, NA)
+# Expected output: NA
 
 # Multiple respondents
 low_drink_score_fun1(

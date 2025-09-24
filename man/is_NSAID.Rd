@@ -26,6 +26,10 @@ Identifies NSAIDs based on ATC codes starting with "M01A".
 is_NSAID("M01AB05", 1)
 # Returns: 1
 
+# Example: Respondent has non-response values for all inputs.
+is_NSAID("9999998", 8)
+# Returns: NA
+
 # Multiple respondents
 is_NSAID(c("M01AB05", "A10BB09"), c(1, 3))
 # Returns: c(1, 0)

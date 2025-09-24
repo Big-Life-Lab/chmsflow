@@ -26,6 +26,10 @@ Identifies beta blockers based on ATC codes starting with "C07", excluding speci
 is_beta_blocker("C07AA13", 3)
 # Returns: 1
 
+# Example: Respondent has non-response values for all inputs.
+is_beta_blocker("9999998", 8)
+# Returns: NA
+
 # Multiple respondents
 is_beta_blocker(c("C07AA13", "C07AA07"), c(3, 4))
 # Returns: c(1, 0)

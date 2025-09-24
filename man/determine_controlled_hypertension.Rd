@@ -70,6 +70,10 @@ determine_controlled_hypertension(BPMDPBPS = 150, BPMDPBPD = 95, ANYMED2 = 1)
 determine_controlled_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 1)
 # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 
+# Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
+determine_controlled_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+# Output: NA (Non-response values for BP result in NA).
+
 # Multiple respondents
 determine_controlled_hypertension(
   BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85),

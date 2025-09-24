@@ -78,6 +78,13 @@ find_totalFV_cycles3to6(
 )
 # Output: 2.931507
 
+# Example: Respondent has non-response values for all inputs.
+find_totalFV_cycles3to6(
+  WSDD34Y = 9998, WSDD35Y = 9998, GFVD17AY = 9998, GFVD17BY = 9998, GFVD17CY = 9998,
+  GFVD17DY = 9998, GFVD18Y = 9998, GFVD19Y = 9998, GFVD20Y = 9998, GFVD22Y = 9998, GFVD23Y = 9998
+)
+# Output: NA
+
 # Multiple respondents
 find_totalFV_cycles3to6(
   WSDD34Y = c(50, 60), WSDD35Y = c(100, 110), GFVD17AY = c(150, 160), GFVD17BY = c(80, 90),

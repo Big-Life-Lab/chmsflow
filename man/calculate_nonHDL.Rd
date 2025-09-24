@@ -34,6 +34,10 @@ is not met or if either input is missing (NA), the function returns NA(b) to ind
 calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
 # Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
 
+# Example: Respondent has non-response values for cholesterol.
+calculate_nonHDL(LAB_CHOL = 99.98, LAB_HDL = 9.98)
+# Output: NA
+
 # Multiple respondents
 calculate_nonHDL(LAB_CHOL = c(50, 60, 70), LAB_HDL = c(5, 10, 15))
 # Returns: c(45, 50, 55)

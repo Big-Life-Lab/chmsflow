@@ -26,6 +26,10 @@ Identifies calcium channel blockers based on ATC codes starting with "C08".
 is_calcium_channel_blocker("C08CA05", 1)
 # Returns: 1
 
+# Example: Respondent has non-response values for all inputs.
+is_calcium_channel_blocker("9999998", 8)
+# Returns: NA
+
 # Multiple respondents
 is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2))
 # Returns: c(1, 0)

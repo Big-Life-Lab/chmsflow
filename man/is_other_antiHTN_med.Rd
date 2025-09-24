@@ -26,6 +26,10 @@ Identifies other anti-hypertensive drugs based on ATC codes starting with "C02",
 is_other_antiHTN_med("C02AC04", 3)
 # Returns: 1
 
+# Example: Respondent has non-response values for all inputs.
+is_other_antiHTN_med("9999998", 8)
+# Returns: NA
+
 # Multiple respondents
 is_other_antiHTN_med(c("C02AC04", "C02KX01"), c(3, 2))
 # Returns: c(1, 0)

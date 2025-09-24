@@ -23,6 +23,10 @@
 #' calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
 #' # Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
 #'
+#' # Example: Respondent has non-response values for cholesterol.
+#' calculate_nonHDL(LAB_CHOL = 99.98, LAB_HDL = 9.98)
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' calculate_nonHDL(LAB_CHOL = c(50, 60, 70), LAB_HDL = c(5, 10, 15))
 #' # Returns: c(45, 50, 55)
@@ -101,6 +105,10 @@ categorize_nonHDL <- function(nonHDL) {
 #' calculate_WHR(HWM_11CM = NA, HWM_14CX = 85)
 #' # Output: NA(b)
 #'
+#' # Example 3: Respondent has non-response values for height and waist circumference.
+#' calculate_WHR(HWM_11CM = 999.98, HWM_14CX = 999.8)
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
 #' # Returns: c(0.5, 0.5, 0.5)
@@ -113,7 +121,7 @@ categorize_nonHDL <- function(nonHDL) {
 #' @export
 calculate_WHR <- function(HWM_11CM, HWM_14CX) {
   dplyr::case_when(
-    is.na(HWM_11CM) | is.na(HWM_14CX) | HWM_11CM < 0 | HWM_14CX < 0 ~ haven::tagged_na("b"),
+    is.na(HWM_11CM) | is.na(HWM_14CX) | HWM_11CM < 0 | HWM_11CM >= 999.96 | HWM_14CX < 0 | HWM_14CX >= 999.6 ~ haven::tagged_na("b"),
     TRUE ~ HWM_14CX / HWM_11CM
   )
 }

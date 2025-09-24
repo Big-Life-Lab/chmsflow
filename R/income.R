@@ -40,6 +40,10 @@
 #' calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
 #' # Output: 90000
 #'
+#' # Example 4: Respondent has non-response values for all inputs.
+#' calculate_hhld_income(THI_01 = 99999998, DHHDHSZ = 98)
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))
 #' # Returns: c(29411.76, 53571.43, 90000)
@@ -69,6 +73,7 @@ calculate_hhld_income <- function(THI_01, DHHDHSZ) {
   adj_hh_inc <- THI_01 / hh_size_wt
 
   dplyr::case_when(
+    (THI_01 >= 99999996) | (DHHDHSZ >= 96) ~ haven::tagged_na("b"),
     is.na(adj_hh_inc) | adj_hh_inc < 0 ~ haven::tagged_na("b"),
     TRUE ~ adj_hh_inc
   )

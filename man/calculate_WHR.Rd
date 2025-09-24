@@ -31,6 +31,10 @@ calculate_WHR(HWM_11CM = 170, HWM_14CX = 85)
 calculate_WHR(HWM_11CM = NA, HWM_14CX = 85)
 # Output: NA(b)
 
+# Example 3: Respondent has non-response values for height and waist circumference.
+calculate_WHR(HWM_11CM = 999.98, HWM_14CX = 999.8)
+# Output: NA
+
 # Multiple respondents
 calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
 # Returns: c(0.5, 0.5, 0.5)

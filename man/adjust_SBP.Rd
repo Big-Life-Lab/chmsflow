@@ -22,8 +22,8 @@ Blood pressure measurements in survey settings may require adjustment to account
 measurement conditions and equipment differences. This function applies a standardized adjustment
 using the formula: SBP_adj = 11.4 + (0.93 * BPMDPBPS).
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     Non-response handling: Values >= 996 indicate survey non-response and are converted to 
-     tagged NA ("b") to distinguish from missing measurements. Negative values are also 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     Non-response handling: Values >= 996 indicate survey non-response and are converted to
+     tagged NA ("b") to distinguish from missing measurements. Negative values are also
      treated as invalid and converted to tagged NA.
 }\if{html}{\out{</div>}}
 }
@@ -32,6 +32,10 @@ using the formula: SBP_adj = 11.4 + (0.93 * BPMDPBPS).
 # Example: Adjust for a respondent with average systolic blood pressure of 120 mmHg.
 adjust_SBP(BPMDPBPS = 120)
 # Output: 123
+
+# Example: Adjust for a respondent with a non-response systolic blood pressure of 996.
+adjust_SBP(BPMDPBPS = 996)
+# Output: NA
 
 # Multiple respondents
 adjust_SBP(BPMDPBPS = c(120, 130, 140))

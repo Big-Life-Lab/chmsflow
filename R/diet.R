@@ -38,6 +38,13 @@
 #' )
 #' # Output: 2.164384
 #'
+#' # Example: Respondent has non-response values for all inputs.
+#' find_totalFV_cycles1and2(
+#'   WSDD14Y = 9998, GFVD17Y = 9998, GFVD18Y = 9998, GFVD19Y = 9998, GFVD20Y = 9998,
+#'   GFVD22Y = 9998, GFVD23Y = 9998
+#' )
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' find_totalFV_cycles1and2(
 #'   WSDD14Y = c(50, 60), GFVD17Y = c(150, 160), GFVD18Y = c(200, 210), GFVD19Y = c(100, 110),
@@ -55,6 +62,7 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 
   dplyr::case_when(
     rowSums(is.na(measurements)) == ncol(measurements) ~ haven::tagged_na("b"),
+    rowSums(measurements >= 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
     rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
     TRUE ~ totalFV
   )
@@ -108,6 +116,13 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' )
 #' # Output: 2.931507
 #'
+#' # Example: Respondent has non-response values for all inputs.
+#' find_totalFV_cycles3to6(
+#'   WSDD34Y = 9998, WSDD35Y = 9998, GFVD17AY = 9998, GFVD17BY = 9998, GFVD17CY = 9998,
+#'   GFVD17DY = 9998, GFVD18Y = 9998, GFVD19Y = 9998, GFVD20Y = 9998, GFVD22Y = 9998, GFVD23Y = 9998
+#' )
+#' # Output: NA
+#'
 #' # Multiple respondents
 #' find_totalFV_cycles3to6(
 #'   WSDD34Y = c(50, 60), WSDD35Y = c(100, 110), GFVD17AY = c(150, 160), GFVD17BY = c(80, 90),
@@ -123,6 +138,7 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 
   dplyr::case_when(
     rowSums(is.na(measurements)) == ncol(measurements) ~ haven::tagged_na("b"),
+    rowSums(measurements >= 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
     rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
     TRUE ~ totalFV
   )

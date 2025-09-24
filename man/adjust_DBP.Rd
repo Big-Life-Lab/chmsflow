@@ -22,8 +22,8 @@ Blood pressure measurements in survey settings may require adjustment to account
 measurement conditions and equipment differences. This function applies a standardized adjustment
 using the formula: DBP_adj = 15.6 + (0.83 * BPMDPBPD).
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     Non-response handling: Values >= 996 indicate survey non-response and are converted to 
-     tagged NA ("b") to distinguish from missing measurements. Negative values are also 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     Non-response handling: Values >= 996 indicate survey non-response and are converted to
+     tagged NA ("b") to distinguish from missing measurements. Negative values are also
      treated as invalid and converted to tagged NA.
 }\if{html}{\out{</div>}}
 }
@@ -32,6 +32,10 @@ using the formula: DBP_adj = 15.6 + (0.83 * BPMDPBPD).
 # Example: Adjust for a respondent with average diastolic blood pressure of 80 mmHg.
 adjust_DBP(BPMDPBPD = 80)
 # Output: 82
+
+# Example: Adjust for a respondent with a non-response diastolic blood pressure of 996.
+adjust_DBP(BPMDPBPD = 996)
+# Output: NA
 
 # Multiple respondents
 adjust_DBP(BPMDPBPD = c(80, 90, 100))
