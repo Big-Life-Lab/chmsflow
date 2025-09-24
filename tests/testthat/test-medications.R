@@ -342,21 +342,21 @@ test_that("cycles1to2_beta_blockers works correctly with restored parameters", {
     atc_234a = as.character(NA), mhr_234b = as.numeric(NA),
     atc_235a = as.character(NA), mhr_235b = as.numeric(NA)
   )
-    db_result <- survey_data %>%
-      mutate(is_taking_bb = cycles1to2_beta_blockers(
-        atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a, atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-        atc_201a, atc_202a, atc_203a, atc_204a, atc_205a, atc_206a, atc_207a, atc_208a, atc_209a, atc_210a, atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-        atc_131a, atc_132a, atc_133a, atc_134a, atc_135a, atc_231a, atc_232a, atc_233a, atc_234a, atc_235a,
-        mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b, mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b, mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-        mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b, mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b, mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-        mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b, mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-      )) %>% 
-      select(is_taking_bb)
-  
-    expect_equal(db_result$is_taking_bb, c(1, 0, 1))
-  })
+  db_result <- survey_data %>%
+    mutate(is_taking_bb = cycles1to2_beta_blockers(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a, atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a, atc_206a, atc_207a, atc_208a, atc_209a, atc_210a, atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a, atc_231a, atc_232a, atc_233a, atc_234a, atc_235a,
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b, mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b, mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b, mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b, mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b, mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )) %>%
+    select(is_taking_bb)
 
-  # 11. Test cycles1to2_ace_inhibitors
+  expect_equal(db_result$is_taking_bb, c(1, 0, 1))
+})
+
+# 11. Test cycles1to2_ace_inhibitors
 # ----------------------------------------------------------------------------
 test_that("cycles1to2_ace_inhibitors works correctly with restored parameters", {
   # Scalar usage

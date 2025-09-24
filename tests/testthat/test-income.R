@@ -61,7 +61,7 @@ test_that("in_lowest_income_quintile works correctly", {
   expect_equal(in_lowest_income_quintile(1), 1) # In the lowest income quintile
   expect_equal(in_lowest_income_quintile(3), 2) # Not in the lowest income quintile
   expect_equal(in_lowest_income_quintile(NA), haven::tagged_na("b")) # Missing input
-  
+
   # Vector usage
   expect_equal(in_lowest_income_quintile(c(3, 1, 5, NA, haven::tagged_na("b"))), c(2, 1, 2, haven::tagged_na("b"), haven::tagged_na("b")))
 

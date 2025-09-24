@@ -158,26 +158,26 @@ usethis::use_data(cycle4, overwrite = TRUE)
 set.seed(123)
 
 cycle5 <- data.frame(
-  ccc_51   = sample(c(1:2, 6:9), 1000, replace = TRUE),       # Self-reported diabetes (+ missing 6–9)
-  edudr04  = sample(c(1:4, 6:9), 1000, replace = TRUE),       # Education (+ missing 6–9)
-  fmh_15   = sample(c(1:2, 6:9), 1000, replace = TRUE),       # Family history (+ missing 6–9)
-  gendmhi  = sample(c(0:4, 6:9), 1000, replace = TRUE),       # Self-rated mental health (+ missing 6–9)
-  gen_025  = sample(c(1:5, 6:9), 1000, replace = TRUE),       # Perceived stress (+ missing 6–9)
-  gen_045  = sample(c(1:4, 6:9), 1000, replace = TRUE),       # Sense of belonging (+ missing 6–9)
-  clc_sex  = sample(1:2, 1000, replace = TRUE),               # Sex
-  clc_age  = sample(20:79, 1000, replace = TRUE),             # Age
+  ccc_51   = sample(c(1:2, 6:9), 1000, replace = TRUE), # Self-reported diabetes (+ missing 6–9)
+  edudr04  = sample(c(1:4, 6:9), 1000, replace = TRUE), # Education (+ missing 6–9)
+  fmh_15   = sample(c(1:2, 6:9), 1000, replace = TRUE), # Family history (+ missing 6–9)
+  gendmhi  = sample(c(0:4, 6:9), 1000, replace = TRUE), # Self-rated mental health (+ missing 6–9)
+  gen_025  = sample(c(1:5, 6:9), 1000, replace = TRUE), # Perceived stress (+ missing 6–9)
+  gen_045  = sample(c(1:4, 6:9), 1000, replace = TRUE), # Sense of belonging (+ missing 6–9)
+  clc_sex  = sample(1:2, 1000, replace = TRUE), # Sex
+  clc_age  = sample(20:79, 1000, replace = TRUE), # Age
   hwmdbmi  = sample(c(runif(990, 9.47, 56.77), 99.96:99.99), 1000, replace = TRUE), # BMI (+ missing 99.96–99.99)
   slp_11   = sample(c(runif(990, 2, 18), seq(99.6, 99.9, 0.1)), 1000, replace = TRUE), # Sleep duration (+ missing 99.6–99.9)
-  cycle    = sample(1:6, 1000, replace = TRUE),               # Cycle 1–6
-  ccc_32   = sample(c(1:2, 6:9), 1000, replace = TRUE),       # HTN medication (+ missing 6–9)
-  alcdwky  = sample(c(0:84, 996:999), 1000, replace = TRUE),  # Drinks per week (+ missing 996–999)
-  gendhdi  = sample(c(0:4, 6:9), 1000, replace = TRUE),       # Self-rated health (+ missing 6–9)
+  cycle    = sample(1:6, 1000, replace = TRUE), # Cycle 1–6
+  ccc_32   = sample(c(1:2, 6:9), 1000, replace = TRUE), # HTN medication (+ missing 6–9)
+  alcdwky  = sample(c(0:84, 996:999), 1000, replace = TRUE), # Drinks per week (+ missing 996–999)
+  gendhdi  = sample(c(0:4, 6:9), 1000, replace = TRUE), # Self-rated health (+ missing 6–9)
   hwm_13kg = sample(c(runif(990, 42.0, 176.5), seq(999.96, 999.99, 0.01)), 1000, replace = TRUE), # Weight (+ missing 999.96–999.99)
-  hwm_14cx = sample(c(runif(990, 61.4, 162.5), seq(999.6, 999.9, 0.1)), 1000, replace = TRUE),    # Waist circ. (+ missing 999.6–999.9)
-  img_03   = sample(c(1:2, 6:9), 1000, replace = TRUE),       # Immigration (+ missing 6–9)
+  hwm_14cx = sample(c(runif(990, 61.4, 162.5), seq(999.6, 999.9, 0.1)), 1000, replace = TRUE), # Waist circ. (+ missing 999.6–999.9)
+  img_03   = sample(c(1:2, 6:9), 1000, replace = TRUE), # Immigration (+ missing 6–9)
   lab_bpb  = sample(c(runif(990, 0.009, 1.2), seq(9.9996, 9.9999, 0.0001)), 1000, replace = TRUE), # Blood lead (+ missing 9.9996–9.9999)
-  lab_hba1 = sample(c(runif(990, 0.042, 0.130), seq(9.996, 9.999, 0.001)), 1000, replace = TRUE),  # HbA1c (+ missing 9.996–9.999)
-  pgdcgt   = sample(c(1:13, 96:99), 1000, replace = TRUE)     # Ethnicity (+ missing 96–99)
+  lab_hba1 = sample(c(runif(990, 0.042, 0.130), seq(9.996, 9.999, 0.001)), 1000, replace = TRUE), # HbA1c (+ missing 9.996–9.999)
+  pgdcgt   = sample(c(1:13, 96:99), 1000, replace = TRUE) # Ethnicity (+ missing 96–99)
 )
 
 usethis::use_data(cycle5, overwrite = TRUE)
