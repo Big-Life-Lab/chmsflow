@@ -55,9 +55,9 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
   MVPA_min <- rowMeans(measurements, na.rm = FALSE)
 
   dplyr::case_when(
+    rowSums(measurements = 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("a"),
+    rowSums(measurements >= 9997 & measurements <= 9999, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
     rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
-    rowSums(measurements >= 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
-    is.na(MVPA_min) ~ haven::tagged_na("b"),
     TRUE ~ MVPA_min
   )
 }
@@ -93,7 +93,8 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
 minperday_to_minperweek <- function(MVPA_min) {
   minperweek <- MVPA_min * 7
   dplyr::case_when(
-    is.na(minperweek) | minperweek < 0 ~ haven::tagged_na("b"),
+    haven::is_tagged_na(minperweek, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(minperweek, "b") | minperweek < 0 ~ haven::tagged_na("b"),
     TRUE ~ minperweek
   )
 }
@@ -132,7 +133,8 @@ minperday_to_minperweek <- function(MVPA_min) {
 #' @export
 categorize_minperweek <- function(minperweek) {
   dplyr::case_when(
-    is.na(minperweek) | minperweek < 0 ~ haven::tagged_na("b"),
+    haven::is_tagged_na(minperweek, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(minperweek, "b") | minperweek < 0 ~ haven::tagged_na("b"),
     minperweek >= 150 ~ 1,
     minperweek < 150 ~ 2,
     .default = haven::tagged_na("b")

@@ -40,7 +40,8 @@
 #' @export
 adjust_SBP <- function(BPMDPBPS) {
   dplyr::case_when(
-    is.na(BPMDPBPS) | BPMDPBPS < 0 | BPMDPBPS >= 996 ~ haven::tagged_na("b"),
+    BPMDPBPS == 996 ~ haven::tagged_na("a"),
+    BPMDPBPS < 0 | BPMDPBPS %in% 997:999 ~ haven::tagged_na("b"),
     TRUE ~ 11.4 + (0.93 * BPMDPBPS)
   )
 }
@@ -87,7 +88,8 @@ adjust_SBP <- function(BPMDPBPS) {
 #' @export
 adjust_DBP <- function(BPMDPBPD) {
   dplyr::case_when(
-    is.na(BPMDPBPD) | BPMDPBPD < 0 | BPMDPBPD >= 996 ~ haven::tagged_na("b"),
+    BPMDPBPD == 996 ~ haven::tagged_na("a"),
+    BPMDPBPD < 0 | BPMDPBPD %in% 997:999 ~ haven::tagged_na("b"),
     TRUE ~ 15.6 + (0.83 * BPMDPBPD)
   )
 }
@@ -162,7 +164,8 @@ adjust_DBP <- function(BPMDPBPD) {
 determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
   ANYMED2 <- dplyr::case_when(
     CCC_32 == 2 & (CARDIOV == 1 | CKD == 1 | DIABX == 1) ~ 0,
-    (!is.na(ANYMED2) & ANYMED2 == "NA(b)") ~ NA_real_,
+    haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(ANYMED2)
   )
 
@@ -171,7 +174,7 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
     (DIABX == 1 | CKD == 1) & BPMDPBPS >= 0 & BPMDPBPS < 130 ~ 2,
     !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 140 & BPMDPBPS < 996 ~ 1,
     !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 0 & BPMDPBPS < 140 ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
 
   highdias90 <- dplyr::case_when(
@@ -179,15 +182,16 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
     (DIABX == 1 | CKD == 1) & BPMDPBPD >= 0 & BPMDPBPD < 80 ~ 2,
     !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 90 & BPMDPBPD < 996 ~ 1,
     !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 0 & BPMDPBPD < 90 ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
 
   dplyr::case_when(
     !is.na(ANYMED2) & ANYMED2 == 1 ~ 1,
-    BPMDPBPS < 0 | BPMDPBPS >= 996 | is.na(BPMDPBPS) | BPMDPBPD < 0 | BPMDPBPD >= 996 | is.na(BPMDPBPD) ~ NA_real_,
+    BPMDPBPS == 996 | BPMDPBPD == 996  ~ haven::tagged_na("a"),
+    BPMDPBPS < 0 | BPMDPBPS %in% 997:999 |BPMDPBPD < 0 | BPMDPBPD %in% 997:999 ~ haven::tagged_na("b"),
     highsys140 == 1 | highdias90 == 1 ~ 1,
     highsys140 == 2 & highdias90 == 2 & (ANYMED2 == 0 | is.na(ANYMED2)) ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
 }
 
@@ -242,34 +246,36 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
 #'
 #' @export
 determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
-  ANYMED2_adjusted <- dplyr::case_when(
+  ANYMED2 <- dplyr::case_when(
     CCC_32 == 2 & (CARDIOV == 1 | CKD == 1 | DIABX == 1) ~ 0,
-    (!is.na(ANYMED2) & ANYMED2 == "NA(b)") ~ NA_real_,
+    haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(ANYMED2)
   )
-
-  highsys140_adj <- dplyr::case_when(
+  
+  highsys140 <- dplyr::case_when(
     (DIABX == 1 | CKD == 1) & SBP_adj >= 130 & SBP_adj < 996 ~ 1,
     (DIABX == 1 | CKD == 1) & SBP_adj >= 0 & SBP_adj < 130 ~ 2,
     !(DIABX == 1 | CKD == 1) & SBP_adj >= 140 & SBP_adj < 996 ~ 1,
     !(DIABX == 1 | CKD == 1) & SBP_adj >= 0 & SBP_adj < 140 ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
-
-  highdias90_adj <- dplyr::case_when(
+  
+  highdias90 <- dplyr::case_when(
     (DIABX == 1 | CKD == 1) & DBP_adj >= 80 & DBP_adj < 996 ~ 1,
     (DIABX == 1 | CKD == 1) & DBP_adj >= 0 & DBP_adj < 80 ~ 2,
     !(DIABX == 1 | CKD == 1) & DBP_adj >= 90 & DBP_adj < 996 ~ 1,
     !(DIABX == 1 | CKD == 1) & DBP_adj >= 0 & DBP_adj < 90 ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
-
+  
   dplyr::case_when(
-    !is.na(ANYMED2_adjusted) & ANYMED2_adjusted == 1 ~ 1,
-    is.na(SBP_adj) | is.na(DBP_adj) | SBP_adj < 0 | SBP_adj >= 996 | DBP_adj < 0 | DBP_adj >= 996 ~ NA_real_,
-    highsys140_adj == 1 | highdias90_adj == 1 ~ 1,
-    highsys140_adj == 2 & highdias90_adj == 2 & (ANYMED2_adjusted == 0 | is.na(ANYMED2_adjusted)) ~ 2,
-    TRUE ~ NA_real_
+    !is.na(ANYMED2) & ANYMED2 == 1 ~ 1,
+    SBP_adj == 996 | DBP_adj == 996  ~ haven::tagged_na("a"),
+    SBP_adj < 0 | SBP_adj %in% 997:999 |DBP_adj < 0 | DBP_adj %in% 997:999 ~ haven::tagged_na("b"),
+    highsys140 == 1 | highdias90 == 1 ~ 1,
+    highsys140 == 2 & highdias90 == 2 & (ANYMED2 == 0 | is.na(ANYMED2)) ~ 2,
+    .default = haven::tagged_na("b")
   )
 }
 
@@ -324,9 +330,10 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #'
 #' @export
 determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
-  ANYMED2_adjusted <- dplyr::case_when(
+  ANYMED2 <- dplyr::case_when(
     CCC_32 == 2 & (CARDIOV == 1 | CKD == 1 | DIABX == 1) ~ 0,
-    (!is.na(ANYMED2) & ANYMED2 == "NA(b)") ~ NA_real_,
+    haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(ANYMED2)
   )
 
@@ -335,7 +342,7 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
     (DIABX == 1 | CKD == 1) & BPMDPBPS >= 0 & BPMDPBPS < 130 ~ 2,
     !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 140 & BPMDPBPS < 996 ~ 1,
     !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 0 & BPMDPBPS < 140 ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
 
   highdias90 <- dplyr::case_when(
@@ -343,18 +350,19 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
     (DIABX == 1 | CKD == 1) & BPMDPBPD >= 0 & BPMDPBPD < 80 ~ 2,
     !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 90 & BPMDPBPD < 996 ~ 1,
     !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 0 & BPMDPBPD < 90 ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
 
   dplyr::case_when(
-    BPMDPBPS < 0 | BPMDPBPS >= 996 | is.na(BPMDPBPS) | BPMDPBPD < 0 | BPMDPBPD >= 996 | is.na(BPMDPBPD) ~ NA_real_,
+    BPMDPBPS == 996 | BPMDPBPD == 996  ~ haven::tagged_na("a"),
+    BPMDPBPS < 0 | BPMDPBPS %in% 997:999 |BPMDPBPD < 0 | BPMDPBPD %in% 997:999 ~ haven::tagged_na("b"),
     ANYMED2_adjusted == 1 ~ dplyr::case_when(
       highsys140 == 1 | highdias90 == 1 ~ 2, # Not controlled
       highsys140 == 2 & highdias90 == 2 ~ 1, # Controlled
-      TRUE ~ NA_real_
+      .default = haven::tagged_na("b")
     ),
     ANYMED2_adjusted != 1 ~ 2, # Not on medication, so not controlled hypertension
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
 }
 
@@ -409,9 +417,10 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #'
 #' @export
 determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
-  ANYMED2_adjusted <- dplyr::case_when(
+  ANYMED2 <- dplyr::case_when(
     CCC_32 == 2 & (CARDIOV == 1 | CKD == 1 | DIABX == 1) ~ 0,
-    (!is.na(ANYMED2) & ANYMED2 == "NA(b)") ~ NA_real_,
+    haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(ANYMED2)
   )
 
@@ -420,7 +429,7 @@ determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2
     (DIABX == 1 | CKD == 1) & SBP_adj >= 0 & SBP_adj < 130 ~ 2,
     !(DIABX == 1 | CKD == 1) & SBP_adj >= 140 & SBP_adj < 996 ~ 1,
     !(DIABX == 1 | CKD == 1) & SBP_adj >= 0 & SBP_adj < 140 ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
 
   highdias90_adj <- dplyr::case_when(
@@ -428,11 +437,12 @@ determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2
     (DIABX == 1 | CKD == 1) & DBP_adj >= 0 & DBP_adj < 80 ~ 2,
     !(DIABX == 1 | CKD == 1) & DBP_adj >= 90 & DBP_adj < 996 ~ 1,
     !(DIABX == 1 | CKD == 1) & DBP_adj >= 0 & DBP_adj < 90 ~ 2,
-    TRUE ~ NA_real_
+    .default = haven::tagged_na("b")
   )
 
   dplyr::case_when(
-    SBP_adj < 0 | SBP_adj >= 996 | is.na(SBP_adj) | DBP_adj < 0 | DBP_adj >= 996 | is.na(DBP_adj) ~ haven::tagged_na("b"),
+    SBP_adj == 996 | DBP_adj == 996  ~ haven::tagged_na("a"),
+    SBP_adj < 0 | SBP_adj %in% 997:999 |DBP_adj < 0 | DBP_adj %in% 997:999 ~ haven::tagged_na("b"),
     ANYMED2_adjusted == 1 ~ dplyr::case_when(
       highsys140_adj == 1 | highdias90_adj == 1 ~ 2, # Not controlled
       highsys140_adj == 2 & highdias90_adj == 2 ~ 1, # Controlled

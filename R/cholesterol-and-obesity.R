@@ -39,7 +39,9 @@
 #' @export
 calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
   dplyr::case_when(
-    is.na(LAB_CHOL) | is.na(LAB_HDL) | LAB_CHOL < 1.88 | LAB_CHOL > 13.58 | LAB_HDL < 0.49 | LAB_HDL > 3.74 ~ haven::tagged_na("b"),
+    LAB_CHOL == 99.96 | LAB_HDL == 9.96 ~ haven::tagged_na("a"), 
+    (LAB_CHOL >= 99.97 & LAB_CHOL <= 99.99) | (LAB_HDL >= 9.97 & LAB_HDL <= 9.99) ~ haven::tagged_na("b"),
+    LAB_CHOL < 1.88 | LAB_CHOL > 13.58 | LAB_HDL < 0.49 | LAB_HDL > 3.74 ~ haven::tagged_na("b"),
     TRUE ~ LAB_CHOL - LAB_HDL
   )
 }
@@ -77,7 +79,8 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
 #' @export
 categorize_nonHDL <- function(nonHDL) {
   dplyr::case_when(
-    is.na(nonHDL) | nonHDL < 0 ~ haven::tagged_na("b"),
+    haven::is_tagged_na(nonHDL, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(nonHDL, "b") ~ haven::tagged_na("b"),
     nonHDL >= 4.3 ~ 1,
     nonHDL < 4.3 ~ 2,
     .default = haven::tagged_na("b")
@@ -121,7 +124,9 @@ categorize_nonHDL <- function(nonHDL) {
 #' @export
 calculate_WHR <- function(HWM_11CM, HWM_14CX) {
   dplyr::case_when(
-    is.na(HWM_11CM) | is.na(HWM_14CX) | HWM_11CM < 0 | HWM_11CM >= 999.96 | HWM_14CX < 0 | HWM_14CX >= 999.6 ~ haven::tagged_na("b"),
+    HWM_11_CM == 999.96 | HWM_14CX == 999.6 ~ haven::tagged_na("a"),
+    (HWM_11CM >= 999.97 & HWM_11CM <= 999.99) | (HWM_14CX >= 999.7 & HWM_14CX <= 999.9) ~ haven::tagged_na("b")
+    HWM_11CM < 0 | HWM_14CX < 0  ~ haven::tagged_na("b"),
     TRUE ~ HWM_14CX / HWM_11CM
   )
 }

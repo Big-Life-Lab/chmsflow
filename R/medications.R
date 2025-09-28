@@ -125,8 +125,8 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 #' @export
 is_beta_blocker <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
-    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
-    MEUCATC %in% c(9999996, 9999997, 9999998, 9999999) | NPI_25B %in% c(6, 7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C07") & !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02")) & NPI_25B <= 4 ~ 1,
     .default = 0
   )
@@ -164,8 +164,8 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
 #' @export
 is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
-    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
-    MEUCATC %in% c(9999996, 9999997, 9999998, 9999999) | NPI_25B %in% c(6, 7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C09") & NPI_25B <= 4 ~ 1,
     .default = 0
   )
@@ -203,8 +203,8 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 #' @export
 is_diuretic <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
-    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
-    MEUCATC %in% c(9999996, 9999997, 9999998, 9999999) | NPI_25B %in% c(6, 7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C03") & !(MEUCATC %in% c("C03BA08", "C03CA01")) & NPI_25B <= 4 ~ 1,
     .default = 0
   )
@@ -242,8 +242,8 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 #' @export
 is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
-    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
-    MEUCATC %in% c(9999996, 9999997, 9999998, 9999999) | NPI_25B %in% c(6, 7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C08") & NPI_25B <= 4 ~ 1,
     .default = 0
   )
@@ -281,8 +281,8 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
 #' @export
 is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
-    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
-    MEUCATC %in% c(9999996, 9999997, 9999998, 9999999) | NPI_25B %in% c(6, 7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "C02") & !(MEUCATC %in% c("C02KX01")) & NPI_25B <= 4 ~ 1,
     .default = 0
   )
@@ -320,8 +320,8 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' @export
 is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
-    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
-    MEUCATC %in% c(9999996, 9999997, 9999998, 9999999) | NPI_25B %in% c(6, 7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
     grepl("^(C02|C03|C07|C08|C09)", MEUCATC) & !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) & NPI_25B <= 4 ~ 1,
     .default = 0
   )
@@ -359,8 +359,8 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' @export
 is_NSAID <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
-    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
-    MEUCATC %in% c(9999996, 9999997, 9999998, 9999999) | NPI_25B %in% c(6, 7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "M01A") & NPI_25B <= 4 ~ 1,
     .default = 0
   )
@@ -398,8 +398,8 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
 #' @export
 is_diabetes_drug <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
-    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
-    MEUCATC %in% c(9999996, 9999997, 9999998, 9999999) | NPI_25B %in% c(6, 7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
     startsWith(MEUCATC, "A10") & NPI_25B <= 4 ~ 1,
     .default = 0
   )

@@ -61,8 +61,8 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
   totalFV <- rowSums(measurements, na.rm = TRUE) / 365
 
   dplyr::case_when(
-    rowSums(is.na(measurements)) == ncol(measurements) ~ haven::tagged_na("b"),
-    rowSums(measurements >= 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
+    rowSums(measurements = 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("a"),
+    rowSums(measurements >= 9997 & measurements <= 9999, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
     rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
     TRUE ~ totalFV
   )
@@ -137,8 +137,8 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
   totalFV <- rowSums(measurements, na.rm = TRUE) / 365
 
   dplyr::case_when(
-    rowSums(is.na(measurements)) == ncol(measurements) ~ haven::tagged_na("b"),
-    rowSums(measurements >= 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
+    rowSums(measurements = 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("a"),
+    rowSums(measurements >= 9997 & measurements <= 9999, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
     rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
     TRUE ~ totalFV
   )
@@ -177,7 +177,8 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 #' @export
 determine_gooddiet <- function(totalFV) {
   dplyr::case_when(
-    is.na(totalFV) | totalFV < 0 ~ haven::tagged_na("b"),
+    haven::is_tagged_na(totalFV, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(totalFV, "b") | totalFV < 0 ~ haven::tagged_na("b"),
     totalFV >= 5 ~ 1,
     totalFV < 5 ~ 2,
     .default = haven::tagged_na("b")

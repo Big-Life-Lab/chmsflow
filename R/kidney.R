@@ -67,6 +67,8 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   serumcreat <- LAB_BCRE / 88.4
 
   GFR <- dplyr::case_when(
+    LAB_BCRE == 9996 | CLC_SEX == 6 | PGDCGT == 96 | CLC_AGE == 96 ~ haven::tagged_na("a"),
+    LAB_BCRE %in% 9997:9999 | CLC_SEX %in% 7:9 | PGDCGT %in% 97:99 | CLC_AGE %in% 97:99 ~ haven::tagged_na("a"),
     !LAB_BCRE %in% 14:785 | !CLC_SEX %in% c(1, 2) | !PGDCGT %in% 1:13 | !CLC_AGE %in% 3:79 ~ haven::tagged_na("b"),
     CLC_SEX == 2 & PGDCGT == 2 ~ 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (0.742) * (1.210),
     CLC_SEX == 2 & PGDCGT != 2 ~ 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (0.742),
@@ -115,7 +117,9 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
 #' @export
 categorize_GFR_to_CKD <- function(GFR) {
   CKD <- dplyr::case_when(
-    is.na(GFR) | GFR < 0 ~ haven::tagged_na("b"),
+    haven::is_tagged_na(GFR, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(GFR, "b") ~ haven::tagged_na("b"),
+    GFR < 0 ~ haven::tagged_na("b"),
     GFR <= 60 ~ 1,
     GFR > 60 ~ 2,
     .default = haven::tagged_na("b")

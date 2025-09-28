@@ -67,8 +67,10 @@ determine_inclusive_diabetes <- function(diab_m, CCC_51, diab_drug2) {
   dplyr::case_when(
     diab_m == 1 | CCC_51 == 1 | diab_drug2 == 1 ~ 1,
     diab_m == 2 & CCC_51 == 2 & diab_drug2 == 0 ~ 2,
-    is.na(diab_m) & is.na(CCC_51) & is.na(diab_drug2) ~ haven::tagged_na("b"),
-    is.na(diab_m) & is.na(CCC_51) & diab_drug2 == 0 ~ haven::tagged_na("b"),
+    haven::is_tagged_na(diab_m, "a") & (haven::is_tagged_na(CCC_51, "a") | CCC_51 == 6) & haven::is_tagged_na(diab_drug2, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(diab_m, "b") & (haven::is_tagged_na(CCC_51, "b") | CCC_51 %in% 7:9) & haven::is_tagged_na(diab_drug2, "b") ~ haven::tagged_na("b"),
+    haven::is_tagged_na(diab_m, "a") & (haven::is_tagged_na(CCC_51, "a") | CCC_51 == 6) & diab_drug2 == 0 ~ haven::tagged_na("a"),
+    haven::is_tagged_na(diab_m, "b") & (haven::is_tagged_na(CCC_51, "b") | CCC_51 %in% 7:9) & diab_drug2 == 0 ~ haven::tagged_na("b"),
     is.na(diab_m) & is.na(diab_drug2) & CCC_51 == 2 ~ 2,
     is.na(CCC_51) & is.na(diab_drug2) & diab_m == 2 ~ 2,
     is.na(diab_m) & CCC_51 == 2 & diab_drug2 == 0 ~ 2,

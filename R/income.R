@@ -58,23 +58,22 @@
 #' @keywords survey socioeconomic income household demographics
 #' @export
 calculate_hhld_income <- function(THI_01, DHHDHSZ) {
-  hh_size_wt <- sapply(DHHDHSZ, function(size) {
-    if (is.na(size) || size <= 0) {
-      return(NA)
-    } else if (size == 1) {
-      return(1)
-    } else if (size == 2) {
-      return(1 + 0.4)
-    } else {
-      return(1 + 0.4 + (size - 2) * 0.3)
-    }
-  })
-
+  hh_size_wt <- dplyr::case_when(
+    DHHDHSZ == 96 ~ haven::tagged_na("a"),
+    haven::is_tagged_na(size, "a") ~ haven::tagged_na("a"),
+    DHHDHSZ <= 0 | DHHDHSZ %in% 97:99 ~ haven::tagged_na("b"),
+    haven::is_tagged_na(size, "b") ~ haven::tagged_na("a"),
+    DHHDHSZ == 1 ~ 1,
+    DHHDHSZ == 2 ~ 1 + 0.4,
+    TRUE ~ 1 + 0.4 + (DHHDHSZ - 2) * 0.3
+  )
+  
   adj_hh_inc <- THI_01 / hh_size_wt
-
+  
   dplyr::case_when(
-    (THI_01 >= 99999996) | (DHHDHSZ >= 96) ~ haven::tagged_na("b"),
-    is.na(adj_hh_inc) | adj_hh_inc < 0 ~ haven::tagged_na("b"),
+    (THI_01 == 99999996) | (DHHDHSZ == 96) ~ haven::tagged_na("a"),
+    (THI_01 >= 99999997 & THI_01 <= 99999999) | (DHHDHSZ >= 97 & DHHDHSZ <= 99) ~ haven::tagged_na("b"),
+    adj_hh_inc < 0 ~ haven::tagged_na("b"),
     TRUE ~ adj_hh_inc
   )
 }
@@ -115,7 +114,9 @@ calculate_hhld_income <- function(THI_01, DHHDHSZ) {
 #' @export
 categorize_income <- function(adj_hh_inc) {
   dplyr::case_when(
-    is.na(adj_hh_inc) | adj_hh_inc < 0 ~ haven::tagged_na("b"),
+    haven::is_tagged_na(adj_hh_inc, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(adj_hh_inc, "b") ~ haven::tagged_na("b"),
+    adj_hh_inc < 0 ~ haven::tagged_na("b"),
     adj_hh_inc <= 21500 ~ 1,
     adj_hh_inc > 21500 & adj_hh_inc <= 35000 ~ 2,
     adj_hh_inc > 35000 & adj_hh_inc <= 50000 ~ 3,
@@ -158,7 +159,9 @@ categorize_income <- function(adj_hh_inc) {
 #' @export
 in_lowest_income_quintile <- function(incq) {
   dplyr::case_when(
-    is.na(incq) | incq < 0 | incq == "NA(b)" ~ haven::tagged_na("b"),
+    haven::is_tagged_na(incq, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(incq, "b") ~ haven::tagged_na("b"),
+    incq < 0 | incq == "NA(b)" ~ haven::tagged_na("b"),
     incq == 1 ~ 1,
     TRUE ~ 2
   )

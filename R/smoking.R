@@ -92,7 +92,8 @@
 #' @keywords survey health smoking tobacco substance-use epidemiology
 pack_years_fun <- function(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11) {
   pack_years <- dplyr::case_when(
-    is.na(CLC_AGE) | CLC_AGE < 0 ~ haven::tagged_na("b"),
+    CLC_AGE == 96 ~ haven::tagged_na("a"),
+    CLC_AGE < 0 | CLC_AGE %in% 97:99 ~ haven::tagged_na("b"),
     SMKDSTY == 1 ~ pmax(((CLC_AGE - SMK_52) * (SMK_31 / 20)), 0.0137),
     SMKDSTY == 2 ~ pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137) +
       ((pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_54)),
@@ -101,7 +102,8 @@ pack_years_fun <- function(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK
     SMKDSTY == 5 & SMK_11 == 1 ~ 0.0137,
     SMKDSTY == 5 & SMK_11 == 2 ~ 0.007,
     SMKDSTY == 6 ~ 0,
-    SMKDSTY == "NA(a)" ~ haven::tagged_na("a"),
+    SMKDSTY == 96 ~ haven::tagged_na("a"),
+    SMKDSTY %in% 97:99 ~ haven::tagged_na("b"),
     .default = haven::tagged_na("b")
   )
   return(pack_years)

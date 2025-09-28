@@ -36,8 +36,10 @@
 #' @export
 determine_CVD_personal_history <- function(CCC_61, CCC_63, CCC_81) {
   dplyr::case_when(
-    (is.na(CCC_61) | CCC_61 > 2) & (is.na(CCC_63) | CCC_63 > 2) & (is.na(CCC_81) | CCC_81 > 2) ~ haven::tagged_na("b"),
     (CCC_61 == 1) | (CCC_63 == 1) | (CCC_81 == 1) ~ 1,
+    (CCC_61 == 6) & (CCC_63 == 6) & (CCC_81 == 6) ~ haven::tagged_na("a"),
+    (CCC_61 %in% 7:9) & (CCC_63 %in% 7:9) & (CCC_81 %in% 7:9) ~ haven::tagged_na("b"),
+    !CCC_61 %in% c(1, 2) | !CCC_63 %in% c(1, 2) | !CCC_81 %in% c(1, 2) ~ haven::tagged_na("b"),
     TRUE ~ 2
   )
 }
@@ -95,21 +97,27 @@ determine_CVD_personal_history <- function(CCC_61, CCC_63, CCC_81) {
 determine_CVD_family_history <- function(FMH_11, FMH_12, FMH_13, FMH_14) {
   famheart60 <- dplyr::case_when(
     FMH_11 == 1 & FMH_12 >= 0 & FMH_12 < 60 ~ 1,
-    FMH_11 == 1 & (FMH_12 < 0 | FMH_12 > 79 | FMH_12 %in% c(997, 998, 999)) ~ NA_real_,
-    FMH_11 > 2 ~ NA_real_,
+    FMH_11 == 1 & FMH_12 == 996 ~ haven::tagged_na("a"),
+    FMH_11 == 1 & (FMH_12 < 0 | FMH_12 > 79 | FMH_12 %in% c(997, 998, 999)) ~ haven::tagged_na("b"),
+    FMH_11 == 6 ~ haven::tagged_na("a"),
+    FMH_11 %in% 7:9 | !FMH_11 %in% c(1, 2) ~ haven::tagged_na("b"),
     TRUE ~ 0
   )
 
   famstroke60 <- dplyr::case_when(
     FMH_13 == 1 & FMH_14 >= 0 & FMH_14 < 60 ~ 1,
-    FMH_13 == 1 & (FMH_14 < 0 | FMH_14 > 79 | FMH_14 %in% c(997, 998, 999)) ~ NA_real_,
-    FMH_13 > 2 ~ NA_real_,
+    FMH_13 == 1 & FMH_14 == 996 ~ haven::tagged_na("a"),
+    FMH_13 == 1 & (FMH_14 < 0 | FMH_14 > 79 | FMH_14 %in% c(997, 998, 999)) ~ haven::tagged_na("b"),
+    FMH_13 == 6 ~ haven::tagged_na("a"),
+    FMH_13 %in% 7:9 | !FMH_13 %in% c(1, 2) ~ haven::tagged_na("b"),
     TRUE ~ 0
   )
 
   dplyr::case_when(
-    # If both FMH_11 and FMH_13 are NA, return NA(b)
-    is.na(FMH_11) & is.na(FMH_13) ~ haven::tagged_na("b"),
+    # If both FMH_11 and FMH_13 are NA, return respective tagged NA
+    haven::is_tagged_na(famheart60, "a") & haven::is_tagged_na(famstroke60, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(famheart60, "b") & haven::is_tagged_na(famstroke60, "b") ~ haven::tagged_na("b"),
+    
     # If either famheart60 or famstroke60 is 1, then premature CVD exists
     famheart60 == 1 | famstroke60 == 1 ~ 1,
     # If both are 0, then no premature CVD
