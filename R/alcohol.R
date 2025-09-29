@@ -62,17 +62,17 @@
 #' # Expected output: 1 (Low risk)
 #'
 #' # Missing data examples showing tagged NA patterns
-#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5) # Not applicable
+#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 #' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
-#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5) # Don't know
+#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
-#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA) # Missing drinks
+#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
@@ -173,17 +173,17 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #' # Expected output: 2
 #'
 #' # Missing data examples showing tagged NA patterns
-#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2) # Valid skip
+#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 #' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
-#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2) # Don't know
+#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
-#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA, ALC_17 = 1, ALC_18 = 2) # Missing drinks
+#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA, ALC_17 = 1, ALC_18 = 2)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)

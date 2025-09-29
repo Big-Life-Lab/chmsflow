@@ -96,9 +96,9 @@ determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 0)
 
 # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
 result <- determine_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
-result                              # Shows: NA
-haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
-format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 
 # Multiple respondents
 determine_hypertension(

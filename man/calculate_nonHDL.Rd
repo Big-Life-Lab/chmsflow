@@ -39,9 +39,9 @@ calculate_nonHDL(LAB_CHOL = 5.0, LAB_HDL = 1.5)
 
 # Example: Respondent has non-response values for cholesterol.
 result <- calculate_nonHDL(LAB_CHOL = 99.98, LAB_HDL = 1.5)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 calculate_nonHDL(LAB_CHOL = c(5.0, 6.0, 7.0), LAB_HDL = c(1.5, 1.0, 2.0))

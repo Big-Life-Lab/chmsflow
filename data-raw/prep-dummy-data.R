@@ -116,7 +116,7 @@ cycle3 <- data.frame(
   clinicid = c(1, 2, 3, 4),
   clc_age = c(20, 30, 40, 50),
   clc_sex = c(1, 2, 1, 2),
-  sdcdcgt = c(1, 1, 96, 2),
+  pgdcgt = c(1, 1, 96, 2),
   lab_hba1 = c(0.07, 0.06, 9.997, 0.04),
   lab_bcre = c(20, 30, 9997, 50),
   bpmdpbps = c(140, 130, 996, 110),

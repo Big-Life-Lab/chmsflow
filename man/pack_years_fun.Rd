@@ -77,9 +77,9 @@ result <- pack_years_fun(
   SMKDSTY = 98, CLC_AGE = 998, SMK_54 = 98, SMK_52 = 98, SMK_31 = 98,
   SMK_41 = 98, SMK_53 = 98, SMK_42 = 98, SMK_21 = 98, SMK_11 = 8
 )
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 pack_years_fun(

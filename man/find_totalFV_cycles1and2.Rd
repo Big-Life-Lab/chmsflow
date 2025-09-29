@@ -63,9 +63,9 @@ result <- find_totalFV_cycles1and2(
   WSDD14Y = 9998, GFVD17Y = 9998, GFVD18Y = 9998, GFVD19Y = 9998, GFVD20Y = 9998,
   GFVD22Y = 9998, GFVD23Y = 9998
 )
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 find_totalFV_cycles1and2(

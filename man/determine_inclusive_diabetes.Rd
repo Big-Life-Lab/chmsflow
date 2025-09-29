@@ -62,10 +62,10 @@ determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
 # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
 
 # Example: Respondent has non-response values for all inputs.
-result <- determine_inclusive_diabetes(diab_m = haven::tagged_na("b"), CCC_51 = 8, diab_drug2 = haven::tagged_na("b"))
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result <- determine_inclusive_diabetes(haven::tagged_na("b"), 8, haven::tagged_na("b"))
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 determine_inclusive_diabetes(diab_m = c(1, 2, 2), CCC_51 = c(2, 1, 2), diab_drug2 = c(0, 0, 1))

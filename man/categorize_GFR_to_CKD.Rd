@@ -40,9 +40,9 @@ categorize_GFR_to_CKD(75)
 
 # Example 3: Respondent has a non-response value for GFR.
 result <- categorize_GFR_to_CKD(haven::tagged_na("b"))
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 categorize_GFR_to_CKD(c(45, 75, 60))

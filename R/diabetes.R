@@ -49,7 +49,7 @@
 #' # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
 #'
 #' # Example: Respondent has non-response values for all inputs.
-#' result <- determine_inclusive_diabetes(diab_m = haven::tagged_na("b"), CCC_51 = 8, diab_drug2 = haven::tagged_na("b"))
+#' result <- determine_inclusive_diabetes(haven::tagged_na("b"), 8, haven::tagged_na("b"))
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
@@ -73,7 +73,7 @@ determine_inclusive_diabetes <- function(diab_m, CCC_51, diab_drug2) {
     # Positive evidence always first
     diab_m == 1 | CCC_51 == 1 | diab_drug2 == 1 ~ 1,
 
-    # Explicit negatives only if at least one non-missing value exists and all are negative
+    # Explicit negatives if there is at least one observed value and ALL observed are negative
     length(non_missing) > 0 & all(non_missing %in% c(0, 2)) ~ 2,
 
     # NA(a) takes precedence over NA(b)

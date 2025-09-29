@@ -44,9 +44,9 @@ calculate_hhld_income(THI_01 = 50000, DHHDHSZ = 3)
 
 # Example 2: Respondent has non-response values for all inputs.
 result <- calculate_hhld_income(THI_01 = 99999998, DHHDHSZ = 98)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))

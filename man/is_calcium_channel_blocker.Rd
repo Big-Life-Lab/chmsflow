@@ -33,9 +33,9 @@ is_calcium_channel_blocker("C08CA05", 1)
 
 # Example: Respondent has non-response values for all inputs.
 result <- is_calcium_channel_blocker("9999998", 8)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2))

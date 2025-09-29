@@ -33,9 +33,9 @@ is_NSAID("M01AB05", 1)
 
 # Example: Respondent has non-response values for all inputs.
 result <- is_NSAID("9999998", 8)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 is_NSAID(c("M01AB05", "A10BB09"), c(1, 3))

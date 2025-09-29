@@ -33,9 +33,9 @@ is_ace_inhibitor("C09AB03", 2)
 
 # Example: Respondent has non-response values for all inputs.
 result <- is_ace_inhibitor("9999998", 8)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1))

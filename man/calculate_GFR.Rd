@@ -56,9 +56,9 @@ calculate_GFR(LAB_BCRE = 80, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 45)
 
 # Example 2: Respondent has non-response values for all inputs.
 result <- calculate_GFR(LAB_BCRE = 9998, PGDCGT = 98, CLC_SEX = 8, CLC_AGE = 98)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 calculate_GFR(

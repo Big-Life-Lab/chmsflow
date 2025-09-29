@@ -35,9 +35,9 @@ adjust_SBP(BPMDPBPS = 120)
 
 # Example: Adjust for a respondent with a non-response systolic blood pressure of 996.
 result <- adjust_SBP(BPMDPBPS = 996)
-result                              # Shows: NA
-haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
-format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 
 # Multiple respondents
 adjust_SBP(BPMDPBPS = c(120, 130, 140))

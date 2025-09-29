@@ -35,9 +35,9 @@ adjust_DBP(BPMDPBPD = 80)
 
 # Example: Adjust for a respondent with a non-response diastolic blood pressure of 996.
 result <- adjust_DBP(BPMDPBPD = 996)
-result                              # Shows: NA
-haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
-format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 
 # Multiple respondents
 adjust_DBP(BPMDPBPD = c(80, 90, 100))

@@ -37,9 +37,9 @@ calculate_WHR(HWM_11CM = 170, HWM_14CX = 85)
 
 # Example 2: Calculate WHtR for a respondent with missing height.
 result <- calculate_WHR(HWM_11CM = 999.98, HWM_14CX = 85)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))

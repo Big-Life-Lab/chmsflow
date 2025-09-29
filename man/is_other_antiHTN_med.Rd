@@ -33,9 +33,9 @@ is_other_antiHTN_med("C02AC04", 3)
 
 # Example: Respondent has non-response values for all inputs.
 result <- is_other_antiHTN_med("9999998", 8)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 is_other_antiHTN_med(c("C02AC04", "C02KX01"), c(3, 2))

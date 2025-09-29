@@ -97,9 +97,9 @@ determine_controlled_adjusted_hypertension(SBP_adj = 120, DBP_adj = 80, ANYMED2 
 
 # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
 result <- determine_controlled_adjusted_hypertension(SBP_adj = 996, DBP_adj = 996, ANYMED2 = 0)
-result                              # Shows: NA
-haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
-format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 
 # Multiple respondents
 determine_controlled_adjusted_hypertension(

@@ -44,9 +44,9 @@ determine_CVD_personal_history(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
 
 # Example: Respondent has non-response values for all inputs.
 result <- determine_CVD_personal_history(CCC_61 = 8, CCC_63 = 8, CCC_81 = 8)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 determine_CVD_personal_history(CCC_61 = c(1, 2, 2), CCC_63 = c(2, 1, 2), CCC_81 = c(2, 2, 1))

@@ -51,9 +51,9 @@ determine_CVD_family_history(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
 
 # Example 2: Respondent has non-response values for all inputs.
 result <- determine_CVD_family_history(FMH_11 = 8, FMH_12 = 998, FMH_13 = 8, FMH_14 = 998)
-result                              # Shows: NA
-haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 determine_CVD_family_history(
