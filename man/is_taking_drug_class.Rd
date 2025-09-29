@@ -41,9 +41,12 @@ The calculation is based on custom conditions specified by the user.
 \details{
 The 'class_condition_fun' is applied to each pair of medication and last taken variables.
 The resulting values (0 or 1) are summed for each row, and the sum is stored in the new 'class_var_name' column.
-The function performs logging to provide information about the process and potential issues.
-If 'overwrite' is TRUE, the function will overwrite the existing 'class_var_name' column in the data frame.
-If 'overwrite' is FALSE and the variable already exists, the function will log an error and stop the execution.
-The function also checks if 'med_vars' and 'last_taken_vars' are present in the data frame and have the same length.
-If any issues are encountered, appropriate log messages are generated, and the function stops.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - The function handles tagged NAs from the `class_condition_fun` and propagates them.
+}\if{html}{\out{</div>}}
+}
+\examples{
+# This is a generalized function and requires a user-defined condition function.
+# See specific implementations like `is_beta_blocker` for concrete examples.
 }

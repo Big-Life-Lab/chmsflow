@@ -12,9 +12,7 @@ calculate_hhld_income(THI_01, DHHDHSZ)
 \item{DHHDHSZ}{\link{integer} An integer representing the respondent's actual household size in persons.}
 }
 \value{
-\link{numeric} The calculated adjusted total household income as a numeric. If any of the input parameters (THI_01,
-DHHDHSZ) are non-response values (THI_01 >= 996, DHHDHSZ >= 996), the adjusted household income will be
-NA(b) (Not Available).
+\link{numeric} The calculated adjusted total household income as a numeric. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function calculates the adjusted total household income based on the respondent's income amount
@@ -29,13 +27,13 @@ allowing for meaningful income comparisons across different household compositio
      - Second adult: Weight = 0.4 (economies of scale)
      - Additional members: Weight = 0.3 each (further economies)
 
-     **Examples:**
-     - Single person: weight = 1.0
-     - Two adults: weight = 1.4 (1.0 + 0.4)
-     - Family of four: weight = 2.0 (1.0 + 0.4 + 0.3 + 0.3)
-
-     **Non-response Handling:**
-     Income values >= 996 or household size <= 0 indicate survey non-response and result in tagged NA ("b").
+     **Missing Data Codes:**
+     - `THI_01`:
+       - `99999996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `99999997-99999999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+     - `DHHDHSZ`:
+       - `96`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `97-99`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 }\if{html}{\out{</div>}}
 }
 \examples{
@@ -44,17 +42,11 @@ allowing for meaningful income comparisons across different household compositio
 calculate_hhld_income(THI_01 = 50000, DHHDHSZ = 3)
 # Output: 29411.76
 
-# Example 2: Respondent with $75000 income and a household size of 2.
-calculate_hhld_income(THI_01 = 75000, DHHDHSZ = 2)
-# Output: 53571.43
-
-# Example 3: Respondent with $90000 income and a household size of 1.
-calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
-# Output: 90000
-
-# Example 4: Respondent has non-response values for all inputs.
-calculate_hhld_income(THI_01 = 99999998, DHHDHSZ = 98)
-# Output: NA
+# Example 2: Respondent has non-response values for all inputs.
+result <- calculate_hhld_income(THI_01 = 99999998, DHHDHSZ = 98)
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))
@@ -66,14 +58,6 @@ library(dplyr)
 #   mutate(adj_hh_income = calculate_hhld_income(THI_01, DHHDHSZ))
 
 }
-\references{
-OECD equivalence scales for income adjustment
-}
 \seealso{
 \code{\link[=categorize_income]{categorize_income()}} for income classification, \code{\link[=in_lowest_income_quintile]{in_lowest_income_quintile()}} for poverty indicators
 }
-\keyword{demographics}
-\keyword{household}
-\keyword{income}
-\keyword{socioeconomic}
-\keyword{survey}

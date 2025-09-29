@@ -16,10 +16,9 @@ determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2)
 \value{
 \link{integer} The inclusive diabetes status:
 - 1 ("Yes") if any of \code{diab_m}, \code{CCC_51}, or \code{diab_drug2} is 1.
-- 2 ("No") if all of \code{diab_m}, \code{CCC_51}, and \code{diab_drug2} are 2.
-- \code{haven::tagged_na("b")} if all three parameters are \code{NA}.
-- If two parameters are \code{NA}, the third non-\code{NA} parameter determines the result.
-- If one parameter is \code{NA}, the function checks the remaining two for a decision.
+- 2 ("No") if all of \code{diab_m}, \code{CCC_51}, and \code{diab_drug2} are 2 or 0.
+- \code{haven::tagged_na("a")}: Not applicable
+- \code{haven::tagged_na("b")}: Missing
 }
 \description{
 This function evaluates diabetes status using a comprehensive approach that combines
@@ -39,16 +38,19 @@ This function classifies diabetes status based that considers:
      - ALL negative indicators required for "no diabetes" classification
      - Sophisticated missing data handling preserves available information
 
-     **Missing Data Strategy:**
-     The function maximizes data utility by making classifications based on available
-     information when some parameters are missing, only returning NA when insufficient
-     data exists for classification.
+     **Missing Data Codes:**
+     - `diab_m`, `diab_drug2`:
+       - Tagged NA "a": Valid skip.
+       - Tagged NA "b": Don't know, refusal, or not stated.
+     - `CCC_51`:
+       - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 }\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
 # Example: Determine the inclusive diabetes status for a respondent with diabetes based on HbA1c.
-determine_inclusive_diabetes(diab_m = 1, CCC_51 = 2, diab_drug2 = 2)
+determine_inclusive_diabetes(diab_m = 1, CCC_51 = 2, diab_drug2 = 0)
 # Output: 1 (Inclusive diabetes status is "Yes").
 
 # Example: Determine the inclusive diabetes status for a respondent no diabetes all around.
@@ -60,8 +62,10 @@ determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
 # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
 
 # Example: Respondent has non-response values for all inputs.
-determine_inclusive_diabetes(diab_m = 9.998, CCC_51 = 8, diab_drug2 = 9)
-# Output: NA
+result <- determine_inclusive_diabetes(diab_m = haven::tagged_na("b"), CCC_51 = 8, diab_drug2 = haven::tagged_na("b"))
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 determine_inclusive_diabetes(diab_m = c(1, 2, 2), CCC_51 = c(2, 1, 2), diab_drug2 = c(0, 0, 1))
@@ -73,13 +77,6 @@ library(dplyr)
 #   mutate(diabetes_status = determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2))
 
 }
-\references{
-Clinical guidelines for diabetes diagnosis and classification
-}
 \seealso{
 Related health condition functions: \code{\link[=determine_hypertension]{determine_hypertension()}}, \code{\link[=calculate_GFR]{calculate_GFR()}}
 }
-\keyword{diabetes}
-\keyword{endocrine}
-\keyword{health}
-\keyword{survey}

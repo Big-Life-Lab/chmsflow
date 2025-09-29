@@ -24,24 +24,24 @@ determine_CVD_family_history(FMH_11, FMH_12, FMH_13, FMH_14)
 \itemize{
 \item 1: "Yes" — Family history of premature CVD exists (diagnosis before age 60).
 \item 2: "No" — No family history of premature CVD.
-\item \code{NA(b)}: Missing/unknown — Due to non-responses, invalid inputs, or unknown diagnosis ages.
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function evaluates a respondent's family history of cardiovascular disease (CVD), based on data about diagnoses of heart disease and stroke in immediate family members and the ages at which these diagnoses occurred. It identifies premature CVD if any diagnosis occurred before age 60.
 }
 \details{
-\itemize{
-\item If both \code{FMH_11} (heart disease history) and \code{FMH_13} (stroke history) are \code{NA}, the function returns \code{NA(b)}.
-\item If either \code{FMH_11} or \code{FMH_13} indicates a diagnosis (\code{1} for "Yes"), the corresponding age (\code{FMH_12} for heart disease and \code{FMH_14} for stroke) is evaluated:
-\itemize{
-\item Ages between 0 and 59 indicate premature CVD.
-\item Ages between 60 and 79 indicate late-onset CVD.
-\item Ages outside this range or invalid inputs (997, 998, 999) result in \code{NA(b)}.
-}
-\item If both \code{FMH_11} and \code{FMH_13} are \code{2} ("No"), there is no family history of CVD (\code{2}).
-\item Any invalid inputs for \code{FMH_11} or \code{FMH_13} (values greater than 2) also result in \code{NA(b)}.
-}
+This function assesses family history of premature cardiovascular disease (CVD), a significant risk factor for personal CVD development.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `FMH_11`, `FMH_13`:
+       - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+     - `FMH_12`, `FMH_14`:
+       - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -50,8 +50,10 @@ determine_CVD_family_history(FMH_11 = 1, FMH_12 = 50, FMH_13 = 2, FMH_14 = NA)
 # Output: 1
 
 # Example 2: Respondent has non-response values for all inputs.
-determine_CVD_family_history(FMH_11 = 8, FMH_12 = 998, FMH_13 = 8, FMH_14 = 998)
-# Output: NA
+result <- determine_CVD_family_history(FMH_11 = 8, FMH_12 = 998, FMH_13 = 8, FMH_14 = 998)
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 determine_CVD_family_history(
@@ -65,4 +67,7 @@ library(dplyr)
 # dataset \%>\%
 #   mutate(cvd_family_history = determine_CVD_family_history(FMH_11, FMH_12, FMH_13, FMH_14))
 
+}
+\seealso{
+\code{\link[=determine_CVD_personal_history]{determine_CVD_personal_history()}}
 }

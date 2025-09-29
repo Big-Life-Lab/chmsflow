@@ -62,20 +62,20 @@
 #' # Expected output: 1 (Low risk)
 #'
 #' # Missing data examples showing tagged NA patterns
-#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5)  # Not applicable
-#' result                              # Shows: NA
-#' haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
-#' format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
-#' 
-#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5)  # Don't know
-#' result                              # Shows: NA  
-#' haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
-#' 
+#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5) # Not applicable
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+#' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
+#'
+#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5) # Don't know
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+#'
 #' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA) # Missing drinks
-#' result                              # Shows: NA
-#' haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
 #' low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA))
@@ -88,22 +88,23 @@
 #'
 #' @seealso [low_drink_score_fun1()] for extended categorization including former/never drinkers
 #' @references Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
-#' @keywords survey health alcohol substance-use
 #' @export
 low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
   step1 <- dplyr::case_when(
-    # Explicit StatsCan missing data codes - "not applicable" takes precedence
-    # For alcohol risk assessment: if demographics are "not applicable", entire measure is invalid
-    CLC_SEX == 6 | ALC_11 == 6 ~ haven::tagged_na("a"),          # Not applicable (takes precedence)
-    CLC_SEX %in% 7:9 | ALC_11 %in% 7:9 ~ haven::tagged_na("b"),  # Missing (don't know, refusal, not stated)
-    
-    # Valid range checks for categorical variables
-    !CLC_SEX %in% c(1, 2) | !ALC_11 %in% c(1, 2) ~ haven::tagged_na("b"),  # Invalid codes
-    
-    # ALCDWKY missing data codes
-    ALCDWKY == 996 ~ haven::tagged_na("a"),                    # Valid skip
-    ALCDWKY %in% 997:999 ~ haven::tagged_na("b"),              # Don't know, refusal, not stated
-    
+    # Sex and drinking alcohol within past year variables
+    # Not applicable (takes precedence)
+    CLC_SEX == 6 | ALC_11 == 6 ~ haven::tagged_na("a"),
+    # Missing
+    CLC_SEX %in% 7:9 | ALC_11 %in% 7:9 ~ haven::tagged_na("b"),
+    # Invalid codes
+    !CLC_SEX %in% c(1, 2) | !ALC_11 %in% c(1, 2) ~ haven::tagged_na("b"),
+
+    # Drinks per week variable
+    # Valid skip
+    ALCDWKY == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    ALCDWKY %in% 997:999 ~ haven::tagged_na("b"),
+
     # Logic for valid categorical values
     ALC_11 == 2 & is.na(ALCDWKY) ~ 0,
     ALCDWKY <= 10 ~ 0,
@@ -112,20 +113,20 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
     ALCDWKY > 15 & ALCDWKY <= 20 & CLC_SEX == 1 ~ 1,
     ALCDWKY > 15 & ALCDWKY <= 20 & CLC_SEX == 2 ~ 3,
     ALCDWKY > 20 ~ 3,
-    .default = haven::tagged_na("b")  # Catch-all for unexpected values
+    .default = haven::tagged_na("b")
   )
 
   dplyr::case_when(
     # Propagate any tagged NAs from step1
     haven::is_tagged_na(step1, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(step1, "b") | is.na(step1) ~ haven::tagged_na("b"),
-    
+
     # Score assignment for valid step1 values
     step1 == 0 ~ 1L,
     step1 %in% 1:2 ~ 2L,
     step1 %in% 3:4 ~ 3L,
     step1 %in% 5:9 ~ 4L,
-    .default = haven::tagged_na("b")  # Catch-all for unexpected values
+    .default = haven::tagged_na("b")
   )
 }
 
@@ -172,20 +173,20 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #' # Expected output: 2
 #'
 #' # Missing data examples showing tagged NA patterns
-#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2)  # Not applicable
-#' result                              # Shows: NA
-#' haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
-#' format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
-#' 
-#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2)  # Don't know
-#' result                              # Shows: NA
-#' haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
-#' 
+#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2) # Valid skip
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+#' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
+#'
+#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2) # Don't know
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+#'
 #' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA, ALC_17 = 1, ALC_18 = 2) # Missing drinks
-#' result                              # Shows: NA
-#' haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
 #' low_drink_score_fun1(
@@ -201,25 +202,26 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #'
 #' @seealso [low_drink_score_fun()] for basic risk scoring without drinking history
 #' @references Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
-#' @keywords survey health alcohol substance-use
 #' @export
 low_drink_score_fun1 <- function(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18) {
   step1 <- dplyr::case_when(
-    # Explicit StatsCan missing data codes - "not applicable" takes precedence
-    # For alcohol risk assessment: if core demographics/drinking status are "not applicable", entire measure is invalid
-    CLC_SEX == 6 | ALC_11 == 6  ~ haven::tagged_na("a"),         # Not applicable (takes precedence)
-    CLC_SEX %in% 7:9 | ALC_11 %in% 7:9 ~ haven::tagged_na("b"),  # Missing
-    
-    # Valid range checks for categorical variables
+    # Sex and drinking alcohol within past year variables
+    # Not applicable (takes precedence)
+    CLC_SEX == 6 | ALC_11 == 6 ~ haven::tagged_na("a"),
+    # Missing
+    CLC_SEX %in% 7:9 | ALC_11 %in% 7:9 ~ haven::tagged_na("b"),
+    # Invalid codes
     !CLC_SEX %in% c(1, 2) | !ALC_11 %in% c(1, 2) ~ haven::tagged_na("b"),
-    
-    # ALCDWKY missing data codes
-    ALCDWKY == 996 ~ haven::tagged_na("a"),                    # Valid skip
-    ALCDWKY %in% 997:999 ~ haven::tagged_na("b"),              # Don't know, refusal, not stated
-    
+
+    # Drinks per week variable
+    # Valid skip
+    ALCDWKY == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    ALCDWKY %in% 997:999 ~ haven::tagged_na("b"),
+
     # ALCDWKY validation when drinking in past year
     ALC_11 == 1 & (is.na(ALCDWKY) | ALCDWKY < 0 | ALCDWKY > 84) ~ haven::tagged_na("b"),
-    
+
     # Logic for valid categorical values
     ALC_11 == 2 & is.na(ALCDWKY) ~ 0,
     ALCDWKY <= 10 ~ 0,
@@ -229,19 +231,19 @@ low_drink_score_fun1 <- function(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18) {
     ALCDWKY > 15 & ALCDWKY <= 20 & CLC_SEX == 2 ~ 3,
     ALCDWKY > 20 & CLC_SEX == 1 ~ 3,
     ALCDWKY > 20 & CLC_SEX == 2 ~ 5,
-    .default = haven::tagged_na("b")  # Catch-all for unexpected values
+    .default = haven::tagged_na("b")
   )
 
   dplyr::case_when(
     # Propagate any tagged NAs from step1
     haven::is_tagged_na(step1, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(step1, "b") | is.na(step1) ~ haven::tagged_na("b"),
-    
+
     # Check ALC_17 / ALC_18 if needed
     step1 == 0 & (ALC_17 %in% c(6) | ALC_18 %in% c(6)) ~ haven::tagged_na("a"),
     step1 == 0 & (ALC_17 %in% 7:9 | ALC_18 %in% 7:9) ~ haven::tagged_na("b"),
     step1 == 0 & (!ALC_17 %in% c(1, 2) | !ALC_18 %in% c(1, 2)) ~ haven::tagged_na("b"),
-    
+
     # Score assignment for valid step1 values
     step1 == 0 & ALC_17 == 2 & ALC_11 == 2 ~ 1L,
     step1 == 0 & ALC_17 == 1 & ALC_11 == 2 & ALC_18 == 2 ~ 1L,
@@ -249,6 +251,6 @@ low_drink_score_fun1 <- function(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18) {
     step1 == 0 & ALC_11 == 1 ~ 2L,
     step1 %in% c(1, 2) ~ 3L,
     step1 %in% 3:9 ~ 4L,
-    .default = haven::tagged_na("b")  # Catch-all for unexpected values
+    .default = haven::tagged_na("b")
   )
 }

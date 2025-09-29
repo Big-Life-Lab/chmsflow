@@ -54,7 +54,8 @@ determine_hypertension(
 \itemize{
 \item 1: High blood pressure (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) or on hypertension medication)
 \item 2: Normal blood pressure (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
-\item NA(b): Invalid input or non-response
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
@@ -71,9 +72,16 @@ This function implements clinical guidelines for hypertension classification:
      - Anyone taking hypertension medication is classified as hypertensive
      - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
 
-     **Non-response Handling:**
-     - Values >= 996 indicate survey non-response codes
-     - Invalid blood pressure readings result in tagged NA ("b")
+     **Missing Data Codes:**
+     - `BPMDPBPS`, `BPMDPBPD`:
+       - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+     - `ANYMED2`:
+       - Tagged NA "a": Valid skip.
+       - Tagged NA "b": Don't know, refusal, or not stated.
+     - `CCC_32`, `CARDIOV`, `DIABX`, `CKD`:
+       - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 }\if{html}{\out{</div>}}
 }
 \examples{
@@ -87,8 +95,10 @@ determine_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 0)
 # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
 
 # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-determine_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
-# Output: NA (Non-response values for BP result in NA).
+result <- determine_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+result                              # Shows: NA
+haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
 
 # Multiple respondents
 determine_hypertension(
@@ -98,13 +108,6 @@ determine_hypertension(
 # Returns: c(1, 2, 1)
 
 }
-\references{
-Clinical guidelines for blood pressure classification and management
-}
 \seealso{
 \code{\link[=adjust_SBP]{adjust_SBP()}}, \code{\link[=adjust_DBP]{adjust_DBP()}} for blood pressure adjustment, \code{\link[=determine_adjusted_hypertension]{determine_adjusted_hypertension()}} for adjusted BP classification
 }
-\keyword{cardiovascular}
-\keyword{health}
-\keyword{hypertension}
-\keyword{survey}

@@ -54,11 +54,36 @@ determine_controlled_hypertension(
 \itemize{
 \item 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) when on hypertension medication)
 \item 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) when on hypertension medication)
-\item NA(b): Invalid input or non-response
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function determines the controlled hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
+}
+\details{
+This function assesses whether a respondent's hypertension is controlled:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Control Thresholds:**
+     - General population: < 140/90 mmHg
+     - Diabetes or CKD patients: < 130/80 mmHg
+
+     **Logic:**
+     - Only applies to respondents taking hypertension medication.
+     - If BP is below the threshold, hypertension is "controlled" (1).
+     - If BP is at or above the threshold, it is "not controlled" (2).
+
+     **Missing Data Codes:**
+     - `BPMDPBPS`, `BPMDPBPD`:
+       - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+     - `ANYMED2`:
+       - Tagged NA "a": Valid skip.
+       - Tagged NA "b": Don't know, refusal, or not stated.
+     - `CCC_32`, `CARDIOV`, `DIABX`, `CKD`:
+       - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -71,8 +96,10 @@ determine_controlled_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 1)
 # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 
 # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-determine_controlled_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
-# Output: NA (Non-response values for BP result in NA).
+result <- determine_controlled_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+result                              # Shows: NA
+haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
 
 # Multiple respondents
 determine_controlled_hypertension(
@@ -81,4 +108,7 @@ determine_controlled_hypertension(
 )
 # Returns: c(2, 1, 2)
 
+}
+\seealso{
+\code{\link[=determine_controlled_adjusted_hypertension]{determine_controlled_adjusted_hypertension()}} for controlled status with adjusted BP
 }

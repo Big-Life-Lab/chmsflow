@@ -16,8 +16,7 @@ calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
 \item{CLC_AGE}{\link{numeric} Age (years). It should be a numeric between 3 and 79.}
 }
 \value{
-\link{numeric} The calculated GFR. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
-are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996) or out of bounds, the GFR will be NA(b).
+\link{numeric} The calculated GFR. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
@@ -42,24 +41,24 @@ to estimate glomerular filtration rate, a key indicator of kidney function.
      **Unit Conversion:**
      Serum creatinine converted from µmol/L to mg/dL (÷ 88.4)
 
-     **Non-response Handling:**
-     Values >= 996 (LAB_BCRE), >= 96 (PGDCGT), >= 6 (CLC_SEX), >= 996 (CLC_AGE)
-     indicate survey non-response and result in tagged NA ("b").
+     **Missing Data Codes:**
+     - `LAB_BCRE`: `9996` (Not applicable), `9997-9999` (Missing)
+     - `PGDCGT`: `96` (Not applicable), `97-99` (Missing)
+     - `CLC_SEX`: `6` (Not applicable), `7-9` (Missing)
+     - `CLC_AGE`: `96` (Not applicable), `97-99` (Missing)
 }\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
 # Example 1: Calculate GFR for a 45-year-old white female with serum creatine of 80 µmol/L.
 calculate_GFR(LAB_BCRE = 80, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 45)
-# Output: GFR = 67.27905
+# Output: 67.27905
 
-# Example 2: Calculate GFR for a 35-year-old black female with serum creatine of 70 µmol/L.
-calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35)
-# Output: GFR = 99.94114
-
-# Example 3: Respondent has non-response values for all inputs.
-calculate_GFR(LAB_BCRE = 9998, PGDCGT = 98, CLC_SEX = 8, CLC_AGE = 998)
-# Output: NA
+# Example 2: Respondent has non-response values for all inputs.
+result <- calculate_GFR(LAB_BCRE = 9998, PGDCGT = 98, CLC_SEX = 8, CLC_AGE = 98)
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 calculate_GFR(
@@ -74,14 +73,6 @@ library(dplyr)
 #   mutate(gfr = calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE))
 
 }
-\references{
-Levey AS, et al. A more accurate method to estimate glomerular filtration rate from serum creatinine. Ann Intern Med. 1999
-}
 \seealso{
 \code{\link[=categorize_GFR_to_CKD]{categorize_GFR_to_CKD()}} for CKD classification based on GFR values
 }
-\keyword{clinical-chemistry}
-\keyword{health}
-\keyword{kidney}
-\keyword{nephrology}
-\keyword{survey}

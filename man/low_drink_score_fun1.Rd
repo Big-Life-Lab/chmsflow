@@ -60,9 +60,21 @@ This function uses only Step 1 of the guidelines, as Step 2 information is unava
 low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = 1, ALC_18 = 2)
 # Expected output: 2
 
-# Example: A male respondent who drank in the past year and has NA values for other inputs.
-low_drink_score_fun1(1, 6, NA, NA, NA)
-# Expected output: NA
+# Missing data examples showing tagged NA patterns
+result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2)  # Valid skip
+result                              # Shows: NA
+haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
+
+result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2)  # Don't know
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+
+result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA, ALC_17 = 1, ALC_18 = 2) # Missing drinks
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 low_drink_score_fun1(
@@ -83,7 +95,3 @@ Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
 \seealso{
 \code{\link[=low_drink_score_fun]{low_drink_score_fun()}} for basic risk scoring without drinking history
 }
-\keyword{alcohol}
-\keyword{health}
-\keyword{substance-use}
-\keyword{survey}

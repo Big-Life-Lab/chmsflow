@@ -30,7 +30,7 @@ find_week_accelerometer_average(
 \item{AMMDMVA7}{\link{numeric} A numeric representing minutes of exercise on Day 7 of accelerometer measurement.}
 }
 \value{
-\link{numeric} The average minutes of exercise per day across a week of accelerometer use.
+\link{numeric} The average minutes of exercise per day across a week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
@@ -38,8 +38,6 @@ parameters, each representing the minutes of exercise on a specific day (Day 1 t
 The function computes the average of these values to obtain the average minutes of exercise per day.
 }
 \details{
-The function calculates the average minutes of exercise per day by taking the mean of the seven input parameters.
-
 This function processes physical activity data from accelerometer measurements
 to create a weekly activity summary.
 
@@ -48,20 +46,23 @@ to create a weekly activity summary.
      - This conservative approach ensures reliable activity estimates
      - Zero values are preserved (represent valid no-activity days)
 
-     **Clinical Context:**
-     Accelerometer data provides objective measures of moderate-to-vigorous physical activity (MVPA),
-     crucial for assessing adherence to physical activity guidelines.
+     **Missing Data Codes:**
+     - For all input variables:
+       - `9996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `9997-9999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 }\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
 # Example: Calculate the average minutes of exercise per day for a week of accelerometer data.
 find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
-# Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
+# Output: 35
 
 # Example: Respondent has non-response values for all inputs.
-find_week_accelerometer_average(9998, 9998, 9998, 9998, 9998, 9998, 9998)
-# Output: NA
+result <- find_week_accelerometer_average(9998, 9998, 9998, 9998, 9998, 9998, 9998)
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 find_week_accelerometer_average(
@@ -71,14 +72,6 @@ find_week_accelerometer_average(
 # Returns: c(35, 39.28571)
 
 }
-\references{
-Physical Activity Guidelines for Adults, Health Canada
-}
 \seealso{
 \code{\link[=minperday_to_minperweek]{minperday_to_minperweek()}} for activity unit conversion, \code{\link[=categorize_minperweek]{categorize_minperweek()}} for activity level classification
 }
-\keyword{accelerometer}
-\keyword{exercise}
-\keyword{health}
-\keyword{physical-activity}
-\keyword{survey}

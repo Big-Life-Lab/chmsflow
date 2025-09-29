@@ -14,11 +14,19 @@ categorize_GFR_to_CKD(GFR)
 \itemize{
 \item 1: GFR of 60 or below (indicating CKD)
 \item 2: GFR above 60 (not indicating CKD)
-\item NA(b): Missing or invalid input
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
+}
+\details{
+This function applies the Kidney Disease: Improving Global Outcomes (KDIGO) guideline to classify Chronic Kidney Disease (CKD) based on GFR.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - Propagates tagged NAs from the input `GFR`.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -31,8 +39,10 @@ categorize_GFR_to_CKD(75)
 # Output: 2
 
 # Example 3: Respondent has a non-response value for GFR.
-categorize_GFR_to_CKD(9998)
-# Output: NA
+result <- categorize_GFR_to_CKD(haven::tagged_na("b"))
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 categorize_GFR_to_CKD(c(45, 75, 60))
@@ -43,4 +53,10 @@ library(dplyr)
 # dataset \%>\%
 #   mutate(ckd = categorize_GFR_to_CKD(gfr))
 
+}
+\references{
+Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. (2013). KDIGO 2012 clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney international supplements, 3(1), 1-150.
+}
+\seealso{
+\code{\link[=calculate_GFR]{calculate_GFR()}}
 }

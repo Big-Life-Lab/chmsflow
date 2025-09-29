@@ -12,7 +12,7 @@ is_diuretic(MEUCATC, NPI_25B)
 \item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-\link{numeric} 1 if medication is a diuretic, 0 otherwise.
+\link{numeric} 1 if medication is a diuretic, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function checks if a given medication is a diuretic.
@@ -20,6 +20,11 @@ This function processes multiple inputs efficiently.
 }
 \details{
 Identifies diuretics based on ATC codes starting with "C03", excluding specific sub-codes.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+     - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -27,20 +32,13 @@ is_diuretic("C03AA03", 3)
 # Returns: 1
 
 # Example: Respondent has non-response values for all inputs.
-is_diuretic("9999998", 8)
-# Returns: NA
+result <- is_diuretic("9999998", 8)
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 is_diuretic(c("C03AA03", "C03BA08"), c(3, 2))
 # Returns: c(1, 0)
 
-# Database usage: Apply to survey data
-library(dplyr)
-survey_data <- data.frame(
-  MEUCATC = c("C03AA03", "C03BA08", "C01AA05"),
-  NPI_25B = c(3, 2, 1)
-)
-survey_data \%>\%
-  mutate(is_diuretic = is_diuretic(MEUCATC, NPI_25B)) \%>\%
-  select(is_diuretic)
 }

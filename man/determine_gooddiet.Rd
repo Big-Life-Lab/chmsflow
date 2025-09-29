@@ -14,11 +14,19 @@ determine_gooddiet(totalFV)
 \itemize{
 \item 1: Good diet (totalFV >= 5)
 \item 2: Poor diet (totalFV < 5)
-\item NA(b): Missing or invalid input
+\item \code{haven::tagged_na("a")}: Valid skip
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function categorizes individuals' diet quality based on their total fruit and vegetable consumption.
+}
+\details{
+This function categorizes diet quality based on the widely recognized "5-a-day" recommendation for fruit and vegetable intake.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - Propagates tagged NAs from the input `totalFV`.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -39,4 +47,7 @@ library(dplyr)
 # dataset \%>\%
 #   mutate(diet_quality = determine_gooddiet(total_fv))
 
+}
+\seealso{
+\code{\link[=find_totalFV_cycles1and2]{find_totalFV_cycles1and2()}}, \code{\link[=find_totalFV_cycles3to6]{find_totalFV_cycles3to6()}}
 }

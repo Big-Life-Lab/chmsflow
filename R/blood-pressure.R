@@ -12,9 +12,9 @@
 #'          measurement conditions and equipment differences. This function applies a standardized adjustment
 #'          using the formula: SBP_adj = 11.4 + (0.93 * BPMDPBPS).
 #'
-#'          Non-response handling: Values >= 996 indicate survey non-response and are converted to
-#'          tagged NA ("b") to distinguish from missing measurements. Negative values are also
-#'          treated as invalid and converted to tagged NA.
+#'          **Missing Data Codes:**
+#'          - `996`: Valid skip (e.g., measurement not taken). Handled as `haven::tagged_na("a")`.
+#'          - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -23,8 +23,10 @@
 #' # Output: 123
 #'
 #' # Example: Adjust for a respondent with a non-response systolic blood pressure of 996.
-#' adjust_SBP(BPMDPBPS = 996)
-#' # Output: NA
+#' result <- adjust_SBP(BPMDPBPS = 996)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+#' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
 #' # Multiple respondents
 #' adjust_SBP(BPMDPBPS = c(120, 130, 140))
@@ -36,12 +38,15 @@
 #' #   mutate(sbp_adj = adjust_SBP(BPMDPBPS))
 #'
 #' @seealso [adjust_DBP()] for diastolic blood pressure adjustment, [determine_hypertension()] for hypertension classification
-#' @keywords survey health cardiovascular
 #' @export
 adjust_SBP <- function(BPMDPBPS) {
   dplyr::case_when(
+    # Valid skip
     BPMDPBPS == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
     BPMDPBPS < 0 | BPMDPBPS %in% 997:999 ~ haven::tagged_na("b"),
+
+    # Apply adjustment formula
     TRUE ~ 11.4 + (0.93 * BPMDPBPS)
   )
 }
@@ -60,9 +65,9 @@ adjust_SBP <- function(BPMDPBPS) {
 #'          measurement conditions and equipment differences. This function applies a standardized adjustment
 #'          using the formula: DBP_adj = 15.6 + (0.83 * BPMDPBPD).
 #'
-#'          Non-response handling: Values >= 996 indicate survey non-response and are converted to
-#'          tagged NA ("b") to distinguish from missing measurements. Negative values are also
-#'          treated as invalid and converted to tagged NA.
+#'          **Missing Data Codes:**
+#'          - `996`: Valid skip (e.g., measurement not taken). Handled as `haven::tagged_na("a")`.
+#'          - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -71,8 +76,10 @@ adjust_SBP <- function(BPMDPBPS) {
 #' # Output: 82
 #'
 #' # Example: Adjust for a respondent with a non-response diastolic blood pressure of 996.
-#' adjust_DBP(BPMDPBPD = 996)
-#' # Output: NA
+#' result <- adjust_DBP(BPMDPBPD = 996)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+#' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
 #' # Multiple respondents
 #' adjust_DBP(BPMDPBPD = c(80, 90, 100))
@@ -84,12 +91,15 @@ adjust_SBP <- function(BPMDPBPS) {
 #' #   mutate(dbp_adj = adjust_DBP(BPMDPBPD))
 #'
 #' @seealso [adjust_SBP()] for systolic blood pressure adjustment, [determine_hypertension()] for hypertension classification
-#' @keywords survey health cardiovascular
 #' @export
 adjust_DBP <- function(BPMDPBPD) {
   dplyr::case_when(
+    # Valid skip
     BPMDPBPD == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
     BPMDPBPD < 0 | BPMDPBPD %in% 997:999 ~ haven::tagged_na("b"),
+
+    # Apply adjustment formula
     TRUE ~ 15.6 + (0.83 * BPMDPBPD)
   )
 }
@@ -120,7 +130,29 @@ adjust_DBP <- function(BPMDPBPD) {
 #' @return [integer] The hypertension status:
 #'   - 1: High blood pressure (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) or on hypertension medication)
 #'   - 2: Normal blood pressure (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
-#'   - NA(b): Invalid input or non-response
+#'   - `haven::tagged_na("a")`: Not applicable
+#'   - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function implements clinical guidelines for hypertension classification:
+#'
+#'          **Blood Pressure Thresholds:**
+#'          - General population: >= 140/90 mmHg indicates hypertension
+#'          - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
+#'
+#'          **Medication Logic:**
+#'          - Anyone taking hypertension medication is classified as hypertensive
+#'          - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
+#'
+#'          **Missing Data Codes:**
+#'          - `BPMDPBPS`, `BPMDPBPD`:
+#'            - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+#'          - `ANYMED2`:
+#'            - Tagged NA "a": Valid skip.
+#'            - Tagged NA "b": Don't know, refusal, or not stated.
+#'          - `CCC_32`, `CARDIOV`, `DIABX`, `CKD`:
+#'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -133,8 +165,10 @@ adjust_DBP <- function(BPMDPBPD) {
 #' # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
 #'
 #' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-#' determine_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
-#' # Output: NA (Non-response values for BP result in NA).
+#' result <- determine_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+#' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
 #' # Multiple respondents
 #' determine_hypertension(
@@ -143,25 +177,10 @@ adjust_DBP <- function(BPMDPBPD) {
 #' )
 #' # Returns: c(1, 2, 1)
 #'
-#' @details This function implements clinical guidelines for hypertension classification:
-#'
-#'          **Blood Pressure Thresholds:**
-#'          - General population: >= 140/90 mmHg indicates hypertension
-#'          - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
-#'
-#'          **Medication Logic:**
-#'          - Anyone taking hypertension medication is classified as hypertensive
-#'          - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
-#'
-#'          **Non-response Handling:**
-#'          - Values >= 996 indicate survey non-response codes
-#'          - Invalid blood pressure readings result in tagged NA ("b")
-#'
 #' @seealso [adjust_SBP()], [adjust_DBP()] for blood pressure adjustment, [determine_adjusted_hypertension()] for adjusted BP classification
-#' @references Clinical guidelines for blood pressure classification and management
-#' @keywords survey health cardiovascular hypertension
 #' @export
 determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
+  # Adjust medication status based on other health conditions
   ANYMED2 <- dplyr::case_when(
     CCC_32 == 2 & (CARDIOV == 1 | CKD == 1 | DIABX == 1) ~ 0,
     haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
@@ -169,28 +188,40 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
     TRUE ~ as.numeric(ANYMED2)
   )
 
+  # Determine high systolic blood pressure status
   highsys140 <- dplyr::case_when(
-    (DIABX == 1 | CKD == 1) & BPMDPBPS >= 130 & BPMDPBPS < 996 ~ 1,
-    (DIABX == 1 | CKD == 1) & BPMDPBPS >= 0 & BPMDPBPS < 130 ~ 2,
-    !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 140 & BPMDPBPS < 996 ~ 1,
-    !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 0 & BPMDPBPS < 140 ~ 2,
+    # Valid skip
+    BPMDPBPS == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    BPMDPBPS %in% 997:999 ~ haven::tagged_na("b"),
+    (DIABX == 1 | CKD == 1) & BPMDPBPS >= 130 ~ 1,
+    (DIABX == 1 | CKD == 1) & BPMDPBPS < 130 ~ 2,
+    !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 140 ~ 1,
+    !(DIABX == 1 | CKD == 1) & BPMDPBPS < 140 ~ 2,
     .default = haven::tagged_na("b")
   )
 
+  # Determine high diastolic blood pressure status
   highdias90 <- dplyr::case_when(
-    (DIABX == 1 | CKD == 1) & BPMDPBPD >= 80 & BPMDPBPD < 996 ~ 1,
-    (DIABX == 1 | CKD == 1) & BPMDPBPD >= 0 & BPMDPBPD < 80 ~ 2,
-    !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 90 & BPMDPBPD < 996 ~ 1,
-    !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 0 & BPMDPBPD < 90 ~ 2,
+    # Valid skip
+    BPMDPBPD == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    BPMDPBPD %in% 997:999 ~ haven::tagged_na("b"),
+    (DIABX == 1 | CKD == 1) & BPMDPBPD >= 80 ~ 1,
+    (DIABX == 1 | CKD == 1) & BPMDPBPD < 80 ~ 2,
+    !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 90 ~ 1,
+    !(DIABX == 1 | CKD == 1) & BPMDPBPD < 90 ~ 2,
     .default = haven::tagged_na("b")
   )
 
+  # Determine overall hypertension status
   dplyr::case_when(
     !is.na(ANYMED2) & ANYMED2 == 1 ~ 1,
-    BPMDPBPS == 996 | BPMDPBPD == 996  ~ haven::tagged_na("a"),
-    BPMDPBPS < 0 | BPMDPBPS %in% 997:999 |BPMDPBPD < 0 | BPMDPBPD %in% 997:999 ~ haven::tagged_na("b"),
     highsys140 == 1 | highdias90 == 1 ~ 1,
     highsys140 == 2 & highdias90 == 2 & (ANYMED2 == 0 | is.na(ANYMED2)) ~ 2,
+    haven::is_tagged_na(highsys140, "a") | haven::is_tagged_na(highdias90, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(highsys140, "b") | haven::is_tagged_na(highdias90, "b") |
+      haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
     .default = haven::tagged_na("b")
   )
 }
@@ -221,7 +252,29 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
 #' @return [integer] The hypertension status:
 #'   - 1: High blood pressure (adjusted BP ≥ 140/90 mmHg (or ≥ 130/80 mmHg if diabetes or CKD) or on hypertension medication)
 #'   - 2: Normal blood pressure (adjusted BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
-#'   - NA(b): Invalid input or non-response
+#'   - `haven::tagged_na("a")`: Not applicable
+#'   - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function implements clinical guidelines for hypertension classification using adjusted blood pressure values:
+#'
+#'          **Blood Pressure Thresholds:**
+#'          - General population: >= 140/90 mmHg indicates hypertension
+#'          - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
+#'
+#'          **Medication Logic:**
+#'          - Anyone taking hypertension medication is classified as hypertensive
+#'          - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
+#'
+#'          **Missing Data Codes:**
+#'          - `SBP_adj`, `DBP_adj`:
+#'            - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+#'          - `ANYMED2`:
+#'            - Tagged NA "a": Valid skip.
+#'            - Tagged NA "b": Don't know, refusal, or not stated.
+#'          - `CCC_32`, `CARDIOV`, `DIABX`, `CKD`:
+#'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -234,8 +287,10 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
 #' # Output: 2 (Normal blood pressure as adjusted BP is below 140/90 mmHg and not on medication).
 #'
 #' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-#' determine_adjusted_hypertension(SBP_adj = 996, DBP_adj = 996, ANYMED2 = 0)
-#' # Output: NA (Non-response values for BP result in NA).
+#' result <- determine_adjusted_hypertension(SBP_adj = 996, DBP_adj = 996, ANYMED2 = 0)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+#' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
 #' # Multiple respondents
 #' determine_adjusted_hypertension(
@@ -244,37 +299,51 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
 #' )
 #' # Returns: c(1, 2, 1)
 #'
+#' @seealso [determine_hypertension()] for unadjusted BP classification
 #' @export
 determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
+  # Adjust medication status based on other health conditions
   ANYMED2 <- dplyr::case_when(
     CCC_32 == 2 & (CARDIOV == 1 | CKD == 1 | DIABX == 1) ~ 0,
     haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(ANYMED2)
   )
-  
+
+  # Determine high systolic blood pressure status
   highsys140 <- dplyr::case_when(
-    (DIABX == 1 | CKD == 1) & SBP_adj >= 130 & SBP_adj < 996 ~ 1,
-    (DIABX == 1 | CKD == 1) & SBP_adj >= 0 & SBP_adj < 130 ~ 2,
-    !(DIABX == 1 | CKD == 1) & SBP_adj >= 140 & SBP_adj < 996 ~ 1,
-    !(DIABX == 1 | CKD == 1) & SBP_adj >= 0 & SBP_adj < 140 ~ 2,
+    # Valid skip
+    SBP_adj == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    SBP_adj %in% 997:999 ~ haven::tagged_na("b"),
+    (DIABX == 1 | CKD == 1) & SBP_adj >= 130 ~ 1,
+    (DIABX == 1 | CKD == 1) & SBP_adj < 130 ~ 2,
+    !(DIABX == 1 | CKD == 1) & SBP_adj >= 140 ~ 1,
+    !(DIABX == 1 | CKD == 1) & SBP_adj < 140 ~ 2,
     .default = haven::tagged_na("b")
   )
-  
+
+  # Determine high diastolic blood pressure status
   highdias90 <- dplyr::case_when(
-    (DIABX == 1 | CKD == 1) & DBP_adj >= 80 & DBP_adj < 996 ~ 1,
-    (DIABX == 1 | CKD == 1) & DBP_adj >= 0 & DBP_adj < 80 ~ 2,
-    !(DIABX == 1 | CKD == 1) & DBP_adj >= 90 & DBP_adj < 996 ~ 1,
-    !(DIABX == 1 | CKD == 1) & DBP_adj >= 0 & DBP_adj < 90 ~ 2,
+    # Valid skip
+    DBP_adj == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    DBP_adj %in% 997:999 ~ haven::tagged_na("b"),
+    (DIABX == 1 | CKD == 1) & DBP_adj >= 80 ~ 1,
+    (DIABX == 1 | CKD == 1) & DBP_adj < 80 ~ 2,
+    !(DIABX == 1 | CKD == 1) & DBP_adj >= 90 ~ 1,
+    !(DIABX == 1 | CKD == 1) & DBP_adj < 90 ~ 2,
     .default = haven::tagged_na("b")
   )
-  
+
+  # Determine overall hypertension status
   dplyr::case_when(
     !is.na(ANYMED2) & ANYMED2 == 1 ~ 1,
-    SBP_adj == 996 | DBP_adj == 996  ~ haven::tagged_na("a"),
-    SBP_adj < 0 | SBP_adj %in% 997:999 |DBP_adj < 0 | DBP_adj %in% 997:999 ~ haven::tagged_na("b"),
     highsys140 == 1 | highdias90 == 1 ~ 1,
     highsys140 == 2 & highdias90 == 2 & (ANYMED2 == 0 | is.na(ANYMED2)) ~ 2,
+    haven::is_tagged_na(highsys140, "a") | haven::is_tagged_na(highdias90, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(highsys140, "b") | haven::is_tagged_na(highdias90, "b") |
+      haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
     .default = haven::tagged_na("b")
   )
 }
@@ -305,7 +374,30 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #' @return [integer] The hypertension status:
 #'   - 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) when on hypertension medication)
 #'   - 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) when on hypertension medication)
-#'   - NA(b): Invalid input or non-response
+#'   - `haven::tagged_na("a")`: Not applicable
+#'   - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function assesses whether a respondent's hypertension is controlled:
+#'
+#'          **Control Thresholds:**
+#'          - General population: < 140/90 mmHg
+#'          - Diabetes or CKD patients: < 130/80 mmHg
+#'
+#'          **Logic:**
+#'          - Only applies to respondents taking hypertension medication.
+#'          - If BP is below the threshold, hypertension is "controlled" (1).
+#'          - If BP is at or above the threshold, it is "not controlled" (2).
+#'
+#'          **Missing Data Codes:**
+#'          - `BPMDPBPS`, `BPMDPBPD`:
+#'            - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+#'          - `ANYMED2`:
+#'            - Tagged NA "a": Valid skip.
+#'            - Tagged NA "b": Don't know, refusal, or not stated.
+#'          - `CCC_32`, `CARDIOV`, `DIABX`, `CKD`:
+#'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -318,8 +410,10 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #' # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 #'
 #' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-#' determine_controlled_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
-#' # Output: NA (Non-response values for BP result in NA).
+#' result <- determine_controlled_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+#' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
 #' # Multiple respondents
 #' determine_controlled_hypertension(
@@ -328,8 +422,10 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #' )
 #' # Returns: c(2, 1, 2)
 #'
+#' @seealso [determine_controlled_adjusted_hypertension()] for controlled status with adjusted BP
 #' @export
 determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
+  # Adjust medication status based on other health conditions
   ANYMED2 <- dplyr::case_when(
     CCC_32 == 2 & (CARDIOV == 1 | CKD == 1 | DIABX == 1) ~ 0,
     haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
@@ -337,31 +433,52 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
     TRUE ~ as.numeric(ANYMED2)
   )
 
+  # Determine high systolic blood pressure status
   highsys140 <- dplyr::case_when(
-    (DIABX == 1 | CKD == 1) & BPMDPBPS >= 130 & BPMDPBPS < 996 ~ 1,
-    (DIABX == 1 | CKD == 1) & BPMDPBPS >= 0 & BPMDPBPS < 130 ~ 2,
-    !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 140 & BPMDPBPS < 996 ~ 1,
-    !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 0 & BPMDPBPS < 140 ~ 2,
+    # Valid skip
+    BPMDPBPS == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    BPMDPBPS %in% 997:999 ~ haven::tagged_na("b"),
+    (DIABX == 1 | CKD == 1) & BPMDPBPS >= 130 ~ 1,
+    (DIABX == 1 | CKD == 1) & BPMDPBPS < 130 ~ 2,
+    !(DIABX == 1 | CKD == 1) & BPMDPBPS >= 140 ~ 1,
+    !(DIABX == 1 | CKD == 1) & BPMDPBPS < 140 ~ 2,
     .default = haven::tagged_na("b")
   )
 
+  # Determine high diastolic blood pressure status
   highdias90 <- dplyr::case_when(
-    (DIABX == 1 | CKD == 1) & BPMDPBPD >= 80 & BPMDPBPD < 996 ~ 1,
-    (DIABX == 1 | CKD == 1) & BPMDPBPD >= 0 & BPMDPBPD < 80 ~ 2,
-    !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 90 & BPMDPBPD < 996 ~ 1,
-    !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 0 & BPMDPBPD < 90 ~ 2,
+    # Valid skip
+    BPMDPBPD == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    BPMDPBPD %in% 997:999 ~ haven::tagged_na("b"),
+    (DIABX == 1 | CKD == 1) & BPMDPBPD >= 80 ~ 1,
+    (DIABX == 1 | CKD == 1) & BPMDPBPD < 80 ~ 2,
+    !(DIABX == 1 | CKD == 1) & BPMDPBPD >= 90 ~ 1,
+    !(DIABX == 1 | CKD == 1) & BPMDPBPD < 90 ~ 2,
     .default = haven::tagged_na("b")
   )
 
+  # Determine overall controlled hypertension status
   dplyr::case_when(
-    BPMDPBPS == 996 | BPMDPBPD == 996  ~ haven::tagged_na("a"),
-    BPMDPBPS < 0 | BPMDPBPS %in% 997:999 |BPMDPBPD < 0 | BPMDPBPD %in% 997:999 ~ haven::tagged_na("b"),
-    ANYMED2_adjusted == 1 ~ dplyr::case_when(
-      highsys140 == 1 | highdias90 == 1 ~ 2, # Not controlled
-      highsys140 == 2 & highdias90 == 2 ~ 1, # Controlled
-      .default = haven::tagged_na("b")
-    ),
-    ANYMED2_adjusted != 1 ~ 2, # Not on medication, so not controlled hypertension
+    # On meds
+    ANYMED2 == 1 & (highsys140 == 1 | highdias90 == 1) ~ 2, # Not controlled
+    ANYMED2 == 1 & (highsys140 == 2 & highdias90 == 2) ~ 1, # Controlled
+
+    # Not on meds
+    ANYMED2 == 0 ~ 2,
+
+    # Propagate NA(a) if any relevant measure is NA(a)
+    haven::is_tagged_na(highsys140, "a") |
+      haven::is_tagged_na(highdias90, "a") |
+      haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
+
+    # Otherwise NA(b) if missing/invalid
+    haven::is_tagged_na(highsys140, "b") |
+      haven::is_tagged_na(highdias90, "b") |
+      haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
+
+    # Default fallback
     .default = haven::tagged_na("b")
   )
 }
@@ -392,7 +509,30 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #' @return [integer] The hypertension status:
 #'   - 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) when on hypertension medication)
 #'   - 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) when on hypertension medication)
-#'   - NA(b): Invalid input or non-response
+#'   - `haven::tagged_na("a")`: Not applicable
+#'   - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function assesses whether a respondent's hypertension is controlled using adjusted BP values:
+#'
+#'          **Control Thresholds:**
+#'          - General population: < 140/90 mmHg
+#'          - Diabetes or CKD patients: < 130/80 mmHg
+#'
+#'          **Logic:**
+#'          - Only applies to respondents taking hypertension medication.
+#'          - If adjusted BP is below the threshold, hypertension is "controlled" (1).
+#'          - If adjusted BP is at or above the threshold, it is "not controlled" (2).
+#'
+#'          **Missing Data Codes:**
+#'          - `SBP_adj`, `DBP_adj`:
+#'            - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+#'          - `ANYMED2`:
+#'            - Tagged NA "a": Valid skip.
+#'            - Tagged NA "b": Don't know, refusal, or not stated.
+#'          - `CCC_32`, `CARDIOV`, `DIABX`, `CKD`:
+#'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -405,8 +545,10 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #' # Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
 #'
 #' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-#' determine_controlled_adjusted_hypertension(SBP_adj = 996, DBP_adj = 996, ANYMED2 = 0)
-#' # Output: NA (Non-response values for BP result in NA).
+#' result <- determine_controlled_adjusted_hypertension(SBP_adj = 996, DBP_adj = 996, ANYMED2 = 0)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+#' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
 #' # Multiple respondents
 #' determine_controlled_adjusted_hypertension(
@@ -415,8 +557,10 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #' )
 #' # Returns: c(2, 1, 2)
 #'
+#' @seealso [determine_controlled_hypertension()] for controlled status with unadjusted BP
 #' @export
 determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
+  # Adjust medication status based on other health conditions
   ANYMED2 <- dplyr::case_when(
     CCC_32 == 2 & (CARDIOV == 1 | CKD == 1 | DIABX == 1) ~ 0,
     haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
@@ -424,31 +568,51 @@ determine_controlled_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2
     TRUE ~ as.numeric(ANYMED2)
   )
 
+  # Determine high systolic blood pressure status
   highsys140_adj <- dplyr::case_when(
-    (DIABX == 1 | CKD == 1) & SBP_adj >= 130 & SBP_adj < 996 ~ 1,
-    (DIABX == 1 | CKD == 1) & SBP_adj >= 0 & SBP_adj < 130 ~ 2,
-    !(DIABX == 1 | CKD == 1) & SBP_adj >= 140 & SBP_adj < 996 ~ 1,
-    !(DIABX == 1 | CKD == 1) & SBP_adj >= 0 & SBP_adj < 140 ~ 2,
+    # Valid skip
+    SBP_adj == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    SBP_adj %in% 997:999 ~ haven::tagged_na("b"),
+    (DIABX == 1 | CKD == 1) & SBP_adj >= 130 ~ 1,
+    (DIABX == 1 | CKD == 1) & SBP_adj < 130 ~ 2,
+    !(DIABX == 1 | CKD == 1) & SBP_adj >= 140 ~ 1,
+    !(DIABX == 1 | CKD == 1) & SBP_adj < 140 ~ 2,
     .default = haven::tagged_na("b")
   )
 
+  # Determine high diastolic blood pressure status
   highdias90_adj <- dplyr::case_when(
-    (DIABX == 1 | CKD == 1) & DBP_adj >= 80 & DBP_adj < 996 ~ 1,
-    (DIABX == 1 | CKD == 1) & DBP_adj >= 0 & DBP_adj < 80 ~ 2,
-    !(DIABX == 1 | CKD == 1) & DBP_adj >= 90 & DBP_adj < 996 ~ 1,
-    !(DIABX == 1 | CKD == 1) & DBP_adj >= 0 & DBP_adj < 90 ~ 2,
+    # Valid skip
+    DBP_adj == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    DBP_adj %in% 997:999 ~ haven::tagged_na("b"),
+    (DIABX == 1 | CKD == 1) & DBP_adj >= 80 ~ 1,
+    (DIABX == 1 | CKD == 1) & DBP_adj < 80 ~ 2,
+    !(DIABX == 1 | CKD == 1) & DBP_adj >= 90 ~ 1,
+    !(DIABX == 1 | CKD == 1) & DBP_adj < 90 ~ 2,
     .default = haven::tagged_na("b")
   )
 
   dplyr::case_when(
-    SBP_adj == 996 | DBP_adj == 996  ~ haven::tagged_na("a"),
-    SBP_adj < 0 | SBP_adj %in% 997:999 |DBP_adj < 0 | DBP_adj %in% 997:999 ~ haven::tagged_na("b"),
-    ANYMED2_adjusted == 1 ~ dplyr::case_when(
-      highsys140_adj == 1 | highdias90_adj == 1 ~ 2, # Not controlled
-      highsys140_adj == 2 & highdias90_adj == 2 ~ 1, # Controlled
-      .default = haven::tagged_na("b")
-    ),
-    ANYMED2_adjusted != 1 ~ 2, # Not on medication, so not controlled hypertension
+    # On meds
+    ANYMED2 == 1 & (highsys140_adj == 1 | highdias90_adj == 1) ~ 2, # Not controlled
+    ANYMED2 == 1 & (highsys140_adj == 2 & highdias90_adj == 2) ~ 1, # Controlled
+
+    # Not on meds
+    ANYMED2 == 0 ~ 2,
+
+    # Propagate NA(a) if any relevant measure is NA(a)
+    haven::is_tagged_na(highsys140_adj, "a") |
+      haven::is_tagged_na(highdias90_adj, "a") |
+      haven::is_tagged_na(ANYMED2, "a") ~ haven::tagged_na("a"),
+
+    # Otherwise NA(b) if missing/invalid
+    haven::is_tagged_na(highsys140_adj, "b") |
+      haven::is_tagged_na(highdias90_adj, "b") |
+      haven::is_tagged_na(ANYMED2, "b") ~ haven::tagged_na("b"),
+
+    # Default fallback
     .default = haven::tagged_na("b")
   )
 }

@@ -22,9 +22,9 @@ Blood pressure measurements in survey settings may require adjustment to account
 measurement conditions and equipment differences. This function applies a standardized adjustment
 using the formula: DBP_adj = 15.6 + (0.83 * BPMDPBPD).
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     Non-response handling: Values >= 996 indicate survey non-response and are converted to
-     tagged NA ("b") to distinguish from missing measurements. Negative values are also
-     treated as invalid and converted to tagged NA.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `996`: Valid skip (e.g., measurement not taken). Handled as `haven::tagged_na("a")`.
+     - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 }\if{html}{\out{</div>}}
 }
 \examples{
@@ -34,8 +34,10 @@ adjust_DBP(BPMDPBPD = 80)
 # Output: 82
 
 # Example: Adjust for a respondent with a non-response diastolic blood pressure of 996.
-adjust_DBP(BPMDPBPD = 996)
-# Output: NA
+result <- adjust_DBP(BPMDPBPD = 996)
+result                              # Shows: NA
+haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
 
 # Multiple respondents
 adjust_DBP(BPMDPBPD = c(80, 90, 100))
@@ -50,6 +52,3 @@ library(dplyr)
 \seealso{
 \code{\link[=adjust_SBP]{adjust_SBP()}} for systolic blood pressure adjustment, \code{\link[=determine_hypertension]{determine_hypertension()}} for hypertension classification
 }
-\keyword{cardiovascular}
-\keyword{health}
-\keyword{survey}

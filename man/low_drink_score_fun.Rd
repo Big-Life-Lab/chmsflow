@@ -80,9 +80,21 @@ assessments) is not included due to data limitations in the survey.
 low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3)
 # Expected output: 1 (Low risk)
 
-# Example: A male respondent who drank in the past year and has an NA value for weekly drinks.
-low_drink_score_fun(1, 6, NA)
-# Expected output: NA
+# Missing data examples showing tagged NA patterns
+result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5)  # Not applicable
+result                              # Shows: NA
+haven::is_tagged_na(result, "a")    # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE)          # Shows: "NA(a)" (displays the tag)
+
+result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5)  # Don't know
+result                              # Shows: NA  
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
+
+result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA) # Missing drinks
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA))
@@ -100,7 +112,3 @@ Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
 \seealso{
 \code{\link[=low_drink_score_fun1]{low_drink_score_fun1()}} for extended categorization including former/never drinkers
 }
-\keyword{alcohol}
-\keyword{health}
-\keyword{substance-use}
-\keyword{survey}

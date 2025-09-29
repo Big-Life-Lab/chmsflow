@@ -13,25 +13,20 @@
 #' @param GFVD22Y [numeric] A numeric vector representing the number of times per year potatoes were consumed.
 #' @param GFVD23Y [numeric] A numeric vector representing the number of times per year other vegetables were consumed.
 #'
-#' @return [numeric] The average times per day fruits and vegetables were consumed in a year.
+#' @return [numeric] The average times per day fruits and vegetables were consumed in a year. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
 #' @details The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 #'          frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
-#'          fruits and vegetables in a year. NA(b) is only returned if all the parameters are missing or if the average ends
-#'          up being NA.
+#'          fruits and vegetables in a year.
+#'
+#'          **Missing Data Codes:**
+#'          - For all input variables:
+#'            - `9996`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `9997-9999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
 #' # Example: Calculate average daily fruit and vegetable consumption for a cycle 1-2 respondent.
-#' # Let's assume the following annual consumption frequencies for each item:
-#' # WSDD14Y (fruit juice) = 50 times
-#' # GFVD17Y (fruit, excluding juice) = 150 times
-#' # GFVD18Y (tomato or tomato sauce) = 200 times
-#' # GFVD19Y (lettuce or green leafy salad) = 100 times
-#' # GFVD20Y (spinach, mustard greens, and cabbage) = 80 times
-#' # GFVD22Y (potatoes) = 120 times
-#' # GFVD23Y (other vegetables) = 90 times
-#' # Using the function:
 #' find_totalFV_cycles1and2(
 #'   WSDD14Y = 50, GFVD17Y = 150, GFVD18Y = 200, GFVD19Y = 100, GFVD20Y = 80,
 #'   GFVD22Y = 120, GFVD23Y = 90
@@ -39,11 +34,13 @@
 #' # Output: 2.164384
 #'
 #' # Example: Respondent has non-response values for all inputs.
-#' find_totalFV_cycles1and2(
+#' result <- find_totalFV_cycles1and2(
 #'   WSDD14Y = 9998, GFVD17Y = 9998, GFVD18Y = 9998, GFVD19Y = 9998, GFVD20Y = 9998,
 #'   GFVD22Y = 9998, GFVD23Y = 9998
 #' )
-#' # Output: NA
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
 #' find_totalFV_cycles1and2(
@@ -53,16 +50,21 @@
 #' # Returns: c(2.164384, 2.356164)
 #'
 #' @seealso [find_totalFV_cycles3to6()] for cycles 3-6 fruit and vegetable consumption, [determine_gooddiet()] for overall diet quality
-#' @references Health Canada food guide and dietary recommendations
-#' @keywords survey nutrition diet fruit-vegetable health
 #' @export
 find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
-  measurements <- cbind(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)
+  # Combine all measurements into a data frame
+  measurements <- data.frame(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)
+
+  # Replace missing data codes with NA
+  measurements[measurements == 9996] <- haven::tagged_na("a") # Valid skip
+  measurements[measurements >= 9997] <- haven::tagged_na("b") # Don't know, refusal, not stated
+
+  # Calculate the total fruit and vegetable consumption per day
   totalFV <- rowSums(measurements, na.rm = TRUE) / 365
 
+  # Handle cases with all missing data or negative values
   dplyr::case_when(
-    rowSums(measurements = 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("a"),
-    rowSums(measurements >= 9997 & measurements <= 9999, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
+    rowSums(is.na(measurements)) == ncol(measurements) ~ haven::tagged_na("b"),
     rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
     TRUE ~ totalFV
   )
@@ -87,29 +89,20 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' @param GFVD22Y [numeric] A numeric vector representing the number of times per year potatoes were consumed.
 #' @param GFVD23Y [numeric] A numeric vector representing the number of times per year other vegetables were consumed.
 #'
-#' @return [numeric] The average times per day fruits and vegetables were consumed in a year.
+#' @return [numeric] The average times per day fruits and vegetables were consumed in a year. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
 #' @details The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 #'          frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
-#'          fruits and vegetables in a year. NA(b) is only returned if all the parameters are missing or if the average ends
-#'          up being NA.
+#'          fruits and vegetables in a year.
+#'
+#'          **Missing Data Codes:**
+#'          - For all input variables:
+#'            - `9996`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `9997-9999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
 #' # Example: Calculate average daily fruit and vegetable consumption for a cycle 3-6 respondent
-#' # Let's assume the following annual consumption frequencies for each item:
-#' # WSDD34Y (orange or grapefruit juice) = 50 times
-#' # WSDD35Y (other fruit juices) = 100 times
-#' # GFVD17AY (citrus fruits) = 150 times
-#' # GFVD17BY (strawberries in summer) = 80 times
-#' # GFVD17CY (strawberries outside summer) = 40 times
-#' # GFVD17DY (other fruits) = 200 times
-#' # GFVD18Y (tomato or tomato sauce) = 100 times
-#' # GFVD19Y (lettuce or green leafy salad) = 80 times
-#' # GFVD20Y (spinach, mustard greens, and cabbage) = 60 times
-#' # GFVD22Y (potatoes) = 120 times
-#' # GFVD23Y (other vegetables) = 90 times
-#' # Using the function:
 #' find_totalFV_cycles3to6(
 #'   WSDD34Y = 50, WSDD35Y = 100, GFVD17AY = 150, GFVD17BY = 80, GFVD17CY = 40,
 #'   GFVD17DY = 200, GFVD18Y = 100, GFVD19Y = 80, GFVD20Y = 60, GFVD22Y = 120, GFVD23Y = 90
@@ -117,11 +110,13 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' # Output: 2.931507
 #'
 #' # Example: Respondent has non-response values for all inputs.
-#' find_totalFV_cycles3to6(
+#' result <- find_totalFV_cycles3to6(
 #'   WSDD34Y = 9998, WSDD35Y = 9998, GFVD17AY = 9998, GFVD17BY = 9998, GFVD17CY = 9998,
 #'   GFVD17DY = 9998, GFVD18Y = 9998, GFVD19Y = 9998, GFVD20Y = 9998, GFVD22Y = 9998, GFVD23Y = 9998
 #' )
-#' # Output: NA
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
 #' find_totalFV_cycles3to6(
@@ -131,14 +126,22 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' )
 #' # Returns: c(2.931507, 3.232877)
 #'
+#' @seealso [find_totalFV_cycles1and2()] for cycles 1-2 fruit and vegetable consumption, [determine_gooddiet()] for overall diet quality
 #' @export
 find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
-  measurements <- cbind(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)
+  # Combine all measurements into a data frame
+  measurements <- data.frame(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y)
+
+  # Replace missing data codes with NA
+  measurements[measurements == 9996] <- haven::tagged_na("a") # Valid skip
+  measurements[measurements >= 9997] <- haven::tagged_na("b") # Don't know, refusal, not stated
+
+  # Calculate the total fruit and vegetable consumption per day
   totalFV <- rowSums(measurements, na.rm = TRUE) / 365
 
+  # Handle cases with all missing data or negative values
   dplyr::case_when(
-    rowSums(measurements = 9996, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("a"),
-    rowSums(measurements >= 9997 & measurements <= 9999, na.rm = TRUE) == ncol(measurements) ~ haven::tagged_na("b"),
+    rowSums(is.na(measurements)) == ncol(measurements) ~ haven::tagged_na("b"),
     rowSums(measurements < 0, na.rm = TRUE) > 0 ~ haven::tagged_na("b"),
     TRUE ~ totalFV
   )
@@ -153,7 +156,13 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 #' @return [integer] A categorical indicating the diet quality:
 #'   - 1: Good diet (totalFV >= 5)
 #'   - 2: Poor diet (totalFV < 5)
-#'   - NA(b): Missing or invalid input
+#'   - `haven::tagged_na("a")`: Valid skip
+#'   - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function categorizes diet quality based on the widely recognized "5-a-day" recommendation for fruit and vegetable intake.
+#'
+#'          **Missing Data Codes:**
+#'          - Propagates tagged NAs from the input `totalFV`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -174,13 +183,19 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 #' # dataset %>%
 #' #   mutate(diet_quality = determine_gooddiet(total_fv))
 #'
+#' @seealso [find_totalFV_cycles1and2()], [find_totalFV_cycles3to6()]
 #' @export
 determine_gooddiet <- function(totalFV) {
   dplyr::case_when(
+    # Propagate tagged NAs
     haven::is_tagged_na(totalFV, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(totalFV, "b") | totalFV < 0 ~ haven::tagged_na("b"),
+
+    # Categorize diet quality
     totalFV >= 5 ~ 1,
     totalFV < 5 ~ 2,
+
+    # Handle any other cases
     .default = haven::tagged_na("b")
   )
 }

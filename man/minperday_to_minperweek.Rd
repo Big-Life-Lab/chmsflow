@@ -10,7 +10,7 @@ minperday_to_minperweek(MVPA_min)
 \item{MVPA_min}{\link{numeric} A numeric representing the average minutes of exercise per day across a week of accelerometer use.}
 }
 \value{
-\link{numeric} The average minutes of exercise per one week of accelerometer use.
+\link{numeric} The average minutes of exercise per one week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function takes the average minutes of exercise per day across a week of accelerometer use as an input (\code{MVPA_min}) and
@@ -19,12 +19,16 @@ calculates the equivalent minutes of exercise per one week of accelerometer use.
 \details{
 The function simply multiplies the average minutes of exercise per day (\code{MVPA_min}) by 7 to obtain the equivalent
 minutes of exercise per one week of accelerometer use.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - Propagates tagged NAs from the input `MVPA_min`.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
 # Example: Convert average minutes of exercise per day to minutes per week.
 minperday_to_minperweek(35)
-# Output: 245 (The equivalent minutes of exercise per one week is 245 minutes.)
+# Output: 245
 
 # Multiple respondents
 minperday_to_minperweek(c(35, 40, 20))
@@ -35,4 +39,7 @@ library(dplyr)
 # dataset \%>\%
 #   mutate(min_per_week = minperday_to_minperweek(avg_exercise))
 
+}
+\seealso{
+\code{\link[=find_week_accelerometer_average]{find_week_accelerometer_average()}}, \code{\link[=categorize_minperweek]{categorize_minperweek()}}
 }

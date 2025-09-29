@@ -2,7 +2,7 @@
 % Please edit documentation in R/cholesterol-and-obesity.R
 \name{calculate_WHR}
 \alias{calculate_WHR}
-\title{Waist-to-height ratio (WHR)}
+\title{Waist-to-height ratio (WHtR)}
 \usage{
 calculate_WHR(HWM_11CM, HWM_14CX)
 }
@@ -12,28 +12,34 @@ calculate_WHR(HWM_11CM, HWM_14CX)
 \item{HWM_14CX}{\link{numeric} A numeric representing the waist circumference of the respondent in centimeters.}
 }
 \value{
-\link{numeric} The WHR:
-\itemize{
-\item If both \code{HWM_11CM} and \code{HWM_14CX} are provided, the function returns the WHR (waist circumference divided by height).
-\item If either \code{HWM_11CM} or \code{HWM_14CX} is missing, the function returns a tagged NA (\code{NA(b)}) indicating an invalid input or non-response.
-}
+\link{numeric} The WHtR. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
-This function calculates the Waist-to-Height Ratio (WHR) by dividing the waist circumference by the height of the respondent.
+This function calculates the Waist-to-Height Ratio (WHtR) by dividing the waist circumference by the height of the respondent.
+}
+\details{
+This function calculates the Waist-to-Height Ratio (WHtR), an indicator of central obesity.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `HWM_11CM`:
+       - `999.96`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `999.97-999.99`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+     - `HWM_14CX`:
+       - `999.6`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `999.7-999.9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
-# Example 1: Calculate WHR for a respondent with height = 170 cm and waist circumference = 85 cm.
+# Example 1: Calculate WHtR for a respondent with height = 170 cm and waist circumference = 85 cm.
 calculate_WHR(HWM_11CM = 170, HWM_14CX = 85)
 # Output: 0.5 (85/170)
 
-# Example 2: Calculate WHR for a respondent with missing height.
-calculate_WHR(HWM_11CM = NA, HWM_14CX = 85)
-# Output: NA(b)
-
-# Example 3: Respondent has non-response values for height and waist circumference.
-calculate_WHR(HWM_11CM = 999.98, HWM_14CX = 999.8)
-# Output: NA
+# Example 2: Calculate WHtR for a respondent with missing height.
+result <- calculate_WHR(HWM_11CM = 999.98, HWM_14CX = 85)
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
@@ -42,6 +48,6 @@ calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
 # Database usage: Applied to survey datasets
 library(dplyr)
 # dataset \%>\%
-#   mutate(whr = calculate_WHR(HWM_11CM, HWM_14CX))
+#   mutate(whtr = calculate_WHR(HWM_11CM, HWM_14CX))
 
 }

@@ -15,11 +15,19 @@ physical activity (MVPA) per week.}
 \itemize{
 \item 1: Meets or exceeds the recommended 150 minutes of MVPA per week (minperweek >= 150)
 \item 2: Below the recommended 150 minutes of MVPA per week (minperweek < 150)
-\item NA(b): Missing or invalid input
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function categorizes individuals' weekly physical activity levels based on a threshold value.
+}
+\details{
+This function applies the national physical activity guideline of 150 minutes of moderate-to-vigorous physical activity (MVPA) per week.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - Propagates tagged NAs from the input `minperweek`.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -40,4 +48,7 @@ library(dplyr)
 # dataset \%>\%
 #   mutate(pa_category = categorize_minperweek(min_per_week))
 
+}
+\seealso{
+\code{\link[=minperday_to_minperweek]{minperday_to_minperweek()}}
 }

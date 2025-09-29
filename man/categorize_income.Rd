@@ -17,11 +17,19 @@ categorize_income(adj_hh_inc)
 \item 3: Above $35,000 and up to $50,000
 \item 4: Above $50,000 and up to $70,000
 \item 5: Above $70,000
-\item NA(b): Missing or invalid input
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function categorizes individuals' adjusted household income based on specified income ranges.
+}
+\details{
+This function segments adjusted household income into quintiles, providing a standardized measure of socioeconomic status.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - Propagates tagged NAs from the input `adj_hh_inc`.
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -40,6 +48,9 @@ categorize_income(c(25000, 45000, 80000))
 # Database usage: Applied to survey datasets
 library(dplyr)
 # dataset \%>\%
-#   mutate(income_category = categorize_income(adj_hh_income))
+#   mutate(income_category = categorize_income(adj_hh_inc))
 
+}
+\seealso{
+\code{\link[=calculate_hhld_income]{calculate_hhld_income()}}, \code{\link[=in_lowest_income_quintile]{in_lowest_income_quintile()}}
 }

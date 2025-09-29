@@ -12,7 +12,7 @@ is_diabetes_drug(MEUCATC, NPI_25B)
 \item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-\link{numeric} 1 if medication is a diabetes drug, 0 otherwise.
+\link{numeric} 1 if medication is a diabetes drug, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function checks if a given medication is a diabetes drug.
@@ -20,6 +20,11 @@ This function processes multiple inputs efficiently.
 }
 \details{
 Identifies diabetes drugs based on ATC codes starting with "A10".
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+     - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+}\if{html}{\out{</div>}}
 }
 \examples{
 # Scalar usage: Single respondent
@@ -27,20 +32,13 @@ is_diabetes_drug("A10BB09", 3)
 # Returns: 1
 
 # Example: Respondent has non-response values for all inputs.
-is_diabetes_drug("9999998", 8)
-# Returns: NA
+result <- is_diabetes_drug("9999998", 8)
+result                              # Shows: NA
+haven::is_tagged_na(result, "b")    # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE)          # Shows: "NA(b)" (displays the tag)
 
 # Multiple respondents
 is_diabetes_drug(c("A10BB09", "C09AA02"), c(3, 2))
 # Returns: c(1, 0)
 
-# Database usage: Apply to survey data
-library(dplyr)
-survey_data <- data.frame(
-  MEUCATC = c("A10BB09", "C09AA02", "A10BA02"),
-  NPI_25B = c(3, 2, 1)
-)
-survey_data \%>\%
-  mutate(is_diabetes = is_diabetes_drug(MEUCATC, NPI_25B)) \%>\%
-  select(is_diabetes)
 }

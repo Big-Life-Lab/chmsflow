@@ -3,9 +3,15 @@
 \docType{data}
 \name{cycle2_meds}
 \alias{cycle2_meds}
-\title{CHMS Cycle 2 Medications}
-\value{
-\item{cycle2_meds}{a data frame}
+\title{Canadian Health Measures Survey (CHMS) Cycle 2 Medications}
+\format{
+A data frame with X rows and Y columns.
+}
+\source{
+Statistics Canada
+}
+\usage{
+data(cycle2_meds)
 }
 \description{
 This dummy data representing the medication portion of the
