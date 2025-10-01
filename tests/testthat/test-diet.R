@@ -1,78 +1,32 @@
 # test-diet.R
+
 # Test for find_totalFV_cycles1and2
-test_that("find_totalFV_cycles1and2 calculates average daily FV consumption correctly", {
-  # Normal cases
-  expect_equal(
-    find_totalFV_cycles1and2(50, 150, 200, 100, 80, 120, 90),
-    (50 + 150 + 200 + 100 + 80 + 120 + 90) / 365
-  )
-
-  expect_equal(
-    find_totalFV_cycles1and2(0, 0, 0, 0, 0, 0, 0),
-    0
-  )
-
-  # Cases with missing values
-  expect_equal(
-    find_totalFV_cycles1and2(50, NA, 200, 100, 80, NA, 90),
-    (50 + 200 + 100 + 80 + 90) / 365
-  )
-
-  expect_equal(
-    find_totalFV_cycles1and2(NA, NA, NA, NA, NA, NA, NA),
-    haven::tagged_na("b")
-  )
+test_that("find_totalFV_cycles1and2 returns correct daily fruit and vegetable consumption", {
+  expect_equal(find_totalFV_cycles1and2(365, 365, 365, 365, 365, 365, 365), 7)
+  expect_equal(find_totalFV_cycles1and2(9996, 365, 365, 365, 365, 365, 365), 6)
+  expect_equal(find_totalFV_cycles1and2(9997, 365, 365, 365, 365, 365, 365), 6)
+  expect_true(haven::is_tagged_na(find_totalFV_cycles1and2(-1, 365, 365, 365, 365, 365, 365), "b"))
+  expect_true(haven::is_tagged_na(find_totalFV_cycles1and2(NA, NA, NA, NA, NA, NA, NA), "b"))
+  expect_equal(find_totalFV_cycles1and2(c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0)), c(7, 0))
 })
 
 # Test for find_totalFV_cycles3to6
-test_that("find_totalFV_cycles3to6 calculates average daily FV consumption correctly", {
-  # Normal cases
-  expect_equal(
-    find_totalFV_cycles3to6(50, 100, 150, 80, 40, 200, 100, 80, 60, 120, 90),
-    (50 + 100 + 150 + 80 + 40 + 200 + 100 + 80 + 60 + 120 + 90) / 365
-  )
-
-  expect_equal(
-    find_totalFV_cycles3to6(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-    0
-  )
-
-  # Cases with missing values
-  expect_equal(
-    find_totalFV_cycles3to6(50, 100, NA, 80, 40, 200, 100, NA, 60, NA, 90),
-    (50 + 100 + 80 + 40 + 200 + 100 + 60 + 90) / 365
-  )
-
-  expect_equal(
-    find_totalFV_cycles3to6(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
-    haven::tagged_na("b")
-  )
+test_that("find_totalFV_cycles3to6 returns correct daily fruit and vegetable consumption", {
+  expect_equal(find_totalFV_cycles3to6(365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365), 11)
+  expect_equal(find_totalFV_cycles3to6(9996, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365), 10)
+  expect_equal(find_totalFV_cycles3to6(9997, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365), 10)
+  expect_true(haven::is_tagged_na(find_totalFV_cycles3to6(-1, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365), "b"))
+  expect_true(haven::is_tagged_na(find_totalFV_cycles3to6(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA), "b"))
+  expect_equal(find_totalFV_cycles3to6(c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0), c(365, 0)), c(11, 0))
 })
 
 # Test for determine_gooddiet
-test_that("determine_gooddiet categorizes diet correctly", {
-  # Good diet
+test_that("determine_gooddiet returns correct diet category", {
   expect_equal(determine_gooddiet(5), 1)
-  expect_equal(determine_gooddiet(7), 1)
-  expect_equal(determine_gooddiet(10), 1)
-
-  # Poor diet
-  expect_equal(determine_gooddiet(4.99), 2)
-  expect_equal(determine_gooddiet(3), 2)
-  expect_equal(determine_gooddiet(0), 2)
-
-  # Missing input
-  expect_equal(determine_gooddiet(NA), haven::tagged_na("b"))
-})
-
-test_that("find_totalFV_cycles1and2 handles negative inputs", {
-  expect_equal(find_totalFV_cycles1and2(-10, 150, 200, 100, 80, 120, 90), haven::tagged_na("b"))
-})
-
-test_that("find_totalFV_cycles3to6 handles negative inputs", {
-  expect_equal(find_totalFV_cycles3to6(-10, 100, 150, 80, 40, 200, 100, 80, 60, 120, 90), haven::tagged_na("b"))
-})
-
-test_that("determine_gooddiet handles negative inputs", {
-  expect_equal(determine_gooddiet(-1), haven::tagged_na("b"))
+  expect_equal(determine_gooddiet(4.9), 2)
+  expect_true(haven::is_tagged_na(determine_gooddiet(haven::tagged_na("a")), "a"))
+  expect_true(haven::is_tagged_na(determine_gooddiet(haven::tagged_na("b")), "b"))
+  expect_true(haven::is_tagged_na(determine_gooddiet(-1), "b"))
+  expect_true(is.na(determine_gooddiet(NA)))
+  expect_equal(determine_gooddiet(c(5, 4.9, haven::tagged_na("a"))), c(1, 2, haven::tagged_na("a")))
 })

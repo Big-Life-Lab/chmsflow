@@ -7,10 +7,10 @@
 adjust_DBP(BPMDPBPD)
 }
 \arguments{
-\item{BPMDPBPD}{A numeric representing the respondent's diastolic average blood pressure (in mmHg) across six measurements.}
+\item{BPMDPBPD}{\link{numeric} A numeric representing the respondent's diastolic average blood pressure (in mmHg) across six measurements.}
 }
 \value{
-The adjusted diastolic blood pressure as a numeric value.
+\link{numeric} The adjusted diastolic blood pressure as a numeric.
 }
 \description{
 This function adjusts diastolic blood pressure based on the respondent's diastolic average blood pressure across
@@ -18,16 +18,37 @@ six measurements. The adjustment is made using specific correction factors. The 
 is returned as a numeric value.
 }
 \details{
-The function calculates the adjusted diastolic blood pressure (DBP_adj) based on the value of BPMDPBPD. If
-BPMDPBPD is greater than or equal to 0 and less than 996, the adjustment is made using the formula:
-DBP_adj = 15.6 + (0.83 * BPMDPBPD). Otherwise, if BPMDPBPD is a non-response value (BPMDPBPD >= 996), the
-adjusted diastolic blood pressure is set to NA(b), indicating that the measurement is not available. The adjusted
-diastolic blood pressure is returned as the final output.
+Blood pressure measurements in survey settings may require adjustment to account for
+measurement conditions and equipment differences. This function applies a standardized adjustment
+using the formula: DBP_adj = 15.6 + (0.83 * BPMDPBPD).
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `996`: Valid skip (e.g., measurement not taken). Handled as `haven::tagged_na("a")`.
+     - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Adjust for a respondent with average diastolic blood pressure of 80 mmHg.
 adjust_DBP(BPMDPBPD = 80)
 # Output: 82
 
+# Example: Adjust for a respondent with a non-response diastolic blood pressure of 996.
+result <- adjust_DBP(BPMDPBPD = 996)
+result # Shows: NA
+haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
+
+# Multiple respondents
+adjust_DBP(BPMDPBPD = c(80, 90, 100))
+# Returns: c(82, 90.3, 98.6)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(dbp_adj = adjust_DBP(BPMDPBPD))
+
+}
+\seealso{
+\code{\link[=adjust_SBP]{adjust_SBP()}} for systolic blood pressure adjustment, \code{\link[=determine_hypertension]{determine_hypertension()}} for hypertension classification
 }

@@ -21,29 +21,27 @@ navbar:
     right: github
   components:
     get_started:
-      text: Getting started
-      href: articles/getting_started.html
-    articles:
-      text: Articles
-      menu:
-      - text: variables.csv sheet
-        href: articles/variables_sheet.html
-      - text: variable_details.csv sheet
-        href: articles/variable_details.html
-      - text: Recoding medications
-        href: articles/recoding-medications.html
-      - text: Derived variables
-        href: articles/derived_variables.html
-      - text: How to add variables
-        href: articles/how_to_add_variables.html
-      - text: How to used tagged_na
-        href: articles/tagged_na_usage.html
-    reference:
-      text: Reference
-      href: reference/index.html
-    news:
-      text: Changelog
-      href: news/index.html
+      text: Get started
+      href: articles/get_started.html
+
+articles:
+- title: "Get Started"
+  desc: "Essential guides to get you started with chmsflow"
+  contents:
+  - get_started
+- title: "Data Structure Guides"
+  desc: "Understanding CHMS data structure and variables"
+  contents:
+  - variables_sheet
+  - variable_details
+- title: "Variable Processing"
+  desc: "How to recode and derive variables"
+  contents:
+  - recoding_medications
+  - derived_variables
+  - how_to_add_variables
+  - tagged_na_usage
+
 reference:
 - title: Worksheets
   desc: variable and variable_details worksheets
@@ -96,8 +94,8 @@ reference:
   - low_drink_score_fun1
   - minperday_to_minperweek
   - pack_years_fun
-- title: Synthetic CHMS data
-  desc: Synthetic cycle and medication data for select CHMS cycles
+- title: CHMS dummy data
+  desc: Cycle and medication dummy data for select CHMS cycles
   contents:
   - cycle2
   - cycle2_meds

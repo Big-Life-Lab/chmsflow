@@ -7,20 +7,29 @@
 categorize_nonHDL(nonHDL)
 }
 \arguments{
-\item{nonHDL}{Numeric value representing an individual's non-HDL cholesterol level.}
+\item{nonHDL}{\link{numeric} A numeric representing an individual's non-HDL cholesterol level.}
 }
 \value{
-A categorical value indicating the non-HDL cholesterol category:
+\link{integer} A categorical indicating the non-HDL cholesterol category:
 \itemize{
 \item 1: High non-HDL cholesterol (nonHDL >= 4.3)
 \item 2: Normal non-HDL cholesterol (nonHDL < 4.3)
-\item NA(b): Missing or invalid input
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function categorizes individuals' non-HDL cholesterol levels based on a threshold value.
 }
+\details{
+This function categorizes non-HDL cholesterol levels into 'High' or 'Normal' based on a 4.3 mmol/L threshold.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - Propagates tagged NAs from the input `nonHDL`.
+}\if{html}{\out{</div>}}
+}
 \examples{
+# Scalar usage: Single respondent
 # Example 1: Categorize a nonHDL value of 5.0 as high non-HDL cholesterol
 categorize_nonHDL(5.0)
 # Output: 1
@@ -29,4 +38,16 @@ categorize_nonHDL(5.0)
 categorize_nonHDL(3.8)
 # Output: 2
 
+# Multiple respondents
+categorize_nonHDL(c(5.0, 3.8, 4.3))
+# Returns: c(1, 2, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(non_hdl_category = categorize_nonHDL(non_hdl))
+
+}
+\seealso{
+\code{\link[=calculate_nonHDL]{calculate_nonHDL()}}
 }

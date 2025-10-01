@@ -3,12 +3,18 @@
 \docType{data}
 \name{cycle4}
 \alias{cycle4}
-\title{CHMS Cycle 4}
-\value{
-\item{cycle4}{a data frame}
+\title{Canadian Health Measures Survey (CHMS) Cycle 4}
+\format{
+A data frame with X rows and Y columns.
+}
+\source{
+Statistics Canada
+}
+\usage{
+data(cycle4)
 }
 \description{
-This is synthetic data representing the fourth cycle of the Canadian
+This is dummy data representing the fourth cycle of the Canadian
 Health Measures Survey (CHMS). The CHMS survey is conducted by
 Statistics Canada.
 }

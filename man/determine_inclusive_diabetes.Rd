@@ -7,35 +7,76 @@
 determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2)
 }
 \arguments{
-\item{diab_m}{An integer indicating whether the respondent has diabetes based on HbA1c level. 1 for "Yes", 2 for "No".}
+\item{diab_m}{\link{integer} An integer indicating whether the respondent has diabetes based on HbA1c level. 1 for "Yes", 2 for "No".}
 
-\item{CCC_51}{An integer indicating whether the respondent self-reported diabetes. 1 for "Yes", 2 for "No".}
+\item{CCC_51}{\link{integer} An integer indicating whether the respondent self-reported diabetes. 1 for "Yes", 2 for "No".}
 
-\item{diab_drug2}{An integer indicating whether the respondent is on diabetes medication. 1 for "Yes", 0 for "No".}
+\item{diab_drug2}{\link{integer} An integer indicating whether the respondent is on diabetes medication. 1 for "Yes", 0 for "No".}
 }
 \value{
-An integer indicating the inclusive diabetes status:
+\link{integer} The inclusive diabetes status:
 - 1 ("Yes") if any of \code{diab_m}, \code{CCC_51}, or \code{diab_drug2} is 1.
-- 2 ("No") if all of \code{diab_m}, \code{CCC_51}, and \code{diab_drug2} are 2.
-- \code{haven::tagged_na("b")} if all three parameters are \code{NA}.
-- If two parameters are \code{NA}, the third non-\code{NA} parameter determines the result.
-- If one parameter is \code{NA}, the function checks the remaining two for a decision.
+- 2 ("No") if all of \code{diab_m}, \code{CCC_51}, and \code{diab_drug2} are 2 or 0.
+- \code{haven::tagged_na("a")}: Not applicable
+- \code{haven::tagged_na("b")}: Missing
 }
 \description{
-This function evaluates diabetes status based on three factors: \code{diab_m}, \code{CCC_51}, and \code{diab_drug2}.
+This function evaluates diabetes status using a comprehensive approach that combines
+laboratory measurements, self-reported diagnosis, and medication usage to create an inclusive
+diabetes classification.
+}
+\details{
+This function classifies diabetes status based that considers:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Data Sources:**
+     - Laboratory: HbA1c levels indicating diabetes (diab_m)
+     - Self-report: Participant-reported diabetes diagnosis (CCC_51)
+     - Medication: Current diabetes medication usage (diab_drug2)
+
+     **Classification Logic:**
+     - ANY positive indicator results in diabetes classification
+     - ALL negative indicators required for "no diabetes" classification
+     - Sophisticated missing data handling preserves available information
+
+     **Missing Data Codes:**
+     - `diab_m`, `diab_drug2`:
+       - Tagged NA "a": Valid skip.
+       - Tagged NA "b": Don't know, refusal, or not stated.
+     - `CCC_51`:
+       - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Determine the inclusive diabetes status for a respondent with diabetes based on HbA1c.
-determine_inclusive_diabetes(diab_m = 1, CCC_51 = 2, diab_drug2 = 2)
+determine_inclusive_diabetes(diab_m = 1, CCC_51 = 2, diab_drug2 = 0)
 # Output: 1 (Inclusive diabetes status is "Yes").
 
 # Example: Determine the inclusive diabetes status for a respondent no diabetes all around.
-determine_inclusive_diabetes(diab_m = 2, CCC_51 = 2, diab_drug2 = 2)
+determine_inclusive_diabetes(diab_m = 2, CCC_51 = 2, diab_drug2 = 0)
 # Output: 2 (Inclusive diabetes status is "No").
 
 # Example: Determine inclusive diabetes status when only one parameter is NA.
 determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
 # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
 
+# Example: Respondent has non-response values for all inputs.
+result <- determine_inclusive_diabetes(haven::tagged_na("b"), 8, haven::tagged_na("b"))
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+
+# Multiple respondents
+determine_inclusive_diabetes(diab_m = c(1, 2, 2), CCC_51 = c(2, 1, 2), diab_drug2 = c(0, 0, 1))
+# Returns: c(1, 1, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(diabetes_status = determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2))
+
+}
+\seealso{
+Related health condition functions: \code{\link[=determine_hypertension]{determine_hypertension()}}, \code{\link[=calculate_GFR]{calculate_GFR()}}
 }

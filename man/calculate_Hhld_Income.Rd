@@ -7,39 +7,57 @@
 calculate_hhld_income(THI_01, DHHDHSZ)
 }
 \arguments{
-\item{THI_01}{A numeric representing the respondent's household income amount in dollars.}
+\item{THI_01}{\link{numeric} A numeric representing the respondent's household income amount in dollars.}
 
-\item{DHHDHSZ}{An integer representing the respondent's actual household size in persons.}
+\item{DHHDHSZ}{\link{integer} An integer representing the respondent's actual household size in persons.}
 }
 \value{
-The calculated adjusted total household income as a numeric value. If any of the input parameters (THI_01,
-DHHDHSZ) are non-response values (THI_01 >= 996, DHHDHSZ >= 996), the adjusted household income will be
-NA(b) (Not Available).
+\link{numeric} The calculated adjusted total household income as a numeric. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function calculates the adjusted total household income based on the respondent's income amount
 and actual household size, taking into account the weighted household size.
 }
 \details{
-The function first calculates the weighted household size (hh_size_wt) based on the respondent's actual
-household size (DHHDHSZ). It uses a loop to iterate from 1 to DHHDHSZ and assigns weights to each household
-member based on their count. If the household size (i) is 1, the weight is 1; if i is 2, the weight is 0.4; if
-i is greater than or equal to 3, the weight is 0.3. The weighted household size is then used to adjust the
-respondent's total household income (THI_01) by dividing it by hh_size_wt. The adjusted household income
-(adj_hh_inc) is returned as the final output.
+This function applies equivalence scales to adjust household income for household size,
+allowing for meaningful income comparisons across different household compositions.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Equivalence Scale Logic:**
+     - First adult: Weight = 1.0 (full weight)
+     - Second adult: Weight = 0.4 (economies of scale)
+     - Additional members: Weight = 0.3 each (further economies)
+
+     **Missing Data Codes:**
+     - `THI_01`:
+       - `99999996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `99999997-99999999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+     - `DHHDHSZ`:
+       - `96`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `97-99`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example 1: Respondent with $50,000 income and a household size of 3.
 calculate_hhld_income(THI_01 = 50000, DHHDHSZ = 3)
 # Output: 29411.76
 
-# Example 2: Respondent with $75000 income and a household size of 2.
-calculate_hhld_income(THI_01 = 75000, DHHDHSZ = 2)
-# Output: 53571.43
+# Example 2: Respondent has non-response values for all inputs.
+result <- calculate_hhld_income(THI_01 = 99999998, DHHDHSZ = 98)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
-# Example 3: Respondent with $90000 income and a household size of 1.
-calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
-# Output: 90000
+# Multiple respondents
+calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))
+# Returns: c(29411.76, 53571.43, 90000)
 
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(adj_hh_income = calculate_hhld_income(THI_01, DHHDHSZ))
+
+}
+\seealso{
+\code{\link[=categorize_income]{categorize_income()}} for income classification, \code{\link[=in_lowest_income_quintile]{in_lowest_income_quintile()}} for poverty indicators
 }

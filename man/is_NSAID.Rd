@@ -7,30 +7,38 @@
 is_NSAID(MEUCATC, NPI_25B)
 }
 \arguments{
-\item{MEUCATC}{A character vector representing the Anatomical Therapeutic Chemical (ATC) code of the medication.}
+\item{MEUCATC}{\link{character} ATC code of the medication.}
 
-\item{NPI_25B}{An integer representing the CHMS response for the time when the medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-A numeric, 1 if medication is in the NSAID class and 0 if it is not.
+\link{numeric} 1 if medication is an NSAID, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
-This function checks if a given medication for a CHMS respondent belongs to the non-steroidal anti-inflammatory drug
-(NSAID) class. The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the
-time when the medication was last taken.
+This function checks if a given medication is an NSAID.
+This function processes multiple inputs efficiently.
 }
 \details{
-This function uses the \code{startsWith} function to identify NSAIDs based on their ATC codes, which typically
-start with "M01A". If the ATC code matches the pattern and the medication was taken within the last month
-(NPI_25B <= 4), the medication is considered an NSAID, and the function returns TRUE. Otherwise, it
-returns FALSE.
+Identifies NSAIDs based on ATC codes starting with "M01A".
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+     - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+}\if{html}{\out{</div>}}
 }
 \examples{
+# Scalar usage: Single respondent
+is_NSAID("M01AB05", 1)
+# Returns: 1
 
-# Let's say the ATC code is "M01AB05" and the time last taken was today (1).
+# Example: Respondent has non-response values for all inputs.
+result <- is_NSAID("9999998", 8)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
-is_NSAID("M01AB05", 1) # Should return 1 (TRUE)
+# Multiple respondents
+is_NSAID(c("M01AB05", "A10BB09"), c(1, 3))
+# Returns: c(1, 0)
 
 }

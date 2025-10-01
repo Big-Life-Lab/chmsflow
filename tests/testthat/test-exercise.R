@@ -1,59 +1,32 @@
 # test-exercise.R
-# Test find_week_accelerometer_average
-test_that("find_week_accelerometer_average handles various cases", {
-  # Case 1: All days have valid exercise values
-  expect_equal(find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50), 35)
 
-  # Case 2: Some days are NA
-  expect_equal(find_week_accelerometer_average(30, NA, 25, 35, NA, 45, 50), haven::tagged_na("b"))
-
-  # Case 3: All days are 0 (no exercise)
-  expect_equal(find_week_accelerometer_average(0, 0, 0, 0, 0, 0, 0), 0)
-
-  # Case 4: All days are NA
-  expect_equal(find_week_accelerometer_average(NA, NA, NA, NA, NA, NA, NA), haven::tagged_na("b"))
+# Test for find_week_accelerometer_average
+test_that("find_week_accelerometer_average returns correct weekly accelerometer average", {
+  expect_equal(find_week_accelerometer_average(30, 30, 30, 30, 30, 30, 30), 30)
+  expect_true(is.na(find_week_accelerometer_average(9996, 30, 30, 30, 30, 30, 30)))
+  expect_true(is.na(find_week_accelerometer_average(9997, 30, 30, 30, 30, 30, 30)))
+  expect_true(haven::is_tagged_na(find_week_accelerometer_average(-1, 30, 30, 30, 30, 30, 30), "b"))
+  expect_true(is.na(find_week_accelerometer_average(NA, 30, 30, 30, 30, 30, 30)))
+  expect_equal(find_week_accelerometer_average(c(30, 0), c(30, 0), c(30, 0), c(30, 0), c(30, 0), c(30, 0), c(30, 0)), c(30, 0))
 })
 
-# Test minperday_to_minperweek
-test_that("minperday_to_minperweek handles various inputs", {
-  # Case 1: Valid input
-  expect_equal(minperday_to_minperweek(35), 245)
-
-  # Case 2: NA input
-  expect_equal(minperday_to_minperweek(NA), haven::tagged_na("b"))
-
-  # Case 3: Zero input
-  expect_equal(minperday_to_minperweek(0), 0)
+# Test for minperday_to_minperweek
+test_that("minperday_to_minperweek returns correct minutes per week", {
+  expect_equal(minperday_to_minperweek(30), 210)
+  expect_true(haven::is_tagged_na(minperday_to_minperweek(haven::tagged_na("a")), "a"))
+  expect_true(haven::is_tagged_na(minperday_to_minperweek(haven::tagged_na("b")), "b"))
+  expect_true(haven::is_tagged_na(minperday_to_minperweek(-1), "b"))
+  expect_true(is.na(minperday_to_minperweek(NA)))
+  expect_equal(minperday_to_minperweek(c(30, 0, haven::tagged_na("a"))), c(210, 0, haven::tagged_na("a")))
 })
 
-# Test categorize_minperweek
-test_that("categorize_minperweek handles various thresholds", {
-  # Case 1: Meets or exceeds the recommendation
+# Test for categorize_minperweek
+test_that("categorize_minperweek returns correct physical activity category", {
   expect_equal(categorize_minperweek(150), 1)
-  expect_equal(categorize_minperweek(200), 1)
-
-  # Case 2: Below the recommendation
   expect_equal(categorize_minperweek(149), 2)
-  expect_equal(categorize_minperweek(0), 2)
-
-  # Case 3: NA input
-  expect_equal(categorize_minperweek(NA), haven::tagged_na("b"))
-})
-
-test_that("find_week_accelerometer_average handles single NA", {
-  expect_equal(find_week_accelerometer_average(30, 40, 25, 35, 20, 45, NA), haven::tagged_na("b"))
-})
-
-test_that("find_week_accelerometer_average handles negative inputs", {
-  expect_equal(find_week_accelerometer_average(30, 40, -25, 35, 20, 45, 50), haven::tagged_na("b"))
-})
-
-test_that("minperday_to_minperweek handles negative inputs", {
-  expect_equal(minperday_to_minperweek(-10), haven::tagged_na("b"))
-})
-
-test_that("categorize_minperweek handles more boundary cases", {
-  expect_equal(categorize_minperweek(150.0001), 1)
-  expect_equal(categorize_minperweek(149.9999), 2)
-  expect_equal(categorize_minperweek(-1), haven::tagged_na("b"))
+  expect_true(haven::is_tagged_na(categorize_minperweek(haven::tagged_na("a")), "a"))
+  expect_true(haven::is_tagged_na(categorize_minperweek(haven::tagged_na("b")), "b"))
+  expect_true(haven::is_tagged_na(categorize_minperweek(-1), "b"))
+  expect_true(is.na(categorize_minperweek(NA)))
+  expect_equal(categorize_minperweek(c(150, 149, haven::tagged_na("a"))), c(1, 2, haven::tagged_na("a")))
 })

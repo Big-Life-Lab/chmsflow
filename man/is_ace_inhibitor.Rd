@@ -7,30 +7,38 @@
 is_ace_inhibitor(MEUCATC, NPI_25B)
 }
 \arguments{
-\item{MEUCATC}{A character vector representing the Anatomical Therapeutic Chemical (ATC) code of the medication.}
+\item{MEUCATC}{\link{character} ATC code of the medication.}
 
-\item{NPI_25B}{An integer representing the CHMS response for the time when the medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-A numeric, 1 if medication is in the ACE inhibitor class and 0 if it is not.
+\link{numeric} 1 if medication is an ACE inhibitor, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
-This function checks if a given medication for a CHMS respondent belongs to the ACE inhibitor drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.
+This function checks if a given medication is an ACE inhibitor.
+This function processes multiple inputs efficiently.
 }
 \details{
-This function uses the \code{startsWith} function to identify ACE inhibitors based on their ATC codes, which
-typically start with "C09". If the ATC code matches the pattern and the medication was taken within the last
-month (NPI_25B <= 4), the medication is considered an ACE inhibitor and the function returns TRUE.
-Otherwise, it returns FALSE.
+Identifies ACE inhibitors based on ATC codes starting with "C09".
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+     - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+}\if{html}{\out{</div>}}
 }
 \examples{
+# Scalar usage: Single respondent
+is_ace_inhibitor("C09AB03", 2)
+# Returns: 1
 
-# Let's say the ATC code is "C09AB03" and the time last taken was yesterday (2).
+# Example: Respondent has non-response values for all inputs.
+result <- is_ace_inhibitor("9999998", 8)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
-is_ace_inhibitor("C09AB03", 2) # Should return 1 (TRUE)
+# Multiple respondents
+is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1))
+# Returns: c(1, 0)
 
 }

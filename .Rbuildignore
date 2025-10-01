@@ -4,7 +4,6 @@
 ^data-raw$
 ^docs$
 ^pkgdown$
-^Vignettes$
 ^CONTRIBUTING.md
 ^cran-comments\.md$
 ^README.html
@@ -13,3 +12,7 @@
 ^.github
 ^\.github$
 ^.lintr
+^doc$
+^Meta$
+^.quarto
+^_freeze

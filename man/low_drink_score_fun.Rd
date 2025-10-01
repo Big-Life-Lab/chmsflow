@@ -7,14 +7,14 @@
 low_drink_score_fun(CLC_SEX, ALC_11, ALCDWKY)
 }
 \arguments{
-\item{CLC_SEX}{An integer indicating the respondent's sex (1 for male, 2 for female).}
+\item{CLC_SEX}{\link{integer} An integer indicating the respondent's sex (1 for male, 2 for female).}
 
-\item{ALC_11}{An integer indicating whether the respondent drank alcohol in the past year (1 for "Yes", 2 for "No").}
+\item{ALC_11}{\link{integer} An integer indicating whether the respondent drank alcohol in the past year (1 for "Yes", 2 for "No").}
 
-\item{ALCDWKY}{An integer representing the number of standard drinks consumed by the respondent in a week.}
+\item{ALCDWKY}{\link{integer} An integer representing the number of standard drinks consumed by the respondent in a week.}
 }
 \value{
-An integer representing the low drink score, with:
+\link{integer} The low drink score, with:
 \itemize{
 \item 1 for "Low risk" (0 points),
 \item 2 for "Marginal risk" (1–2 points),
@@ -27,7 +27,7 @@ If inputs are invalid or out of bounds, the function returns a tagged NA.
 This function calculates a low drink score (step 1 only) for a respondent using
 Canada's Low-Risk Alcohol Drinking Guideline. The score is based solely on the
 number of standard drinks consumed per week and the respondent's sex. (Step 2,
-which would add additional points based on other drinking habits, is not included.)
+which would add additional points based on other drinking habits, is not included.).
 }
 \details{
 The scoring is determined by first allocating points (referred to as \code{step1}) based on the weekly
@@ -35,9 +35,9 @@ alcohol consumption and the respondent's sex:
 \itemize{
 \item If the respondent drank in the past year (ALC_11 == 1):
 \itemize{
-\item For ALCDWKY ≤ 10, assign 0 points.
-\item For ALCDWKY > 10 and ≤ 15: assign 0 points for males (CLC_SEX == 1) and 1 point for females (CLC_SEX == 2).
-\item For ALCDWKY > 15 and ≤ 20: assign 1 point for males and 3 points for females.
+\item For ALCDWKY <= 10, assign 0 points.
+\item For ALCDWKY > 10 and <= 15: assign 0 points for males (CLC_SEX == 1) and 1 point for females (CLC_SEX == 2).
+\item For ALCDWKY > 15 and <= 20: assign 1 point for males and 3 points for females.
 \item For ALCDWKY > 20: assign 3 points.
 }
 \item For respondents who did not drink in the past year (ALC_11 == 2), 0 points are assigned.
@@ -45,18 +45,70 @@ alcohol consumption and the respondent's sex:
 
 These \code{step1} points are then mapped to the final categorical score as follows:
 \itemize{
-\item 0 points → score of 1 ("Low risk"),
-\item 1–2 points → score of 2 ("Marginal risk"),
-\item 3–4 points → score of 3 ("Medium risk"),
-\item 5–9 points → score of 4 ("High risk").
+\item 0 points -> score of 1 ("Low risk"),
+\item 1–2 points -> score of 2 ("Marginal risk"),
+\item 3–4 points -> score of 3 ("Medium risk"),
+\item 5–9 points -> score of 4 ("High risk").
 }
+
+This function implements Canada's Low-Risk Alcohol Drinking Guidelines (Step 1 only) to assess
+alcohol consumption risk. The scoring system considers both the quantity of alcohol consumed
+and biological sex differences in alcohol metabolism.
+
+\strong{Risk Categories:}
+\itemize{
+\item Low risk (0 points): Safe consumption levels
+\item Marginal risk (1-2 points): Slightly elevated risk
+\item Medium risk (3-4 points): Moderate health concerns
+\item High risk (5-9 points): Significant health risks
+}
+
+\strong{Sex-Based Differences:}
+Women generally have lower tolerance thresholds due to physiological differences in
+alcohol metabolism, reflected in the sex-specific point allocations.
+
+\strong{Non-response Handling:}
+Invalid inputs or survey non-response values result in tagged NA ("b").
 }
 \note{
-This function does not include the additional points from step 2 of the guideline.
+This function implements only Step 1 of the guidelines. Step 2 (additional drinking pattern
+assessments) is not included due to data limitations in the survey.
 }
 \examples{
+# Scalar usage: Single respondent
 # Example: A male respondent who drank in the past year and consumes 3 standard drinks per week.
 low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3)
 # Expected output: 1 (Low risk)
 
+# Missing data examples showing tagged NA patterns
+result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5)
+result # Shows: NA
+haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
+
+result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+
+result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+
+# Multiple respondents
+low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA))
+# Returns: c(1, 2, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(low_drink_score = low_drink_score_fun(CLC_SEX, ALC_11, ALCDWKY))
+
+}
+\references{
+Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
+}
+\seealso{
+\code{\link[=low_drink_score_fun1]{low_drink_score_fun1()}} for extended categorization including former/never drinkers
 }

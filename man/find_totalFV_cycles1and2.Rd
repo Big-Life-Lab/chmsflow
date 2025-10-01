@@ -15,22 +15,22 @@ find_totalFV_cycles1and2(
 )
 }
 \arguments{
-\item{WSDD14Y}{A numeric representing the number of times per year fruit juice was consumed.}
+\item{WSDD14Y}{\link{numeric} A numeric vector representing the number of times per year fruit juice was consumed.}
 
-\item{GFVD17Y}{A numeric representing the number of times per year fruit (excluding juice) was consumed.}
+\item{GFVD17Y}{\link{numeric} A numeric vector representing the number of times per year fruit (excluding juice) was consumed.}
 
-\item{GFVD18Y}{A numeric representing the number of times per year tomato or tomato sauce was consumed.}
+\item{GFVD18Y}{\link{numeric} A numeric vector representing the number of times per year tomato or tomato sauce was consumed.}
 
-\item{GFVD19Y}{A numeric representing the number of times per year lettuce or green leafy salad was consumed.}
+\item{GFVD19Y}{\link{numeric} A numeric vector representing the number of times per year lettuce or green leafy salad was consumed.}
 
-\item{GFVD20Y}{A numeric representing the number of times per year spinach, mustard greens, and cabbage were consumed.}
+\item{GFVD20Y}{\link{numeric} A numeric vector representing the number of times per year spinach, mustard greens, and cabbage were consumed.}
 
-\item{GFVD22Y}{A numeric representing the number of times per year potatoes were consumed.}
+\item{GFVD22Y}{\link{numeric} A numeric vector representing the number of times per year potatoes were consumed.}
 
-\item{GFVD23Y}{A numeric representing the number of times per year other vegetables were consumed.}
+\item{GFVD23Y}{\link{numeric} A numeric vector representing the number of times per year other vegetables were consumed.}
 }
 \value{
-A numeric representing the average times per day fruits and vegetables were consumed in a year.
+\link{numeric} The average times per day fruits and vegetables were consumed in a year. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function calculates the daily fruit and vegetable consumption in a year for respondent in the Canadian Health Measures
@@ -41,25 +41,40 @@ obtain the average daily consumption of fruits and vegetables in a year.
 \details{
 The function calculates the total consumption of fruits and vegetables in a year by summing up the consumption
 frequencies of all the input items. It then divides the total by 365 to obtain the average daily consumption of
-fruits and vegetables in a year. NA(b) is only returned if all the parameters are missing or if the average ends
-up being NA.
+fruits and vegetables in a year.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - For all input variables:
+       - `9996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `9997-9999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Calculate average daily fruit and vegetable consumption for a cycle 1-2 respondent.
-# Let's assume the following annual consumption frequencies for each item:
-# WSDD14Y (fruit juice) = 50 times
-# GFVD17Y (fruit, excluding juice) = 150 times
-# GFVD18Y (tomato or tomato sauce) = 200 times
-# GFVD19Y (lettuce or green leafy salad) = 100 times
-# GFVD20Y (spinach, mustard greens, and cabbage) = 80 times
-# GFVD22Y (potatoes) = 120 times
-# GFVD23Y (other vegetables) = 90 times
-# Using the function:
 find_totalFV_cycles1and2(
   WSDD14Y = 50, GFVD17Y = 150, GFVD18Y = 200, GFVD19Y = 100, GFVD20Y = 80,
   GFVD22Y = 120, GFVD23Y = 90
 )
 # Output: 2.164384
 
+# Example: Respondent has non-response values for all inputs.
+result <- find_totalFV_cycles1and2(
+  WSDD14Y = 9998, GFVD17Y = 9998, GFVD18Y = 9998, GFVD19Y = 9998, GFVD20Y = 9998,
+  GFVD22Y = 9998, GFVD23Y = 9998
+)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+
+# Multiple respondents
+find_totalFV_cycles1and2(
+  WSDD14Y = c(50, 60), GFVD17Y = c(150, 160), GFVD18Y = c(200, 210), GFVD19Y = c(100, 110),
+  GFVD20Y = c(80, 90), GFVD22Y = c(120, 130), GFVD23Y = c(90, 100)
+)
+# Returns: c(2.164384, 2.356164)
+
+}
+\seealso{
+\code{\link[=find_totalFV_cycles3to6]{find_totalFV_cycles3to6()}} for cycles 3-6 fruit and vegetable consumption, \code{\link[=determine_gooddiet]{determine_gooddiet()}} for overall diet quality
 }

@@ -1,0 +1,48 @@
+---
+title: "Get started"
+format: html
+vignette: >
+  %\VignetteIndexEntry{Get started}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+## 1. Load packages
+
+```{r eval= FALSE}
+# Install release version from CRAN
+install.packages("chmsflow")
+
+# Install the most recent version from GitHub
+devtools::install_github("Big-Life-Lab/chmsflow")
+```
+
+```{r results= 'hide', message = FALSE, warning=FALSE}
+library(chmsflow)
+```
+
+## 2. Transform variables into harmonized versions
+
+Use `rec_with_table()` of recodeflow to transform the variables of a CHMS dataset. Cycle data object always has to be called "cyclex" in order for recoding to work properly.
+
+At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst's responsibility to merge their required components in one database named "cyclex". However, keep medication data separate from the rest of the cycle data ([see here](recoding_medications.html)). Note that row headers for cycle 6 must be put to lower case prior to recoding.
+
+```{r}
+# Load recodeflow
+library(recodeflow)
+
+# Recoding basic variables
+cycle4_ages <- rec_with_table(cycle4, "clc_age", variable_details = variable_details, log = TRUE)
+head(cycle4_ages)
+
+cycle4_sexes <- rec_with_table(cycle4, "clc_sex", variable_details = variable_details, log = TRUE)
+head(cycle4_sexes)
+
+# Recoding a transformed variable (cont to cat)
+cycle4_categorical_ages <- rec_with_table(cycle4, "agegroup4", variable_details = variable_details, log = TRUE)
+head(cycle4_categorical_ages)
+
+# Recoding a derived variable
+cycle4_adjusted_SBPs <- rec_with_table(cycle4, c("bpmdpbps", "sbp_adj"), variable_details = variable_details, log = TRUE)
+head(cycle4_adjusted_SBPs)
+```

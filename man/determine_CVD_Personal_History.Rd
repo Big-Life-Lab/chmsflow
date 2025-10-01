@@ -7,28 +7,52 @@
 determine_CVD_personal_history(CCC_61, CCC_63, CCC_81)
 }
 \arguments{
-\item{CCC_61}{An integer representing the respondent's personal history of heart disease. 1 for "Yes" if the person has
+\item{CCC_61}{\link{integer} An integer representing the respondent's personal history of heart disease. 1 for "Yes" if the person has
 heart disease, 2 for "No" if the person does not have heart disease.}
 
-\item{CCC_63}{An integer representing the respondent's personal history of heart attack. 1 for "Yes" if the person had
+\item{CCC_63}{\link{integer} An integer representing the respondent's personal history of heart attack. 1 for "Yes" if the person had
 a heart attack, 2 for "No" if the person did not have a heart attack.}
 
-\item{CCC_81}{An integer representing the respondent's personal history of stroke. 1 for "Yes" if the person had a stroke,
+\item{CCC_81}{\link{integer} An integer representing the respondent's personal history of stroke. 1 for "Yes" if the person had a stroke,
 2 for "No" if the person did not have a stroke.}
 }
 \value{
-An integer indicating the CVD personal history: 1 for "Yes" if the person had heart disease, heart attack,
-or stroke; 2 for "No" if the person had neither of the conditions; and NA if all the input variables are a
-non-response.
+\link{integer} The CVD personal history:
+- 1: "Yes" if the person had heart disease, heart attack, or stroke.
+- 2: "No" if the person had neither of the conditions.
+- \code{haven::tagged_na("a")}: Not applicable
+- \code{haven::tagged_na("b")}: Missing
 }
 \description{
 This function determines a respondent's cardiovascular disease (CVD) personal history based on the presence or absence
 of specific conditions related to heart disease, heart attack, and stroke.
 }
-\examples{
+\details{
+This function synthesizes self-reported data on major cardiovascular events (heart disease, heart attack, stroke) into a single binary indicator.
 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - For all input variables:
+       - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
+}
+\examples{
+# Scalar usage: Single respondent
 # Determine CVD personal history for a person with heart disease (CCC_61 = 1).
 determine_CVD_personal_history(CCC_61 = 1, CCC_63 = 2, CCC_81 = 2)
-# Output: 1 (CVD personal history is "Yes" as heart disease is present).
+# Output: 1
 
+# Example: Respondent has non-response values for all inputs.
+result <- determine_CVD_personal_history(CCC_61 = 8, CCC_63 = 8, CCC_81 = 8)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+
+# Multiple respondents
+determine_CVD_personal_history(CCC_61 = c(1, 2, 2), CCC_63 = c(2, 1, 2), CCC_81 = c(2, 2, 1))
+# Returns: c(1, 1, 1)
+
+}
+\seealso{
+\code{\link[=determine_CVD_family_history]{determine_CVD_family_history()}}
 }

@@ -3,12 +3,18 @@
 \docType{data}
 \name{cycle2}
 \alias{cycle2}
-\title{CHMS Cycle 2}
-\value{
-\item{cycle2}{a data frame}
+\title{Canadian Health Measures Survey (CHMS) Cycle 2}
+\format{
+A data frame with X rows and Y columns.
+}
+\source{
+Statistics Canada
+}
+\usage{
+data(cycle2)
 }
 \description{
-This is synthetic data representing the second cycle of the Canadian
+This is dummy data representing the second cycle of the Canadian
 Health Measures Survey (CHMS). The CHMS survey is conducted by
 Statistics Canada.
 }

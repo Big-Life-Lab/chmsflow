@@ -78,3 +78,11 @@ packrat.lock
 
 # If you use lintr for code linting, ignore these files
 .R/lintr_cache/
+
+/doc/
+/Meta/
+
+# Quarto files
+/.quarto/
+/_freeze/
+*_files/

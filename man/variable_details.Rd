@@ -3,16 +3,18 @@
 \docType{data}
 \name{variable_details}
 \alias{variable_details}
-\title{variable-details.csv}
-\value{
-\item{variable_details}{a data frame}
+\title{Details on variable recoding in chmsflow}
+\format{
+A data frame with X rows and Y columns.
+}
+\source{
+See \url{https://big-life-lab.github.io/chmsflow/articles/variable_details.html} for more details.
+}
+\usage{
+data(variable_details)
 }
 \description{
 This dataset provides details on how variables are recoded in chmsflow.
-}
-\details{
-See the below link for more details about how the worksheet is structured
-\url{https://big-life-lab.github.io/chmsflow/articles/variable_details.html}
 }
 \examples{
 data(variable_details)

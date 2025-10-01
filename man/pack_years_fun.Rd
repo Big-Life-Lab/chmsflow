@@ -18,77 +18,83 @@ pack_years_fun(
 )
 }
 \arguments{
-\item{SMKDSTY}{An integer representing the smoking status of the respondent:
-\itemize{
-\item 1: Daily smoker
-\item 2: Occasional smoker (former daily)
-\item 3: Occasional smoker (never daily)
-\item 4: Former daily smoker (non-smoker now)
-\item 5: Former occasional smoker (non-smoker now) who smoked at least 100 cigarettes in their lifetime
-\item 6: Non-smoker (never smoked more than 100 cigarettes)
-}}
+\item{SMKDSTY}{\link{integer} An integer representing the smoking status of the respondent.}
 
-\item{CLC_AGE}{A numeric value representing the respondent's age.}
+\item{CLC_AGE}{\link{numeric} A numeric representing the respondent's age.}
 
-\item{SMK_54}{A numeric value representing the respondent's age when they stopped smoking daily.}
+\item{SMK_54}{\link{numeric} A numeric representing the respondent's age when they stopped smoking daily.}
 
-\item{SMK_52}{A numeric value representing the respondent's age when they first started smoking daily.}
+\item{SMK_52}{\link{numeric} A numeric representing the respondent's age when they first started smoking daily.}
 
-\item{SMK_31}{An numeric representing the number of cigarettes smoked per day for daily smokers.}
+\item{SMK_31}{\link{integer} An integer representing the number of cigarettes smoked per day for daily smokers.}
 
-\item{SMK_41}{A numeric value representing the number of cigarettes smoked per day for occasional smokers.}
+\item{SMK_41}{\link{numeric} A numeric representing the number of cigarettes smoked per day for occasional smokers.}
 
-\item{SMK_53}{A numeric value representing the number of cigarettes smoked per day for former daily smokers.}
+\item{SMK_53}{\link{numeric} A numeric representing the number of cigarettes smoked per day for former daily smokers.}
 
-\item{SMK_42}{A numeric value representing the number of days in past month the respondent smoked at least 1 cigarette (for occasional smokers).}
+\item{SMK_42}{\link{numeric} A numeric representing the number of days in past month the respondent smoked at least 1 cigarette (for occasional smokers).}
 
-\item{SMK_21}{A numeric value representing the respondent's age when they first started smoking occasionally.}
+\item{SMK_21}{\link{numeric} A numeric representing the respondent's age when they first started smoking occasionally.}
 
-\item{SMK_11}{An integer representing whether the respondent has smoked at least 100 cigarettes in their lifetime:
-\itemize{
-\item 1: Yes
-\item 2: No
-}}
+\item{SMK_11}{\link{integer} An integer representing whether the respondent has smoked at least 100 cigarettes in their lifetime.}
 }
 \value{
-A numeric value representing the pack years for the respondent's smoking history.
-\itemize{
-\item If \code{CLC_AGE} is missing or negative, returns \code{tagged_na("b")}.
-\item For different smoking statuses (\code{SMKDSTY}), the function calculates pack years as follows:
-\itemize{
-\item \strong{Daily smoker (1):} \code{pmax(((CLC_AGE - SMK_52) * (SMK_31 / 20)), 0.0137)}
-\item \strong{Occasional smoker (former daily) (2):}
-\code{pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137) + ((pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_54))}
-\item \strong{Occasional smoker (never daily) (3):}
-\code{(pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_21)}
-\item \strong{Former daily smoker (4):}
-\code{pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137)}
-\item \strong{Former occasional smoker (5)}:
-\itemize{
-\item If \code{SMK_11 == 1} (≥100 cigarettes): \code{0.0137}
-\item If \code{SMK_11 == 2} (<100 cigarettes): \code{0.007}
-}
-\item \strong{Non-smoker (6):} \code{0}
-\item If \code{SMKDSTY} is \code{NA(a)}, returns \code{tagged_na("a")}.
-\item For all other unexpected inputs, returns \code{tagged_na("b")}.
-}
-}
+\link{numeric} A numeric representing the pack years for the respondent's smoking history. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function calculates an individual's smoking pack-years based on various CHMS smoking variables. Pack years is a measure used by researchers to quantify lifetime exposure to cigarette use.
 }
+\details{
+Pack-years is a standardized measure of lifetime cigarette exposure used in epidemiological
+research and clinical practice. The calculation varies by smoking pattern:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Smoking Patterns:**
+     - Daily smokers: Consistent daily consumption over time period
+     - Occasional smokers: Variable consumption adjusted for frequency
+     - Former smokers: Historical consumption during smoking periods
+
+     **Minimum Values:**
+     The function applies minimum pack-year values (0.0137 or 0.007) to prevent
+     underestimation of health risks for light smokers.
+
+     **Missing Data Codes:**
+     - `SMKDSTY`: `96` (Not applicable), `97-99` (Missing)
+     - `CLC_AGE`: `96` (Not applicable), `97-99` (Missing)
+     - Other variables: Handled within the formula logic.
+}\if{html}{\out{</div>}}
+}
 \examples{
-
-# Example 1: Age = 40, daily smoker, started smoking at 20, and smokes 30 cigs/day (1.5 packs/day).
-pack_years_fun(SMKDSTY = 1, CLC_AGE = 40, SMK_52 = 20, SMK_31 = 30)
-# Output: 30 (pack years)
-
-# Example 2: A former occasional smoker who smoked at least 100 cigarettes in their lifetime.
+# Scalar usage: Single respondent
+# A former occasional smoker who smoked at least 100 cigarettes in their lifetime.
 pack_years_fun(
   SMKDSTY = 5, CLC_AGE = 50, SMK_54 = 40, SMK_52 = 18, SMK_31 = NA,
   SMK_41 = 15, SMK_53 = NA, SMK_42 = 3, SMK_21 = 25, SMK_11 = 1
 )
-# Output: 0.0137 (pack years)
+# Output: 0.0137
+
+# Example: Respondent has non-response values for all inputs.
+result <- pack_years_fun(
+  SMKDSTY = 98, CLC_AGE = 998, SMK_54 = 98, SMK_52 = 98, SMK_31 = 98,
+  SMK_41 = 98, SMK_53 = 98, SMK_42 = 98, SMK_21 = 98, SMK_11 = 8
+)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+
+# Multiple respondents
+pack_years_fun(
+  SMKDSTY = c(1, 5, 6),
+  CLC_AGE = c(40, 50, 60),
+  SMK_52 = c(20, 18, NA),
+  SMK_31 = c(30, NA, NA),
+  SMK_54 = c(NA, 40, NA),
+  SMK_41 = c(NA, 15, NA),
+  SMK_53 = c(NA, NA, NA),
+  SMK_42 = c(NA, 3, NA),
+  SMK_21 = c(NA, 25, NA),
+  SMK_11 = c(NA, 1, NA)
+)
+# Returns: c(30, 0.0137, 0)
 
 }
 \seealso{

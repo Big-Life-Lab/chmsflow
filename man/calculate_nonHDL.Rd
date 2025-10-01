@@ -7,31 +7,52 @@
 calculate_nonHDL(LAB_CHOL, LAB_HDL)
 }
 \arguments{
-\item{LAB_CHOL}{A numeric representing a respondent's total cholesterol level in mmol/L.}
+\item{LAB_CHOL}{\link{numeric} A numeric representing a respondent's total cholesterol level in mmol/L.}
 
-\item{LAB_HDL}{A numeric representing a respondent's HDL cholesterol level in mmol/L.}
+\item{LAB_HDL}{\link{numeric} A numeric representing a respondent's HDL cholesterol level in mmol/L.}
 }
 \value{
-A numeric representing the calculated non-HDL cholesterol level (in mmol.L) if both \code{LAB_CHOL} and
-\code{LAB_HDL} are below the specified thresholds; otherwise, it returns NA(b) to indicate that the calculation is not applicable.
+\link{numeric} The calculated non-HDL cholesterol level (in mmol/L). If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function calculates a respondent's non-HDL cholesterol level by subtracting their HDL cholesterol level
 from their total cholesterol level. It first checks whether the input values \code{LAB_CHOL} (total cholesterol)
-and \code{LAB_HDL} (HDL cholesterol) are both less than certain thresholds (99.6 mmol/L and 9.96 mmol/L, respectively).
-If both conditions are met, it calculates the non-HDL cholesterol level; otherwise, it sets the non-HDL value to
-NA to indicate that the calculation is not applicable.
+and \code{LAB_HDL} (HDL cholesterol) are within valid ranges.
 }
 \details{
 The function calculates the non-HDL cholesterol level by subtracting the HDL cholesterol level from the total cholesterol level.
-It first checks if both \code{LAB_CHOL} and \code{LAB_HDL} are less than the specified thresholds (99.6 mmol/L and 9.96 mmol/L, respectively).
-If both conditions are met and neither input is missing, the non-HDL cholesterol level is calculated. If either of the conditions
-is not met or if either input is missing (NA), the function returns NA(b) to indicate that the calculation is not applicable.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `LAB_CHOL`:
+       - `99.96`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `99.97-99.99`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+     - `LAB_HDL`:
+       - `9.96`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `9.97-9.99`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
+# Scalar usage: Single respondent
+# Example: Respondent has total cholesterol of 5.0 mmol/L and HDL cholesterol of 1.5 mmol/L.
+calculate_nonHDL(LAB_CHOL = 5.0, LAB_HDL = 1.5)
+# Output: 3.5
 
-# Example: Respondent has total cholesterol of 50 mmol/L and HDL cholesterol of 5 mmol/L.
-calculate_nonHDL(LAB_CHOL = 50, LAB_HDL = 5)
-# Output: 45 (non-HDL cholesterol = total cholesterol - HDL cholesterol = 50 - 5 = 45)
+# Example: Respondent has non-response values for cholesterol.
+result <- calculate_nonHDL(LAB_CHOL = 99.98, LAB_HDL = 1.5)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
+# Multiple respondents
+calculate_nonHDL(LAB_CHOL = c(5.0, 6.0, 7.0), LAB_HDL = c(1.5, 1.0, 2.0))
+# Returns: c(3.5, 5.0, 5.0)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(non_hdl = calculate_nonHDL(LAB_CHOL, LAB_HDL))
+
+}
+\seealso{
+\code{\link[=categorize_nonHDL]{categorize_nonHDL()}}
 }

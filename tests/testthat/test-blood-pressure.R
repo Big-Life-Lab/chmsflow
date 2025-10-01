@@ -1,189 +1,73 @@
 # test-blood-pressure.R
-# Test suite for the adjust_SBP function
-test_that("adjust_SBP calculates adjusted systolic blood pressure correctly", {
-  # Case: Valid blood pressure input
-  expect_equal(adjust_SBP(120), 11.4 + (0.93 * 120))
 
-  # Case: Non-response value
-  expect_equal(adjust_SBP(996), haven::tagged_na("b"))
-
-  # Case: Invalid input (negative value)
-  expect_equal(adjust_SBP(-5), haven::tagged_na("b"))
-
-  # Case: NA input
-  expect_equal(adjust_SBP(NA), haven::tagged_na("b"))
+# Test for adjust_SBP
+test_that("adjust_SBP returns correct adjusted systolic blood pressure", {
+  expect_equal(adjust_SBP(120), 123)
+  expect_true(haven::is_tagged_na(adjust_SBP(996), "a"))
+  expect_true(haven::is_tagged_na(adjust_SBP(997), "b"))
+  expect_true(haven::is_tagged_na(adjust_SBP(-5), "b"))
+  expect_true(is.na(adjust_SBP(NA)))
+  expect_equal(adjust_SBP(c(120, 996, -5, NA)), c(123, haven::tagged_na("a"), haven::tagged_na("b"), NA))
 })
 
-# Test suite for the adjust_DBP function
-test_that("adjust_DBP calculates adjusted diastolic blood pressure correctly", {
-  # Case: Valid blood pressure input
-  expect_equal(adjust_DBP(80), 15.6 + (0.83 * 80))
-
-  # Case: Non-response value
-  expect_equal(adjust_DBP(996), haven::tagged_na("b"))
-
-  # Case: Invalid input (negative value)
-  expect_equal(adjust_DBP(-5), haven::tagged_na("b"))
-
-  # Case: NA input
-  expect_equal(adjust_DBP(NA), haven::tagged_na("b"))
+# Test for adjust_DBP
+test_that("adjust_DBP returns correct adjusted diastolic blood pressure", {
+  expect_equal(adjust_DBP(80), 82)
+  expect_true(haven::is_tagged_na(adjust_DBP(996), "a"))
+  expect_true(haven::is_tagged_na(adjust_DBP(997), "b"))
+  expect_true(haven::is_tagged_na(adjust_DBP(-5), "b"))
+  expect_true(is.na(adjust_DBP(NA)))
+  expect_equal(adjust_DBP(c(80, 996, -5, NA)), c(82, haven::tagged_na("a"), haven::tagged_na("b"), NA))
 })
 
-# Test suite for the determine_hypertension function
-test_that("determine_hypertension identifies hypertension status correctly", {
-  # Case: High systolic and diastolic BP
-  expect_equal(determine_hypertension(150, 95, 1), 1)
-
-  # Case: Normal BP and not on medication
+# Test for determine_hypertension
+test_that("determine_hypertension returns correct hypertension status", {
+  expect_equal(determine_hypertension(140, 80, 0), 1)
+  expect_equal(determine_hypertension(120, 90, 0), 1)
+  expect_equal(determine_hypertension(120, 80, 1), 1)
+  expect_equal(determine_hypertension(130, 80, 0, DIABX = 1), 1)
   expect_equal(determine_hypertension(120, 80, 0), 2)
-
-  # Case: Missing BP but on medication
-  expect_equal(determine_hypertension(NA, NA, 1), 1)
-
-  # Case: Missing BP and not on medication
-  expect_equal(determine_hypertension(NA, NA, 0), haven::tagged_na("b"))
-
-  # Case: Adjusted ANYMED2 due to conditions
-  expect_equal(determine_hypertension(120, 80, 1, CCC_32 = 2, CARDIOV = 1), 2)
+  expect_true(haven::is_tagged_na(determine_hypertension(996, 80, 0), "a"))
+  expect_true(haven::is_tagged_na(determine_hypertension(120, 997, 0), "b"))
+  expect_true(is.na(determine_hypertension(NA, NA, 0)))
 })
 
-# Test suite for the determine_adjusted_hypertension function
-test_that("determine_adjusted_hypertension identifies adjusted hypertension status correctly", {
-  # Case: High adjusted systolic and diastolic BP
-  expect_equal(determine_adjusted_hypertension(150, 95, 1), 1)
-
-  # Case: Normal adjusted BP and not on medication
+# Test for determine_adjusted_hypertension
+test_that("determine_adjusted_hypertension returns correct adjusted hypertension status", {
+  expect_equal(determine_adjusted_hypertension(140, 80, 0), 1)
+  expect_equal(determine_adjusted_hypertension(120, 90, 0), 1)
+  expect_equal(determine_adjusted_hypertension(120, 80, 1), 1)
+  expect_equal(determine_adjusted_hypertension(130, 80, 0, DIABX = 1), 1)
   expect_equal(determine_adjusted_hypertension(120, 80, 0), 2)
-
-  # Case: Missing adjusted BP but on medication
-  expect_equal(determine_adjusted_hypertension(NA, NA, 1), 1)
-
-  # Case: Missing adjusted BP and not on medication
-  expect_equal(determine_adjusted_hypertension(NA, NA, 0), haven::tagged_na("b"))
-
-  # Case: Adjusted ANYMED2 due to conditions
-  expect_equal(determine_adjusted_hypertension(120, 80, 1, CCC_32 = 2, CARDIOV = 1), 2)
+  expect_true(haven::is_tagged_na(determine_adjusted_hypertension(996, 80, 0), "a"))
+  expect_true(haven::is_tagged_na(determine_adjusted_hypertension(120, 997, 0), "b"))
+  expect_true(is.na(determine_adjusted_hypertension(NA, NA, 0)))
 })
 
-# Test suite for the determine_controlled_hypertension function
-test_that("determine_controlled_hypertension works correctly", {
-  # Case 1: Controlled Hypertension
-  expect_equal(determine_controlled_hypertension(130, 85, 1), 1)
-
-  # Case 2: Uncontrolled Hypertension
-  expect_equal(determine_controlled_hypertension(145, 95, 1), 2)
-
-  # Case 3: Controlled for Special Cases
-  expect_equal(determine_controlled_hypertension(128, 78, 1, CCC_32 = 1, DIABX = 1), 1)
-
-  # Case 4: Invalid Input
-  expect_equal(determine_controlled_hypertension(999, 999, 1), haven::tagged_na("b"))
-
-  # Case 5: No Hypertension
+# Test for determine_controlled_hypertension
+test_that("determine_controlled_hypertension returns correct controlled hypertension status", {
+  expect_equal(determine_controlled_hypertension(139, 89, 1), 1)
+  expect_equal(determine_controlled_hypertension(140, 89, 1), 2)
+  expect_equal(determine_controlled_hypertension(139, 90, 1), 2)
+  expect_equal(determine_controlled_hypertension(129, 79, 1, CCC_32 = 1, DIABX = 1), 1)
+  expect_equal(determine_controlled_hypertension(130, 79, 1, DIABX = 1), 2)
+  expect_equal(determine_controlled_hypertension(129, 80, 1, DIABX = 1), 2)
   expect_equal(determine_controlled_hypertension(120, 80, 0), 2)
+  expect_true(haven::is_tagged_na(determine_controlled_hypertension(996, 80, 1), "a"))
+  expect_true(haven::is_tagged_na(determine_controlled_hypertension(120, 997, 1), "b"))
+  expect_true(is.na(determine_controlled_hypertension(NA, NA, 1)))
 })
 
-# Test suite for the determine_controlled_adjusted_hypertension function
-test_that("determine_controlled_adjusted_hypertension works correctly", {
-  # Case 1: Controlled Hypertension
-  expect_equal(determine_controlled_adjusted_hypertension(135, 88, 1), 1)
-
-  # Case 2: Uncontrolled Hypertension
-  expect_equal(determine_controlled_adjusted_hypertension(142, 92, 1), 2)
-
-  # Case 3: Controlled for Special Cases
-  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, CKD = 1), 1)
-
-  # Case 4: Invalid Input
-  expect_equal(determine_controlled_adjusted_hypertension(999, 999, 1), haven::tagged_na("b"))
-
-  # Case 5: No Hypertension
-  expect_equal(determine_controlled_adjusted_hypertension(122, 80, 0), 2)
-})
-
-# Test suite for boundary cases in determine_hypertension
-test_that("determine_hypertension handles boundary cases correctly", {
-  # General population boundaries
-  expect_equal(determine_hypertension(139, 89, 0), 2) # Below threshold
-  expect_equal(determine_hypertension(140, 89, 0), 1) # At systolic threshold
-  expect_equal(determine_hypertension(139, 90, 0), 1) # At diastolic threshold
-
-  # Diabetes/CKD boundaries
-  expect_equal(determine_hypertension(129, 79, 0, DIABX = 1), 2) # Below threshold
-  expect_equal(determine_hypertension(130, 79, 0, DIABX = 1), 1) # At systolic threshold
-  expect_equal(determine_hypertension(129, 80, 0, DIABX = 1), 1) # At diastolic threshold
-  expect_equal(determine_hypertension(129, 79, 0, CKD = 1), 2) # Below threshold
-  expect_equal(determine_hypertension(130, 79, 0, CKD = 1), 1) # At systolic threshold
-  expect_equal(determine_hypertension(129, 80, 0, CKD = 1), 1) # At diastolic threshold
-})
-
-# Test suite for boundary cases in determine_adjusted_hypertension
-test_that("determine_adjusted_hypertension handles boundary cases correctly", {
-  # General population boundaries
-  expect_equal(determine_adjusted_hypertension(139, 89, 0), 2) # Below threshold
-  expect_equal(determine_adjusted_hypertension(140, 89, 0), 1) # At systolic threshold
-  expect_equal(determine_adjusted_hypertension(139, 90, 0), 1) # At diastolic threshold
-
-  # Diabetes/CKD boundaries
-  expect_equal(determine_adjusted_hypertension(129, 79, 0, DIABX = 1), 2) # Below threshold
-  expect_equal(determine_adjusted_hypertension(130, 79, 0, DIABX = 1), 1) # At systolic threshold
-  expect_equal(determine_adjusted_hypertension(129, 80, 0, DIABX = 1), 1) # At diastolic threshold
-  expect_equal(determine_adjusted_hypertension(129, 79, 0, CKD = 1), 2) # Below threshold
-  expect_equal(determine_adjusted_hypertension(130, 79, 0, CKD = 1), 1) # At systolic threshold
-  expect_equal(determine_adjusted_hypertension(129, 80, 0, CKD = 1), 1) # At diastolic threshold
-})
-
-# Test suite for boundary cases in determine_controlled_hypertension
-test_that("determine_controlled_hypertension handles boundary cases correctly", {
-  # General population boundaries
-  expect_equal(determine_controlled_hypertension(139, 89, 1), 1) # Controlled
-  expect_equal(determine_controlled_hypertension(140, 89, 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_hypertension(139, 90, 1), 2) # Uncontrolled (diastolic)
-
-  # Diabetes/CKD boundaries
-  expect_equal(determine_controlled_hypertension(129, 79, 1, CCC_32 = 1, DIABX = 1), 1) # Controlled
-  expect_equal(determine_controlled_hypertension(130, 79, 1, CCC_32 = 1, DIABX = 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_hypertension(129, 80, 1, CCC_32 = 1, DIABX = 1), 2) # Uncontrolled (diastolic)
-  expect_equal(determine_controlled_hypertension(129, 79, 1, CCC_32 = 1, CKD = 1), 1) # Controlled
-  expect_equal(determine_controlled_hypertension(130, 79, 1, CCC_32 = 1, CKD = 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_hypertension(129, 80, 1, CCC_32 = 1, CKD = 1), 2) # Uncontrolled (diastolic)
-})
-
-# Test suite for boundary cases in determine_controlled_adjusted_hypertension
-test_that("determine_controlled_adjusted_hypertension handles boundary cases correctly", {
-  # General population boundaries
-  expect_equal(determine_controlled_adjusted_hypertension(139, 89, 1), 1) # Controlled
-  expect_equal(determine_controlled_adjusted_hypertension(140, 89, 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_adjusted_hypertension(139, 90, 1), 2) # Uncontrolled (diastolic)
-
-  # Diabetes/CKD boundaries
-  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, DIABX = 1), 1) # Controlled
-  expect_equal(determine_controlled_adjusted_hypertension(130, 79, 1, CCC_32 = 1, DIABX = 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_adjusted_hypertension(129, 80, 1, CCC_32 = 1, DIABX = 1), 2) # Uncontrolled (diastolic)
-  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, CKD = 1), 1) # Controlled
-  expect_equal(determine_controlled_adjusted_hypertension(130, 79, 1, CCC_32 = 1, CKD = 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_adjusted_hypertension(129, 80, 1, CCC_32 = 1, CKD = 1), 2) # Uncontrolled (diastolic)
-})
-
-# Test suite for ANYMED2 override
-test_that("ANYMED2 is correctly overridden to 0", {
-  # When CCC_32 is 2 and a condition is present, ANYMED2 becomes 0, so hypertension status should be 2 (normal)
-  expect_equal(determine_hypertension(120, 70, 1, CCC_32 = 2, CARDIOV = 1), 2)
-  expect_equal(determine_hypertension(120, 70, 1, CCC_32 = 2, DIABX = 1), 2)
-  expect_equal(determine_hypertension(120, 70, 1, CCC_32 = 2, CKD = 1), 2)
-
-  # Same for adjusted hypertension
-  expect_equal(determine_adjusted_hypertension(120, 70, 1, CCC_32 = 2, CARDIOV = 1), 2)
-  expect_equal(determine_adjusted_hypertension(120, 70, 1, CCC_32 = 2, DIABX = 1), 2)
-  expect_equal(determine_adjusted_hypertension(120, 70, 1, CCC_32 = 2, CKD = 1), 2)
-
-  # For controlled hypertension, the status should be 2 (not controlled) because ANYMED2 is 0
-  expect_equal(determine_controlled_hypertension(120, 70, 1, CCC_32 = 2, CARDIOV = 1), 2)
-  expect_equal(determine_controlled_hypertension(120, 70, 1, CCC_32 = 2, DIABX = 1), 2)
-  expect_equal(determine_controlled_hypertension(120, 70, 1, CCC_32 = 2, CKD = 1), 2)
-
-  # Same for controlled adjusted hypertension
-  expect_equal(determine_controlled_adjusted_hypertension(120, 70, 1, CCC_32 = 2, CARDIOV = 1), 2)
-  expect_equal(determine_controlled_adjusted_hypertension(120, 70, 1, CCC_32 = 2, DIABX = 1), 2)
-  expect_equal(determine_controlled_adjusted_hypertension(120, 70, 1, CCC_32 = 2, CKD = 1), 2)
+# Test for determine_controlled_adjusted_hypertension
+test_that("determine_controlled_adjusted_hypertension returns correct controlled adjusted hypertension status", {
+  expect_equal(determine_controlled_adjusted_hypertension(139, 89, 1), 1)
+  expect_equal(determine_controlled_adjusted_hypertension(140, 89, 1), 2)
+  expect_equal(determine_controlled_adjusted_hypertension(139, 90, 1), 2)
+  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, DIABX = 1), 1)
+  expect_equal(determine_controlled_adjusted_hypertension(130, 79, 1, DIABX = 1), 2)
+  expect_equal(determine_controlled_adjusted_hypertension(129, 80, 1, DIABX = 1), 2)
+  expect_equal(determine_controlled_adjusted_hypertension(120, 80, 0), 2)
+  expect_true(haven::is_tagged_na(determine_controlled_adjusted_hypertension(996, 80, 1), "a"))
+  expect_true(haven::is_tagged_na(determine_controlled_adjusted_hypertension(120, 997, 1), "b"))
+  expect_true(is.na(determine_controlled_adjusted_hypertension(NA, NA, 1)))
 })

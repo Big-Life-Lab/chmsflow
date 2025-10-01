@@ -7,32 +7,38 @@
 is_any_antiHTN_med(MEUCATC, NPI_25B)
 }
 \arguments{
-\item{MEUCATC}{A character vector representing the Anatomical Therapeutic Chemical (ATC) code of the medication.}
+\item{MEUCATC}{\link{character} ATC code of the medication.}
 
-\item{NPI_25B}{An integer representing the CHMS response for the time when the medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{NPI_25B}{\link{integer} Time when the medication was last taken.}
 }
 \value{
-A numeric, 1 if medication is in any anti-hypertensive drug class and 0 if it is not.
+\link{numeric} 1 if medication is an anti-hypertensive drug, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
-This function checks if a given medication for a CHMS respondent belongs to any anti-hypertensive drug class.
-The identification is based on the Anatomical Therapeutic Chemical (ATC) code of the medication and the time when the
-medication was last taken.
+This function checks if a given medication is any anti-hypertensive drug.
+This function processes multiple inputs efficiently.
 }
 \details{
-This function first identifies any anti-hypertensive drugs based on their ATC codes using the regular expression
-"C02-3" and "CO7-9" which matches ATC codes that start with "C02", "C03", "C07", "C08", and "C09". Specific sub-codes
-'C07AA07', 'C07AA12', 'C07AG02', 'C03BA08', 'C03CA01', and 'C02KX01' are excluded from the class. If the ATC
-code matches the pattern and is not in the exclusion list, and the medication was taken within the last month
-(NPI_25B <= 4), the medication is considered an anti-hypertensive drug, and the function returns TRUE.
-Otherwise, it returns FALSE.
+Identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03", "C07", "C08", or "C09", excluding specific sub-codes.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+     - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+}\if{html}{\out{</div>}}
 }
 \examples{
+# Scalar usage: Single respondent
+is_any_antiHTN_med("C07AB02", 4)
+# Returns: 1
 
-# Let's say the ATC code is "C07AB02" and the time last taken was within last month (4).
+# Example: Respondent has non-response values for all inputs.
+result <- is_any_antiHTN_med("9999998", 8)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
-is_any_antiHTN_med("C07AB02", 4) # Should return 1 (TRUE)
+# Multiple respondents
+is_any_antiHTN_med(c("C07AB02", "C07AA07"), c(4, 2))
+# Returns: c(1, 0)
 
 }

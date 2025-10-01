@@ -88,252 +88,183 @@ cycles1to2_any_antiHTN_meds(
 )
 }
 \arguments{
-\item{atc_101a}{Character vector representing the ATC code of respondent's first prescription medication.}
+\item{atc_101a}{\link{character} ATC code of respondent's first prescription medication.}
 
-\item{atc_102a}{Character vector representing the ATC code of respondent's second prescription medication.}
+\item{atc_102a}{\link{character} ATC code of respondent's second prescription medication.}
 
-\item{atc_103a}{Character vector representing the ATC code of respondent's third  prescription medication.}
+\item{atc_103a}{\link{character} ATC code of respondent's third prescription medication.}
 
-\item{atc_104a}{Character vector representing the ATC code of respondent's fourth prescription medication.}
+\item{atc_104a}{\link{character} ATC code of respondent's fourth prescription medication.}
 
-\item{atc_105a}{Character vector representing the ATC code of respondent's fifth prescription medication.}
+\item{atc_105a}{\link{character} ATC code of respondent's fifth prescription medication.}
 
-\item{atc_106a}{Character vector representing the ATC code of respondent's sixth prescription medication.}
+\item{atc_106a}{\link{character} ATC code of respondent's sixth prescription medication.}
 
-\item{atc_107a}{Character vector representing the ATC code of respondent's seventh prescription medication.}
+\item{atc_107a}{\link{character} ATC code of respondent's seventh prescription medication.}
 
-\item{atc_108a}{Character vector representing the ATC code of respondent's eighth prescription medication.}
+\item{atc_108a}{\link{character} ATC code of respondent's eighth prescription medication.}
 
-\item{atc_109a}{Character vector representing the ATC code of respondent's ninth prescription medication.}
+\item{atc_109a}{\link{character} ATC code of respondent's ninth prescription medication.}
 
-\item{atc_110a}{Character vector representing the ATC code of respondent's tenth prescription medication.}
+\item{atc_110a}{\link{character} ATC code of respondent's tenth prescription medication.}
 
-\item{atc_111a}{Character vector representing the ATC code of respondent's eleventh prescription medication.}
+\item{atc_111a}{\link{character} ATC code of respondent's eleventh prescription medication.}
 
-\item{atc_112a}{Character vector representing the ATC code of respondent's twelfth prescription medication.}
+\item{atc_112a}{\link{character} ATC code of respondent's twelfth prescription medication.}
 
-\item{atc_113a}{Character vector representing the ATC code of respondent's thirteenth prescription medication.}
+\item{atc_113a}{\link{character} ATC code of respondent's thirteenth prescription medication.}
 
-\item{atc_114a}{Character vector representing the ATC code of respondent's fourteenth prescription medication.}
+\item{atc_114a}{\link{character} ATC code of respondent's fourteenth prescription medication.}
 
-\item{atc_115a}{Character vector representing the ATC code of respondent's fifteenth prescription medication.}
+\item{atc_115a}{\link{character} ATC code of respondent's fifteenth prescription medication.}
 
-\item{atc_201a}{Character vector representing the ATC code of respondent's first over-the-counter medication.}
+\item{atc_201a}{\link{character} ATC code of respondent's first over-the-counter medication.}
 
-\item{atc_202a}{Character vector representing the ATC code of respondent's second over-the-counter medication.}
+\item{atc_202a}{\link{character} ATC code of respondent's second over-the-counter medication.}
 
-\item{atc_203a}{Character vector representing the ATC code of respondent's third over-the-counter medication.}
+\item{atc_203a}{\link{character} ATC code of respondent's third over-the-counter medication.}
 
-\item{atc_204a}{Character vector representing the ATC code of respondent's fourth over-the-counter medication.}
+\item{atc_204a}{\link{character} ATC code of respondent's fourth over-the-counter medication.}
 
-\item{atc_205a}{Character vector representing the ATC code of respondent's fifth over-the-counter medication.}
+\item{atc_205a}{\link{character} ATC code of respondent's fifth over-the-counter medication.}
 
-\item{atc_206a}{Character vector representing the ATC code of respondent's sixth over-the-counter medication.}
+\item{atc_206a}{\link{character} ATC code of respondent's sixth over-the-counter medication.}
 
-\item{atc_207a}{Character vector representing the ATC code of respondent's seventh over-the-counter medication.}
+\item{atc_207a}{\link{character} ATC code of respondent's seventh over-the-counter medication.}
 
-\item{atc_208a}{Character vector representing the ATC code of respondent's eighth over-the-counter medication.}
+\item{atc_208a}{\link{character} ATC code of respondent's eighth over-the-counter medication.}
 
-\item{atc_209a}{Character vector representing the ATC code of respondent's ninth over-the-counter medication.}
+\item{atc_209a}{\link{character} ATC code of respondent's ninth over-the-counter medication.}
 
-\item{atc_210a}{Character vector representing the ATC code of respondent's tenth over-the-counter medication.}
+\item{atc_210a}{\link{character} ATC code of respondent's tenth over-the-counter medication.}
 
-\item{atc_211a}{Character vector representing the ATC code of respondent's eleventh over-the-counter medication.}
+\item{atc_211a}{\link{character} ATC code of respondent's eleventh over-the-counter medication.}
 
-\item{atc_212a}{Character vector representing the ATC code of respondent's twelfth over-the-counter medication.}
+\item{atc_212a}{\link{character} ATC code of respondent's twelfth over-the-counter medication.}
 
-\item{atc_213a}{Character vector representing the ATC code of respondent's thirteenth over-the-counter medication.}
+\item{atc_213a}{\link{character} ATC code of respondent's thirteenth over-the-counter medication.}
 
-\item{atc_214a}{Character vector representing the ATC code of respondent's fourteenth over-the-counter medication.}
+\item{atc_214a}{\link{character} ATC code of respondent's fourteenth over-the-counter medication.}
 
-\item{atc_215a}{Character vector representing the ATC code of respondent's fifteenth over-the-counter medication.}
+\item{atc_215a}{\link{character} ATC code of respondent's fifteenth over-the-counter medication.}
 
-\item{atc_131a}{Character vector representing the ATC code of respondent's first new prescription medication.}
+\item{atc_131a}{\link{character} ATC code of respondent's first new prescription medication.}
 
-\item{atc_132a}{Character vector representing the ATC code of respondent's second new prescription medication.}
+\item{atc_132a}{\link{character} ATC code of respondent's second new prescription medication.}
 
-\item{atc_133a}{Character vector representing the ATC code of respondent's third new prescription medication.}
+\item{atc_133a}{\link{character} ATC code of respondent's third new prescription medication.}
 
-\item{atc_134a}{Character vector representing the ATC code of respondent's fourth new prescription medication.}
+\item{atc_134a}{\link{character} ATC code of respondent's fourth new prescription medication.}
 
-\item{atc_135a}{Character vector representing the ATC code of respondent's fifth new prescription medication.}
+\item{atc_135a}{\link{character} ATC code of respondent's fifth new prescription medication.}
 
-\item{atc_231a}{Character vector representing the ATC code of respondent's first new over-the-counter medication.}
+\item{atc_231a}{\link{character} ATC code of respondent's first new over-the-counter medication.}
 
-\item{atc_232a}{Character vector representing the ATC code of respondent's second new over-the-counter medication.}
+\item{atc_232a}{\link{character} ATC code of respondent's second new over-the-counter medication.}
 
-\item{atc_233a}{Character vector representing the ATC code of respondent's third new over-the-counter medication.}
+\item{atc_233a}{\link{character} ATC code of respondent's third new over-the-counter medication.}
 
-\item{atc_234a}{Character vector representing the ATC code of respondent's fourth new over-the-counter medication.}
+\item{atc_234a}{\link{character} ATC code of respondent's fourth new over-the-counter medication.}
 
-\item{atc_235a}{Character vector representing the ATC code of respondent's fifth new over-the-counter medication.}
+\item{atc_235a}{\link{character} ATC code of respondent's fifth new over-the-counter medication.}
 
-\item{mhr_101b}{Integer representing the response for when the first prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{mhr_101b}{\link{integer} Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).}
 
-\item{mhr_102b}{Integer representing the response for when the second prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{mhr_102b}{\link{integer} Response for when the second prescription medication was last taken (1–6).}
 
-\item{mhr_103b}{Integer representing the response for when the third prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{mhr_103b}{\link{integer} Response for when the third prescription medication was last taken (1–6).}
 
-\item{mhr_104b}{Integer representing the response for when the fourth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{mhr_104b}{\link{integer} Response for when the fourth prescription medication was last taken (1–6).}
 
-\item{mhr_105b}{Integer representing the response for when the fifth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{mhr_105b}{\link{integer} Response for when the fifth prescription medication was last taken (1–6).}
 
-\item{mhr_106b}{Integer representing the response for when the sixth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_107b}{Integer representing the response for when the seventh prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_108b}{Integer representing the response for when the eighth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_109b}{Integer representing the response for when the ninth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_110b}{Integer representing the response for when the tenth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_111b}{Integer representing the response for when the eleventh prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_112b}{Integer representing the response for when the twelfth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_113b}{Integer representing the response for when the thirteenth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_114b}{Integer representing the response for when the fourteenth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_115b}{Integer representing the response for when the fifteenth prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_201b}{Integer representing the response for when the first over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_202b}{Integer representing the response for when the second over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_203b}{Integer representing the response for when the third over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_204b}{Integer representing the response for when the fourth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_205b}{Integer representing the response for when the fifth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_206b}{Integer representing the response for when the sixth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_207b}{Integer representing the response for when the seventh over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_208b}{Integer representing the response for when the eighth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_209b}{Integer representing the response for when the ninth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_210b}{Integer representing the response for when the tenth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_211b}{Integer representing the response for when the eleventh over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_212b}{Integer representing the response for when the twelfth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_213b}{Integer representing the response for when the thirteenth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_214b}{Integer representing the response for when the fourteenth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_215b}{Integer representing the response for when the fifteenth over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_131b}{Integer representing the response for when the first new prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_132b}{Integer representing the response for when the second new prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_133b}{Integer representing the response for when the third new prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_134b}{Integer representing the response for when the fourth new prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_135b}{Integer representing the response for when the fifth new prescription medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_231b}{Integer representing the response for when the first new over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_232b}{Integer representing the response for when the second new over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_233b}{Integer representing the response for when the third new over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_234b}{Integer representing the response for when the fourth new over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
-
-\item{mhr_235b}{Integer representing the response for when the fifth new over-the-counter medication was last taken.
-1 = Today, 2 = Yesterday, 3 = Within the last week, 4 = Within the last month,
-5 = More than a month ago, 6 = Never taken}
+\item{mhr_106b}{\link{integer} Response for when the sixth prescription medication was last taken (1–6).}
+
+\item{mhr_107b}{\link{integer} Response for when the seventh prescription medication was last taken (1–6).}
+
+\item{mhr_108b}{\link{integer} Response for when the eighth prescription medication was last taken (1–6).}
+
+\item{mhr_109b}{\link{integer} Response for when the ninth prescription medication was last taken (1–6).}
+
+\item{mhr_110b}{\link{integer} Response for when the tenth prescription medication was last taken (1–6).}
+
+\item{mhr_111b}{\link{integer} Response for when the eleventh prescription medication was last taken (1–6).}
+
+\item{mhr_112b}{\link{integer} Response for when the twelfth prescription medication was last taken (1–6).}
+
+\item{mhr_113b}{\link{integer} Response for when the thirteenth prescription medication was last taken (1–6).}
+
+\item{mhr_114b}{\link{integer} Response for when the fourteenth prescription medication was last taken (1–6).}
+
+\item{mhr_115b}{\link{integer} Response for when the fifteenth prescription medication was last taken (1–6).}
+
+\item{mhr_201b}{\link{integer} Response for when the first over-the-counter medication was last taken (1–6).}
+
+\item{mhr_202b}{\link{integer} Response for when the second over-the-counter medication was last taken (1–6).}
+
+\item{mhr_203b}{\link{integer} Response for when the third over-the-counter medication was last taken (1–6).}
+
+\item{mhr_204b}{\link{integer} Response for when the fourth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_205b}{\link{integer} Response for when the fifth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_206b}{\link{integer} Response for when the sixth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_207b}{\link{integer} Response for when the seventh over-the-counter medication was last taken (1–6).}
+
+\item{mhr_208b}{\link{integer} Response for when the eighth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_209b}{\link{integer} Response for when the ninth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_210b}{\link{integer} Response for when the tenth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_211b}{\link{integer} Response for when the eleventh over-the-counter medication was last taken (1–6).}
+
+\item{mhr_212b}{\link{integer} Response for when the twelfth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_213b}{\link{integer} Response for when the thirteenth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_214b}{\link{integer} Response for when the fourteenth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_215b}{\link{integer} Response for when the fifteenth over-the-counter medication was last taken (1–6).}
+
+\item{mhr_131b}{\link{integer} Response for when the first new prescription medication was last taken (1–6).}
+
+\item{mhr_132b}{\link{integer} Response for when the second new prescription medication was last taken (1–6).}
+
+\item{mhr_133b}{\link{integer} Response for when the third new prescription medication was last taken (1–6).}
+
+\item{mhr_134b}{\link{integer} Response for when the fourth new prescription medication was last taken (1–6).}
+
+\item{mhr_135b}{\link{integer} Response for when the fifth new prescription medication was last taken (1–6).}
+
+\item{mhr_231b}{\link{integer} Response for when the first new over-the-counter medication was last taken (1–6).}
+
+\item{mhr_232b}{\link{integer} Response for when the second new over-the-counter medication was last taken (1–6).}
+
+\item{mhr_233b}{\link{integer} Response for when the third new over-the-counter medication was last taken (1–6).}
+
+\item{mhr_234b}{\link{integer} Response for when the fourth new over-the-counter medication was last taken (1–6).}
+
+\item{mhr_235b}{\link{integer} Response for when the fifth new over-the-counter medication was last taken (1–6).}
 }
 \value{
-anymed, a numeric set to 1 if the person is taking any anti-hypertensive medication, NA if no information is available, 0 otherwise.
+\link{numeric} Returns 1 if the person is taking any anti-hypertensive medication, 0 otherwise. If all medication information is missing, it returns a tagged NA.
 }
 \description{
 This function checks if a person is taking any anti-hypertensive medication based on the provided Anatomical Therapeutic Chemical (ATC) codes for medications
 and the Canadian Health Measures Survey (CHMS) response for the time when the medication was last taken.
+}
+\details{
+The function identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03", "C07", "C08", or "C09", excluding specific sub-codes. It checks all medication variables provided in the input data frame.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - The function handles tagged NAs from the `is_any_antiHTN_med` function and propagates them.
+}\if{html}{\out{</div>}}
+}
+\examples{
+# This is a wrapper function and is not intended to be called directly by the user.
+# See `is_any_antiHTN_med` for usage examples.
 }
 \seealso{
 \code{is_any_antiHTN_med}

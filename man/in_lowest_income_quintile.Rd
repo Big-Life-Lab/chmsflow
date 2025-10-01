@@ -7,26 +7,47 @@
 in_lowest_income_quintile(incq)
 }
 \arguments{
-\item{incq}{Categorical value indicating the income category as defined by the categorize_income function.}
+\item{incq}{\link{integer} A categorical vector indicating the income category as defined by the categorize_income function.}
 }
 \value{
-A categorical value indicating whether the individual is in the lowest income quintile:
+\link{integer} Whether the individual is in the lowest income quintile:
 \itemize{
 \item 1: In the lowest income quntile
 \item 2: Not in the lowest income quntile
-\item NA(b): Missing or invalid input
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function checks if an individual's income category corresponds to the lowest income quintile.
 }
+\details{
+This function identifies individuals in the lowest income quintile, a common indicator for socioeconomic disadvantage.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - Propagates tagged NAs from the input `incq`.
+}\if{html}{\out{</div>}}
+}
 \examples{
-# Example 1: Check if an income category of 3 (between $35,000-50,000) is in the lowest quintile
+# Scalar usage: Single respondent
+# Example 1: Check if an income category of 3 is in the lowest quintile
 in_lowest_income_quintile(3)
 # Output: 2
 
-# Example 2: Check if an income category of 1 (below or equal to $21,500) is in the lowest quintile
+# Example 2: Check if an income category of 1 is in the lowest quintile
 in_lowest_income_quintile(1)
 # Output: 1
 
+# Multiple respondents
+in_lowest_income_quintile(c(3, 1, 5))
+# Returns: c(2, 1, 2)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(in_lowest_quintile = in_lowest_income_quintile(income_category))
+
+}
+\seealso{
+\code{\link[=categorize_income]{categorize_income()}}
 }

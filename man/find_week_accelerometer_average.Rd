@@ -15,22 +15,22 @@ find_week_accelerometer_average(
 )
 }
 \arguments{
-\item{AMMDMVA1}{A numeric representing minutes of exercise on Day 1 of accelerometer measurement.}
+\item{AMMDMVA1}{\link{numeric} A numeric representing minutes of exercise on Day 1 of accelerometer measurement.}
 
-\item{AMMDMVA2}{A numeric representing minutes of exercise on Day 2 of accelerometer measurement.}
+\item{AMMDMVA2}{\link{numeric} A numeric representing minutes of exercise on Day 2 of accelerometer measurement.}
 
-\item{AMMDMVA3}{A numeric representing minutes of exercise on Day 3 of accelerometer measurement.}
+\item{AMMDMVA3}{\link{numeric} A numeric representing minutes of exercise on Day 3 of accelerometer measurement.}
 
-\item{AMMDMVA4}{A numeric representing minutes of exercise on Day 4 of accelerometer measurement.}
+\item{AMMDMVA4}{\link{numeric} A numeric representing minutes of exercise on Day 4 of accelerometer measurement.}
 
-\item{AMMDMVA5}{A numeric representing minutes of exercise on Day 5 of accelerometer measurement.}
+\item{AMMDMVA5}{\link{numeric} A numeric representing minutes of exercise on Day 5 of accelerometer measurement.}
 
-\item{AMMDMVA6}{A numeric representing minutes of exercise on Day 6 of accelerometer measurement.}
+\item{AMMDMVA6}{\link{numeric} A numeric representing minutes of exercise on Day 6 of accelerometer measurement.}
 
-\item{AMMDMVA7}{A numeric representing minutes of exercise on Day 7 of accelerometer measurement.}
+\item{AMMDMVA7}{\link{numeric} A numeric representing minutes of exercise on Day 7 of accelerometer measurement.}
 }
 \value{
-A numeric representing the average minutes of exercise per day across a week of accelerometer use.
+\link{numeric} The average minutes of exercise per day across a week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
 This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
@@ -38,12 +38,40 @@ parameters, each representing the minutes of exercise on a specific day (Day 1 t
 The function computes the average of these values to obtain the average minutes of exercise per day.
 }
 \details{
-The function calculates the average minutes of exercise per day by taking the mean of the seven input parameters.
+This function processes physical activity data from accelerometer measurements
+to create a weekly activity summary.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Data Quality Requirements:**
+     - Requires complete 7-day data (missing days result in tagged NA)
+     - This conservative approach ensures reliable activity estimates
+     - Zero values are preserved (represent valid no-activity days)
+
+     **Missing Data Codes:**
+     - For all input variables:
+       - `9996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `9997-9999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
 }
 \examples{
-
+# Scalar usage: Single respondent
 # Example: Calculate the average minutes of exercise per day for a week of accelerometer data.
 find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50)
-# Output: 35 (The average minutes of exercise per day across the week is 35 minutes.)
+# Output: 35
 
+# Example: Respondent has non-response values for all inputs.
+result <- find_week_accelerometer_average(9998, 9998, 9998, 9998, 9998, 9998, 9998)
+result # Shows: NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+
+# Multiple respondents
+find_week_accelerometer_average(
+  c(30, 20), c(40, 30), c(25, 35), c(35, 45),
+  c(20, 25), c(45, 55), c(50, 60)
+)
+# Returns: c(35, 39.28571)
+
+}
+\seealso{
+\code{\link[=minperday_to_minperweek]{minperday_to_minperweek()}} for activity unit conversion, \code{\link[=categorize_minperweek]{categorize_minperweek()}} for activity level classification
 }

@@ -3,16 +3,18 @@
 \docType{data}
 \name{variables}
 \alias{variables}
-\title{variables.csv}
-\value{
-\item{variables}{a data frame}
+\title{List of variables in chmsflow}
+\format{
+A data frame with X rows and Y columns.
+}
+\source{
+See \url{https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html} for more details.
+}
+\usage{
+data(variables)
 }
 \description{
 This dataset lists all the variables that are present in chmsflow.
-}
-\details{
-See the below link for more details about how the worksheet is structured
-\url{https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html}
 }
 \examples{
 data(variables)

@@ -7,21 +7,30 @@
 categorize_minperweek(minperweek)
 }
 \arguments{
-\item{minperweek}{Numeric value representing an individual's minutes of moderate-to-vigorous
+\item{minperweek}{\link{numeric} A numeric representing an individual's minutes of moderate-to-vigorous
 physical activity (MVPA) per week.}
 }
 \value{
-A categorical value indicating the physical activity category:
+\link{integer} A categorical indicating the physical activity category:
 \itemize{
 \item 1: Meets or exceeds the recommended 150 minutes of MVPA per week (minperweek >= 150)
 \item 2: Below the recommended 150 minutes of MVPA per week (minperweek < 150)
-\item NA(b): Missing or invalid input
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function categorizes individuals' weekly physical activity levels based on a threshold value.
 }
+\details{
+This function applies the national physical activity guideline of 150 minutes of moderate-to-vigorous physical activity (MVPA) per week.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
+     - Propagates tagged NAs from the input `minperweek`.
+}\if{html}{\out{</div>}}
+}
 \examples{
+# Scalar usage: Single respondent
 # Example 1: Categorize 180 minutes of MVPA per week as meeting the recommendation
 categorize_minperweek(180)
 # Output: 1
@@ -30,4 +39,16 @@ categorize_minperweek(180)
 categorize_minperweek(120)
 # Output: 2
 
+# Multiple respondents
+categorize_minperweek(c(180, 120, 150))
+# Returns: c(1, 2, 1)
+
+# Database usage: Applied to survey datasets
+library(dplyr)
+# dataset \%>\%
+#   mutate(pa_category = categorize_minperweek(min_per_week))
+
+}
+\seealso{
+\code{\link[=minperday_to_minperweek]{minperday_to_minperweek()}}
 }

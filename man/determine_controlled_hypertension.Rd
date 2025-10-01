@@ -15,53 +15,78 @@ determine_controlled_hypertension(
 )
 }
 \arguments{
-\item{BPMDPBPS}{An integer representing the systolic blood pressure measurement of the respondent.}
+\item{BPMDPBPS}{\link{integer} An integer representing the systolic blood pressure measurement of the respondent.}
 
-\item{BPMDPBPD}{An integer representing the diastolic blood pressure measurement of the respondent.}
+\item{BPMDPBPD}{\link{integer} An integer representing the diastolic blood pressure measurement of the respondent.}
 
-\item{ANYMED2}{An integer indicating whether the respondent is on medication for hypertension.
+\item{ANYMED2}{\link{integer} An integer indicating whether the respondent is on medication for hypertension.
 \itemize{
 \item 1: Yes
 \item 0: No
 }}
 
-\item{CCC_32}{An optional integer indicating whether the respondent is actually on medication for hypertension.
+\item{CCC_32}{\link{integer} An optional integer indicating whether the respondent is actually on medication for hypertension.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
 }}
 
-\item{CARDIOV}{An optional integer indicating the presence of cardiovascular disease, affecting medication status.
+\item{CARDIOV}{\link{integer} An optional integer indicating the presence of cardiovascular disease, affecting medication status.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
 }}
 
-\item{DIABX}{An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.
+\item{DIABX}{\link{integer} An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
 }}
 
-\item{CKD}{An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
+\item{CKD}{\link{integer} An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
 }}
 }
 \value{
-An integer representing the hypertension status:
+\link{integer} The hypertension status:
 \itemize{
 \item 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) when on hypertension medication)
-\item 2: Hypertension not controlled (BP ≥ 140/90 mmHg (or ≥ 130/80 mmHg if diabetes or CKD) when on hypertension medication)
-\item NA(b): Invalid input or non-response
+\item 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) when on hypertension medication)
+\item \code{haven::tagged_na("a")}: Not applicable
+\item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
 This function determines the controlled hypertension status of a respondent based on their systolic and diastolic blood pressure measurements and medication usage.
 }
-\examples{
+\details{
+This function assesses whether a respondent's hypertension is controlled:
 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     **Control Thresholds:**
+     - General population: < 140/90 mmHg
+     - Diabetes or CKD patients: < 130/80 mmHg
+
+     **Logic:**
+     - Only applies to respondents taking hypertension medication.
+     - If BP is below the threshold, hypertension is "controlled" (1).
+     - If BP is at or above the threshold, it is "not controlled" (2).
+
+     **Missing Data Codes:**
+     - `BPMDPBPS`, `BPMDPBPD`:
+       - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+     - `ANYMED2`:
+       - Tagged NA "a": Valid skip.
+       - Tagged NA "b": Don't know, refusal, or not stated.
+     - `CCC_32`, `CARDIOV`, `DIABX`, `CKD`:
+       - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+       - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+}\if{html}{\out{</div>}}
+}
+\examples{
+# Scalar usage: Single respondent
 # Example 1: Respondent has systolic BP = 150, diastolic BP = 95, and on medication.
 determine_controlled_hypertension(BPMDPBPS = 150, BPMDPBPD = 95, ANYMED2 = 1)
 # Output: 2 (Hypertension not controlled due to high SBP and SBP despite medication usage).
@@ -70,4 +95,20 @@ determine_controlled_hypertension(BPMDPBPS = 150, BPMDPBPD = 95, ANYMED2 = 1)
 determine_controlled_hypertension(BPMDPBPS = 120, BPMDPBPD = 80, ANYMED2 = 1)
 # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 
+# Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
+result <- determine_controlled_hypertension(BPMDPBPS = 996, BPMDPBPD = 996, ANYMED2 = 0)
+result # Shows: NA
+haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
+format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
+
+# Multiple respondents
+determine_controlled_hypertension(
+  BPMDPBPS = c(150, 120, 135), BPMDPBPD = c(95, 80, 85),
+  ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)
+)
+# Returns: c(2, 1, 2)
+
+}
+\seealso{
+\code{\link[=determine_controlled_adjusted_hypertension]{determine_controlled_adjusted_hypertension()}} for controlled status with adjusted BP
 }
