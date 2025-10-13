@@ -3,10 +3,7 @@
 \docType{data}
 \name{variables}
 \alias{variables}
-\title{List of variables in chmsflow}
-\format{
-A data frame with X rows and Y columns.
-}
+\title{variables.csv}
 \source{
 See \url{https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html} for more details.
 }

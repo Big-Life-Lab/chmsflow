@@ -23,11 +23,11 @@ library(chmsflow)
 
 ## 2. Recode medication variables for individual cycles
 
-Medication data object always has to be called "cyclex_meds" in order for recoding to work properly, with rest of the data being separated and called "cyclex" as stated in recoding-variables.qmd.
+The medication data object must always be named cyclex_meds for the recoding scripts to function correctly. All other data for the same cycle should be stored separately under the name cyclex, as specified in `recoding-variables.qmd`.
 
-Note that row headers for medication data of cycles 1, 4, and 6 must be put to lower case prior to recoding.
+Before recoding, ensure that row headers for medication data in cycles 1, 4, and 6 are converted to lowercase.
 
-```{r}
+```{r, warning=FALSE}
 # Load recodeflow and dplyr
 library(recodeflow)
 library(dplyr)
@@ -50,7 +50,7 @@ head(cycle3_ace_medication_data)
 
 ## 3. Merge recoded medication data from different cycles
 
-```{r}
+```{r, warning=FALSE}
 # Aggregating recoded cycle3 data by clinicid
 cycle3_ace_medication_data <- cycle3_ace_medication_data %>%
   group_by(clinicid) %>%
@@ -75,9 +75,9 @@ head(cycles2and3_ace_medication_data)
 
 ## 4. Example: Determine hypertension status by recoding medications
 
-If you need medication variables in your analysis (especially to derive other variables), always recode them before recoding other variables.
+If your analysis requires medication variables (particularly when deriving other variables), ***always perform medication recoding first***, before recoding any other variables.
 
-```{r}
+```{r, warning=FALSE}
 # Cycles 1-2
 # Recode medication variables first - anymed for hypertension and diab_drug for diabetes which is involved in determining hypertension status
 cycle2_htn_medication_data <- rec_with_table(cycle2_meds, c("clinicid", recodeflow:::select_vars_by_role("Drugs", variables)), variable_details = variable_details)

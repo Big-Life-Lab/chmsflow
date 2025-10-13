@@ -27,7 +27,7 @@ Use `rec_with_table()` of recodeflow to transform the variables of a CHMS datase
 
 At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst's responsibility to merge their required components in one database named "cyclex". However, keep medication data separate from the rest of the cycle data ([see here](recoding_medications.html)). Note that row headers for cycle 6 must be put to lower case prior to recoding.
 
-```{r}
+```{r, warning = FALSE}
 # Load recodeflow
 library(recodeflow)
 

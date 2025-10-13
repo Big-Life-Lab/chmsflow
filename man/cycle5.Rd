@@ -4,9 +4,6 @@
 \name{cycle5}
 \alias{cycle5}
 \title{Canadian Health Measures Survey (CHMS) Cycle 5}
-\format{
-A data frame with X rows and Y columns.
-}
 \source{
 Statistics Canada
 }

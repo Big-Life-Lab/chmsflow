@@ -3,10 +3,7 @@
 \docType{data}
 \name{variable_details}
 \alias{variable_details}
-\title{Details on variable recoding in chmsflow}
-\format{
-A data frame with X rows and Y columns.
-}
+\title{variable-details.csv}
 \source{
 See \url{https://big-life-lab.github.io/chmsflow/articles/variable_details.html} for more details.
 }

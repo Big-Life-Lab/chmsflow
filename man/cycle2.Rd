@@ -4,9 +4,6 @@
 \name{cycle2}
 \alias{cycle2}
 \title{Canadian Health Measures Survey (CHMS) Cycle 2}
-\format{
-A data frame with X rows and Y columns.
-}
 \source{
 Statistics Canada
 }
