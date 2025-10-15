@@ -97,9 +97,15 @@ reference:
 - title: CHMS dummy data
   desc: Cycle and medication dummy data for select CHMS cycles
   contents:
+  - cycle1
+  - cycle1_meds
   - cycle2
   - cycle2_meds
   - cycle3
   - cycle3_meds
   - cycle4
+  - cycle4_meds
   - cycle5
+  - cycle5_meds
+  - cycle6
+  - cycle6_meds
