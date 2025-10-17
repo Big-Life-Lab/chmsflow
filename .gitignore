@@ -64,9 +64,12 @@ src/*.o
 src/*.so
 src/*.dll
 
-# If you use renv for package dependency management, ignore these files
-renv.lock
-renv/
+# renv for package dependency management
+# Keep renv.lock and renv/activate.R in git for reproducibility
+# Ignore the local library and cache
+renv/library/
+renv/local/
+renv/staging/
 
 # If you use packrat for package dependency management, ignore these files
 packrat/
