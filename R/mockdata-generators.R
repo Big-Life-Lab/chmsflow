@@ -57,8 +57,7 @@
 #'
 #' @export
 create_cat_var <- function(var_raw, cycle, variable_details, variables = NULL,
-                            length, df_mock, prop_NA = NULL, seed = 100) {
-
+                           length, df_mock, prop_NA = NULL, seed = 100) {
   # Level 1: Get variable details for this raw variable + cycle
   var_details <- get_variable_details_for_raw(var_raw, cycle, variable_details, variables)
 
@@ -106,7 +105,6 @@ create_cat_var <- function(var_raw, cycle, variable_details, variables = NULL,
       new = sample(labels, length, replace = TRUE),
       stringsAsFactors = FALSE
     )
-
   } else {
     # Case with NA values using NA codes
     set.seed(seed)
@@ -192,9 +190,8 @@ create_cat_var <- function(var_raw, cycle, variable_details, variables = NULL,
 #'
 #' @export
 create_con_var <- function(var_raw, cycle, variable_details, variables = NULL,
-                            length, df_mock, prop_NA = NULL, seed = 100,
-                            distribution = "uniform") {
-
+                           length, df_mock, prop_NA = NULL, seed = 100,
+                           distribution = "uniform") {
   # Level 1: Get variable details for this raw variable + cycle
   var_details <- get_variable_details_for_raw(var_raw, cycle, variable_details, variables)
 
@@ -261,7 +258,7 @@ create_con_var <- function(var_raw, cycle, variable_details, variables = NULL,
 
   # Handle infinity
   if (is.infinite(overall_min)) overall_min <- 0
-  if (is.infinite(overall_max)) overall_max <- overall_min + 100  # Arbitrary upper bound
+  if (is.infinite(overall_max)) overall_max <- overall_min + 100 # Arbitrary upper bound
 
   # Level 2: Extract NA codes (if prop_NA specified)
   na_labels <- NULL
@@ -285,13 +282,12 @@ create_con_var <- function(var_raw, cycle, variable_details, variables = NULL,
   if (distribution == "normal") {
     # Normal distribution centered at midpoint
     midpoint <- (overall_min + overall_max) / 2
-    spread <- (overall_max - overall_min) / 4  # Use 1/4 of range as SD
+    spread <- (overall_max - overall_min) / 4 # Use 1/4 of range as SD
 
     values <- rnorm(n_regular, mean = midpoint, sd = spread)
 
     # Clip to range
     values <- pmax(overall_min, pmin(overall_max, values))
-
   } else {
     # Uniform distribution (default)
     values <- runif(n_regular, min = overall_min, max = overall_max)

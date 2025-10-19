@@ -54,13 +54,14 @@
 #'
 #' # Exclude derived variables
 #' cycle1_original <- get_cycle_variables("cycle1", variables, variable_details,
-#'                                         include_derived = FALSE)
+#'   include_derived = FALSE
+#' )
 #'
 #' @seealso \code{\link{parse_variable_start}}
 #'
 #' @export
 get_cycle_variables <- function(cycle, variables, variable_details,
-                                 include_derived = TRUE) {
+                                include_derived = TRUE) {
   # Basic validation
   if (is.null(cycle) || cycle == "") {
     return(data.frame(
@@ -99,7 +100,9 @@ get_cycle_variables <- function(cycle, variables, variable_details,
   # Extract raw variable names using parse_variable_start
   cycle_vars$variable_raw <- sapply(cycle_vars$variableStart, function(vs) {
     raw_name <- parse_variable_start(vs, cycle)
-    if (is.null(raw_name)) return(NA_character_)
+    if (is.null(raw_name)) {
+      return(NA_character_)
+    }
     return(raw_name)
   })
 
@@ -181,10 +184,11 @@ get_cycle_variables <- function(cycle, variables, variable_details,
 #'
 #' @export
 get_raw_variables <- function(cycle, variables, variable_details,
-                               include_derived = FALSE) {
+                              include_derived = FALSE) {
   # Get all cycle variables (harmonized)
   cycle_vars <- get_cycle_variables(cycle, variables, variable_details,
-                                     include_derived = include_derived)
+    include_derived = include_derived
+  )
 
   # Remove rows with NA raw variable names (e.g., DerivedVar that couldn't be parsed)
   cycle_vars <- cycle_vars[!is.na(cycle_vars$variable_raw), ]
@@ -301,7 +305,8 @@ get_variable_details_for_raw <- function(var_raw, cycle, variable_details, varia
     # Only match if variableStart is EXACTLY the var_raw (no :: or [] or Func:: or DerivedVar::)
     plain_matches <- variable_details[
       variable_details$variableStart == var_raw &
-      grepl(cycle, variable_details$databaseStart, fixed = TRUE), ]
+        grepl(cycle, variable_details$databaseStart, fixed = TRUE),
+    ]
 
     matches <- plain_matches
   }
@@ -385,24 +390,19 @@ get_variable_categories <- function(var_details, include_na = FALSE) {
         # If values not expanded, just use min-max representation
         all_values <- c(all_values, as.character(value))
       }
-
     } else if (parsed$type == "single_value") {
       # Single numeric value
       all_values <- c(all_values, as.character(parsed$value))
-
     } else if (parsed$type == "continuous") {
       # For continuous ranges, keep as-is (don't expand)
       # These will be used for continuous variable generation
       all_values <- c(all_values, as.character(value))
-
     } else if (parsed$type == "special") {
       # Special codes: copy, else, NA::a, NA::b
       all_values <- c(all_values, parsed$value)
-
     } else if (parsed$type == "function") {
       # Function calls: Func::function_name
       all_values <- c(all_values, parsed$value)
-
     } else {
       # Unknown type, use raw value
       all_values <- c(all_values, as.character(value))

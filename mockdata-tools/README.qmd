@@ -246,13 +246,13 @@ source("R/mockdata-parsers.R")
 var_start <- "cycle1::amsdmva1, [ammdmva1]"
 
 # What does cycle1 parse to?
-parse_variable_start(var_start, "cycle1")  # Should return "amsdmva1"
+parse_variable_start(var_start, "cycle1") # Should return "amsdmva1"
 
 # What does cycle2 parse to?
-parse_variable_start(var_start, "cycle2")  # Should return "ammdmva1"
+parse_variable_start(var_start, "cycle2") # Should return "ammdmva1"
 
 # What does cycle6 parse to?
-parse_variable_start(var_start, "cycle6")  # Should return "ammdmva1"
+parse_variable_start(var_start, "cycle6") # Should return "ammdmva1"
 ```
 
 ### Example 3: Understand range notation parsing
@@ -261,9 +261,9 @@ parse_variable_start(var_start, "cycle6")  # Should return "ammdmva1"
 source("R/mockdata-parsers.R")
 
 # Test different range notations
-parse_range_notation("[7,9]")        # Returns: "7,8,9"
-parse_range_notation("[18.5,25)")    # Returns: "18.5,25" with note "(continuous)"
-parse_range_notation("else")         # Returns: "else"
+parse_range_notation("[7,9]") # Returns: "7,8,9"
+parse_range_notation("[18.5,25)") # Returns: "18.5,25" with note "(continuous)"
+parse_range_notation("else") # Returns: "else"
 
 # Complex example from variable_details
 recodes <- "[18.5,25) :: 1; [7,9] :: .a(Not applicable); else :: .b(Missing)"
@@ -281,7 +281,7 @@ variables <- read.csv("inst/extdata/variables.csv", stringsAsFactors = FALSE)
 
 # Find variables with mixed format (cycle::var, [var])
 mixed_format <- variables[grepl("::", variables$variableStart) &
-                          grepl("\\[", variables$variableStart), ]
+  grepl("\\[", variables$variableStart), ]
 
 cat("Found", nrow(mixed_format), "variables using mixed format\n\n")
 
@@ -304,7 +304,7 @@ variable_details <- read.csv("inst/extdata/variable-details.csv", stringsAsFacto
 # Get all categorical variables for cycle1
 cycle1_vars <- get_cycle_variables("cycle1", variables, variable_details)
 categorical <- cycle1_vars[cycle1_vars$variableType == "Categorical" &
-                           !grepl("^DerivedVar::", cycle1_vars$variableStart), ]
+  !grepl("^DerivedVar::", cycle1_vars$variableStart), ]
 
 cat("Generating", nrow(categorical), "categorical variables for cycle1\n")
 
@@ -384,19 +384,19 @@ if (length(duplicates) > 0) {
 
 4. **Test generation**:
    ```{r eval=FALSE}
-   source("R/mockdata-parsers.R")
-   source("R/mockdata-helpers.R")
-   source("R/mockdata-generators.R")
+source("R/mockdata-parsers.R")
+source("R/mockdata-helpers.R")
+source("R/mockdata-generators.R")
 
-   variables <- read.csv("inst/extdata/variables.csv", stringsAsFactors = FALSE)
-   variable_details <- read.csv("inst/extdata/variable-details.csv", stringsAsFactors = FALSE)
+variables <- read.csv("inst/extdata/variables.csv", stringsAsFactors = FALSE)
+variable_details <- read.csv("inst/extdata/variable-details.csv", stringsAsFactors = FALSE)
 
-   df <- data.frame(id = 1:100)
-   result <- create_cat_var("my_new_var", "cycle1", df, variables, variable_details)
+df <- data.frame(id = 1:100)
+result <- create_cat_var("my_new_var", "cycle1", df, variables, variable_details)
 
-   if (!is.null(result)) {
-     table(result$my_new_var)
-   }
+if (!is.null(result)) {
+  table(result$my_new_var)
+}
    ```
 
 ### Task: Fix a variable that fails to parse
@@ -408,11 +408,11 @@ if (length(duplicates) > 0) {
 
 2. **Test parsing manually**:
    ```{r eval=FALSE}
-   source("R/mockdata-parsers.R")
+source("R/mockdata-parsers.R")
 
-   # Try parsing the variableStart
-   parse_variable_start("cycle1::old_name, [new_name]", "cycle1")
-   parse_variable_start("cycle1::old_name, [new_name]", "cycle2")
+# Try parsing the variableStart
+parse_variable_start("cycle1::old_name, [new_name]", "cycle1")
+parse_variable_start("cycle1::old_name, [new_name]", "cycle2")
    ```
 
 3. **Common fixes**:

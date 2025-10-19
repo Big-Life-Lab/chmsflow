@@ -59,8 +59,12 @@
 #' @export
 parse_variable_start <- function(variable_start, cycle) {
   # Basic validation
-  if (is.null(variable_start) || is.null(cycle)) return(NULL)
-  if (variable_start == "" || cycle == "") return(NULL)
+  if (is.null(variable_start) || is.null(cycle)) {
+    return(NULL)
+  }
+  if (variable_start == "" || cycle == "") {
+    return(NULL)
+  }
 
   # Trim whitespace
   variable_start <- trimws(variable_start)
@@ -99,8 +103,8 @@ parse_variable_start <- function(variable_start, cycle) {
   # Strategy 3: Plain format "varname"
   # Check if it's NOT a DerivedVar, Func, or database-prefixed format
   if (!grepl("^DerivedVar::", variable_start) &&
-      !grepl("^Func::", variable_start) &&
-      !grepl("::", variable_start, fixed = TRUE)) {
+    !grepl("^Func::", variable_start) &&
+    !grepl("::", variable_start, fixed = TRUE)) {
     # Simple variable name, use as-is
     return(trimws(variable_start))
   }
@@ -165,9 +169,9 @@ parse_variable_start <- function(variable_start, cycle) {
 #' # Returns: list(min=30, max=Inf, min_inclusive=TRUE, max_inclusive=FALSE, type="continuous")
 #'
 #' # Special cases
-#' parse_range_notation("NA::a")   # Returns: list(type="special", value="NA::a")
-#' parse_range_notation("copy")    # Returns: list(type="special", value="copy")
-#' parse_range_notation("else")    # Returns: list(type="special", value="else")
+#' parse_range_notation("NA::a") # Returns: list(type="special", value="NA::a")
+#' parse_range_notation("copy") # Returns: list(type="special", value="copy")
+#' parse_range_notation("else") # Returns: list(type="special", value="else")
 #'
 #' @note Adapted from cchsflow v4.0.0 (2025-07-27) - universal across recodeflow projects
 #' @export
@@ -293,7 +297,6 @@ parse_range_notation <- function(range_string, range_type = "auto", expand_integ
       min_inclusive = min_inclusive,
       max_inclusive = max_inclusive
     ))
-
   } else if (range_type == "continuous") {
     return(list(
       type = "continuous",

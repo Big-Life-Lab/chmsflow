@@ -85,7 +85,8 @@ test_that("get_cycle_variables filters by exact cycle match", {
     cycles <- strsplit(db_start, ",")[[1]]
     cycles <- trimws(cycles)
     expect_true("cycle1" %in% cycles,
-                info = paste("Variable", cycle1_vars$variable[i], "should have cycle1 in databaseStart"))
+      info = paste("Variable", cycle1_vars$variable[i], "should have cycle1 in databaseStart")
+    )
   }
 })
 
@@ -106,8 +107,10 @@ test_that("get_cycle_variables uses exact match (not substring)", {
 
     # If this variable is in cycle1_meds but NOT in cycle1, that's an error
     if ("cycle1_meds" %in% cycles && !"cycle1" %in% cycles) {
-      fail(paste("Found cycle1_meds-only variable in cycle1 results:",
-                 cycle1_vars$variable[i]))
+      fail(paste(
+        "Found cycle1_meds-only variable in cycle1 results:",
+        cycle1_vars$variable[i]
+      ))
     }
   }
 
@@ -144,7 +147,8 @@ test_that("get_raw_variables returns unique raw variable names", {
 
   # Check that all variable_raw are unique
   expect_equal(nrow(raw_vars), length(unique(raw_vars$variable_raw)),
-               info = "All raw variable names should be unique")
+    info = "All raw variable names should be unique"
+  )
 })
 
 test_that("get_raw_variables groups harmonized variables correctly", {
@@ -158,7 +162,8 @@ test_that("get_raw_variables groups harmonized variables correctly", {
   for (i in 1:nrow(raw_vars)) {
     harmonized_list <- strsplit(raw_vars$harmonized_vars[i], ", ")[[1]]
     expect_equal(raw_vars$n_harmonized[i], length(harmonized_list),
-                 info = paste("Count should match list length for", raw_vars$variable_raw[i]))
+      info = paste("Count should match list length for", raw_vars$variable_raw[i])
+    )
   }
 })
 
@@ -172,7 +177,8 @@ test_that("get_raw_variables excludes derived variables by default", {
 
   # Should not have NA in variable_raw (DerivedVar returns NA)
   expect_true(all(!is.na(raw_vars$variable_raw)),
-              info = "No NA raw variable names when derived excluded")
+    info = "No NA raw variable names when derived excluded"
+  )
 })
 
 # ==============================================================================
