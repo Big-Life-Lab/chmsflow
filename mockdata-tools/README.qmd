@@ -1,0 +1,435 @@
+---
+title: "MockData validation and testing tools"
+format: gfm
+---
+
+## Overview
+
+This folder contains diagnostic and validation tools for working with MockData and the CHMS metadata. These tools help identify issues in metadata, test parsing logic, and validate generated mock data.
+
+**Quick start:**
+```bash
+# Validate metadata quality
+Rscript mockdata-tools/validate-metadata.R
+
+# Test all cycles
+Rscript mockdata-tools/test-all-cycles.R
+```
+
+## Tools
+
+### 1. validate-metadata.R
+
+**Purpose**: Validate metadata quality and identify common issues
+
+**What it checks**:
+- Valid cycle names in `databaseStart`
+- `variableStart` entries parse correctly for all declared cycles
+- Format pattern distribution (bracket, mixed, cycle-prefixed, etc.)
+- Case sensitivity issues (variables differing only by case)
+- Categorical variables have `variable_details` specifications
+
+**Usage**:
+```bash
+Rscript mockdata-tools/validate-metadata.R
+```
+
+**Output**: R CMD check-style report with errors, warnings, and statistics
+
+**Exit codes**:
+- 0 = passed (with or without warnings)
+- 1 = failed (errors found)
+
+**Example output**:
+```
+=== METADATA VALIDATION REPORT ===
+
+CHECK 1: Validating databaseStart cycles
+-------------------------------------------
+✓ All databaseStart cycles are valid
+
+CHECK 2: Validating variableStart parsing
+-------------------------------------------
+✓ All non-DerivedVar variableStart entries parse successfully
+
+CHECK 3: variableStart format patterns
+---------------------------------------
+Format distribution:
+  Bracket format [varname]:            245 variables
+  Cycle-prefixed cycle::varname:        12 variables
+  Mixed cycle::var, [var]:              23 variables
+  DerivedVar::                          15 variables
+  Plain varname:                         8 variables
+
+...
+```
+
+**When to use**:
+- After editing variables.csv or variable-details.csv
+- When investigating parsing failures
+- Before committing metadata changes
+
+---
+
+### 2. test-all-cycles.R
+
+**Purpose**: Integration test that generates mock data for all 12 CHMS cycles
+
+**What it tests**:
+- MockData functions work across all cycles (cycle1-7, cycle1_meds-6_meds)
+- Metadata coverage: % of variables successfully generated
+- Identifies cycle-specific issues
+
+**Usage**:
+```bash
+Rscript mockdata-tools/test-all-cycles.R
+```
+
+**Output**: Per-cycle statistics showing coverage and any failures
+
+**Example output**:
+```
+=== CYCLE1 ===
+Variables: 245
+Generated: 243 (99.2%)
+Failed: 2
+
+=== CYCLE2 ===
+Variables: 267
+Generated: 265 (99.3%)
+Failed: 2
+
+...
+
+=== OVERALL SUMMARY ===
+Total coverage: 99.4% (2,156/2,169 variables)
+```
+
+**When to use**:
+- Verify MockData implementation works across all cycles
+- Identify coverage gaps
+- Test after modifying parser functions
+
+---
+
+### 3. create-comparison.R
+
+**Purpose**: Compare different approaches for parsing and generating mock data
+
+**What it does**:
+- Tests multiple parsing strategies side-by-side
+- Compares results to identify which approach handles edge cases best
+- Useful for debugging specific variableStart formats
+
+**Usage**:
+```bash
+Rscript mockdata-tools/create-comparison.R
+```
+
+**Output**: CSV file comparing approaches
+
+**When to use**:
+- Investigating why specific variables fail to parse
+- Testing new parsing logic
+- Understanding edge cases in variableStart formats
+
+---
+
+## Workflow for investigating issues
+
+### Issue: Variable fails to generate
+
+1. **Run validate-metadata.R** to check metadata quality
+   - Look for parsing errors for that specific variable
+   - Check if it has variable_details (if categorical)
+
+2. **Run test-all-cycles.R** to see which cycles fail
+   - Identifies if issue is cycle-specific or universal
+
+3. **Run create-comparison.R** to test parsing approaches
+   - Helps identify which parsing strategy should be used
+
+### Issue: MockData coverage is low
+
+1. **Run validate-metadata.R** → Check 5 (categorical variables)
+   - Identifies variables missing specifications
+
+2. **Run validate-metadata.R** → Check 2 (parsing)
+   - Shows which variableStart entries fail to parse
+
+3. Add missing variable_details or fix variableStart formats
+
+---
+
+## Understanding metadata formats
+
+The validation tools help identify the different `variableStart` formats used in CHMS:
+
+### Bracket format (default)
+```yaml
+variable: clc_age
+variableStart: [clc_age]
+databaseStart: cycle1, cycle2, cycle3, cycle4, cycle5, cycle6
+```
+Used when variable name is consistent across all cycles.
+
+### Cycle-prefixed format
+```yaml
+variable: gen_015
+variableStart: cycle1::gen_15, cycle2::gen_15, cycle3::gen_15
+databaseStart: cycle1, cycle2, cycle3
+```
+Used when each cycle needs explicit specification.
+
+### Mixed format (default/override pattern)
+```yaml
+variable: alc_015
+variableStart: cycle1::alcdmva1, [alcdmva2]
+databaseStart: cycle1, cycle2, cycle3, cycle4, cycle5, cycle6
+```
+- `cycle1::alcdmva1` = override for cycle1
+- `[alcdmva2]` = default for cycle2-6
+
+This reduces verbosity when only one or two cycles differ.
+
+### DerivedVar format
+```yaml
+variable: income_quintile
+variableStart: DerivedVar::[thi_01, dhhdsz]
+databaseStart: cycle1, cycle2, cycle3
+```
+Requires custom derivation logic, not simple variable mapping.
+
+---
+
+## How-to examples
+
+### Example 1: Generate mock data for cycle1
+
+```{r eval=FALSE}
+# Source MockData functions
+source("R/mockdata-parsers.R")
+source("R/mockdata-helpers.R")
+source("R/mockdata-generators.R")
+
+# Load metadata
+variables <- read.csv("inst/extdata/variables.csv", stringsAsFactors = FALSE)
+variable_details <- read.csv("inst/extdata/variable-details.csv", stringsAsFactors = FALSE)
+
+# Get variables available for cycle1
+cycle1_vars <- get_cycle_variables("cycle1", variables, variable_details)
+cat("Found", nrow(cycle1_vars), "variables for cycle1\n")
+
+# Get raw variables (excluding derived)
+raw_vars <- get_raw_variables("cycle1", variables, variable_details)
+cat("Found", nrow(raw_vars), "raw variables to generate\n")
+
+# Create empty data frame with 100 rows
+df_mock <- data.frame(id = 1:100)
+
+# Generate first categorical variable
+result <- create_cat_var("clc_sex", "cycle1", df_mock, variables, variable_details)
+if (!is.null(result)) {
+  df_mock <- result
+  cat("Successfully generated clc_sex\n")
+  table(df_mock$clc_sex)
+}
+```
+
+### Example 2: Debug a specific variable that fails to parse
+
+```{r eval=FALSE}
+# Source parser
+source("R/mockdata-parsers.R")
+
+# Test parsing for a specific variable across cycles
+var_start <- "cycle1::amsdmva1, [ammdmva1]"
+
+# What does cycle1 parse to?
+parse_variable_start(var_start, "cycle1")  # Should return "amsdmva1"
+
+# What does cycle2 parse to?
+parse_variable_start(var_start, "cycle2")  # Should return "ammdmva1"
+
+# What does cycle6 parse to?
+parse_variable_start(var_start, "cycle6")  # Should return "ammdmva1"
+```
+
+### Example 3: Understand range notation parsing
+
+```{r eval=FALSE}
+source("R/mockdata-parsers.R")
+
+# Test different range notations
+parse_range_notation("[7,9]")        # Returns: "7,8,9"
+parse_range_notation("[18.5,25)")    # Returns: "18.5,25" with note "(continuous)"
+parse_range_notation("else")         # Returns: "else"
+
+# Complex example from variable_details
+recodes <- "[18.5,25) :: 1; [7,9] :: .a(Not applicable); else :: .b(Missing)"
+# This would map:
+# - BMI 18.5 to <25 → category 1
+# - Values 7, 8, 9 → .a (tagged NA)
+# - Everything else → .b (tagged NA)
+```
+
+### Example 4: Find all variables using mixed format
+
+```{r eval=FALSE}
+# Load metadata
+variables <- read.csv("inst/extdata/variables.csv", stringsAsFactors = FALSE)
+
+# Find variables with mixed format (cycle::var, [var])
+mixed_format <- variables[grepl("::", variables$variableStart) &
+                          grepl("\\[", variables$variableStart), ]
+
+cat("Found", nrow(mixed_format), "variables using mixed format\n\n")
+
+# Show examples
+head(mixed_format[, c("variable", "variableStart", "databaseStart")], 10)
+```
+
+### Example 5: Batch generate all categorical variables for a cycle
+
+```{r eval=FALSE}
+# Source functions
+source("R/mockdata-parsers.R")
+source("R/mockdata-helpers.R")
+source("R/mockdata-generators.R")
+
+# Load metadata
+variables <- read.csv("inst/extdata/variables.csv", stringsAsFactors = FALSE)
+variable_details <- read.csv("inst/extdata/variable-details.csv", stringsAsFactors = FALSE)
+
+# Get all categorical variables for cycle1
+cycle1_vars <- get_cycle_variables("cycle1", variables, variable_details)
+categorical <- cycle1_vars[cycle1_vars$variableType == "Categorical" &
+                           !grepl("^DerivedVar::", cycle1_vars$variableStart), ]
+
+cat("Generating", nrow(categorical), "categorical variables for cycle1\n")
+
+# Create empty data frame
+df_mock <- data.frame(id = 1:1000)
+
+# Generate each variable
+success_count <- 0
+failed_vars <- c()
+
+for (i in 1:nrow(categorical)) {
+  var_name <- categorical$variable[i]
+  result <- create_cat_var(var_name, "cycle1", df_mock, variables, variable_details)
+
+  if (!is.null(result)) {
+    df_mock <- result
+    success_count <- success_count + 1
+  } else {
+    failed_vars <- c(failed_vars, var_name)
+  }
+}
+
+cat("\nGenerated:", success_count, "/", nrow(categorical), "\n")
+if (length(failed_vars) > 0) {
+  cat("Failed variables:\n")
+  print(failed_vars)
+}
+
+# Check the result
+dim(df_mock)
+head(df_mock[, 1:6])
+```
+
+### Example 6: Investigate case sensitivity issues
+
+```{r eval=FALSE}
+# Load metadata
+variables <- read.csv("inst/extdata/variables.csv", stringsAsFactors = FALSE)
+
+# Find variables that differ only by case
+var_names_lower <- tolower(variables$variable)
+duplicates <- var_names_lower[duplicated(var_names_lower)]
+
+if (length(duplicates) > 0) {
+  cat("Variables that differ only by case:\n")
+  for (dup in unique(duplicates)) {
+    matches <- variables$variable[var_names_lower == dup]
+    cat("  ", paste(matches, collapse = " vs "), "\n")
+  }
+} else {
+  cat("No case-only duplicates found\n")
+}
+```
+
+---
+
+## Common tasks
+
+### Task: Add a new categorical variable to metadata
+
+1. **Add entry to variables.csv**:
+   ```csv
+   variable,variableStart,databaseStart,variableType
+   my_new_var,[my_new_var],"cycle1, cycle2",Categorical
+   ```
+
+2. **Add categories to variable-details.csv**:
+   ```csv
+   variable,variableDetails
+   my_new_var,"1 :: 1; 2 :: 2; [7,9] :: .a(Not applicable); else :: .b(Missing)"
+   ```
+
+3. **Validate**:
+   ```bash
+   Rscript mockdata-tools/validate-metadata.R
+   ```
+
+4. **Test generation**:
+   ```{r eval=FALSE}
+   source("R/mockdata-parsers.R")
+   source("R/mockdata-helpers.R")
+   source("R/mockdata-generators.R")
+
+   variables <- read.csv("inst/extdata/variables.csv", stringsAsFactors = FALSE)
+   variable_details <- read.csv("inst/extdata/variable-details.csv", stringsAsFactors = FALSE)
+
+   df <- data.frame(id = 1:100)
+   result <- create_cat_var("my_new_var", "cycle1", df, variables, variable_details)
+
+   if (!is.null(result)) {
+     table(result$my_new_var)
+   }
+   ```
+
+### Task: Fix a variable that fails to parse
+
+1. **Identify the issue**:
+   ```bash
+   Rscript mockdata-tools/validate-metadata.R | grep "my_var"
+   ```
+
+2. **Test parsing manually**:
+   ```{r eval=FALSE}
+   source("R/mockdata-parsers.R")
+
+   # Try parsing the variableStart
+   parse_variable_start("cycle1::old_name, [new_name]", "cycle1")
+   parse_variable_start("cycle1::old_name, [new_name]", "cycle2")
+   ```
+
+3. **Common fixes**:
+   - Missing brackets: `varname` → `[varname]`
+   - Wrong cycle prefix: `cycle1:varname` → `cycle1::varname` (double colon)
+   - Mixed format issue: Add default in brackets `cycle1::var1` → `cycle1::var1, [var_default]`
+
+4. **Re-validate**:
+   ```bash
+   Rscript mockdata-tools/validate-metadata.R
+   ```
+
+---
+
+## Notes
+
+- All scripts assume you're running from the repository root
+- Scripts source functions from `R/mockdata-*.R` files
+- Metadata loaded from `inst/extdata/variables.csv` and `inst/extdata/variable-details.csv`
+- R code blocks are set to `eval=FALSE` to prevent execution during rendering
