@@ -1,0 +1,487 @@
+---
+# CHMS Database Metadata
+# Dublin Core compliant metadata for Canadian Health Measures Survey cycles
+# Schema: inst/metadata/documentation/database_metadata.yaml
+metadata_version: "1.0.0"
+last_updated: "2025-01-19"
+
+databases:
+  # ==========================================================================
+  # CHMS Cycle 1 (2007-2009)
+  # ==========================================================================
+  cycle1:
+    # Core Dublin Core fields
+    title: "Canadian Health Measures Survey - Cycle 1"
+    description: |
+      The first cycle of the Canadian Health Measures Survey (CHMS), conducted from
+      2007 to 2009. Provides comprehensive health measures including physical measurements,
+      laboratory tests, and health questionnaires for Canadians aged 6 to 79.
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Health measures"
+      - "Physical measurements"
+      - "Laboratory tests"
+      - "Population health"
+    date: "2007-2009"
+    type: "Survey"
+    language: "en, fr"
+
+    # Additional metadata
+    identifier:
+      doi: null
+      catalogue_number: "82-003-X"
+      sdds: "5071"
+    coverage:
+      spatial: "Canada"
+      temporal: "2007-03 to 2009-02"
+      population: "Canadians aged 6 to 79 years"
+
+    # CHMS-specific
+    cycle_number: 1
+    collection_period:
+      start: "2007-03-19"
+      end: "2009-02-25"
+    collection_sites: 15
+    sample_size: 5604
+    age_range: "6-79 years"
+
+    # Data access
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10263"
+      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/document/5071_D2_T1_V1-eng.htm"
+
+  # ==========================================================================
+  # CHMS Cycle 2 (2009-2011)
+  # ==========================================================================
+  cycle2:
+    title: "Canadian Health Measures Survey - Cycle 2"
+    description: |
+      The second cycle of the Canadian Health Measures Survey, conducted from
+      2009 to 2011. Continues comprehensive health measures including physical
+      measurements, laboratory tests, and health questionnaires.
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Health measures"
+      - "Physical measurements"
+      - "Laboratory tests"
+      - "Population health"
+    date: "2009-2011"
+    type: "Survey"
+    language: "en, fr"
+
+    identifier:
+      doi: null
+      catalogue_number: "82-003-X"
+      sdds: "5071"
+    coverage:
+      spatial: "Canada"
+      temporal: "2009-08 to 2011-11"
+      population: "Canadians aged 3 to 79 years"
+
+    cycle_number: 2
+    collection_period:
+      start: "2009-08"
+      end: "2011-11"
+    collection_sites: 18
+    provinces: 7  # NL, NS, QC, ON, MB, AB, BC
+    sample_size: 6395
+    age_range: "3-79 years"  # Extended to age 3
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10264"
+      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V2-eng.htm"
+
+  # ==========================================================================
+  # CHMS Cycle 3 (2012-2013)
+  # ==========================================================================
+  cycle3:
+    title: "Canadian Health Measures Survey - Cycle 3"
+    description: |
+      The third cycle of the Canadian Health Measures Survey, conducted from
+      2012 to 2013.
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Health measures"
+      - "Physical measurements"
+      - "Laboratory tests"
+      - "Population health"
+    date: "2012-2013"
+    type: "Survey"
+    language: "en, fr"
+
+    identifier:
+      doi: null
+      catalogue_number: "82-003-X"
+      sdds: "5071"
+    coverage:
+      spatial: "Canada"
+      temporal: "2012-01 to 2013-12"
+      population: "Canadians aged 3 to 79 years"
+
+    cycle_number: 3
+    collection_period:
+      start: "2012-01"
+      end: "2013-12"
+    sample_size: 5500  # Updated from validation (~5,500 participants)
+    age_range: "3-79 years"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=136652"
+      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V3-eng.htm"
+      notes: "Data validation performed halfway through and at end of collection"
+
+  # ==========================================================================
+  # CHMS Cycle 4 (2014-2015)
+  # ==========================================================================
+  cycle4:
+    title: "Canadian Health Measures Survey - Cycle 4"
+    description: |
+      The fourth cycle of the Canadian Health Measures Survey, conducted from
+      2014 to 2015.
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Health measures"
+      - "Physical measurements"
+      - "Laboratory tests"
+      - "Population health"
+    date: "2014-2015"
+    type: "Survey"
+    language: "en, fr"
+
+    identifier:
+      doi: null
+      catalogue_number: "82-003-X"
+      sdds: "5071"
+    coverage:
+      spatial: "Canada"
+      temporal: "2014-01 to 2015-12"
+      population: "Canadians aged 3 to 79 years"
+
+    cycle_number: 4
+    collection_period:
+      start: "2014-01-07"
+      end: "2015-12-16"
+    collection_sites: 16
+    sample_size: 5794
+    age_range: "3-79 years"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=148760"
+      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V4-eng.htm"
+      notes: "First cycle to include Hepatitis C RNA testing (ages 14-79)"
+
+  # ==========================================================================
+  # CHMS Cycle 5 (2016-2017)
+  # ==========================================================================
+  cycle5:
+    title: "Canadian Health Measures Survey - Cycle 5"
+    description: |
+      The fifth cycle of the Canadian Health Measures Survey, conducted from
+      2016 to 2017.
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Health measures"
+      - "Physical measurements"
+      - "Laboratory tests"
+      - "Population health"
+    date: "2016-2017"
+    type: "Survey"
+    language: "en, fr"
+
+    identifier:
+      doi: null
+      catalogue_number: "82-003-X"
+      sdds: "5071"
+    coverage:
+      spatial: "Canada"
+      temporal: "2016-01 to 2017-12"
+      population: "Canadians aged 3 to 79 years"
+
+    cycle_number: 5
+    collection_period:
+      start: "2016-01"
+      end: "2017-12"
+    sample_size: 5700  # Updated: anticipated ~5,700 respondents
+    age_range: "3-79 years"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=251160"
+      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V5-eng.htm"
+
+  # ==========================================================================
+  # CHMS Cycle 6 (2018-2019)
+  # ==========================================================================
+  cycle6:
+    title: "Canadian Health Measures Survey - Cycle 6"
+    description: |
+      The sixth cycle of the Canadian Health Measures Survey, conducted from
+      2018 to 2019.
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Health measures"
+      - "Physical measurements"
+      - "Laboratory tests"
+      - "Population health"
+    date: "2018-2019"
+    type: "Survey"
+    language: "en, fr"
+
+    identifier:
+      doi: null
+      catalogue_number: "82-003-X"
+      sdds: "5071"
+    coverage:
+      spatial: "Canada"
+      temporal: "2018-01 to 2019-12"
+      population: "Canadians aged 3 to 79 years"
+
+    cycle_number: 6
+    collection_period:
+      start: "2018-01-03"
+      end: "2019-12-19"
+    sample_size: null  # TODO: Add when available (anticipated ~5,500-5,700)
+    age_range: "3-79 years"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=1195092"
+      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V6-eng.htm"
+      notes: "Sixth Report on Human Biomonitoring published Dec 2021; data often combined with Cycle 5"
+
+  # ==========================================================================
+  # CHMS Cycle 7 (2020-2021)
+  # ==========================================================================
+  cycle7:
+    title: "Canadian Health Measures Survey - Cycle 7"
+    description: |
+      The seventh cycle of the Canadian Health Measures Survey, conducted from
+      2020 to 2021.
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Health measures"
+      - "Physical measurements"
+      - "Laboratory tests"
+      - "Population health"
+    date: "2020-2021"
+    type: "Survey"
+    language: "en, fr"
+
+    identifier:
+      doi: null
+      catalogue_number: "82-003-X"
+      sdds: "5071"
+    coverage:
+      spatial: "Canada"
+      temporal: "2020-01 to 2021-12"
+      population: "Canadians aged 3 to 79 years"
+
+    cycle_number: 7
+    collection_period:
+      start: "2020-01"
+      end: "2021-12"
+    sample_size: null  # TODO: Add when available
+    age_range: "3-79 years"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10269"  # TODO: Verify survey ID
+      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V7-eng.htm"
+      notes: "URLs and sample size need validation"
+
+  # ==========================================================================
+  # CHMS Medication Data Files
+  # ==========================================================================
+  # Note: Medication files are cycle-specific subsets with medication usage data
+
+  cycle1_meds:
+    title: "Canadian Health Measures Survey - Cycle 1 - Medications"
+    description: |
+      Medication usage data from CHMS Cycle 1 (2007-2009).
+      Subset of main cycle data focusing on prescription and over-the-counter medication use.
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Medication usage"
+      - "Pharmaceutical data"
+      - "Health measures"
+    date: "2007-2009"
+    type: "Survey subset"
+    language: "en, fr"
+
+    parent_cycle: "cycle1"
+    data_type: "medications"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10263"
+
+  cycle2_meds:
+    title: "Canadian Health Measures Survey - Cycle 2 - Medications"
+    description: |
+      Medication usage data from CHMS Cycle 2 (2009-2011).
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Medication usage"
+      - "Pharmaceutical data"
+    date: "2009-2011"
+    type: "Survey subset"
+    language: "en, fr"
+
+    parent_cycle: "cycle2"
+    data_type: "medications"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10264"
+
+  cycle3_meds:
+    title: "Canadian Health Measures Survey - Cycle 3 - Medications"
+    description: |
+      Medication usage data from CHMS Cycle 3 (2012-2013).
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Medication usage"
+      - "Pharmaceutical data"
+    date: "2012-2013"
+    type: "Survey subset"
+    language: "en, fr"
+
+    parent_cycle: "cycle3"
+    data_type: "medications"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10265"
+
+  cycle4_meds:
+    title: "Canadian Health Measures Survey - Cycle 4 - Medications"
+    description: |
+      Medication usage data from CHMS Cycle 4 (2014-2015).
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Medication usage"
+      - "Pharmaceutical data"
+    date: "2014-2015"
+    type: "Survey subset"
+    language: "en, fr"
+
+    parent_cycle: "cycle4"
+    data_type: "medications"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=148760"
+
+  cycle5_meds:
+    title: "Canadian Health Measures Survey - Cycle 5 - Medications"
+    description: |
+      Medication usage data from CHMS Cycle 5 (2016-2017).
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Medication usage"
+      - "Pharmaceutical data"
+    date: "2016-2017"
+    type: "Survey subset"
+    language: "en, fr"
+
+    parent_cycle: "cycle5"
+    data_type: "medications"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=251160"
+
+  cycle6_meds:
+    title: "Canadian Health Measures Survey - Cycle 6 - Medications"
+    description: |
+      Medication usage data from CHMS Cycle 6 (2018-2019).
+    creator:
+      - name: "Statistics Canada"
+        affiliation: "Government of Canada"
+    publisher: "Statistics Canada"
+    subject:
+      - "Medication usage"
+      - "Pharmaceutical data"
+    date: "2018-2019"
+    type: "Survey subset"
+    language: "en, fr"
+
+    parent_cycle: "cycle6"
+    data_type: "medications"
+
+    access:
+      restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
+      license: "Statistics Canada Open License"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=1195092"
+
+# ==========================================================================
+# Series-level metadata
+# ==========================================================================
+series:
+  title: "Canadian Health Measures Survey (CHMS)"
+  description: |
+    The Canadian Health Measures Survey (CHMS) is an ongoing survey that collects
+    important health information through physical measurements, lab tests, and health
+    questionnaires. The CHMS is the most comprehensive direct health measures survey
+    conducted in Canada.
+  creator:
+    - name: "Statistics Canada"
+      affiliation: "Government of Canada"
+  publisher: "Statistics Canada"
+  frequency: "Approximately every 2 years"
+  first_cycle: 2007
+  latest_cycle: 2021
+  total_cycles: 7
+  url: "https://www.statcan.gc.ca/en/survey/household/5071"
