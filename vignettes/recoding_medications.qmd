@@ -25,8 +25,6 @@ library(chmsflow)
 
 The medication data object must always be named cyclex_meds for the recoding scripts to function correctly. All other data for the same cycle should be stored separately under the name cyclex, as specified in `recoding-variables.qmd`.
 
-Before recoding, ensure that row headers for medication data in cycles 1, 4, and 6 are converted to lowercase.
-
 ```{r, warning=FALSE}
 # Load recodeflow and dplyr
 library(recodeflow)
