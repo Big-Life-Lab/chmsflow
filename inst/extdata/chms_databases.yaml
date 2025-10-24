@@ -44,7 +44,8 @@ databases:
     collection_period:
       start: "2007-03-19"
       end: "2009-02-25"
-    collection_sites: 15
+    collection_sites: 16
+    provinces: 5  # NB, QC, ON, AB, BC
     sample_size: 5604
     age_range: "6-79 years"
 
@@ -135,14 +136,15 @@ databases:
     collection_period:
       start: "2012-01"
       end: "2013-12"
-    sample_size: 5500  # Updated from validation (~5,500 participants)
+    collection_sites: 16
+    provinces: 6  # NS, NB, QC, ON, AB, BC
+    sample_size: 5785
     age_range: "3-79 years"
 
     access:
       restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
       license: "Statistics Canada Open License"
       url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=136652"
-      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V3-eng.htm"
       notes: "Data validation performed halfway through and at end of collection"
 
   # ==========================================================================
@@ -180,6 +182,7 @@ databases:
       start: "2014-01-07"
       end: "2015-12-16"
     collection_sites: 16
+    provinces: 7  # NS, NB, QC, ON, SK, AB, BC
     sample_size: 5794
     age_range: "3-79 years"
 
@@ -187,7 +190,6 @@ databases:
       restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
       license: "Statistics Canada Open License"
       url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=148760"
-      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V4-eng.htm"
       notes: "First cycle to include Hepatitis C RNA testing (ages 14-79)"
 
   # ==========================================================================
@@ -224,14 +226,15 @@ databases:
     collection_period:
       start: "2016-01"
       end: "2017-12"
-    sample_size: 5700  # Updated: anticipated ~5,700 respondents
+    collection_sites: 16
+    provinces: 7  # PEI, NB, QC, ON, SK, AB, BC
+    sample_size: 5786
     age_range: "3-79 years"
 
     access:
       restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
       license: "Statistics Canada Open License"
       url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=251160"
-      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V5-eng.htm"
 
   # ==========================================================================
   # CHMS Cycle 6 (2018-2019)
@@ -267,14 +270,15 @@ databases:
     collection_period:
       start: "2018-01-03"
       end: "2019-12-19"
-    sample_size: null  # TODO: Add when available (anticipated ~5,500-5,700)
+    collection_sites: 16
+    provinces: 7  # NL, NS, QC, ON, MB, AB, BC
+    sample_size: 5797
     age_range: "3-79 years"
 
     access:
       restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
       license: "Statistics Canada Open License"
       url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=1195092"
-      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V6-eng.htm"
       notes: "Sixth Report on Human Biomonitoring published Dec 2021; data often combined with Cycle 5"
 
   # ==========================================================================
@@ -311,14 +315,14 @@ databases:
     collection_period:
       start: "2020-01"
       end: "2021-12"
-    sample_size: null  # TODO: Add when available
+    collection_sites: 16
+    sample_size: null  # TODO: Add when available (anticipated ~6,700)
     age_range: "3-79 years"
 
     access:
       restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
       license: "Statistics Canada Open License"
       url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10269"  # TODO: Verify survey ID
-      data_user_guide: "https://www23.statcan.gc.ca/imdb-bmdi/pub/document/5071_D2_T1_V7-eng.htm"
       notes: "URLs and sample size need validation"
 
   # ==========================================================================
@@ -395,7 +399,7 @@ databases:
     access:
       restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
       license: "Statistics Canada Open License"
-      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10265"
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=136652"
 
   cycle4_meds:
     title: "Canadian Health Measures Survey - Cycle 4 - Medications"
