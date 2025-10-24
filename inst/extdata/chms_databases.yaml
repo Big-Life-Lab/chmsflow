@@ -322,7 +322,7 @@ databases:
     access:
       restrictions: "Available through Statistics Canada Research Data Centres (RDC)"
       license: "Statistics Canada Open License"
-      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=10269"  # TODO: Verify survey ID
+      url: "https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=5071"  # TODO: Add survey ID when available
       notes: "URLs and sample size need validation"
 
   # ==========================================================================
