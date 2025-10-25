@@ -1,5 +1,5 @@
 # Activate renv for reproducible package management
-source("renv/activate.R") # Temporarily commented for init
+source("renv/activate.R")
 
 # Use binary packages (no compiler needed)
 # Posit Package Manager provides binaries for faster installation

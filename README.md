@@ -64,6 +64,20 @@ To use `chmsflow` at a Research Data Centre (RDC), you'll need to load the packa
 library(chmsflow)
 ```
 
+## Development setup
+
+This package uses renv for dependency management. After cloning the repository:
+
+```r
+# Restore package dependencies
+renv::restore()
+
+# Install the package locally
+devtools::install()
+```
+
+The project requires R >= 4.0.0. When you load the project, `.Rprofile` will warn if your R version is below this floor.
+
 ## What's Included?
 
 The `chmsflow` package comes with several useful resources:
