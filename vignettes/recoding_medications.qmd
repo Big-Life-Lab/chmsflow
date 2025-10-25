@@ -27,7 +27,7 @@ The medication data object must always be named cyclex_meds for the recoding scr
 
 Before recoding, ensure that row headers for medication data in cycles 1, 4, and 6 are converted to lowercase.
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, eval=FALSE}
 # Load recodeflow and dplyr
 library(recodeflow)
 library(dplyr)
@@ -50,7 +50,7 @@ head(cycle3_ace_medication_data)
 
 ## 3. Merge recoded medication data from different cycles
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, eval=FALSE}
 # Aggregating recoded cycle3 data by clinicid
 cycle3_ace_medication_data <- cycle3_ace_medication_data %>%
   group_by(clinicid) %>%
@@ -77,7 +77,7 @@ head(cycles2and3_ace_medication_data)
 
 If your analysis requires medication variables (particularly when deriving other variables), ***always perform medication recoding first***, before recoding any other variables.
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, eval=FALSE}
 # Cycles 1-2
 # Recode medication variables first - anymed for hypertension and diab_drug for diabetes which is involved in determining hypertension status
 cycle2_htn_medication_data <- rec_with_table(cycle2_meds, c("clinicid", recodeflow:::select_vars_by_role("Drugs", variables)), variable_details = variable_details)

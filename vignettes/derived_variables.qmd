@@ -27,7 +27,7 @@ A derived variable for GFR has been created in `chmsflow` that uses harmonized b
 Using `rec_with_table()` you can transform the derived WHR variable across multiple CHMS cycles and create a transformed dataset.
 
 In order derive variables, you must load the existing custom function associated with the derived variable
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
 # Function for derived GFR variable
 calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
   GFR <- 0
@@ -61,7 +61,7 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
 library(chmsflow)
 ```
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, eval=FALSE}
 cycle2_gfr <- recodeflow:::rec_with_table(cycle2, variables = c("gfr", "lab_bcre", "pgdcgt", "clc_sex", "clc_age"), variable_details = variable_details, log = TRUE)
 ```
 

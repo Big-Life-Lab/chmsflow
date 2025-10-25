@@ -16,3 +16,11 @@
 ^Meta$
 ^.quarto
 ^_freeze
+^\.claude$
+.*\.log$
+^renv$
+^renv\.lock$
+^test_vignettes\.R$
+^test_vignettes_with_timeout\.sh$
+^vignette_.*\.txt$
+^vignette_.*\.log$
