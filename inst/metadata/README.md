@@ -244,20 +244,6 @@ cycle %in% cycles  # Exact match, not substring
 
 This prevents `cycle1` from matching `cycle1_meds`.
 
-## Validation
-
-Run automated validation with:
-
-```r
-source("data-raw/validate-metadata.R")
-```
-
-This checks:
-- ✓ All databaseStart cycles are valid
-- ✓ All variableStart entries parse correctly
-- ✓ Categorical variables have variable_details
-- ⚠ Parsed names are reasonable (warnings only)
-
 ## Relationship to cchsflow and recodeflow
 
 These schema files document **recodeflow conventions** that work across all projects:
@@ -311,14 +297,6 @@ This design choice reduces repetition while preserving traceability.
 DerivedVar is a **recodeflow convention** for variables requiring custom calculation logic (e.g., `adj_hh_inc` = `thi_01 / dhhdsz`).
 
 The MockData functions focus on simple mapping from metadata specifications. Derived variables would require implementing the calculation logic. This is a future enhancement for MockData, though rec_with_table() in recodeflow already supports DerivedVar.
-
-### How do I know if my metadata is valid?
-
-Run `Rscript data-raw/validate-metadata.R` to check:
-- All cycles in databaseStart are valid
-- All variableStart entries parse for declared cycles
-- All categorical variables have specifications
-- No case-sensitivity issues
 
 ## References
 
