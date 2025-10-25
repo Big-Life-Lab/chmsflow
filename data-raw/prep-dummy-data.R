@@ -702,7 +702,7 @@ cycle6 <- data.frame(
   LAB_GGT = sample(5:698, 50, replace = TRUE),
   LAB_HBA1 = sample(c(seq(0.04, 0.09, by = 0.01), 9.997), 50, replace = TRUE),
   LAB_HDL = runif(50, 0.49, 3.74),
-  LAB_UNA = runif(50, 5, 380), 
+  LAB_UNA = runif(50, 5, 380),
   LAB_VIDS = runif(50, 8.4, 291.9),
   LAFCOC16 = sample(12:9619, 50, replace = TRUE),
   LAFDWSL = sample(1:5, 50, replace = TRUE),
