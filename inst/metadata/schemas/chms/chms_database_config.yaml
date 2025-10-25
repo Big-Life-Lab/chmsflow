@@ -1,0 +1,130 @@
+schema_version: "1.0.0"
+schema_date: "2025-10-18"
+description: "CHMS database configuration for chmsflow package - following recodeflow conventions"
+
+# ============================================================================
+# CHMS DATABASE CONFIGURATION
+# ============================================================================
+# Note: variableStart formats, range notation, and tagged_na are RECODEFLOW
+# conventions, not CHMS-specific. These patterns support rec_with_table() and
+# other recodeflow functions across all harmonization projects (CCHS, CHMS, etc.)
+#
+# CHMS-specific elements are: cycle naming, valid cycle lists, and cycle-specific
+# variable naming patterns observed in CHMS data.
+# ============================================================================
+
+database_config:
+  name: "CHMS"
+  database_description: "Canadian Health Measures Survey database configuration following recodeflow conventions"
+
+  # Database naming patterns for CHMS
+  naming_patterns:
+    primary_pattern: "cycle(\\d+)"
+    description: "Primary regex pattern to identify CHMS cycles"
+    examples: ["cycle1", "cycle2", "cycle3", "cycle4", "cycle5", "cycle6"]
+
+    medication_pattern: "cycle(\\d+)_meds"
+    description: "Medication-specific cycles"
+    examples: ["cycle1_meds", "cycle2_meds", "cycle3_meds", "cycle4_meds", "cycle5_meds", "cycle6_meds"]
+
+  # Cycle validation rules
+  cycle_validation:
+    min_cycle: 1
+    max_cycle: 10
+    description: "Valid cycle range for CHMS surveys"
+    rationale: "CHMS began with Cycle 1 (2007-2009), currently at Cycle 6"
+    valid_cycles:
+      - "cycle1"
+      - "cycle2"
+      - "cycle3"
+      - "cycle4"
+      - "cycle5"
+      - "cycle6"
+      - "cycle7"
+      - "cycle1_meds"
+      - "cycle2_meds"
+      - "cycle3_meds"
+      - "cycle4_meds"
+      - "cycle5_meds"
+      - "cycle6_meds"
+
+  # Database type hierarchy (ordered by preference)
+  type_hierarchy:
+    description: "Database types in order of preference (highest to lowest priority)"
+    levels:
+      1:
+        patterns: ["^cycle\\d+$"]
+        description: "Main survey cycles (highest priority)"
+        examples: ["cycle1", "cycle2", "cycle3", "cycle4", "cycle5", "cycle6"]
+        rationale: "Main cycles have comprehensive health measures data"
+
+      2:
+        patterns: ["_meds$"]
+        description: "Medication-specific data"
+        examples: ["cycle1_meds", "cycle2_meds", "cycle3_meds"]
+        rationale: "Medication data provides pharmaceutical usage information"
+
+  # Exclusion patterns
+  exclusion_rules:
+    description: "Database patterns to exclude from selection"
+    patterns:
+      - pattern: "_test"
+        description: "Test cycles"
+        rationale: "Test cycles should not be used in production"
+        case_sensitive: false
+
+      - pattern: "_draft"
+        description: "Draft cycles"
+        rationale: "Draft cycles are not finalized"
+        case_sensitive: false
+
+  # Selection strategy
+  selection_strategy:
+    description: "Algorithm for selecting optimal database from available options"
+
+    step1:
+      name: "exclusion_filtering"
+      description: "Remove databases matching exclusion patterns"
+
+    step2:
+      name: "type_hierarchy_filtering"
+      description: "Select databases matching highest priority type available"
+      behavior: "select_all_matching_highest_priority"
+
+    step3:
+      name: "cycle_based_selection"
+      description: "Within selected type, choose most recent cycle"
+      behavior: "select_max_cycle_number"
+
+# ============================================================================
+# CHMS-SPECIFIC OBSERVATIONS
+# ============================================================================
+# Note: variableStart formats and parsing strategies are recodeflow conventions
+# documented in variables.yaml and variable_details.yaml
+# This section documents CHMS-specific naming patterns observed in the data
+# ============================================================================
+
+chms_observations:
+  description: "CHMS-specific patterns observed in variable naming across cycles"
+
+  cycle1_naming_differences:
+    description: "Cycle 1 (2007-2009) often used different variable names than later cycles"
+    note: "This is a CHMS data characteristic, not a recodeflow convention"
+    examples:
+      - variable: "alc_015"
+        cycle1_name: "amsdmva1"
+        cycles_2_6_name: "ammdmva1"
+        metadata_format: "cycle1::amsdmva1, [ammdmva1]"
+
+      - variable: "gen_015"
+        cycle1_name: "gen_15"
+        cycles_2_plus_name: "gen_025"
+        metadata_format: "cycle1::gen_15, [gen_025]"
+
+    rationale: |
+      Early CHMS cycles used different variable naming conventions.
+      This is handled in metadata using recodeflow's mixed format:
+        database::exception, [default]
+
+      Where cycle1 gets the specific name, and other cycles use the default.
+
