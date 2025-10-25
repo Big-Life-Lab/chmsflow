@@ -56,7 +56,7 @@ Statistics Canada.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cycle3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cycle3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	50 obs. of  82 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	50 obs. of  81 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ clinicid: int  1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ alc_11  : int  1 1 1 2 1 2 2 2 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ alc_17  : int  2 1 1 1 1 2 2 1 2 1 ...</span>
@@ -89,9 +89,9 @@ Statistics Canada.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ fmh_15  : int  2 2 2 1 1 2 2 1 2 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ gendhdi : int  1 1 3 0 0 1 3 4 2 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ gendmhi : int  0 0 3 2 4 1 4 1 3 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ gen_015 : int  2 5 4 1 5 5 1 1 5 4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ gen_018 : int  2 4 4 4 3 2 4 4 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ gen_020 : int  2 1 2 2 1 2 2 1 2 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ gen_15  : int  2 5 4 1 5 5 1 1 5 4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ gen_18  : int  2 4 4 4 3 2 4 4 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ gen_20  : int  2 1 2 2 1 2 2 1 2 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ gfvd17ay: int  529 3524 3003 34 197 3036 2101 2811 2120 3349 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ gfvd17by: int  195 388 94 250 136 338 155 220 16 444 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ gfvd17cy: int  1626 1634 373 736 406 1225 658 1190 607 1329 ...</span>
@@ -108,37 +108,36 @@ Statistics Canada.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ imm_03  : int  2 1 1 2 1 1 1 1 2 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ ipadttpa: int  18 158 171 120 108 153 156 294 404 184 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_alkp: int  116 25 145 114 124 133 76 30 65 89 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_alt : int  72 128 358 100 197 87 43 33 9 30 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_bcre: num  20 30 9997 50 20 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_bpb : num  0.864 0.994 1.097 0.163 0.06 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_ca  : num  2.13 2.35 2.63 2.69 2.6 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_chol: int  10 13 1 13 5 7 6 1 12 6 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_ggt : int  108 24 150 103 379 655 585 208 296 315 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_bpb : num  0.148 0.13 0.666 0.354 0.532 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_ca  : num  2.53 2.28 2.14 2.69 2.57 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_chol: int  10 8 5 13 11 11 12 9 13 7 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_ggt : int  106 136 270 179 475 518 45 5 271 460 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_hba1: num  0.07 0.06 10 0.04 0.07 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_hdl : num  1.049 3.536 0.665 0.774 3.225 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_vids: num  286.8 71.9 210.4 51 157.4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lafcso01: int  5774 5010 5390 9024 6151 3614 9509 3475 5052 1861 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lafdwsl : int  4 1 4 5 4 3 1 2 5 5 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lfh_016 : int  57 69 73 105 106 16 39 48 80 125 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mdcd04y : int  683 6 2652 1863 2507 1581 1055 1108 1118 2194 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_hdl : num  0.708 1.904 2.7 1.159 3.553 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lab_vids: num  188.3 149.2 237.3 173.5 57.2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lafcso01: int  3504 1697 5154 8325 4578 6370 8725 4466 5967 5894 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lafdwsl : int  5 3 5 3 4 1 2 4 2 4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ lfh_16  : int  65 43 102 17 73 50 113 111 46 46 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mdcd04y : int  2681 850 2617 870 2810 1551 427 1289 314 391 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ pgdcgt  : num  1 1 96 2 1 1 96 2 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ phc_11  : int  1 1 2 2 1 1 1 2 2 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ slp_11  : int  7 9 8 13 5 13 18 11 9 11 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ slp_12  : int  4 4 5 4 1 1 2 4 2 4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_11  : int  1 2 2 2 2 1 2 2 2 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_21  : int  24 20 35 40 50 10 9 38 24 17 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_31  : int  39 23 40 35 6 31 2 30 1 8 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_41  : int  12 11 15 23 5 23 21 20 18 21 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_42  : int  11 20 17 23 27 15 4 18 26 3 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_52  : int  43 37 54 20 14 33 61 12 14 38 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_53  : int  17 34 58 49 18 67 58 66 45 67 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_54  : int  46 54 70 62 45 62 36 68 66 46 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smkdsty : int  5 3 2 4 4 3 6 2 3 3 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ thi_01  : int  2703841 2181561 2400617 75027 2455358 2339027 3994345 1290023 3470577 1027262 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ thifimp4: int  4 2 3 4 4 4 4 2 2 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ wgt_full: int  8 3 6 16 34 14 6 23 21 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ wsdd34y : int  1071 1932 1552 1901 240 1737 1841 1165 223 255 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ wsdd35y : int  1298 1444 821 262 2267 2052 151 115 803 26 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ phc_11  : int  2 2 2 1 2 1 2 1 1 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ slp_11  : int  12 10 11 17 13 14 14 16 5 9 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ slp_12  : int  1 3 4 3 2 4 3 1 3 4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_11  : int  2 2 2 1 2 1 2 1 2 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_21  : int  15 35 20 14 40 37 15 6 12 27 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_31  : int  30 29 11 31 35 38 1 6 26 4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_41  : int  2 18 8 5 9 3 6 14 5 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_42  : int  23 16 9 14 11 22 5 30 11 12 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_52  : int  46 16 40 40 59 59 51 46 25 20 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_53  : int  58 12 68 21 31 61 72 42 46 31 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smk_54  : int  50 65 38 50 60 55 61 52 41 35 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ smkdsty : int  4 5 1 2 3 2 5 2 1 6 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ thi_01  : int  373429 2677374 816886 913624 3659084 2521827 528085 2645921 725800 572410 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ thifimp4: int  1 4 1 4 3 3 4 2 4 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ wgt_full: int  28 2 8 31 34 46 49 38 36 7 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ wsdd34y : int  1242 753 68 1197 811 1183 582 1379 2048 1802 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ wsdd35y : int  718 1285 192 2121 2090 1555 1489 1166 473 550 ...</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

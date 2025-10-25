@@ -83,7 +83,6 @@
 </section><section class="level2"><h2 id="recode-medication-variables-for-individual-cycles">2. Recode medication variables for individual cycles<a class="anchor" aria-label="anchor" href="#recode-medication-variables-for-individual-cycles"></a>
 </h2>
 <p>The medication data object must always be named cyclex_meds for the recoding scripts to function correctly. All other data for the same cycle should be stored separately under the name cyclex, as specified in <code>recoding-variables.qmd</code>.</p>
-<p>Before recoding, ensure that row headers for medication data in cycles 1, 4, and 6 are converted to lowercase.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load recodeflow and dplyr</span></span>

@@ -60,83 +60,88 @@ The CHMS survey is conducted by Statistics Canada.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cycle1_meds</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cycle1_meds</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	50 obs. of  76 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ clinicid: int  1 2 3 4 5 6 7 8 9 10 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_101a: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_102a: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_103a: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_104a: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_105a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_106a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_107a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_108a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_109a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_110a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_111a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_112a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_113a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_114a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_115a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_201a: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_202a: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_203a: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_204a: chr  "C03BC02" "C08CA01" "C07AA05" "C07AA06" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_205a: chr  "C02KX01" "C02AA05" "C07AG02" "C07AA06" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_206a: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_207a: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_208a: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_209a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_210a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_211a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_212a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_213a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_214a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_215a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_131a: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_132a: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_133a: chr  "C03BC02" "C08CA01" "C07AA05" "C07AA06" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_134a: chr  "C02KX01" "C02AA05" "C07AG02" "C07AA06" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_135a: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_231a: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_232a: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_233a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_234a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ atc_235a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_101b: num  2 3 1 3 2 3 1 3 2 3 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_102b: num  1 4 3 2 1 4 3 2 1 4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_103b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_104b: num  1 2 4 3 1 2 4 3 1 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_105b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_106b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_107b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_108b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_109b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_110b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_111b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_112b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_113b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_114b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_115b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_201b: num  3 2 2 3 3 2 2 3 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_202b: num  2 3 1 3 2 3 1 3 2 3 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_203b: num  3 2 2 3 3 2 2 3 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_204b: num  3 1 5 1 3 1 5 1 3 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_205b: num  1 2 3 4 1 2 3 4 1 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_206b: num  1 4 3 2 1 4 3 2 1 4 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_207b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_208b: num  1 2 4 3 1 2 4 3 1 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_209b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_210b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_211b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_212b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_213b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_214b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_215b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_231b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_232b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_233b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_234b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ mhr_235b: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	50 obs. of  81 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ CLINICID: int  1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_101A: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_102A: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_103A: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_104A: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_105A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_106A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_107A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_108A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_109A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_110A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_111A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_112A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_113A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_114A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_115A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_201A: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_202A: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_203A: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_204A: chr  "C03BC02" "C08CA01" "C07AA05" "C07AA06" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_205A: chr  "C02KX01" "C02AA05" "C07AG02" "C07AA06" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_206A: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_207A: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_208A: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_209A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_210A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_211A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_212A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_213A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_214A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_215A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_131A: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_132A: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_133A: chr  "C03BC02" "C08CA01" "C07AA05" "C07AA06" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_134A: chr  "C02KX01" "C02AA05" "C07AG02" "C07AA06" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_135A: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_231A: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_232A: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_233A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_234A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ ATC_235A: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_101B: num  2 3 1 3 2 3 1 3 2 3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_102B: num  1 4 3 2 1 4 3 2 1 4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_103B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_104B: num  1 2 4 3 1 2 4 3 1 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_105B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_106B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_107B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_108B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_109B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_110B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_111B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_112B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_113B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_114B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_115B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_131B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_132B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_133B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_134B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_135B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_201B: num  3 2 2 3 3 2 2 3 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_202B: num  2 3 1 3 2 3 1 3 2 3 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_203B: num  3 2 2 3 3 2 2 3 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_204B: num  3 1 5 1 3 1 5 1 3 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_205B: num  1 2 3 4 1 2 3 4 1 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_206B: num  1 4 3 2 1 4 3 2 1 4 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_207B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_208B: num  1 2 4 3 1 2 4 3 1 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_209B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_210B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_211B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_212B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_213B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_214B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_215B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_231B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_232B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_233B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_234B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ MHR_235B: num  3 2 1 4 3 2 1 4 3 2 ...</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
