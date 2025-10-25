@@ -71,7 +71,7 @@ ccc_63,Test,Heart attack,Ever had a heart attack,Health status,Chronic disease,C
 ccc_81,Test,Stroke,Suffers from the effects of a stroke,Health status,Chronic disease,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle6::CCC_81, [ccc_81]",
 ckd,Test,Chronic kidney disease,Chronic kidney disease (categorized by GFR),Health status,Chronic disease,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",DerivedVar::[gfr],
 clc_age,Test,Age,Age at clinic visit,Sociodemographics,Age,Continuous,years,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle6::CLC_AGE, [clc_age]",
-clc_sex,Test,Sex,Sex,Sociodemographics,Sex,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle1_meds::cycle6::CLC_SEX, [clc_sex]",
+clc_sex,Test,Sex,Sex,Sociodemographics,Sex,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle6::CLC_SEX, [clc_sex]",
 clinicid,,Clinic ID,Clinic ID,N/A,N/A,Continuous,N/A,"cycle1, cycle1_meds, cycle2, cycle2_meds, cycle3, cycle3_meds, cycle4, cycle4_meds, cycle5, cycle5_meds, cycle6, cycle6_meds","cycle1_meds::CLINICID, cycle4_meds::CLINICID, cycle6::CLINICID, cycle6_meds::CLINICID, [clinicid]",
 control14090,,Controlled hypertension 140/90,Controlled hypertension 140/90,Health status,Hypertension,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","DerivedVar::[bpmdpbps, bpmdpbpd, anymed2, ccc_32, cardiov, diabx, ckd]",
 control14090_adj,,Controlled (adjusted) hypertension 140/90,Controlled (adjusted) hypertension 140/90,Health status,Hypertension,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","DerivedVar::[sbp_adj, dbp_adj, anymed2, ccc_32, cardiov, diabx, ckd]",
