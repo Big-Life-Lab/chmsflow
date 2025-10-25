@@ -28,7 +28,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Categorical diet indicator</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/main/R/diet.R" class="external-link"><code>R/diet.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/R/diet.R" class="external-link"><code>R/diet.R</code></a></small>
       <div class="d-none name"><code>determine_gooddiet.Rd</code></div>
     </div>
 
@@ -46,19 +46,31 @@
 
 
 <dl><dt id="arg-totalfv">totalFV<a class="anchor" aria-label="anchor" href="#arg-totalfv"></a></dt>
-<dd><p>Numeric value representing the average times per day fruits and vegetables were consumed in a year.</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> A numeric vector representing the average times per day fruits and vegetables were consumed in a year.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A categorical value indicating the diet quality:</p><ul><li><p>1: Good diet (totalFV &gt;= 5)</p></li>
+    <p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> A categorical indicating the diet quality:</p><ul><li><p>1: Good diet (totalFV &gt;= 5)</p></li>
 <li><p>2: Poor diet (totalFV &lt; 5)</p></li>
-<li><p>NA(b): Missing or invalid input</p></li>
+<li><p><code>haven::tagged_na("a")</code>: Valid skip</p></li>
+<li><p><code>haven::tagged_na("b")</code>: Missing</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>This function categorizes diet quality based on the widely recognized "5-a-day" recommendation for fruit and vegetable intake.</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>     <span class="sc">**</span>Missing Data Codes<span class="sc">:</span><span class="er">**</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>     <span class="sc">-</span> Propagates tagged NAs from the input <span class="st">`</span><span class="at">totalFV</span><span class="st">`</span>.</span></code></pre><p></p></div>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="find_totalFV_cycles1and2.html">find_totalFV_cycles1and2()</a></code>, <code><a href="find_totalFV_cycles3to6.html">find_totalFV_cycles3to6()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Example 1: Categorize a totalFV value of 3 as poor diet</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Scalar usage: Single respondent</span></span></span>
+<span class="r-in"><span><span class="co"># Example 1: Categorize a totalFV value of 3 as poor diet</span></span></span>
 <span class="r-in"><span><span class="fu">determine_gooddiet</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span><span class="co"># Output: 2</span></span></span>
@@ -67,6 +79,16 @@
 <span class="r-in"><span><span class="fu">determine_gooddiet</span><span class="op">(</span><span class="fl">7</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span><span class="co"># Output: 1</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multiple respondents</span></span></span>
+<span class="r-in"><span><span class="fu">determine_gooddiet</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">7</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2 1 1</span>
+<span class="r-in"><span><span class="co"># Returns: c(2, 1, 1)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Database usage: Applied to survey datasets</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># dataset %&gt;%</span></span></span>
+<span class="r-in"><span><span class="co">#   mutate(diet_quality = determine_gooddiet(total_fv))</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -59,87 +59,115 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
-</div>
-<div class="section level1">
-<h1 id="warning-not-released-to-the-public-and-not-for-use-yet">WARNING: NOT RELEASED TO THE PUBLIC AND NOT FOR USE YET<a class="anchor" aria-label="anchor" href="#warning-not-released-to-the-public-and-not-for-use-yet"></a>
-</h1>
-<p><em>chmsflow</em> supports the use of the Canadian Health Measures Survey (CHMS) by transforming variables from each cycle into harmonized, consistent versions that span survey cycles 1-6 (2007 to 2019).</p>
-<p>The CHMS is a cross-sectional survey administered by Statistics Canada that collects questionnaire and directly measured health information from community-dwelling individuals aged 3 to 79 living in the 10 provinces. There are approximately 5,700 respondents per cycle. Studies use multiple CHMS cycles to examine trends overtime and increase sample size to examine sub-groups that are too small to examine in a single cycle. CHMS data is not available to the public, but at Research Data Centres (RDCs) managed by Statistics Canada. Information about the survey is found <a href="https://www.statcan.gc.ca/en/survey/household/5071" class="external-link">here</a>, while information about accessing data at the RDC is found <a href="https://crdcn.ca/publications-data/access-crdcn-data/" class="external-link">here</a>.</p>
+<blockquote>
+<p><strong>WARNING:</strong> This package is not yet released to the public and is not intended for general use.</p>
+</blockquote>
+<p><code>chmsflow</code> is an R package designed to simplify the use of the Canadian Health Measures Survey (CHMS). It harmonizes variables across different survey cycles (Cycles 1-6, 2007-2019), creating consistent and analysis-ready datasets.</p>
 <div class="section level2">
-<h2 id="concept">Concept<a class="anchor" aria-label="anchor" href="#concept"></a>
+<h2 id="the-challenge-of-harmonizing-chms-data">The Challenge of Harmonizing CHMS Data<a class="anchor" aria-label="anchor" href="#the-challenge-of-harmonizing-chms-data"></a>
 </h2>
-<p>Each cycle of the CHMS contains over 1000 variables that cover the four main topics: sociodemographic measures, socioeconomic measures, health behaviours, and health status. The <em>seemingly</em> consistent questions across CHMS cycles entice you to combine them together to increase sample size; however, you soon realize a challenge…</p>
-<p>Imagine you want to use ethnicity for a study that spans all six cycles of the CHMS. Ethnicity <em>seems</em> like a straightforward measure that is routinely-collected worldwide. Indeed, ethnicity is included in all CHMS cycles. You examine the documentation and find the variable <code>sdcdcgt</code> in the first two cycles corresponds to ethnicity, but that for the last four cycles, the variable name changes to <code>pgdcgt</code>. These types of changes occur for many CHMS variables. Sometimes the changes are subtle and difficult to find in the documentation, even for seemingly straightforward variables such as ethnicity. <code>chmsflow</code> harmonizes the ethnicity variable across different cycles.</p>
+<p>The CHMS, administered by Statistics Canada, is a valuable resource for health research. It provides a rich collection of questionnaire and directly measured health data from a representative sample of Canadians. While the survey is conducted in cycles, combining data across these cycles can be challenging due to inconsistencies in variable names, coding schemes, and survey methodologies.</p>
+<p>For example, a seemingly simple variable like ethnicity might be named <code>sdcdcgt</code> in one cycle and <code>pgdcgt</code> in another. These subtle changes can be difficult to track and can introduce errors into your analysis.</p>
 </div>
 <div class="section level2">
-<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<h2 id="how-chmsflow-helps">How <code>chmsflow</code> Helps<a class="anchor" aria-label="anchor" href="#how-chmsflow-helps"></a>
 </h2>
-<p><code>chmsflow</code> creates harmonized variables (where possible) between CHMS cycles. Searching ethnicity in <code>variables.csv</code> shows <code>pgdcgt</code> collects ethnicity across all cycles for all respondents.</p>
-<p><em>Calculate a harmonized ethnicity variable for CHMS cycle 3</em></p>
-<pre><code><span>    <span class="co"># Load CHMS dummy data - included in chmsflow</span></span>
-<span></span>
-<span>    <span class="va">cycle3_ethnicity</span> <span class="op">&lt;-</span> <span class="fu">recodeflow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle3</span>, <span class="st">"pgdcgt"</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span>
-<span>    </span></code></pre>
-<p>Notes printed to console indicate issues that may affect ethnicity classification for your study.</p>
+<p><code>chmsflow</code> addresses these challenges by providing a set of tools to:</p>
+<ul>
+<li>
+<strong>Harmonize variables:</strong> It automatically recodes variables to ensure consistency across survey cycles.</li>
+<li>
+<strong>Provide detailed documentation:</strong> The package includes a comprehensive list of harmonized variables and their corresponding transformations.</li>
+<li>
+<strong>Streamline your workflow:</strong> By handling the data cleaning and harmonization process, <code>chmsflow</code> allows you to focus on your research questions.</li>
+</ul>
+<div class="section level3">
+<h3 id="example-harmonizing-ethnicity">Example: Harmonizing Ethnicity<a class="anchor" aria-label="anchor" href="#example-harmonizing-ethnicity"></a>
+</h3>
+<p>Let’s say you want to create a harmonized ethnicity variable for CHMS Cycle 3. With <code>chmsflow</code>, you can do this in a single line of code:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load CHMS dummy data (included in chmsflow)</span></span>
+<span><span class="va">cycle3_ethnicity</span> <span class="op">&lt;-</span> <span class="fu">recodeflow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle3</span>, <span class="st">"pgdcgt"</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
+<p>The package will also print helpful notes to the console, alerting you to any potential issues with the data:</p>
 <pre><code>Using the passed data variable name as database_name
 NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.</code></pre>
 </div>
-<div class="section level2">
-<h2 id="important-notes">Important notes<a class="anchor" aria-label="anchor" href="#important-notes"></a>
-</h2>
-<p>Care must be taken to understand how specific variable transformation and harmonization with <code>chmsflow</code> affect your study or use of CHMS data. Across survey cycles, many CHMS variables have had at least some change in wording and category responses. Furthermore, there have been changes in survey sampling, response rates, weighting methods and other survey design changes that affect responses.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<pre><code><span>    <span class="co"># Install release version from CRAN</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"chmsflow"</span><span class="op">)</span></span>
+<p>You can install the latest version of <code>chmsflow</code> from CRAN or GitHub:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install from CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"chmsflow"</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="co"># Install the most recent version from GitHub</span></span>
-<span>    <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Big-Life-Lab/chmsflow"</span><span class="op">)</span></span></code></pre>
-<p>See below for guide on how to load R packages at RDC:</p>
-<pre><code><span>    <span class="co"># Within quotations, define path to the directory where your package folders are located at RDC (ensure all dependencies are also in directory as well)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="co"># Load chmsflow package</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/chmsflow" class="external-link">chmsflow</a></span><span class="op">)</span></span></code></pre>
+<span><span class="co"># Install from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Big-Life-Lab/chmsflow"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="what-is-in-the-chmsflow-package">What is in the <code>chmsflow</code> package?<a class="anchor" aria-label="anchor" href="#what-is-in-the-chmsflow-package"></a>
+<h2 id="getting-started-at-the-rdc">Getting Started at the RDC<a class="anchor" aria-label="anchor" href="#getting-started-at-the-rdc"></a>
 </h2>
-<p><em>chmsflow</em> package includes:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code>variables.csv</code> - a list of variables that can be transformed across CHMS surveys.</li>
-<li>
-<code>variable_details.csv</code> - information that describes how the variables are recoded.</li>
-<li>Vignettes - that describe how to use R to transform or generate new derived variables that are listed in <code>variables.csv</code>. Transformations are performed using <code>rec_with_table()</code>. <code>variables.csv</code> and <code>variable_details.csv</code>.</li>
-<li>CHMS dummy data - <code>chmsflow</code> includes dummy data used for the vignettes and to imitate actual CHMS data housed at the RDC. The CHMS dummy data is stored in /data as .RData files. They can be read as a package database.</li>
-</ol>
-<pre><code><span><span class="co"># Read cycle 2 dummy data</span></span>
+<p>To use <code>chmsflow</code> at a Research Data Centre (RDC), you’ll need to load the package and its dependencies from a local directory:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Set the library path to your local package directory</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span><span class="op">(</span><span class="st">"&lt;path_to_your_package_directory&gt;"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cycle2_dummy_data</span> <span class="op">&lt;-</span> <span class="va">cycle2</span></span></code></pre>
-<div class="section level3">
-<h3 id="roadmap">Roadmap<a class="anchor" aria-label="anchor" href="#roadmap"></a>
-</h3>
-<p>Project on the roadmap can be found on <a href="https://github.com/Big-Life-Lab/chmsflow/projects" class="external-link">here</a>.</p>
+<span><span class="co"># Load the chmsflow package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/chmsflow" class="external-link">chmsflow</a></span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="development-setup">Development setup<a class="anchor" aria-label="anchor" href="#development-setup"></a>
+</h2>
+<p>This package uses renv for dependency management. After cloning the repository:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Restore package dependencies</span></span>
+<span><span class="fu">renv</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/renv/reference/restore.html" class="external-link">restore</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install the package locally</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>The project requires R &gt;= 4.0.0. When you load the project, <code>.Rprofile</code> will warn if your R version is below this floor.</p>
+</div>
+<div class="section level2">
+<h2 id="whats-included">What’s Included?<a class="anchor" aria-label="anchor" href="#whats-included"></a>
+</h2>
+<p>The <code>chmsflow</code> package comes with several useful resources:</p>
+<ul>
+<li>
+<strong><code>variables.csv</code>:</strong> A comprehensive list of variables that can be harmonized across CHMS cycles.</li>
+<li>
+<strong><code>variable_details.csv</code>:</strong> Detailed information about how each variable is recoded.</li>
+<li>
+<strong>Vignettes:</strong> Step-by-step guides on how to use <code>chmsflow</code> to transform and derive new variables.</li>
+<li>
+<strong>Dummy data:</strong> A set of sample datasets that mimic the structure of the actual CHMS data.</li>
+</ul>
+<p>You can load the dummy data for a specific cycle like this:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Read Cycle 2 dummy data</span></span>
+<span><span class="va">cycle2_dummy_data</span> <span class="op">&lt;-</span> <span class="va">cycle2</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="important-considerations">Important Considerations<a class="anchor" aria-label="anchor" href="#important-considerations"></a>
+</h2>
+<p>While <code>chmsflow</code> simplifies the harmonization process, it’s crucial to understand the underlying changes in the CHMS data. Be sure to review the package documentation and the original CHMS documentation to ensure that the transformations are appropriate for your research.</p>
+</div>
+<div class="section level2">
+<h2 id="roadmap">Roadmap<a class="anchor" aria-label="anchor" href="#roadmap"></a>
+</h2>
+<p>For a list of planned features and improvements, please see the <a href="https://github.com/Big-Life-Lab/chmsflow/projects" class="external-link">project roadmap</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h2>
-<p>Please follow <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/CONTRIBUTING.md" class="external-link">this guide</a> if you would like to contribute to the <em>chmsflow</em> package.</p>
-<p>We encourage PRs for additional variable transformations and derived variables that you believe may be helpful to the broad CHMS community.</p>
-<p>Currently, <em>chmsflow</em> supports R through and wraps around the <code>rec_with_table()</code> function of <em>recodeflow</em>. The CHMS community commonly uses SAS, Stata and other statistical packages. Please feel free to contribute to <code>chmsflow</code> by making a PR that creates versions of <code>rec_with_table()</code> for other statistical and programming languages.</p>
+<p>We welcome contributions to <code>chmsflow</code>! If you’d like to get involved, please follow our <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/CONTRIBUTING.md" class="external-link">contributing guide</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="statistics-canada-attribution">Statistics Canada Attribution<a class="anchor" aria-label="anchor" href="#statistics-canada-attribution"></a>
 </h2>
-<p>CHMS dummy data used in this library consists of no actual data.</p>
-<p>Adapted from Statistics Canada, Canadian Health Measures Survey Cycles 1-6 (2007 to 2019), accessed June 2023. This does not constitute an endorsement by Statistics Canada of this product.</p>
+<p>The dummy data included in this package is for illustrative purposes only and does not contain any real data from Statistics Canada.</p>
+<p>This package is adapted from Statistics Canada, Canadian Health Measures Survey Cycles 1-6 (2007 to 2019), accessed June 2023. This does not constitute an endorsement by Statistics Canada of this product.</p>
 </div>
 </div>
-
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">

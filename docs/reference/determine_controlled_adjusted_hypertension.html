@@ -28,7 +28,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Controlled hypertension derived variable with adjusted blood pressures</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/main/R/blood-pressure.R" class="external-link"><code>R/blood-pressure.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/R/blood-pressure.R" class="external-link"><code>R/blood-pressure.R</code></a></small>
       <div class="d-none name"><code>determine_controlled_adjusted_hypertension.Rd</code></div>
     </div>
 
@@ -54,53 +54,81 @@
 
 
 <dl><dt id="arg-sbp-adj">SBP_adj<a class="anchor" aria-label="anchor" href="#arg-sbp-adj"></a></dt>
-<dd><p>An integer representing the adjusted systolic blood pressure measurement of the respondent.</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> An integer representing the adjusted systolic blood pressure measurement of the respondent.</p></dd>
 
 
 <dt id="arg-dbp-adj">DBP_adj<a class="anchor" aria-label="anchor" href="#arg-dbp-adj"></a></dt>
-<dd><p>An integer representing the adjusted diastolic blood pressure measurement of the respondent.</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> An integer representing the adjusted diastolic blood pressure measurement of the respondent.</p></dd>
 
 
 <dt id="arg-anymed-">ANYMED2<a class="anchor" aria-label="anchor" href="#arg-anymed-"></a></dt>
-<dd><p>An integer indicating whether the respondent is on medication for hypertension.</p><ul><li><p>1: Yes</p></li>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> An integer indicating whether the respondent is on medication for hypertension.</p><ul><li><p>1: Yes</p></li>
 <li><p>0: No</p></li>
 </ul></dd>
 
 
 <dt id="arg-ccc-">CCC_32<a class="anchor" aria-label="anchor" href="#arg-ccc-"></a></dt>
-<dd><p>An optional integer indicating whether the respondent is actually on medication for hypertension.</p><ul><li><p>1: Yes</p></li>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> An optional integer indicating whether the respondent is actually on medication for hypertension.</p><ul><li><p>1: Yes</p></li>
 <li><p>2: No (default)</p></li>
 </ul></dd>
 
 
 <dt id="arg-cardiov">CARDIOV<a class="anchor" aria-label="anchor" href="#arg-cardiov"></a></dt>
-<dd><p>An optional integer indicating the presence of cardiovascular disease, affecting medication status.</p><ul><li><p>1: Yes</p></li>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> An optional integer indicating the presence of cardiovascular disease, affecting medication status.</p><ul><li><p>1: Yes</p></li>
 <li><p>2: No (default)</p></li>
 </ul></dd>
 
 
 <dt id="arg-diabx">DIABX<a class="anchor" aria-label="anchor" href="#arg-diabx"></a></dt>
-<dd><p>An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.</p><ul><li><p>1: Yes</p></li>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.</p><ul><li><p>1: Yes</p></li>
 <li><p>2: No (default)</p></li>
 </ul></dd>
 
 
 <dt id="arg-ckd">CKD<a class="anchor" aria-label="anchor" href="#arg-ckd"></a></dt>
-<dd><p>An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.</p><ul><li><p>1: Yes</p></li>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.</p><ul><li><p>1: Yes</p></li>
 <li><p>2: No (default)</p></li>
 </ul></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An integer representing the hypertension status:</p><ul><li><p>1: Hypertension controlled (BP &lt; 140/90 mmHg (or &lt; 130/80 mmHg if diabetes or CKD) when on hypertension medication)</p></li>
-<li><p>2: Hypertension not controlled (BP ≥ 140/90 mmHg (or ≥ 130/80 mmHg if diabetes or CKD) when on hypertension medication)</p></li>
-<li><p>NA(b): Invalid input or non-response</p></li>
+    <p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> The hypertension status:</p><ul><li><p>1: Hypertension controlled (BP &lt; 140/90 mmHg (or &lt; 130/80 mmHg if diabetes or CKD) when on hypertension medication)</p></li>
+<li><p>2: Hypertension not controlled (BP &gt;= 140/90 mmHg (or &gt;= 130/80 mmHg if diabetes or CKD) when on hypertension medication)</p></li>
+<li><p><code>haven::tagged_na("a")</code>: Not applicable</p></li>
+<li><p><code>haven::tagged_na("b")</code>: Missing</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>This function assesses whether a respondent's hypertension is controlled using adjusted BP values:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>     <span class="sc">**</span>Control Thresholds<span class="sc">:</span><span class="er">**</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>     <span class="sc">-</span> General population<span class="sc">:</span> <span class="er">&lt;</span> <span class="dv">140</span><span class="sc">/</span><span class="dv">90</span> mmHg</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>     <span class="sc">-</span> Diabetes or CKD patients<span class="sc">:</span> <span class="er">&lt;</span> <span class="dv">130</span><span class="sc">/</span><span class="dv">80</span> mmHg</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>     <span class="sc">**</span>Logic<span class="sc">:</span><span class="er">**</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>     <span class="sc">-</span> Only applies to respondents taking hypertension medication.</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>     <span class="sc">-</span> If adjusted BP is below the threshold, hypertension is <span class="st">"controlled"</span> (<span class="dv">1</span>).</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>     <span class="sc">-</span> If adjusted BP is at or above the threshold, it is <span class="st">"not controlled"</span> (<span class="dv">2</span>).</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>     <span class="sc">**</span>Missing Data Codes<span class="sc">:</span><span class="er">**</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>     <span class="sc">-</span> <span class="st">`</span><span class="at">SBP_adj</span><span class="st">`</span>, <span class="st">`</span><span class="at">DBP_adj</span><span class="st">`</span><span class="sc">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>       <span class="sc">-</span> <span class="st">`</span><span class="at">996</span><span class="st">`</span><span class="sc">:</span> Valid skip. Handled as <span class="st">`</span><span class="at">haven::tagged_na("a")</span><span class="st">`</span>.</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>       <span class="sc">-</span> <span class="st">`</span><span class="at">997-999</span><span class="st">`</span><span class="sc">:</span> Don<span class="st">'t know, refusal, or not stated. Handled as `haven::tagged_na("b")`.</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="st">     - `ANYMED2`:</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="st">       - Tagged NA "a": Valid skip.</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="st">       - Tagged NA "b": Don'</span>t know, refusal, or not stated.</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>     <span class="sc">-</span> <span class="st">`</span><span class="at">CCC_32</span><span class="st">`</span>, <span class="st">`</span><span class="at">CARDIOV</span><span class="st">`</span>, <span class="st">`</span><span class="at">DIABX</span><span class="st">`</span>, <span class="st">`</span><span class="at">CKD</span><span class="st">`</span><span class="sc">:</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>       <span class="sc">-</span> <span class="st">`</span><span class="at">6</span><span class="st">`</span><span class="sc">:</span> Valid skip. Handled as <span class="st">`</span><span class="at">haven::tagged_na("a")</span><span class="st">`</span>.</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>       <span class="sc">-</span> <span class="st">`</span><span class="at">7-9</span><span class="st">`</span><span class="sc">:</span> Don<span class="st">'t know, refusal, or not stated. Handled as `haven::tagged_na("b")`.</span></span></code></pre><p></p></div>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="determine_controlled_hypertension.html">determine_controlled_hypertension()</a></code> for controlled status with unadjusted BP</p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Scalar usage: Single respondent</span></span></span>
 <span class="r-in"><span><span class="co"># Example 1: Respondent has adjusted SBP = 150, adjusted DBP = 95, and on medication.</span></span></span>
 <span class="r-in"><span><span class="fu">determine_controlled_adjusted_hypertension</span><span class="op">(</span>SBP_adj <span class="op">=</span> <span class="fl">150</span>, DBP_adj <span class="op">=</span> <span class="fl">95</span>, ANYMED2 <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
@@ -110,6 +138,23 @@
 <span class="r-in"><span><span class="fu">determine_controlled_adjusted_hypertension</span><span class="op">(</span>SBP_adj <span class="op">=</span> <span class="fl">120</span>, DBP_adj <span class="op">=</span> <span class="fl">80</span>, ANYMED2 <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span><span class="co"># Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">determine_controlled_adjusted_hypertension</span><span class="op">(</span>SBP_adj <span class="op">=</span> <span class="fl">996</span>, DBP_adj <span class="op">=</span> <span class="fl">996</span>, ANYMED2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="co"># Shows: NA</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
+<span class="r-in"><span><span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">is_tagged_na</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"a"</span><span class="op">)</span> <span class="co"># Shows: TRUE (confirms it's tagged NA(a))</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">result</span>, tag <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Shows: "NA(a)" (displays the tag)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multiple respondents</span></span></span>
+<span class="r-in"><span><span class="fu">determine_controlled_adjusted_hypertension</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  SBP_adj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">120</span>, <span class="fl">135</span><span class="op">)</span>, DBP_adj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">95</span>, <span class="fl">80</span>, <span class="fl">85</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ANYMED2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, DIABX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2 1 2</span>
+<span class="r-in"><span><span class="co"># Returns: c(2, 1, 2)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

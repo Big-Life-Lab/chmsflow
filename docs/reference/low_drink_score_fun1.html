@@ -32,7 +32,7 @@ about weekly consumption, past-year use, lifetime drinking, and history of heavy
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Low risk drinking score - former/never categories</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/main/R/alcohol.R" class="external-link"><code>R/alcohol.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/R/alcohol.R" class="external-link"><code>R/alcohol.R</code></a></small>
       <div class="d-none name"><code>low_drink_score_fun1.Rd</code></div>
     </div>
 
@@ -52,58 +52,103 @@ about weekly consumption, past-year use, lifetime drinking, and history of heavy
 
 
 <dl><dt id="arg-clc-sex">CLC_SEX<a class="anchor" aria-label="anchor" href="#arg-clc-sex"></a></dt>
-<dd><p>Integer. Respondent's sex (1 = male, 2 = female).</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> Respondent's sex (1 = male, 2 = female).</p></dd>
 
 
 <dt id="arg-alc-">ALC_11<a class="anchor" aria-label="anchor" href="#arg-alc-"></a></dt>
-<dd><p>Integer. Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).</p></dd>
 
 
 <dt id="arg-alcdwky">ALCDWKY<a class="anchor" aria-label="anchor" href="#arg-alcdwky"></a></dt>
-<dd><p>Integer. Number of standard drinks consumed in a typical week (0–84).</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> Number of standard drinks consumed in a typical week (0–84).</p></dd>
 
 
 <dt id="arg-alc-">ALC_17<a class="anchor" aria-label="anchor" href="#arg-alc-"></a></dt>
-<dd><p>Integer. Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).</p></dd>
 
 
 <dt id="arg-alc-">ALC_18<a class="anchor" aria-label="anchor" href="#arg-alc-"></a></dt>
-<dd><p>Integer. Whether the respondent regularly drank more than 12 drinks per week (1 = Yes, 2 = No).</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> Whether the respondent regularly drank more than 12 drinks per week (1 = Yes, 2 = No).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An integer score:</p><ul><li><p>1 = Never drank</p></li>
-<li><p>2 = Low-risk (former or light) drinker</p></li>
-<li><p>3 = Moderate drinker (1–2 points)</p></li>
-<li><p>4 = Heavy drinker (3–4 points)</p></li>
-</ul><p>If inputs are invalid or out of bounds, the function returns a tagged NA.</p>
+    <p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> Score: 1 = Never drank, 2 = Low-risk (former or light) drinker, 3 = Moderate drinker (1–2 points), 4 = Heavy drinker (3–4 points).
+If inputs are invalid or out of bounds, the function returns a tagged NA.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><strong>Step 1: Assign points based on weekly alcohol consumption.</strong></p><ul><li><p>If the respondent drank in the past year (ALC_11 == 1):</p><ul><li><p>0 to 10 drinks/week: 0 points</p></li>
+    <p>Step 1: Assign points based on weekly alcohol consumption.</p><ul><li><p>If the respondent drank in the past year (ALC_11 == 1):</p><ul><li><p>0 to 10 drinks/week: 0 points</p></li>
 <li><p>11 to 15 drinks/week: 0 points for males, 1 point for females</p></li>
 <li><p>16 to 20 drinks/week: 1 point for males, 3 points for females</p></li>
 <li><p>More than 20 drinks/week: 3 points for males, 5 points for females</p></li>
 </ul></li>
 <li><p>If they did not drink in the past year (ALC_11 == 2): 0 points</p></li>
-</ul><p><strong>Step 2: Determine the final categorical score.</strong></p><ul><li><p>If the point score from Step 1 is 0, the final category is determined based on lifetime and past-year drinking habits:</p><ul><li><p>A score of 1 (Never drinker) is assigned if the respondent either never drank alcohol in their lifetime or is a former drinker who did not regularly consume more than 12 drinks a week.</p></li>
+</ul><p>Step 2: Determine the final categorical score.</p><ul><li><p>If the point score from Step 1 is 0, the final category is determined based on lifetime and past-year drinking habits:</p><ul><li><p>A score of 1 (Never drinker) is assigned if the respondent either never drank alcohol in their lifetime or is a former drinker who did not regularly consume more than 12 drinks a week.</p></li>
 <li><p>A score of 2 (Low-risk drinker) is assigned if the respondent drank in the past year (but still scored 0 points) or is a former drinker with a history of regularly consuming more than 12 drinks a week.</p></li>
 </ul></li>
-<li><p>If the point score from Step 1 is 1 or 2, the respondent is classified as a <strong>Moderate drinker</strong> (Score = 3).</p></li>
-<li><p>If the point score from Step 1 is 3 or more, the respondent is classified as a <strong>Heavy drinker</strong> (Score = 4).</p></li>
+<li><p>If the point score from Step 1 is 1 or 2, the respondent is classified as a Moderate drinker (Score = 3).</p></li>
+<li><p>If the point score from Step 1 is 3 or more, the respondent is classified as a Heavy drinker (Score = 4).
+If inputs are invalid or out of bounds, the function returns a tagged NA.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p>This function uses only Step 1 of the guidelines, as Step 2 information is unavailable in CHMS.</p>
     </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="low_drink_score_fun.html">low_drink_score_fun()</a></code> for basic risk scoring without drinking history</p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking</span></span></span>
-<span class="r-in"><span><span class="fu">low_drink_score_fun1</span><span class="op">(</span>CLC_SEX <span class="op">=</span> <span class="fl">1</span>, ALC_11 <span class="op">=</span> <span class="fl">1</span>, ALCDWKY <span class="op">=</span> <span class="fl">3</span>, ALC_17 <span class="op">=</span> <span class="cn">NA</span>, ALC_18 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Scalar usage: Single respondent</span></span></span>
+<span class="r-in"><span><span class="co"># Example: Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking</span></span></span>
+<span class="r-in"><span><span class="fu">low_drink_score_fun1</span><span class="op">(</span>CLC_SEX <span class="op">=</span> <span class="fl">1</span>, ALC_11 <span class="op">=</span> <span class="fl">1</span>, ALCDWKY <span class="op">=</span> <span class="fl">3</span>, ALC_17 <span class="op">=</span> <span class="fl">1</span>, ALC_18 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span><span class="co"># Expected output: 2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Missing data examples showing tagged NA patterns</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">low_drink_score_fun1</span><span class="op">(</span>CLC_SEX <span class="op">=</span> <span class="fl">1</span>, ALC_11 <span class="op">=</span> <span class="fl">6</span>, ALCDWKY <span class="op">=</span> <span class="fl">5</span>, ALC_17 <span class="op">=</span> <span class="fl">1</span>, ALC_18 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="co"># Shows: NA</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-in"><span><span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">is_tagged_na</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"a"</span><span class="op">)</span> <span class="co"># Shows: TRUE (confirms it's tagged NA(a))</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">result</span>, tag <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Shows: "NA(a)" (displays the tag)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NA"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">low_drink_score_fun1</span><span class="op">(</span>CLC_SEX <span class="op">=</span> <span class="fl">1</span>, ALC_11 <span class="op">=</span> <span class="fl">7</span>, ALCDWKY <span class="op">=</span> <span class="fl">5</span>, ALC_17 <span class="op">=</span> <span class="fl">1</span>, ALC_18 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="co"># Shows: NA</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-in"><span><span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">is_tagged_na</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"b"</span><span class="op">)</span> <span class="co"># Shows: TRUE (confirms it's tagged NA(b))</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">result</span>, tag <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Shows: "NA(b)" (displays the tag)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NA"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">low_drink_score_fun1</span><span class="op">(</span>CLC_SEX <span class="op">=</span> <span class="fl">1</span>, ALC_11 <span class="op">=</span> <span class="fl">1</span>, ALCDWKY <span class="op">=</span> <span class="cn">NA</span>, ALC_17 <span class="op">=</span> <span class="fl">1</span>, ALC_18 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="co"># Shows: NA</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-in"><span><span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">is_tagged_na</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"b"</span><span class="op">)</span> <span class="co"># Shows: TRUE (confirms it's tagged NA(b))</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">result</span>, tag <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Shows: "NA(b)" (displays the tag)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NA"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multiple respondents</span></span></span>
+<span class="r-in"><span><span class="fu">low_drink_score_fun1</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  CLC_SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, ALC_11 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ALCDWKY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">12</span>, <span class="cn">NA</span><span class="op">)</span>, ALC_17 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ALC_18 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2 3 2</span>
+<span class="r-in"><span><span class="co"># Returns: c(2, 3, 2)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Database usage: Applied to survey datasets</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># dataset %&gt;%</span></span></span>
+<span class="r-in"><span><span class="co">#   mutate(low_drink_score1 = low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18))</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

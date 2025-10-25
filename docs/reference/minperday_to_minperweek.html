@@ -30,7 +30,7 @@ calculates the equivalent minutes of exercise per one week of accelerometer use.
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Minutes per week from minutes per day</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/main/R/exercise.R" class="external-link"><code>R/exercise.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/R/exercise.R" class="external-link"><code>R/exercise.R</code></a></small>
       <div class="d-none name"><code>minperday_to_minperweek.Rd</code></div>
     </div>
 
@@ -49,26 +49,42 @@ calculates the equivalent minutes of exercise per one week of accelerometer use.
 
 
 <dl><dt id="arg-mvpa-min">MVPA_min<a class="anchor" aria-label="anchor" href="#arg-mvpa-min"></a></dt>
-<dd><p>A numeric representing the average minutes of exercise per day across a week of accelerometer use.</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> A numeric representing the average minutes of exercise per day across a week of accelerometer use.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A numeric representing the average minutes of exercise per one week of accelerometer use.</p>
+    <p><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> The average minutes of exercise per one week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The function simply multiplies the average minutes of exercise per day (<code>MVPA_min</code>) by 7 to obtain the equivalent
 minutes of exercise per one week of accelerometer use.</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>     <span class="sc">**</span>Missing Data Codes<span class="sc">:</span><span class="er">**</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>     <span class="sc">-</span> Propagates tagged NAs from the input <span class="st">`</span><span class="at">MVPA_min</span><span class="st">`</span>.</span></code></pre><p></p></div>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="find_week_accelerometer_average.html">find_week_accelerometer_average()</a></code>, <code><a href="categorize_minperweek.html">categorize_minperweek()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Scalar usage: Single respondent</span></span></span>
 <span class="r-in"><span><span class="co"># Example: Convert average minutes of exercise per day to minutes per week.</span></span></span>
 <span class="r-in"><span><span class="fu">minperday_to_minperweek</span><span class="op">(</span><span class="fl">35</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 245</span>
-<span class="r-in"><span><span class="co"># Output: 245 (The equivalent minutes of exercise per one week is 245 minutes.)</span></span></span>
+<span class="r-in"><span><span class="co"># Output: 245</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Multiple respondents</span></span></span>
+<span class="r-in"><span><span class="fu">minperday_to_minperweek</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">35</span>, <span class="fl">40</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 245 280 140</span>
+<span class="r-in"><span><span class="co"># Returns: c(245, 280, 140)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Database usage: Applied to survey datasets</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># dataset %&gt;%</span></span></span>
+<span class="r-in"><span><span class="co">#   mutate(min_per_week = minperday_to_minperweek(avg_exercise))</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -28,7 +28,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>variable-details.csv</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/main/R/data.R" class="external-link"><code>R/data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/R/data.R" class="external-link"><code>R/data.R</code></a></small>
       <div class="d-none name"><code>variable_details.Rd</code></div>
     </div>
 
@@ -36,36 +36,31 @@
     <p>This dataset provides details on how variables are recoded in chmsflow.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">variable_details</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div class="section level2">
-    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-
-
-<dl><dt>variable_details</dt>
-<dd><p>a data frame</p></dd>
-
-</dl></div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>See the below link for more details about how the worksheet is structured
-<a href="https://big-life-lab.github.io/chmsflow/articles/variable_details.html">https://big-life-lab.github.io/chmsflow/articles/variable_details.html</a></p>
+    <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
+    <p>See <a href="https://big-life-lab.github.io/chmsflow/articles/variable_details.html">https://big-life-lab.github.io/chmsflow/articles/variable_details.html</a> for more details.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">variable_details</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">variable_details</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	1074 obs. of  16 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	1111 obs. of  16 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ variable               : chr  "acemed" "acemed" "acemed" "acemed" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ dummyVariable          : chr  "N/A" "acemed_cat2_1" "acemed_cat2_2" "acemed_cat2_NA::b" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ dummyVariable          : chr  "N/A" "acemed_cat2_1" "acemed_cat2_2" "acemed_cat2_NA::a" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ typeEnd                : chr  "cat" "cat" "cat" "cat" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ databaseStart          : chr  "cycle1_meds, cycle2_meds" "cycle1_meds, cycle2_meds" "cycle1_meds, cycle2_meds" "cycle1_meds, cycle2_meds" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ variableStart          : chr  "DerivedVar::[atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a"| __truncated__ "DerivedVar::[atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a"| __truncated__ "DerivedVar::[atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a"| __truncated__ "DerivedVar::[atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a"| __truncated__ ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ typeStart              : chr  "N/A" "N/A" "N/A" "N/A" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ recEnd                 : chr  "Func::cycles1to2_ace_inhibitors" "1" "0" "NA::b" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ recEnd                 : chr  "Func::cycles1to2_ace_inhibitors" "1" "0" "NA::a" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ numValidCat            : chr  "N/A" "2" "2" "2" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ catLabel               : chr  "N/A" "Yes" "No" "missing" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ catLabelLong           : chr  "N/A" "Yes" "No" "missing" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ catLabel               : chr  "N/A" "Yes" "No" "not applicable" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ catLabelLong           : chr  "N/A" "Yes" "No" "not applicable" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ units                  : chr  "N/A" "N/A" "N/A" "N/A" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ recStart               : chr  "N/A" "N/A" "N/A" "N/A" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ catStartLabel          : chr  "N/A" "N/A" "N/A" "N/A" ...</span>

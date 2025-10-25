@@ -57,7 +57,7 @@
 
 
 
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/main/vignettes/derived_variables.qmd" class="external-link"><code>vignettes/derived_variables.qmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/vignettes/derived_variables.qmd" class="external-link"><code>vignettes/derived_variables.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
     </div>
 
@@ -116,65 +116,6 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cycle2_gfr</span> <span class="op">&lt;-</span> <span class="fu">recodeflow</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle2</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gfr"</span>, <span class="st">"lab_bcre"</span>, <span class="st">"pgdcgt"</span>, <span class="st">"clc_sex"</span>, <span class="st">"clc_age"</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Using the passed data variable name as database_name</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The variable clc_age was recoded into clc_age for the database cycle2 the following recodes were made: </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  value_to       From rows_recoded
-1     copy    [3, 80]            4
-2    NA::a        996            0
-3    NA::b [997, 999]            0
-4     &lt;NA&gt;       else            0</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The variable clc_sex was recoded into clc_sex for the database cycle2 the following recodes were made: </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  value_to   From rows_recoded
-1        1      1            2
-2        2      2            2
-3    NA::a      6            0
-4    NA::b [7, 9]            0
-5    NA(b)   else            0</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The variable lab_bcre was recoded into lab_bcre for the database cycle2 the following recodes were made: </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  value_to         From rows_recoded
-1     copy    [14, 785]            4
-2    NA::a [9994, 9996]            0
-3    NA::b [9997, 9999]            0
-4     &lt;NA&gt;         else            0</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The variable sdcdcgt was recoded into pgdcgt for the database cycle2 the following recodes were made: </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   value_to     From rows_recoded
-1         1        1            3
-2         2        2            1
-3         3        3            0
-4         4        4            0
-5         5        5            0
-6         6        6            0
-7         7        7            0
-8         8        8            0
-9         9        9            0
-10       10       10            0
-11       11       11            0
-12       12       12            0
-13       13       13            0
-14       12       96            0
-15    NA::b [97, 99]            0
-16    NA(b)     else            0</code></pre>
-</div>
 </div>
 <p>Since derived variables are based on previously transformed variables, if you want to only transform your derived variable, you must also specify its base CHMS variables in <code>rec_with_table()</code> as shown above. So for the derived GFR variable, you will have to also specify the blood creatine (lab_bcre), ethnicity (pgdcgt), sex (clc_sex), and age (clc_age) variables.</p>
 </section><section class="level2"><h2 id="creating-a-derived-variable">Creating a derived variable<a class="anchor" aria-label="anchor" href="#creating-a-derived-variable"></a>
