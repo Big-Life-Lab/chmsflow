@@ -30,9 +30,49 @@ bmi_category     # BMI category
 **DISCUSSION**: Some existing variables need renaming:
 
 ```r
-anymed → any_htn_med
-acemed → ace_med
-diab_drug → diab_med
+# Medication variables (_med suffix)
+anymed → any_htn_med          # Any antihypertension medication
+acemed → ace_med              # ACE inhibitor medication
+diab_drug → diab_med          # Diabetes medication
+bbmed → bb_med                # Beta blocker medication
+ccbmed → ccb_med              # Calcium channel blocker medication
+diurmed → diur_med            # Diuretic medication
+miscmed → misc_htn_med        # Other antihypertension medication
+nsaid_drug → nsaid_med        # NSAID medication
+
+# Status/category variables (_status, _category suffixes)
+bmigroup → bmi_category                    # BMI classification
+cardiov → cvd_status                       # Cardiovascular disease status
+ckd → ckd_status                           # Chronic kidney disease status
+diabx → diab_status                        # Diabetes status (inclusive)
+gooddiet → healthy_diet_indicator          # Diet quality indicator
+highbp14090 → htn_status                   # Hypertension 140/90 status
+highbp14090_adj → htn_adj_status           # Hypertension adjusted 140/90
+control14090 → htn_control_status          # Controlled hypertension 140/90
+control14090_adj → htn_control_adj_status  # Controlled hypertension adjusted
+mvpa150wk → enough_exercise_indicator      # Meets 150min/week guideline
+nonhdltodd → nonhdl_category               # High non-HDL cholesterol status
+incq → income_quintile                     # Household income quintile
+incq1 → income_lowest_quintile             # Lowest income quintile flag
+
+# Score variables (_score suffix) -> these could maybe retain original name?
+low_drink_score → alc_risk_score           # Alcohol consumption risk score
+low_drink_score1 → alc_risk_former_score   # Alcohol risk with former/never
+
+# Continuous measurement variables
+adj_hh_inc → adj_hh_income                 # Adjusted household income
+dbp_adj → dbp_adj_mmhg                     # Adjusted diastolic BP (mmHg)
+sbp_adj → sbp_adj_mmhg                     # Adjusted systolic BP (mmHg)
+gfr → gfr_ml_min                           # Estimated GFR (mL/min)
+minperweek → exercise_min_week             # Exercise minutes per week
+mvpa_min → exercise_avg_min_day            # Average exercise minutes per day
+nonhdl → nonhdl_mmoll                      # Non-HDL cholesterol (mmol/L)
+pack_years_der → pack_years                # Smoking pack-years
+totalfv → fv_daily_times                   # Daily fruit/vegetable servings
+whr → waist_height_ratio                   # Waist-to-height ratio
+
+# Family history variables (_family suffix)
+famcvd60 → cvd_premature_famhist_status     # Premature CVD family history
 ```
 
 ---
