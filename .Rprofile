@@ -5,7 +5,7 @@ source("renv/activate.R")
 # Posit Package Manager provides binaries for faster installation
 options(
   pkgType = "binary",
-  repos = c(CRAN = "https://packagemanager.posit.co/cran/latest")
+  repos = c(CRAN = "https://cloud.r-project.org")
 )
 
 # Warn if R version is below the package floor
