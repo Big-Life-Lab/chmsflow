@@ -125,9 +125,11 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 is_beta_blocker <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC == "9999996" | NPI_25B == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC %in% c("9999997", "9999998", "9999999") | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # R NA values - treat as missing data
+    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
 
     # Check for beta blockers
     startsWith(MEUCATC, "C07") & !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02")) & NPI_25B <= 4 ~ 1,
@@ -168,9 +170,11 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
 is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC == "9999996" | NPI_25B == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC %in% c("9999997", "9999998", "9999999") | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # R NA values - treat as missing data
+    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
 
     # Check for ACE inhibitors
     startsWith(MEUCATC, "C09") & NPI_25B <= 4 ~ 1,
@@ -211,9 +215,11 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 is_diuretic <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC == "9999996" | NPI_25B == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC %in% c("9999997", "9999998", "9999999") | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # R NA values - treat as missing data
+    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
 
     # Check for diuretics
     startsWith(MEUCATC, "C03") & !(MEUCATC %in% c("C03BA08", "C03CA01")) & NPI_25B <= 4 ~ 1,
@@ -254,9 +260,11 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC == "9999996" | NPI_25B == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC %in% c("9999997", "9999998", "9999999") | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # R NA values - treat as missing data
+    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
 
     # Check for calcium channel blockers
     startsWith(MEUCATC, "C08") & NPI_25B <= 4 ~ 1,
@@ -297,9 +305,11 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
 is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC == "9999996" | NPI_25B == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC %in% c("9999997", "9999998", "9999999") | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # R NA values - treat as missing data
+    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
 
     # Check for other anti-hypertensive medications
     startsWith(MEUCATC, "C02") & !(MEUCATC %in% c("C02KX01")) & NPI_25B <= 4 ~ 1,
@@ -340,9 +350,11 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
 is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC == "9999996" | NPI_25B == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC %in% c("9999997", "9999998", "9999999") | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # R NA values - treat as missing data
+    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
 
     # Check for any anti-hypertensive medications
     grepl("^(C02|C03|C07|C08|C09)", MEUCATC) & !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) & NPI_25B <= 4 ~ 1,
@@ -383,9 +395,11 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
 is_NSAID <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC == "9999996" | NPI_25B == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC %in% c("9999997", "9999998", "9999999") | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # R NA values - treat as missing data
+    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
 
     # Check for NSAIDs
     startsWith(MEUCATC, "M01A") & NPI_25B <= 4 ~ 1,
@@ -426,9 +440,11 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
 is_diabetes_drug <- function(MEUCATC, NPI_25B) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    MEUCATC == "9999996" | NPI_25B == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    MEUCATC %in% c("9999997", "9999998", "9999999") | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # R NA values - treat as missing data
+    is.na(MEUCATC) | is.na(NPI_25B) ~ haven::tagged_na("b"),
 
     # Check for diabetes drugs
     startsWith(MEUCATC, "A10") & NPI_25B <= 4 ~ 1,
@@ -602,11 +618,21 @@ cycles1to2_beta_blockers <- function(
   results_matrix <- do.call(cbind, results_list)
 
   # For each row (respondent), check if any of the results are 1 (taking the drug)
-  med_vector <- as.numeric(rowSums(results_matrix == 1, na.rm = TRUE) > 0)
+  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
+  # Check if any result is 0 (explicit non-match with valid data)
+  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
+  # Only consider tagged NAs when there are no valid results (0 or 1)
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
 
-  # Handle cases where all medication information for a respondent is missing
-  all_na_for_row <- apply(is.na(results_matrix), 1, all)
-  med_vector[all_na_for_row] <- haven::tagged_na("b")
+  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
+  med_vector <- dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
 
   return(med_vector)
 }
@@ -775,11 +801,21 @@ cycles1to2_ace_inhibitors <- function(
   results_matrix <- do.call(cbind, results_list)
 
   # For each row (respondent), check if any of the results are 1 (taking the drug)
-  med_vector <- as.numeric(rowSums(results_matrix == 1, na.rm = TRUE) > 0)
+  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
+  # Check if any result is 0 (explicit non-match with valid data)
+  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
+  # Only consider tagged NAs when there are no valid results (0 or 1)
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
 
-  # Handle cases where all medication information for a respondent is missing
-  all_na_for_row <- apply(is.na(results_matrix), 1, all)
-  med_vector[all_na_for_row] <- haven::tagged_na("b")
+  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
+  med_vector <- dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
 
   return(med_vector)
 }
@@ -948,11 +984,21 @@ cycles1to2_diuretics <- function(
   results_matrix <- do.call(cbind, results_list)
 
   # For each row (respondent), check if any of the results are 1 (taking the drug)
-  med_vector <- as.numeric(rowSums(results_matrix == 1, na.rm = TRUE) > 0)
+  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
+  # Check if any result is 0 (explicit non-match with valid data)
+  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
+  # Only consider tagged NAs when there are no valid results (0 or 1)
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
 
-  # Handle cases where all medication information for a respondent is missing
-  all_na_for_row <- apply(is.na(results_matrix), 1, all)
-  med_vector[all_na_for_row] <- haven::tagged_na("b")
+  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
+  med_vector <- dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
 
   return(med_vector)
 }
@@ -1121,11 +1167,21 @@ cycles1to2_calcium_channel_blockers <- function(
   results_matrix <- do.call(cbind, results_list)
 
   # For each row (respondent), check if any of the results are 1 (taking the drug)
-  med_vector <- as.numeric(rowSums(results_matrix == 1, na.rm = TRUE) > 0)
+  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
+  # Check if any result is 0 (explicit non-match with valid data)
+  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
+  # Only consider tagged NAs when there are no valid results (0 or 1)
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
 
-  # Handle cases where all medication information for a respondent is missing
-  all_na_for_row <- apply(is.na(results_matrix), 1, all)
-  med_vector[all_na_for_row] <- haven::tagged_na("b")
+  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
+  med_vector <- dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
 
   return(med_vector)
 }
@@ -1294,11 +1350,21 @@ cycles1to2_other_antiHTN_meds <- function(
   results_matrix <- do.call(cbind, results_list)
 
   # For each row (respondent), check if any of the results are 1 (taking the drug)
-  med_vector <- as.numeric(rowSums(results_matrix == 1, na.rm = TRUE) > 0)
+  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
+  # Check if any result is 0 (explicit non-match with valid data)
+  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
+  # Only consider tagged NAs when there are no valid results (0 or 1)
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
 
-  # Handle cases where all medication information for a respondent is missing
-  all_na_for_row <- apply(is.na(results_matrix), 1, all)
-  med_vector[all_na_for_row] <- haven::tagged_na("b")
+  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
+  med_vector <- dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
 
   return(med_vector)
 }
@@ -1467,11 +1533,21 @@ cycles1to2_any_antiHTN_meds <- function(
   results_matrix <- do.call(cbind, results_list)
 
   # For each row (respondent), check if any of the results are 1 (taking the drug)
-  med_vector <- as.numeric(rowSums(results_matrix == 1, na.rm = TRUE) > 0)
+  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
+  # Check if any result is 0 (explicit non-match with valid data)
+  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
+  # Only consider tagged NAs when there are no valid results (0 or 1)
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
 
-  # Handle cases where all medication information for a respondent is missing
-  all_na_for_row <- apply(is.na(results_matrix), 1, all)
-  med_vector[all_na_for_row] <- haven::tagged_na("b")
+  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
+  med_vector <- dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
 
   return(med_vector)
 }
@@ -1640,11 +1716,21 @@ cycles1to2_nsaid <- function(
   results_matrix <- do.call(cbind, results_list)
 
   # For each row (respondent), check if any of the results are 1 (taking the drug)
-  med_vector <- as.numeric(rowSums(results_matrix == 1, na.rm = TRUE) > 0)
+  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
+  # Check if any result is 0 (explicit non-match with valid data)
+  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
+  # Only consider tagged NAs when there are no valid results (0 or 1)
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
 
-  # Handle cases where all medication information for a respondent is missing
-  all_na_for_row <- apply(is.na(results_matrix), 1, all)
-  med_vector[all_na_for_row] <- haven::tagged_na("b")
+  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
+  med_vector <- dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
 
   return(med_vector)
 }
@@ -1813,11 +1899,21 @@ cycles1to2_diabetes_drugs <- function(
   results_matrix <- do.call(cbind, results_list)
 
   # For each row (respondent), check if any of the results are 1 (taking the drug)
-  med_vector <- as.numeric(rowSums(results_matrix == 1, na.rm = TRUE) > 0)
+  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
+  # Check if any result is 0 (explicit non-match with valid data)
+  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
+  # Only consider tagged NAs when there are no valid results (0 or 1)
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
 
-  # Handle cases where all medication information for a respondent is missing
-  all_na_for_row <- apply(is.na(results_matrix), 1, all)
-  med_vector[all_na_for_row] <- haven::tagged_na("b")
+  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
+  med_vector <- dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
 
   return(med_vector)
 }
