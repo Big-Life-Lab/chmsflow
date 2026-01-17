@@ -35,6 +35,7 @@ test_that("low_drink_score_fun returns correct scores", {
   # Edge case tests - invalid ALC_11 codes
   expect_true(haven::is_tagged_na(low_drink_score_fun(1, 0, 5), "b"))
   expect_true(haven::is_tagged_na(low_drink_score_fun(1, 3, 5), "b"))
+
   # Edge case tests - very large ALCDWKY
   expect_equal(low_drink_score_fun(1, 1, 500), 3)
 
@@ -66,27 +67,31 @@ test_that("low_drink_score_fun1 returns correct scores", {
   expect_equal(low_drink_score_fun1(CLC_SEX = 1, ALCDWKY = 25, ALC_17 = 1, ALC_11 = 1, ALC_18 = 2), 4)
   expect_equal(low_drink_score_fun1(CLC_SEX = 2, ALCDWKY = 25, ALC_17 = 1, ALC_11 = 1, ALC_18 = 2), 4)
 
-  # Edge case tests - missing data, invalid inputs, and boundary values
+  # Edge case tests - missing data
   expect_true(is.na(low_drink_score_fun1(CLC_SEX = 1, ALCDWKY = 996, ALC_17 = 1, ALC_11 = 1, ALC_18 = 1)))
   expect_true(haven::is_tagged_na(low_drink_score_fun1(1, 6, 5, 1, 2), "a"))
   expect_true(haven::is_tagged_na(low_drink_score_fun1(1, 7, 5, 1, 2), "b"))
   expect_true(haven::is_tagged_na(low_drink_score_fun1(1, 1, NA, 8, 2), "b"))
   expect_true(haven::is_tagged_na(low_drink_score_fun1(1, 1, 5, 1, 9), "b"))
   expect_true(haven::is_tagged_na(low_drink_score_fun1(6, 7, 5, 1, 2), "a")) # mixed missing codes ("not applicable" takes precedence)
-  # Boundary values at thresholds
+
+  # Edge case tests - boundary values at thresholds
   expect_equal(low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 10, ALC_17 = 1, ALC_18 = 2), 2)
   expect_equal(low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 15, ALC_17 = 1, ALC_18 = 2), 2)
   expect_equal(low_drink_score_fun1(CLC_SEX = 2, ALC_11 = 1, ALCDWKY = 15, ALC_17 = 1, ALC_18 = 2), 3)
   expect_equal(low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 20, ALC_17 = 1, ALC_18 = 2), 3)
   expect_equal(low_drink_score_fun1(CLC_SEX = 2, ALC_11 = 1, ALCDWKY = 20, ALC_17 = 1, ALC_18 = 2), 4)
-  # Invalid sex codes
+
+  # Edge case tests - invalid sex codes
   expect_true(haven::is_tagged_na(low_drink_score_fun1(CLC_SEX = 0, ALC_11 = 1, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2), "b"))
   expect_true(haven::is_tagged_na(low_drink_score_fun1(CLC_SEX = 3, ALC_11 = 1, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2), "b"))
   expect_true(haven::is_tagged_na(low_drink_score_fun1(CLC_SEX = -1, ALC_11 = 1, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2), "b"))
-  # Invalid ALC_11 codes
+
+  # Edge case tests - invalid ALC_11 codes
   expect_true(haven::is_tagged_na(low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 0, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2), "b"))
   expect_true(haven::is_tagged_na(low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 3, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2), "b"))
-  # Very large ALCDWKY
+
+  # Edge case tests - very large ALCDWKY
   expect_true(haven::is_tagged_na(low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 500, ALC_17 = 1, ALC_18 = 2), "b"))
 
   # Vector tests

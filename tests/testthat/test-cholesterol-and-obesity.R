@@ -13,6 +13,7 @@ test_that("calculate_nonHDL returns correct non-HDL cholesterol level", {
   expect_true(haven::is_tagged_na(calculate_nonHDL(1.87, 1.5), "b"))
   expect_true(haven::is_tagged_na(calculate_nonHDL(5, 0.48), "b"))
   expect_true(is.na(calculate_nonHDL(NA, 1.5)))
+
   # Edge case tests - boundary values for valid ranges
   expect_true(!is.na(calculate_nonHDL(1.88, 0.49))) # Min valid
   expect_true(!is.na(calculate_nonHDL(13.58, 3.74))) # Max valid
@@ -38,6 +39,7 @@ test_that("categorize_nonHDL returns correct non-HDL cholesterol category", {
   expect_true(haven::is_tagged_na(categorize_nonHDL(haven::tagged_na("a")), "a"))
   expect_true(haven::is_tagged_na(categorize_nonHDL(haven::tagged_na("b")), "b"))
   expect_true(is.na(categorize_nonHDL(NA)))
+
   # Edge case tests - boundary values
   expect_equal(categorize_nonHDL(4.30), 1) # Exactly at threshold
   expect_equal(categorize_nonHDL(0), 2) # Zero value
@@ -63,6 +65,7 @@ test_that("calculate_WHR returns correct waist-to-height ratio", {
   expect_true(haven::is_tagged_na(calculate_WHR(-1, 85), "b"))
   expect_true(haven::is_tagged_na(calculate_WHR(170, -1), "b"))
   expect_true(is.na(calculate_WHR(NA, 85)))
+
   # Edge case tests - boundary values
   expect_equal(calculate_WHR(100, 50), 0.5) # Different valid values
   expect_equal(calculate_WHR(200, 100), 0.5) # Large valid values

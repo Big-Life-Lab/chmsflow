@@ -68,7 +68,7 @@ calculate_GFR(
 # Returns: c(67.27905, 99.94114, 70.38001)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(gfr = calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE))
 

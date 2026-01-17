@@ -43,7 +43,7 @@ determine_gooddiet(c(3, 7, 5))
 # Returns: c(2, 1, 1)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(diet_quality = determine_gooddiet(total_fv))
 

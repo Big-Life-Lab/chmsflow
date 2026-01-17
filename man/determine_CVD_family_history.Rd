@@ -63,7 +63,7 @@ determine_CVD_family_history(
 # Returns: c(1, 1, 2)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(cvd_family_history = determine_CVD_family_history(FMH_11, FMH_12, FMH_13, FMH_14))
 

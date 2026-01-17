@@ -101,7 +101,7 @@ low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12
 # Returns: c(1, 2, 1)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(low_drink_score = low_drink_score_fun(CLC_SEX, ALC_11, ALCDWKY))
 

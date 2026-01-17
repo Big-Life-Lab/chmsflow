@@ -41,4 +41,9 @@ format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 is_diuretic(c("C03AA03", "C03BA08"), c(3, 2))
 # Returns: c(1, 0)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(diuretic = is_diuretic(MEUCATC, NPI_25B))
+
 }

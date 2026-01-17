@@ -46,6 +46,12 @@
 #' )
 #' # Returns: c(35, 39.28571)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset %>%
+#' #   mutate(avg_exercise = find_week_accelerometer_average(AMMDMVA1, AMMDMVA2,
+#' #     AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7))
+#'
 #' @seealso [minperday_to_minperweek()] for activity unit conversion, [categorize_minperweek()] for activity level classification
 #' @export
 find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7) {
@@ -93,7 +99,7 @@ find_week_accelerometer_average <- function(AMMDMVA1, AMMDMVA2, AMMDMVA3, AMMDMV
 #' # Returns: c(245, 280, 140)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(min_per_week = minperday_to_minperweek(avg_exercise))
 #'
@@ -146,7 +152,7 @@ minperday_to_minperweek <- function(MVPA_min) {
 #' # Returns: c(1, 2, 1)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(pa_category = categorize_minperweek(min_per_week))
 #'

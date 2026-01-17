@@ -41,7 +41,7 @@
 #' # Returns: c(29411.76, 53571.43, 90000)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(adj_hh_income = calculate_hhld_income(THI_01, DHHDHSZ))
 #'
@@ -108,7 +108,7 @@ calculate_hhld_income <- function(THI_01, DHHDHSZ) {
 #' # Returns: c(2, 3, 5)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(income_category = categorize_income(adj_hh_inc))
 #'
@@ -164,7 +164,7 @@ categorize_income <- function(adj_hh_inc) {
 #' # Returns: c(2, 1, 2)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(in_lowest_quintile = in_lowest_income_quintile(income_category))
 #'

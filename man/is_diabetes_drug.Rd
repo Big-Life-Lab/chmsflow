@@ -41,4 +41,9 @@ format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 is_diabetes_drug(c("A10BB09", "C09AA02"), c(3, 2))
 # Returns: c(1, 0)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(diabetes_drug = is_diabetes_drug(MEUCATC, NPI_25B))
+
 }

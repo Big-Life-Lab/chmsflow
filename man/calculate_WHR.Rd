@@ -46,7 +46,7 @@ calculate_WHR(HWM_11CM = c(170, 180, 160), HWM_14CX = c(85, 90, 80))
 # Returns: c(0.5, 0.5, 0.5)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(whtr = calculate_WHR(HWM_11CM, HWM_14CX))
 

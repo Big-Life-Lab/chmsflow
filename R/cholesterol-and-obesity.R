@@ -36,7 +36,7 @@
 #' # Returns: c(3.5, 5.0, 5.0)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(non_hdl = calculate_nonHDL(LAB_CHOL, LAB_HDL))
 #'
@@ -89,7 +89,7 @@ calculate_nonHDL <- function(LAB_CHOL, LAB_HDL) {
 #' # Returns: c(1, 2, 1)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(non_hdl_category = categorize_nonHDL(non_hdl))
 #'
@@ -146,7 +146,7 @@ categorize_nonHDL <- function(nonHDL) {
 #' # Returns: c(0.5, 0.5, 0.5)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(whtr = calculate_WHR(HWM_11CM, HWM_14CX))
 #'

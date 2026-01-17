@@ -41,4 +41,9 @@ format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 is_NSAID(c("M01AB05", "A10BB09"), c(1, 3))
 # Returns: c(1, 0)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(nsaid = is_NSAID(MEUCATC, NPI_25B))
+
 }

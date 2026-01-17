@@ -43,7 +43,7 @@ categorize_nonHDL(c(5.0, 3.8, 4.3))
 # Returns: c(1, 2, 1)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(non_hdl_category = categorize_nonHDL(non_hdl))
 

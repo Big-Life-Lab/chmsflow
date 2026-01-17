@@ -52,6 +52,11 @@ format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 determine_CVD_personal_history(CCC_61 = c(1, 2, 2), CCC_63 = c(2, 1, 2), CCC_81 = c(2, 2, 1))
 # Returns: c(1, 1, 1)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(cvd_personal_history = determine_CVD_personal_history(CCC_61, CCC_63, CCC_81))
+
 }
 \seealso{
 \code{\link[=determine_CVD_family_history]{determine_CVD_family_history()}}

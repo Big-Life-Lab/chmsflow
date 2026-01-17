@@ -43,7 +43,7 @@ in_lowest_income_quintile(c(3, 1, 5))
 # Returns: c(2, 1, 2)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(in_lowest_quintile = in_lowest_income_quintile(income_category))
 

@@ -65,6 +65,12 @@
 #' )
 #' # Returns: c(30, 0.0137, 0)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset %>%
+#' #   mutate(pack_years = pack_years_fun(SMKDSTY, CLC_AGE, SMK_54, SMK_52,
+#' #     SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11))
+#'
 #' @seealso https://big-life-lab.github.io/cchsflow/reference/pack_years_fun.html
 #' @export
 pack_years_fun <- function(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11) {

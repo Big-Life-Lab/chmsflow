@@ -107,6 +107,11 @@ determine_hypertension(
 )
 # Returns: c(1, 2, 1)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(hypertension = determine_hypertension(BPMDPBPS, BPMDPBPD, ANYMED2))
+
 }
 \seealso{
 \code{\link[=adjust_SBP]{adjust_SBP()}}, \code{\link[=adjust_DBP]{adjust_DBP()}} for blood pressure adjustment, \code{\link[=determine_adjusted_hypertension]{determine_adjusted_hypertension()}} for adjusted BP classification

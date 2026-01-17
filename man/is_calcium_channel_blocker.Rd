@@ -41,4 +41,9 @@ format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2))
 # Returns: c(1, 0)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(ccb = is_calcium_channel_blocker(MEUCATC, NPI_25B))
+
 }

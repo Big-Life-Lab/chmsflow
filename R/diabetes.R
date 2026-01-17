@@ -59,7 +59,7 @@
 #' # Returns: c(1, 1, 1)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(diabetes_status = determine_inclusive_diabetes(diab_m, CCC_51, diab_drug2))
 #'

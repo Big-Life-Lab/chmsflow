@@ -48,7 +48,7 @@ calculate_nonHDL(LAB_CHOL = c(5.0, 6.0, 7.0), LAB_HDL = c(1.5, 1.0, 2.0))
 # Returns: c(3.5, 5.0, 5.0)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(non_hdl = calculate_nonHDL(LAB_CHOL, LAB_HDL))
 

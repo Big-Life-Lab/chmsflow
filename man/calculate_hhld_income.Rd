@@ -53,7 +53,7 @@ calculate_hhld_income(THI_01 = c(50000, 75000, 90000), DHHDHSZ = c(3, 2, 1))
 # Returns: c(29411.76, 53571.43, 90000)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(adj_hh_income = calculate_hhld_income(THI_01, DHHDHSZ))
 

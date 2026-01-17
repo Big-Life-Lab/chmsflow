@@ -41,4 +41,9 @@ format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 is_beta_blocker(c("C07AA13", "C07AA07"), c(3, 4))
 # Returns: c(1, 0)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(beta_blocker = is_beta_blocker(MEUCATC, NPI_25B))
+
 }

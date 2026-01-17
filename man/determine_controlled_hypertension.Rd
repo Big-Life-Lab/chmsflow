@@ -108,6 +108,11 @@ determine_controlled_hypertension(
 )
 # Returns: c(2, 1, 2)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(controlled_htn = determine_controlled_hypertension(BPMDPBPS, BPMDPBPD, ANYMED2))
+
 }
 \seealso{
 \code{\link[=determine_controlled_adjusted_hypertension]{determine_controlled_adjusted_hypertension()}} for controlled status with adjusted BP

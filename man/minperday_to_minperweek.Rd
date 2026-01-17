@@ -35,7 +35,7 @@ minperday_to_minperweek(c(35, 40, 20))
 # Returns: c(245, 280, 140)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(min_per_week = minperday_to_minperweek(avg_exercise))
 

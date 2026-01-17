@@ -41,4 +41,9 @@ format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 is_other_antiHTN_med(c("C02AC04", "C02KX01"), c(3, 2))
 # Returns: c(1, 0)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(other_antihtn = is_other_antiHTN_med(MEUCATC, NPI_25B))
+
 }

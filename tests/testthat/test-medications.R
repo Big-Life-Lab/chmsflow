@@ -1,6 +1,3 @@
-library(chmsflow)
-library(haven)
-
 # test-medications.R
 
 # Test for is_taking_drug_class
@@ -258,9 +255,11 @@ test_that("cycles1to2_ace_inhibitors returns correct values", {
   # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
   expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "9999996", mhr_101b = 1), "a"))
   expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = 6), "a"))
+
   # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "9999997", mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = 7), "b"))
+
   # R NA values return tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = NA_character_, mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = NA_real_), "b"))
@@ -276,9 +275,11 @@ test_that("cycles1to2_beta_blockers returns correct values", {
   # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
   expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "9999996", mhr_101b = 1), "a"))
   expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "C07AA05", mhr_101b = 6), "a"))
+
   # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "9999997", mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "C07AA05", mhr_101b = 7), "b"))
+
   # R NA values return tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = NA_character_, mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "C07AA05", mhr_101b = NA_real_), "b"))
@@ -294,9 +295,11 @@ test_that("cycles1to2_diuretics returns correct values", {
   # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
   expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "9999996", mhr_101b = 1), "a"))
   expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = 6), "a"))
+
   # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "9999997", mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = 7), "b"))
+
   # R NA values return tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = NA_character_, mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = NA_real_), "b"))
@@ -312,9 +315,11 @@ test_that("cycles1to2_calcium_channel_blockers returns correct values", {
   # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
   expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "9999996", mhr_101b = 1), "a"))
   expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = 6), "a"))
+
   # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "9999997", mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = 7), "b"))
+
   # R NA values return tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = NA_character_, mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = NA_real_), "b"))
@@ -330,9 +335,11 @@ test_that("cycles1to2_other_antiHTN_meds returns correct values", {
   # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
   expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "9999996", mhr_101b = 1), "a"))
   expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 6), "a"))
+
   # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "9999997", mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 7), "b"))
+
   # R NA values return tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = NA_character_, mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = NA_real_), "b"))
@@ -348,9 +355,11 @@ test_that("cycles1to2_any_antiHTN_meds returns correct values", {
   # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
   expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "9999996", mhr_101b = 1), "a"))
   expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 6), "a"))
+
   # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "9999997", mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 7), "b"))
+
   # R NA values return tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = NA_character_, mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = NA_real_), "b"))
@@ -366,9 +375,11 @@ test_that("cycles1to2_nsaid returns correct values", {
   # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
   expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "9999996", mhr_101b = 1), "a"))
   expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = 6), "a"))
+
   # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "9999997", mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = 7), "b"))
+
   # R NA values return tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = NA_character_, mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = NA_real_), "b"))
@@ -384,9 +395,11 @@ test_that("cycles1to2_diabetes_drugs returns correct values", {
   # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
   expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "9999996", mhr_101b = 1), "a"))
   expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = 6), "a"))
+
   # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "9999997", mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = 7), "b"))
+
   # R NA values return tagged NA "b"
   expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = NA_character_, mhr_101b = 1), "b"))
   expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = NA_real_), "b"))

@@ -33,7 +33,7 @@
 #' # Returns: c(123, 132.3, 141.6)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(sbp_adj = adjust_SBP(BPMDPBPS))
 #'
@@ -86,7 +86,7 @@ adjust_SBP <- function(BPMDPBPS) {
 #' # Returns: c(82, 90.3, 98.6)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(dbp_adj = adjust_DBP(BPMDPBPD))
 #'
@@ -176,6 +176,11 @@ adjust_DBP <- function(BPMDPBPD) {
 #'   ANYMED2 = c(1, 0, 1), DIABX = c(2, 2, 1)
 #' )
 #' # Returns: c(1, 2, 1)
+#'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset %>%
+#' #   mutate(hypertension = determine_hypertension(BPMDPBPS, BPMDPBPD, ANYMED2))
 #'
 #' @seealso [adjust_SBP()], [adjust_DBP()] for blood pressure adjustment, [determine_adjusted_hypertension()] for adjusted BP classification
 #' @export
@@ -299,6 +304,11 @@ determine_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_32 = 2, CARD
 #' )
 #' # Returns: c(1, 2, 1)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset %>%
+#' #   mutate(hypertension_adj = determine_adjusted_hypertension(SBP_adj, DBP_adj, ANYMED2))
+#'
 #' @seealso [determine_hypertension()] for unadjusted BP classification
 #' @export
 determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 2, CARDIOV = 2, DIABX = 2, CKD = 2) {
@@ -421,6 +431,11 @@ determine_adjusted_hypertension <- function(SBP_adj, DBP_adj, ANYMED2, CCC_32 = 
 #'   ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)
 #' )
 #' # Returns: c(2, 1, 2)
+#'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset %>%
+#' #   mutate(controlled_htn = determine_controlled_hypertension(BPMDPBPS, BPMDPBPD, ANYMED2))
 #'
 #' @seealso [determine_controlled_adjusted_hypertension()] for controlled status with adjusted BP
 #' @export
@@ -556,6 +571,12 @@ determine_controlled_hypertension <- function(BPMDPBPS, BPMDPBPD, ANYMED2, CCC_3
 #'   ANYMED2 = c(1, 1, 1), DIABX = c(2, 2, 1)
 #' )
 #' # Returns: c(2, 1, 2)
+#'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset %>%
+#' #   mutate(controlled_htn_adj = determine_controlled_adjusted_hypertension(SBP_adj,
+#' #     DBP_adj, ANYMED2))
 #'
 #' @seealso [determine_controlled_hypertension()] for controlled status with unadjusted BP
 #' @export

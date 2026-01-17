@@ -44,7 +44,7 @@ categorize_minperweek(c(180, 120, 150))
 # Returns: c(1, 2, 1)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(pa_category = categorize_minperweek(min_per_week))
 

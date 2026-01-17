@@ -44,7 +44,7 @@ adjust_DBP(BPMDPBPD = c(80, 90, 100))
 # Returns: c(82, 90.3, 98.6)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(dbp_adj = adjust_DBP(BPMDPBPD))
 

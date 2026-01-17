@@ -71,6 +71,12 @@ find_week_accelerometer_average(
 )
 # Returns: c(35, 39.28571)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(avg_exercise = find_week_accelerometer_average(AMMDMVA1, AMMDMVA2,
+#     AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7))
+
 }
 \seealso{
 \code{\link[=minperday_to_minperweek]{minperday_to_minperweek()}} for activity unit conversion, \code{\link[=categorize_minperweek]{categorize_minperweek()}} for activity level classification

@@ -49,7 +49,7 @@ categorize_GFR_to_CKD(c(45, 75, 60))
 # Returns: c(1, 2, 1)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(ckd = categorize_GFR_to_CKD(gfr))
 

@@ -49,6 +49,12 @@
 #' )
 #' # Returns: c(2.164384, 2.356164)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset %>%
+#' #   mutate(total_fv = find_totalFV_cycles1and2(WSDD14Y, GFVD17Y, GFVD18Y,
+#' #     GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y))
+#'
 #' @seealso [find_totalFV_cycles3to6()] for cycles 3-6 fruit and vegetable consumption, [determine_gooddiet()] for overall diet quality
 #' @export
 find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
@@ -126,6 +132,12 @@ find_totalFV_cycles1and2 <- function(WSDD14Y, GFVD17Y, GFVD18Y, GFVD19Y, GFVD20Y
 #' )
 #' # Returns: c(2.931507, 3.232877)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset %>%
+#' #   mutate(total_fv = find_totalFV_cycles3to6(WSDD34Y, WSDD35Y, GFVD17AY,
+#' #     GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y))
+#'
 #' @seealso [find_totalFV_cycles1and2()] for cycles 1-2 fruit and vegetable consumption, [determine_gooddiet()] for overall diet quality
 #' @export
 find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y) {
@@ -179,7 +191,7 @@ find_totalFV_cycles3to6 <- function(WSDD34Y, WSDD35Y, GFVD17AY, GFVD17BY, GFVD17
 #' # Returns: c(2, 1, 1)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(diet_quality = determine_gooddiet(total_fv))
 #'

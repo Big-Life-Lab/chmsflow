@@ -74,6 +74,12 @@ find_totalFV_cycles1and2(
 )
 # Returns: c(2.164384, 2.356164)
 
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset \%>\%
+#   mutate(total_fv = find_totalFV_cycles1and2(WSDD14Y, GFVD17Y, GFVD18Y,
+#     GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y))
+
 }
 \seealso{
 \code{\link[=find_totalFV_cycles3to6]{find_totalFV_cycles3to6()}} for cycles 3-6 fruit and vegetable consumption, \code{\link[=determine_gooddiet]{determine_gooddiet()}} for overall diet quality

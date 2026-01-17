@@ -46,7 +46,7 @@ categorize_income(c(25000, 45000, 80000))
 # Returns: c(2, 3, 5)
 
 # Database usage: Applied to survey datasets
-library(dplyr)
+# library(dplyr)
 # dataset \%>\%
 #   mutate(income_category = categorize_income(adj_hh_inc))
 

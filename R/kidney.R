@@ -54,7 +54,7 @@
 #' # Returns: c(67.27905, 99.94114, 70.38001)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(gfr = calculate_GFR(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE))
 #'
@@ -125,7 +125,7 @@ calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
 #' # Returns: c(1, 2, 1)
 #'
 #' # Database usage: Applied to survey datasets
-#' library(dplyr)
+#' # library(dplyr)
 #' # dataset %>%
 #' #   mutate(ckd = categorize_GFR_to_CKD(gfr))
 #'
