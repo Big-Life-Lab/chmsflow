@@ -53,11 +53,11 @@ control14090_adj → htn_control_adj_status  # Controlled hypertension adjusted
 mvpa150wk → enough_exercise_indicator      # Meets 150min/week guideline
 nonhdltodd → nonhdl_category               # High non-HDL cholesterol status
 incq → income_quintile                     # Household income quintile
-incq1 → income_lowest_quintile             # Lowest income quintile flag
+incq1 → lowest_income_quintile             # Lowest income quintile flag
 
 # Score variables (_score suffix) -> these could maybe retain original name?
 low_drink_score → alc_risk_score           # Alcohol consumption risk score
-low_drink_score1 → alc_risk_former_score   # Alcohol risk with former/never
+low_drink_score1 → alc_detailed_risk_score # Alcohol risk with former/never
 
 # Continuous measurement variables
 adj_hh_inc → adj_hh_income                 # Adjusted household income
@@ -72,7 +72,7 @@ totalfv → fv_daily_times                   # Daily fruit/vegetable servings
 whr → waist_height_ratio                   # Waist-to-height ratio
 
 # Family history variables (_family suffix)
-famcvd60 → cvd_premature_famhist_status     # Premature CVD family history
+famcvd60 → cvd_premature_famhist_status    # Premature CVD family history
 ```
 
 ---
@@ -83,14 +83,87 @@ famcvd60 → cvd_premature_famhist_status     # Premature CVD family history
 
 **Proposed verb taxonomy** (simplified):
 
-| Verb             | Purpose                   | Example                                                 |
-| ---------------- | ------------------------- | ------------------------------------------------------- |
-| `calculate_`  | Mathematical computation  | `calculate_gfr(creatinine, age)`<br />calculate_bmi() |
-| `categorize_`  | Continuous → categorical | `categorize_bmi(bmi)`                                 |
+| Verb           | Purpose                              | Returns                | Example                          |
+| -------------- | ------------------------------------ | ---------------------- | -------------------------------- |
+| `is_`          | Boolean check                        | 0/1 or TRUE/FALSE      | `is_beta_blocker()`              |
+| `calculate_`   | Mathematical computation             | Continuous numeric     | `calculate_gfr()`                |
+| `categorize_`  | Continuous → categorical             | Category codes (1,2,3) | `categorize_income()`            |
+| `adjust_`      | Correction/transformation            | Adjusted numeric       | `adjust_sbp()`                   |
+| `derive_`      | Complex multi-input derivation       | Derived variable       | `derive_diabetes_status()`       |
 
-**DISCUSSION**:
+**DISCUSSION**: Rename all functions to use the five verbs above. Use lowercase for function names.
 
-- Map existing verbs: `determine_*`, `find_*`, `adjust_*`, `is_*`, `cycles1to2_*`
+```r
+# Alcohol functions (alcohol.R)
+low_drink_score_fun → derive_alcohol_risk                     # 3-level risk category
+low_drink_score_fun1 → derive_alcohol_risk_detailed           # With former/never drinker detail
+
+# Blood pressure functions (blood-pressure.R)
+adjust_SBP → adjust_sbp                                                       # Adjusted systolic BP
+adjust_DBP → adjust_dbp                                                       # Adjusted diastolic BP
+determine_hypertension → derive_hypertension                                  # HTN status (1=yes, 2=no)
+determine_adjusted_hypertension → derive_hypertension_adj                     # HTN status with adjusted BP
+determine_controlled_hypertension → derive_hypertension_control               # Controlled HTN status
+determine_controlled_adjusted_hypertension → derive_hypertension_control_adj  # Controlled HTN with adjusted BP
+
+# Cholesterol and obesity functions (cholesterol-and-obesity.R)
+calculate_nonHDL → calculate_nonhdl                           # Non-HDL cholesterol (mmol/L)
+categorize_nonHDL → categorize_nonhdl                         # High non-HDL status
+calculate_WHR → calculate_waist_height_ratio                  # Waist-to-height ratio
+
+# Diabetes functions (diabetes.R)
+determine_inclusive_diabetes → derive_diabetes_status         # Combines multiple inputs
+
+# Diet functions (diet.R)
+find_totalFV_cycles1and2 → calculate_fv_daily_cycles1to2      # Daily F&V servings
+find_totalFV_cycles3to6 → calculate_fv_daily_cycles3to6       # Daily F&V servings
+determine_gooddiet → categorize_diet_quality                  # Meets 5/day guideline
+
+# Exercise functions (exercise.R)
+find_week_accelerometer_average → calculate_exercise_daily_avg  # Avg min/day
+minperday_to_minperweek → calculate_exercise_weekly             # Min per week
+categorize_minperweek → categorize_exercise                     # Meets 150min/week guideline
+
+# Family history functions (family-history.R)
+determine_CVD_personal_history → derive_cvd_personal_history  # CVD status in individual
+determine_CVD_family_history → derive_cvd_family_history      # Premature CVD in family
+
+# Income functions (income.R)
+calculate_hhld_income → calculate_household_income            # Household income
+categorize_income → categorize_income_quintile                # 5 income quintiles
+in_lowest_income_quintile → is_lowest_income_quintile         # Boolean: lowest quintile
+
+# Kidney functions (kidney.R)
+calculate_GFR → calculate_gfr                                 # eGFR (mL/min/1.73m²)
+categorize_GFR_to_CKD → categorize_ckd                        # CKD status from GFR
+
+# Medication functions - element-wise (medications.R)
+is_taking_drug_class → is_taking_drug_class                   # (keep, internal helper)
+is_beta_blocker → is_beta_blocker                             # (keep)
+is_ace_inhibitor → is_ace_inhibitor                           # (keep)
+is_diuretic → is_diuretic                                     # (keep)
+is_calcium_channel_blocker → is_calcium_channel_blocker       # (keep)
+is_other_antiHTN_med → is_other_antihtn_med                   # Lowercase
+is_any_antiHTN_med → is_any_antihtn_med                       # Lowercase
+is_NSAID → is_nsaid                                           # Lowercase
+is_diabetes_drug → is_diabetes_med                            # Consistent _med suffix
+
+# Medication functions - cycle-specific (medications.R)
+cycles1to2_beta_blockers → is_bb_med_cycles1to2               # Beta blocker (cycles 1-2)
+cycles1to2_ace_inhibitors → is_ace_med_cycles1to2             # ACE inhibitor (cycles 1-2)
+cycles1to2_diuretics → is_diur_med_cycles1to2                 # Diuretic (cycles 1-2)
+cycles1to2_calcium_channel_blockers → is_ccb_med_cycles1to2   # CCB (cycles 1-2)
+cycles1to2_other_antiHTN_meds → is_misc_htn_med_cycles1to2    # Other antiHTN (cycles 1-2)
+cycles1to2_any_antiHTN_meds → is_any_htn_med_cycles1to2       # Any antiHTN (cycles 1-2)
+cycles1to2_nsaid → is_nsaid_med_cycles1to2                    # NSAID (cycles 1-2)
+cycles1to2_diabetes_drugs → is_diab_med_cycles1to2            # Diabetes med (cycles 1-2)
+
+# Smoking functions (smoking.R)
+pack_years_fun → calculate_pack_years                         # Pack-years from smoking history
+```
+
+**Open questions**:
+
 - Should parameters be lowercase (tidyverse) or UPPERCASE (CHMS traceability)?
 
 ---

@@ -89,3 +89,6 @@ packrat.lock
 /.quarto/
 /_freeze/
 *_files/
+
+# Claude use
+.claude/
