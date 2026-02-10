@@ -39,11 +39,14 @@ ccbmed → ccb_med              # Calcium channel blocker medication
 diurmed → diur_med            # Diuretic medication
 miscmed → misc_htn_med        # Other antihypertension medication
 nsaid_drug → nsaid_med        # NSAID medication
+anymed2 → any_htn_med2       # Any antihypertension medication (source)
+diab_drug2 → diab_med2       # Diabetes medication (source)
 
 # Status/category variables (_status, _category suffixes)
 bmigroup → bmi_category                    # BMI classification
 cardiov → cvd_status                       # Cardiovascular disease status
 ckd → ckd_status                           # Chronic kidney disease status
+diab_m → diab_a1c                          # Diabetes prevalence (HbA1C)
 diabx → diab_status                        # Diabetes status (inclusive)
 gooddiet → healthy_diet_indicator          # Diet quality indicator
 highbp14090 → htn_status                   # Hypertension 140/90 status
@@ -72,6 +75,7 @@ totalfv → fv_daily_times                   # Daily fruit/vegetable servings
 whr → waist_height_ratio                   # Waist-to-height ratio
 
 # Family history variables (_family suffix)
+fambp → fam_bp                             # Family history of high BP (source)
 famcvd60 → cvd_premature_famhist_status    # Premature CVD family history
 ```
 
