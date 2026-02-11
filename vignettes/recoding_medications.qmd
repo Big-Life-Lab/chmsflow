@@ -111,7 +111,8 @@ For cycles 1-2, all raw ATC code and time-last-taken columns must be listed expl
 # Recoding derived variable ace_med for cycle 2
 cycle2_ace_medication_data <- rec_with_table(
   cycle2_meds,
-  c("clinicid",
+  c(
+    "clinicid",
     "atc_101a", "atc_102a", "atc_103a", "atc_104a", "atc_105a",
     "atc_106a", "atc_107a", "atc_108a", "atc_109a", "atc_110a",
     "atc_111a", "atc_112a", "atc_113a", "atc_114a", "atc_115a",
@@ -128,7 +129,8 @@ cycle2_ace_medication_data <- rec_with_table(
     "mhr_211b", "mhr_212b", "mhr_213b", "mhr_214b", "mhr_215b",
     "mhr_131b", "mhr_132b", "mhr_133b", "mhr_134b", "mhr_135b",
     "mhr_231b", "mhr_232b", "mhr_233b", "mhr_234b", "mhr_235b",
-    "ace_med"),
+    "ace_med"
+  ),
   variable_details = variable_details
 )
 head(select(cycle2_ace_medication_data, clinicid, ace_med))
@@ -251,9 +253,11 @@ cycle3 <- merge(cycle3, cycle3_htn_medication_data, by = "clinicid")
 # Step 4: Derive hypertension status
 cycle3_htn_data <- rec_with_table(
   cycle3,
-  c("bpmdpbps", "bpmdpbpd", "sbp_adj_mmhg", "dbp_adj_mmhg",
+  c(
+    "bpmdpbps", "bpmdpbpd", "sbp_adj_mmhg", "dbp_adj_mmhg",
     "any_htn_med2", "ccc_32", "cvd_status", "diab_status",
-    "ckd_status", "htn_status"),
+    "ckd_status", "htn_status"
+  ),
   variable_details = variable_details
 )
 head(cycle3_htn_data)
