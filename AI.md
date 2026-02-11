@@ -166,9 +166,83 @@ cycles1to2_diabetes_drugs → is_diab_med_cycles1to2            # Diabetes med (
 pack_years_fun → calculate_pack_years                         # Pack-years from smoking history
 ```
 
-**Open questions**:
+**Decided**: All function parameters use **lowercase** `snake_case` (consistent with tidyverse convention).
 
-- Should parameters be lowercase (tidyverse) or UPPERCASE (CHMS traceability)?
+Source variable parameters renamed to lowercase:
+
+```r
+# Blood pressure (blood-pressure.R)
+BPMDPBPS → bpmdpbps        # Systolic BP measurement
+BPMDPBPD → bpmdpbpd        # Diastolic BP measurement
+CCC_32 → ccc_32            # Self-reported HTN medication
+
+# Cholesterol and obesity (cholesterol-and-obesity.R)
+LAB_CHOL → lab_chol        # Total cholesterol (mmol/L)
+LAB_HDL → lab_hdl          # HDL cholesterol (mmol/L)
+HWM_11CM → hwm_11cm        # Height (cm)
+HWM_14CX → hwm_14cx        # Waist circumference (cm)
+
+# Kidney (kidney.R)
+LAB_BCRE → lab_bcre        # Blood creatinine (µmol/L)
+PGDCGT → pgdcgt            # Ethnicity
+CLC_SEX → clc_sex          # Sex (also in alcohol.R, kidney.R)
+CLC_AGE → clc_age          # Age (also in kidney.R, smoking.R)
+
+# Alcohol (alcohol.R)
+ALC_11 → alc_11            # Drank in past year
+ALCDWKY → alcdwky          # Drinks per week
+ALC_17 → alc_17            # Ever drank in lifetime
+ALC_18 → alc_18            # Regularly drank >12/week
+
+# Diabetes (diabetes.R)
+CCC_51 → ccc_51            # Self-reported diabetes
+
+# Diet (diet.R)
+WSDD14Y → wsdd14y          # Fruit juice per year
+GFVD17Y → gfvd17y          # Fruit per year
+GFVD18Y → gfvd18y          # Tomato per year
+GFVD19Y → gfvd19y          # Lettuce/salad per year
+GFVD20Y → gfvd20y          # Spinach/greens per year
+GFVD22Y → gfvd22y          # Potatoes per year
+GFVD23Y → gfvd23y          # Other vegetables per year
+WSDD34Y → wsdd34y          # Orange/grapefruit juice per year
+WSDD35Y → wsdd35y          # Other fruit juices per year
+GFVD17AY → gfvd17ay        # Citrus fruits per year
+GFVD17BY → gfvd17by        # Strawberries (summer) per year
+GFVD17CY → gfvd17cy        # Strawberries (non-summer) per year
+GFVD17DY → gfvd17dy        # Other fruits per year
+
+# Exercise (exercise.R)
+AMMDMVA1-7 → ammdmva1-7    # Exercise minutes per day (Days 1-7)
+
+# Family history (family-history.R)
+CCC_61 → ccc_61            # Heart disease history
+CCC_63 → ccc_63            # Heart attack history
+CCC_81 → ccc_81            # Stroke history
+FMH_11 → fmh_11            # Family heart disease
+FMH_12 → fmh_12            # Age at family heart disease
+FMH_13 → fmh_13            # Family stroke
+FMH_14 → fmh_14            # Age at family stroke
+
+# Income (income.R)
+THI_01 → thi_01            # Household income amount
+DHHDHSZ → dhhdhsz          # Household size
+
+# Medications (medications.R) - element-wise functions only
+MEUCATC → meucatc          # ATC medication code
+NPI_25B → npi_25b          # Last taken medication
+
+# Smoking (smoking.R)
+SMKDSTY → smkdsty          # Smoking status
+SMK_54 → smk_54            # Age stopped smoking daily
+SMK_52 → smk_52            # Age started smoking daily
+SMK_31 → smk_31            # Cigarettes per day (daily)
+SMK_41 → smk_41            # Cigarettes per day (occasional)
+SMK_53 → smk_53            # Cigarettes per day (former daily)
+SMK_42 → smk_42            # Days smoked in past month
+SMK_21 → smk_21            # Age started occasional smoking
+SMK_11 → smk_11            # Smoked 100+ cigarettes lifetime
+```
 
 ---
 
@@ -241,7 +315,7 @@ pack_years_fun → calculate_pack_years                         # Pack-years fro
 
 1. Variable renaming: Single PR or gradual? Backwards compatibility?
 2. Function verbs: Which to keep? Exact meanings?
-3. Parameter naming: Lowercase or UPPERCASE?
+3. ~~Parameter naming: Lowercase or UPPERCASE?~~ **RESOLVED: Lowercase**
 4. Cycle-specific functions: Refactor or keep?
 5. Intermediate variables: Eliminate or document?
 6. Vignette restructuring: Rewrite existing?

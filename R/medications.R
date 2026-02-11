@@ -97,14 +97,14 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 #' @title Beta blockers
 #' @description This function determines whether a given medication is a beta blocker.
 #' This function processes multiple inputs efficiently.
-#' @param MEUCATC [character] ATC code of the medication.
-#' @param NPI_25B [integer] Time when the medication was last taken.
+#' @param meucatc [character] ATC code of the medication.
+#' @param npi_25b [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is a beta blocker, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #' @details Identifies beta blockers based on ATC codes starting with "C07", excluding specific sub-codes.
 #'
 #'          **Missing Data Codes:**
-#'          - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -122,15 +122,15 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 #' # Returns: c(1, 0)
 #'
 #' @export
-is_beta_blocker <- function(MEUCATC, NPI_25B) {
+is_beta_blocker <- function(meucatc, npi_25b) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
 
     # Check for beta blockers
-    startsWith(MEUCATC, "C07") & !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02")) & NPI_25B <= 4 ~ 1,
+    startsWith(meucatc, "C07") & !(meucatc %in% c("C07AA07", "C07AA12", "C07AG02")) & npi_25b <= 4 ~ 1,
 
     # Default to 0 (not a beta blocker)
     .default = 0
@@ -140,14 +140,14 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
 #' @title ACE inhibitors
 #' @description This function checks if a given medication is an ACE inhibitor.
 #' This function processes multiple inputs efficiently.
-#' @param MEUCATC [character] ATC code of the medication.
-#' @param NPI_25B [integer] Time when the medication was last taken.
+#' @param meucatc [character] ATC code of the medication.
+#' @param npi_25b [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is an ACE inhibitor, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #' @details Identifies ACE inhibitors based on ATC codes starting with "C09".
 #'
 #'          **Missing Data Codes:**
-#'          - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -165,15 +165,15 @@ is_beta_blocker <- function(MEUCATC, NPI_25B) {
 #' # Returns: c(1, 0)
 #'
 #' @export
-is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
+is_ace_inhibitor <- function(meucatc, npi_25b) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
 
     # Check for ACE inhibitors
-    startsWith(MEUCATC, "C09") & NPI_25B <= 4 ~ 1,
+    startsWith(meucatc, "C09") & npi_25b <= 4 ~ 1,
 
     # Default to 0 (not an ACE inhibitor)
     .default = 0
@@ -183,14 +183,14 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 #' @title Diuretics
 #' @description This function checks if a given medication is a diuretic.
 #' This function processes multiple inputs efficiently.
-#' @param MEUCATC [character] ATC code of the medication.
-#' @param NPI_25B [integer] Time when the medication was last taken.
+#' @param meucatc [character] ATC code of the medication.
+#' @param npi_25b [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is a diuretic, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #' @details Identifies diuretics based on ATC codes starting with "C03", excluding specific sub-codes.
 #'
 #'          **Missing Data Codes:**
-#'          - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -208,15 +208,15 @@ is_ace_inhibitor <- function(MEUCATC, NPI_25B) {
 #' # Returns: c(1, 0)
 #'
 #' @export
-is_diuretic <- function(MEUCATC, NPI_25B) {
+is_diuretic <- function(meucatc, npi_25b) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
 
     # Check for diuretics
-    startsWith(MEUCATC, "C03") & !(MEUCATC %in% c("C03BA08", "C03CA01")) & NPI_25B <= 4 ~ 1,
+    startsWith(meucatc, "C03") & !(meucatc %in% c("C03BA08", "C03CA01")) & npi_25b <= 4 ~ 1,
 
     # Default to 0 (not a diuretic)
     .default = 0
@@ -226,14 +226,14 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 #' @title Calcium channel blockers
 #' @description This function checks if a given medication is a calcium channel blocker.
 #' This function processes multiple inputs efficiently.
-#' @param MEUCATC [character] ATC code of the medication.
-#' @param NPI_25B [integer] Time when the medication was last taken.
+#' @param meucatc [character] ATC code of the medication.
+#' @param npi_25b [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is a calcium channel blocker, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #' @details Identifies calcium channel blockers based on ATC codes starting with "C08".
 #'
 #'          **Missing Data Codes:**
-#'          - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 #'
 #' @examples
 #' # Scalar usage: Single respondent
@@ -251,15 +251,15 @@ is_diuretic <- function(MEUCATC, NPI_25B) {
 #' # Returns: c(1, 0)
 #'
 #' @export
-is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
+is_calcium_channel_blocker <- function(meucatc, npi_25b) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
 
     # Check for calcium channel blockers
-    startsWith(MEUCATC, "C08") & NPI_25B <= 4 ~ 1,
+    startsWith(meucatc, "C08") & npi_25b <= 4 ~ 1,
 
     # Default to 0 (not a calcium channel blocker)
     .default = 0
@@ -269,40 +269,40 @@ is_calcium_channel_blocker <- function(MEUCATC, NPI_25B) {
 #' @title Other anti-hypertensive medications
 #' @description This function checks if a given medication is another anti-hypertensive drug.
 #' This function processes multiple inputs efficiently.
-#' @param MEUCATC [character] ATC code of the medication.
-#' @param NPI_25B [integer] Time when the medication was last taken.
+#' @param meucatc [character] ATC code of the medication.
+#' @param npi_25b [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is another anti-hypertensive drug, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #' @details Identifies other anti-hypertensive drugs based on ATC codes starting with "C02", excluding a specific sub-code.
 #'
 #'          **Missing Data Codes:**
-#'          - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 #'
 #' @examples
 #' # Scalar usage: Single respondent
-#' is_other_antiHTN_med("C02AC04", 3)
+#' is_other_antihtn_med("C02AC04", 3)
 #' # Returns: 1
 #'
 #' # Example: Respondent has non-response values for all inputs.
-#' result <- is_other_antiHTN_med("9999998", 8)
+#' result <- is_other_antihtn_med("9999998", 8)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
-#' is_other_antiHTN_med(c("C02AC04", "C02KX01"), c(3, 2))
+#' is_other_antihtn_med(c("C02AC04", "C02KX01"), c(3, 2))
 #' # Returns: c(1, 0)
 #'
 #' @export
-is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
+is_other_antihtn_med <- function(meucatc, npi_25b) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
 
     # Check for other anti-hypertensive medications
-    startsWith(MEUCATC, "C02") & !(MEUCATC %in% c("C02KX01")) & NPI_25B <= 4 ~ 1,
+    startsWith(meucatc, "C02") & !(meucatc %in% c("C02KX01")) & npi_25b <= 4 ~ 1,
 
     # Default to 0 (not another anti-hypertensive medication)
     .default = 0
@@ -312,40 +312,40 @@ is_other_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' @title Any anti-hypertensive medications
 #' @description This function checks if a given medication is any anti-hypertensive drug.
 #' This function processes multiple inputs efficiently.
-#' @param MEUCATC [character] ATC code of the medication.
-#' @param NPI_25B [integer] Time when the medication was last taken.
+#' @param meucatc [character] ATC code of the medication.
+#' @param npi_25b [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is an anti-hypertensive drug, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #' @details Identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03", "C07", "C08", or "C09", excluding specific sub-codes.
 #'
 #'          **Missing Data Codes:**
-#'          - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 #'
 #' @examples
 #' # Scalar usage: Single respondent
-#' is_any_antiHTN_med("C07AB02", 4)
+#' is_any_antihtn_med("C07AB02", 4)
 #' # Returns: 1
 #'
 #' # Example: Respondent has non-response values for all inputs.
-#' result <- is_any_antiHTN_med("9999998", 8)
+#' result <- is_any_antihtn_med("9999998", 8)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
-#' is_any_antiHTN_med(c("C07AB02", "C07AA07"), c(4, 2))
+#' is_any_antihtn_med(c("C07AB02", "C07AA07"), c(4, 2))
 #' # Returns: c(1, 0)
 #'
 #' @export
-is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
+is_any_antihtn_med <- function(meucatc, npi_25b) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
 
     # Check for any anti-hypertensive medications
-    grepl("^(C02|C03|C07|C08|C09)", MEUCATC) & !(MEUCATC %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) & NPI_25B <= 4 ~ 1,
+    grepl("^(C02|C03|C07|C08|C09)", meucatc) & !(meucatc %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) & npi_25b <= 4 ~ 1,
 
     # Default to 0 (not an anti-hypertensive medication)
     .default = 0
@@ -355,40 +355,40 @@ is_any_antiHTN_med <- function(MEUCATC, NPI_25B) {
 #' @title Non-steroidal anti-inflammatory drugs (NSAIDs)
 #' @description This function checks if a given medication is an NSAID.
 #' This function processes multiple inputs efficiently.
-#' @param MEUCATC [character] ATC code of the medication.
-#' @param NPI_25B [integer] Time when the medication was last taken.
+#' @param meucatc [character] ATC code of the medication.
+#' @param npi_25b [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is an NSAID, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #' @details Identifies NSAIDs based on ATC codes starting with "M01A".
 #'
 #'          **Missing Data Codes:**
-#'          - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 #'
 #' @examples
 #' # Scalar usage: Single respondent
-#' is_NSAID("M01AB05", 1)
+#' is_nsaid("M01AB05", 1)
 #' # Returns: 1
 #'
 #' # Example: Respondent has non-response values for all inputs.
-#' result <- is_NSAID("9999998", 8)
+#' result <- is_nsaid("9999998", 8)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
-#' is_NSAID(c("M01AB05", "A10BB09"), c(1, 3))
+#' is_nsaid(c("M01AB05", "A10BB09"), c(1, 3))
 #' # Returns: c(1, 0)
 #'
 #' @export
-is_NSAID <- function(MEUCATC, NPI_25B) {
+is_nsaid <- function(meucatc, npi_25b) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
 
     # Check for NSAIDs
-    startsWith(MEUCATC, "M01A") & NPI_25B <= 4 ~ 1,
+    startsWith(meucatc, "M01A") & npi_25b <= 4 ~ 1,
 
     # Default to 0 (not an NSAID)
     .default = 0
@@ -398,40 +398,40 @@ is_NSAID <- function(MEUCATC, NPI_25B) {
 #' @title Diabetes medications
 #' @description This function checks if a given medication is a diabetes drug.
 #' This function processes multiple inputs efficiently.
-#' @param MEUCATC [character] ATC code of the medication.
-#' @param NPI_25B [integer] Time when the medication was last taken.
+#' @param meucatc [character] ATC code of the medication.
+#' @param npi_25b [integer] Time when the medication was last taken.
 #' @return [numeric] 1 if medication is a diabetes drug, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #' @details Identifies diabetes drugs based on ATC codes starting with "A10".
 #'
 #'          **Missing Data Codes:**
-#'          - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 #'
 #' @examples
 #' # Scalar usage: Single respondent
-#' is_diabetes_drug("A10BB09", 3)
+#' is_diabetes_med("A10BB09", 3)
 #' # Returns: 1
 #'
 #' # Example: Respondent has non-response values for all inputs.
-#' result <- is_diabetes_drug("9999998", 8)
+#' result <- is_diabetes_med("9999998", 8)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
-#' is_diabetes_drug(c("A10BB09", "C09AA02"), c(3, 2))
+#' is_diabetes_med(c("A10BB09", "C09AA02"), c(3, 2))
 #' # Returns: c(1, 0)
 #'
 #' @export
-is_diabetes_drug <- function(MEUCATC, NPI_25B) {
+is_diabetes_med <- function(meucatc, npi_25b) {
   dplyr::case_when(
     # Valid skip
-    MEUCATC == 9999996 | NPI_25B == 6 ~ haven::tagged_na("a"),
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    MEUCATC %in% c(9999997, 9999998, 9999999) | NPI_25B %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
 
     # Check for diabetes drugs
-    startsWith(MEUCATC, "A10") & NPI_25B <= 4 ~ 1,
+    startsWith(meucatc, "A10") & npi_25b <= 4 ~ 1,
 
     # Default to 0 (not a diabetes drug)
     .default = 0
@@ -536,7 +536,7 @@ is_diabetes_drug <- function(MEUCATC, NPI_25B) {
 #' # See `is_beta_blocker` for usage examples.
 #' @seealso `is_beta_blocker`
 #' @export
-cycles1to2_beta_blockers <- function(
+is_bb_med_cycles1to2 <- function(
   atc_101a = NULL, atc_102a = NULL, atc_103a = NULL, atc_104a = NULL, atc_105a = NULL,
   atc_106a = NULL, atc_107a = NULL, atc_108a = NULL, atc_109a = NULL, atc_110a = NULL,
   atc_111a = NULL, atc_112a = NULL, atc_113a = NULL, atc_114a = NULL, atc_115a = NULL,
@@ -709,7 +709,7 @@ cycles1to2_beta_blockers <- function(
 #' # See `is_ace_inhibitor` for usage examples.
 #' @seealso `is_ace_inhibitor`
 #' @export
-cycles1to2_ace_inhibitors <- function(
+is_ace_med_cycles1to2 <- function(
   atc_101a = NULL, atc_102a = NULL, atc_103a = NULL, atc_104a = NULL, atc_105a = NULL,
   atc_106a = NULL, atc_107a = NULL, atc_108a = NULL, atc_109a = NULL, atc_110a = NULL,
   atc_111a = NULL, atc_112a = NULL, atc_113a = NULL, atc_114a = NULL, atc_115a = NULL,
@@ -882,7 +882,7 @@ cycles1to2_ace_inhibitors <- function(
 #' # See `is_diuretic` for usage examples.
 #' @seealso `is_diuretic`
 #' @export
-cycles1to2_diuretics <- function(
+is_diur_med_cycles1to2 <- function(
   atc_101a = NULL, atc_102a = NULL, atc_103a = NULL, atc_104a = NULL, atc_105a = NULL,
   atc_106a = NULL, atc_107a = NULL, atc_108a = NULL, atc_109a = NULL, atc_110a = NULL,
   atc_111a = NULL, atc_112a = NULL, atc_113a = NULL, atc_114a = NULL, atc_115a = NULL,
@@ -1055,7 +1055,7 @@ cycles1to2_diuretics <- function(
 #' # See `is_calcium_channel_blocker` for usage examples.
 #' @seealso `is_calcium_channel_blocker`
 #' @export
-cycles1to2_calcium_channel_blockers <- function(
+is_ccb_med_cycles1to2 <- function(
   atc_101a = NULL, atc_102a = NULL, atc_103a = NULL, atc_104a = NULL, atc_105a = NULL,
   atc_106a = NULL, atc_107a = NULL, atc_108a = NULL, atc_109a = NULL, atc_110a = NULL,
   atc_111a = NULL, atc_112a = NULL, atc_113a = NULL, atc_114a = NULL, atc_115a = NULL,
@@ -1221,14 +1221,14 @@ cycles1to2_calcium_channel_blockers <- function(
 #' @details The function identifies other anti-hypertensive drugs based on ATC codes starting with "C02", excluding a specific sub-code. It checks all medication variables provided in the input data frame.
 #'
 #'          **Missing Data Codes:**
-#'          - The function handles tagged NAs from the `is_other_antiHTN_med` function and propagates them.
+#'          - The function handles tagged NAs from the `is_other_antihtn_med` function and propagates them.
 #'
 #' @examples
 #' # This is a wrapper function and is not intended to be called directly by the user.
-#' # See `is_other_antiHTN_med` for usage examples.
-#' @seealso `is_other_antiHTN_med`
+#' # See `is_other_antihtn_med` for usage examples.
+#' @seealso `is_other_antihtn_med`
 #' @export
-cycles1to2_other_antiHTN_meds <- function(
+is_misc_htn_med_cycles1to2 <- function(
   atc_101a = NULL, atc_102a = NULL, atc_103a = NULL, atc_104a = NULL, atc_105a = NULL,
   atc_106a = NULL, atc_107a = NULL, atc_108a = NULL, atc_109a = NULL, atc_110a = NULL,
   atc_111a = NULL, atc_112a = NULL, atc_113a = NULL, atc_114a = NULL, atc_115a = NULL,
@@ -1288,7 +1288,7 @@ cycles1to2_other_antiHTN_meds <- function(
   )
 
   # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_other_antiHTN_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
+  results_list <- mapply(is_other_antihtn_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
 
   # Combine the results into a matrix
   results_matrix <- do.call(cbind, results_list)
@@ -1394,14 +1394,14 @@ cycles1to2_other_antiHTN_meds <- function(
 #' @details The function identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03", "C07", "C08", or "C09", excluding specific sub-codes. It checks all medication variables provided in the input data frame.
 #'
 #'          **Missing Data Codes:**
-#'          - The function handles tagged NAs from the `is_any_antiHTN_med` function and propagates them.
+#'          - The function handles tagged NAs from the `is_any_antihtn_med` function and propagates them.
 #'
 #' @examples
 #' # This is a wrapper function and is not intended to be called directly by the user.
-#' # See `is_any_antiHTN_med` for usage examples.
-#' @seealso `is_any_antiHTN_med`
+#' # See `is_any_antihtn_med` for usage examples.
+#' @seealso `is_any_antihtn_med`
 #' @export
-cycles1to2_any_antiHTN_meds <- function(
+is_any_htn_med_cycles1to2 <- function(
   atc_101a = NULL, atc_102a = NULL, atc_103a = NULL, atc_104a = NULL, atc_105a = NULL,
   atc_106a = NULL, atc_107a = NULL, atc_108a = NULL, atc_109a = NULL, atc_110a = NULL,
   atc_111a = NULL, atc_112a = NULL, atc_113a = NULL, atc_114a = NULL, atc_115a = NULL,
@@ -1461,7 +1461,7 @@ cycles1to2_any_antiHTN_meds <- function(
   )
 
   # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_any_antiHTN_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
+  results_list <- mapply(is_any_antihtn_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
 
   # Combine the results into a matrix
   results_matrix <- do.call(cbind, results_list)
@@ -1567,14 +1567,14 @@ cycles1to2_any_antiHTN_meds <- function(
 #' @details The function identifies NSAIDs based on ATC codes starting with "M01A". It checks all medication variables provided in the input data frame.
 #'
 #'          **Missing Data Codes:**
-#'          - The function handles tagged NAs from the `is_NSAID` function and propagates them.
+#'          - The function handles tagged NAs from the `is_nsaid` function and propagates them.
 #'
 #' @examples
 #' # This is a wrapper function and is not intended to be called directly by the user.
-#' # See `is_NSAID` for usage examples.
-#' @seealso `is_NSAID`
+#' # See `is_nsaid` for usage examples.
+#' @seealso `is_nsaid`
 #' @export
-cycles1to2_nsaid <- function(
+is_nsaid_med_cycles1to2 <- function(
   atc_101a = NULL, atc_102a = NULL, atc_103a = NULL, atc_104a = NULL, atc_105a = NULL,
   atc_106a = NULL, atc_107a = NULL, atc_108a = NULL, atc_109a = NULL, atc_110a = NULL,
   atc_111a = NULL, atc_112a = NULL, atc_113a = NULL, atc_114a = NULL, atc_115a = NULL,
@@ -1634,7 +1634,7 @@ cycles1to2_nsaid <- function(
   )
 
   # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_NSAID, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
+  results_list <- mapply(is_nsaid, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
 
   # Combine the results into a matrix
   results_matrix <- do.call(cbind, results_list)
@@ -1740,14 +1740,14 @@ cycles1to2_nsaid <- function(
 #' @details The function identifies diabetes drugs based on ATC codes starting with "A10". It checks all medication variables provided in the input data frame.
 #'
 #'          **Missing Data Codes:**
-#'          - The function handles tagged NAs from the `is_diabetes_drug` function and propagates them.
+#'          - The function handles tagged NAs from the `is_diabetes_med` function and propagates them.
 #'
 #' @examples
 #' # This is a wrapper function and is not intended to be called directly by the user.
-#' # See `is_diabetes_drug` for usage examples.
-#' @seealso `is_diabetes_drug`
+#' # See `is_diabetes_med` for usage examples.
+#' @seealso `is_diabetes_med`
 #' @export
-cycles1to2_diabetes_drugs <- function(
+is_diab_med_cycles1to2 <- function(
   atc_101a = NULL, atc_102a = NULL, atc_103a = NULL, atc_104a = NULL, atc_105a = NULL,
   atc_106a = NULL, atc_107a = NULL, atc_108a = NULL, atc_109a = NULL, atc_110a = NULL,
   atc_111a = NULL, atc_112a = NULL, atc_113a = NULL, atc_114a = NULL, atc_115a = NULL,
@@ -1807,7 +1807,7 @@ cycles1to2_diabetes_drugs <- function(
   )
 
   # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_diabetes_drug, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
+  results_list <- mapply(is_diabetes_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
 
   # Combine the results into a matrix
   results_matrix <- do.call(cbind, results_list)
