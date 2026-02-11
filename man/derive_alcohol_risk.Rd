@@ -103,7 +103,7 @@ derive_alcohol_risk(clc_sex = c(1, 2, 1), alc_11 = c(1, 1, 2), alcdwky = c(3, 12
 # Database usage: Applied to survey datasets
 library(dplyr)
 # dataset \%>\%
-#   mutate(low_drink_score = derive_alcohol_risk(clc_sex, alc_11, alcdwky))
+#   mutate(alc_risk_score = derive_alcohol_risk(clc_sex, alc_11, alcdwky))
 
 }
 \references{

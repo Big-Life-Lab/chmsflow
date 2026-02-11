@@ -172,49 +172,49 @@ Pack-years is a complex derived variable often used by researchers to quantify t
 With complex derived variables, sometimes it is necessary to create functions within the custom function. For pack-years, a nested function was used to create an intermediate smoking variable that was used in the main function.
 
 ```{r, warning=FALSE}
-pack_years_fun <- function(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11) {
+calculate_pack_years <- function(smkdsty, clc_age, smk_54, smk_52, smk_31, smk_41, smk_53, smk_42, smk_21, smk_11) {
   # Age verification
-  if (is.na(CLC_AGE)) {
+  if (is.na(clc_age)) {
     return(haven::tagged_na("b"))
-  } else if (CLC_AGE < 0) {
+  } else if (clc_age < 0) {
     return(haven::tagged_na("b"))
   }
 
   # PackYears for Daily Smoker
   pack_years <-
     ifelse(
-      SMKDSTY == 1,
-      pmax(((CLC_AGE - SMK_52) * (SMK_31 / 20)), 0.0137),
+      smkdsty == 1,
+      pmax(((clc_age - smk_52) * (smk_31 / 20)), 0.0137),
       # PackYears for Occasional Smoker (former daily)
       ifelse(
-        SMKDSTY == 2,
-        pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137) +
-          ((pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_54)),
+        smkdsty == 2,
+        pmax(((clc_age - smk_52 - (clc_age - smk_54)) * (smk_53 / 20)), 0.0137) +
+          ((pmax((smk_41 * smk_42 / 30), 1) / 20) * (clc_age - smk_54)),
         # PackYears for Occasional Smoker (never daily)
         ifelse(
-          SMKDSTY == 3,
-          (pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_21),
+          smkdsty == 3,
+          (pmax((smk_41 * smk_42 / 30), 1) / 20) * (clc_age - smk_21),
           # PackYears for former daily smoker (non-smoker now)
           ifelse(
-            SMKDSTY == 4,
-            pmax(((SMK_54 - SMK_52) * (SMK_53 / 20)), 0.0137),
+            smkdsty == 4,
+            pmax(((smk_54 - smk_52) * (smk_53 / 20)), 0.0137),
             # PackYears for former occasional smoker (non-smoker now) who
             # smoked at least 100 cigarettes lifetime
             ifelse(
-              SMKDSTY == 5 & SMK_11 == 1,
+              smkdsty == 5 & smk_11 == 1,
               0.0137,
               # PackYears for former occasional smoker (non-smoker now) who
               # have not smoked at least 100 cigarettes lifetime
               ifelse(
-                SMKDSTY == 5 & SMK_11 == 2,
+                smkdsty == 5 & smk_11 == 2,
                 0.007,
                 # Non-smoker
                 ifelse(
-                  SMKDSTY == 6,
+                  smkdsty == 6,
                   0,
                   # Account for NA(a)
                   ifelse(
-                    SMKDSTY == "NA(a)",
+                    smkdsty == "NA(a)",
                     haven::tagged_na("a"),
                     haven::tagged_na("b")
                   )
@@ -229,7 +229,7 @@ pack_years_fun <- function(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK
 }
 ```
 
-More information on what each smoking variable means can be found in the [Reference](../reference/pack_years_fun.html) section.
+More information on what each smoking variable means can be found in the [Reference](../reference/calculate_pack_years.html) section.
 
 ### Steps 2 and 3. Specifying pack-years in `variable_details.csv` and `variables.csv`
 
@@ -246,17 +246,17 @@ kable(variables[189, ])
 
 ### Adding labels to a derived variable
 
-For a continuous derived variable like pack-years, the labels specified in `variables.csv` are sufficient for the variable to be properly labelled. For categorical derived variables, extra rows will need to be added on `variable_details.csv` so that labels are generated for each category. The example below shows how diabx, a derived categorical variable flagging respondents who have diabetes based on more inclusive factors, is specified in `variable_details.csv`.
+For a continuous derived variable like pack-years, the labels specified in `variables.csv` are sufficient for the variable to be properly labelled. For categorical derived variables, extra rows will need to be added on `variable_details.csv` so that labels are generated for each category. The example below shows how diab_status, a derived categorical variable flagging respondents who have diabetes based on more inclusive factors, is specified in `variable_details.csv`.
 
 ```{r, echo=FALSE, warning=FALSE}
 kable(variable_details[308:311, ])
 ```
 
-As you can see, the first row for diabx specifies the function for the derived variable and the base variables included. The second and third rows specify the categories of the variables, which are then labelled.
+As you can see, the first row for diab_status specifies the function for the derived variable and the base variables included. The second and third rows specify the categories of the variables, which are then labelled.
 
 ### Creating a derived variable using derived variables
 
-It is possible to create a derived variable that involves derived variables. When creating the custom function for it, use the derived variable name inside the function. Similarly, when specifying the variable in `variable_details.csv` and `variables.csv`, use the derived variable in the **variableStart** column. The example below shows how diabx uses the derived diabetes drug variable, is specified in `variable_details.csv` and `variables.csv`.
+It is possible to create a derived variable that involves derived variables. When creating the custom function for it, use the derived variable name inside the function. Similarly, when specifying the variable in `variable_details.csv` and `variables.csv`, use the derived variable in the **variableStart** column. The example below shows how diab_status uses the derived diabetes drug variable, is specified in `variable_details.csv` and `variables.csv`.
 
 ```{r, echo=FALSE, warning=FALSE}
 kable(variable_details[308:311, ])

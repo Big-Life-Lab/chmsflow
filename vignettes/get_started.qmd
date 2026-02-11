@@ -43,6 +43,6 @@ cycle4_categorical_ages <- rec_with_table(cycle4, "agegroup4", variable_details 
 head(cycle4_categorical_ages)
 
 # Recoding a derived variable
-cycle4_adjusted_SBPs <- rec_with_table(cycle4, c("bpmdpbps", "sbp_adj"), variable_details = variable_details, log = TRUE)
+cycle4_adjusted_SBPs <- rec_with_table(cycle4, c("bpmdpbps", "sbp_adj_mmhg"), variable_details = variable_details, log = TRUE)
 head(cycle4_adjusted_SBPs)
 ```

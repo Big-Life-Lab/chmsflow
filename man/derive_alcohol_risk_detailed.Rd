@@ -57,21 +57,33 @@ This function uses only Step 1 of the guidelines, as Step 2 information is unava
 \examples{
 # Scalar usage: Single respondent
 # Example: Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
-derive_alcohol_risk_detailed(clc_sex = 1, alc_11 = 1, alcdwky = 3, alc_17 = 1, alc_18 = 2)
+derive_alcohol_risk_detailed(
+  clc_sex = 1, alc_11 = 1, alcdwky = 3,
+  alc_17 = 1, alc_18 = 2
+)
 # Expected output: 2
 
 # Missing data examples showing tagged NA patterns
-result <- derive_alcohol_risk_detailed(clc_sex = 1, alc_11 = 6, alcdwky = 5, alc_17 = 1, alc_18 = 2)
+result <- derive_alcohol_risk_detailed(
+  clc_sex = 1, alc_11 = 6, alcdwky = 5,
+  alc_17 = 1, alc_18 = 2
+)
 result # Shows: NA
 haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 
-result <- derive_alcohol_risk_detailed(clc_sex = 1, alc_11 = 7, alcdwky = 5, alc_17 = 1, alc_18 = 2)
+result <- derive_alcohol_risk_detailed(
+  clc_sex = 1, alc_11 = 7, alcdwky = 5,
+  alc_17 = 1, alc_18 = 2
+)
 result # Shows: NA
 haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 
-result <- derive_alcohol_risk_detailed(clc_sex = 1, alc_11 = 1, alcdwky = NA, alc_17 = 1, alc_18 = 2)
+result <- derive_alcohol_risk_detailed(
+  clc_sex = 1, alc_11 = 1, alcdwky = NA,
+  alc_17 = 1, alc_18 = 2
+)
 result # Shows: NA
 haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
@@ -86,7 +98,11 @@ derive_alcohol_risk_detailed(
 # Database usage: Applied to survey datasets
 library(dplyr)
 # dataset \%>\%
-#   mutate(low_drink_score1 = derive_alcohol_risk_detailed(clc_sex, alc_11, alcdwky, alc_17, alc_18))
+#   mutate(
+#     alc_detailed_risk_score = derive_alcohol_risk_detailed(
+#       clc_sex, alc_11, alcdwky, alc_17, alc_18
+#     )
+#   )
 
 }
 \references{

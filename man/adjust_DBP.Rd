@@ -20,7 +20,7 @@ is returned as a numeric value.
 \details{
 Blood pressure measurements in survey settings may require adjustment to account for
 measurement conditions and equipment differences. This function applies a standardized adjustment
-using the formula: dbp_adj = 15.6 + (0.83 * bpmdpbpd).
+using the formula: dbp_adj_mmhg = 15.6 + (0.83 * bpmdpbpd).
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
      - `996`: Valid skip (e.g., measurement not taken). Handled as `haven::tagged_na("a")`.
@@ -46,7 +46,7 @@ adjust_dbp(bpmdpbpd = c(80, 90, 100))
 # Database usage: Applied to survey datasets
 library(dplyr)
 # dataset \%>\%
-#   mutate(dbp_adj = adjust_dbp(bpmdpbpd))
+#   mutate(dbp_adj_mmhg = adjust_dbp(bpmdpbpd))
 
 }
 \seealso{
