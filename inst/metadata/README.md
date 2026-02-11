@@ -158,7 +158,7 @@ Where `[ammdmva1]` is the default for cycles 2-6.
 
 #### 4. DerivedVar format `DerivedVar::[var1, var2, ...]` - RECODEFLOW CONVENTION
 ```yaml
-variable: adj_hh_inc
+variable: adj_hh_income
 variableStart: DerivedVar::[thi_01, dhhdsz]
 databaseStart: cycle1, cycle2, cycle3, cycle4, cycle5, cycle6
 ```
@@ -294,7 +294,7 @@ This design choice reduces repetition while preserving traceability.
 
 ### Why are DerivedVar variables NULL in MockData?
 
-DerivedVar is a **recodeflow convention** for variables requiring custom calculation logic (e.g., `adj_hh_inc` = `thi_01 / dhhdsz`).
+DerivedVar is a **recodeflow convention** for variables requiring custom calculation logic (e.g., `adj_hh_income` = `thi_01 / dhhdsz`).
 
 The MockData functions focus on simple mapping from metadata specifications. Derived variables would require implementing the calculation logic. This is a future enhancement for MockData, though rec_with_table() in recodeflow already supports DerivedVar.
 

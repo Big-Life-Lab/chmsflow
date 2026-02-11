@@ -1,0 +1,417 @@
+schema_version: "1.0.0"
+schema_date: "2026-02-11"
+description: "Function naming conventions for chmsflow - defines verb taxonomy, naming patterns, and the complete function registry."
+
+# Foundation: Tidyverse style guide with extensions for recodeflow ecosystem
+# Reference: https://style.tidyverse.org/
+
+function_naming_schema:
+  title: "Function naming conventions"
+  description: "All exported functions use snake_case and start with a verb from the approved taxonomy. All parameters use lowercase snake_case."
+
+  # ============================================================================
+  # VERB TAXONOMY
+  # ============================================================================
+
+  verb_taxonomy:
+    - verb: "is_"
+      purpose: "Boolean check"
+      returns: "0/1 integer or TRUE/FALSE"
+      description: |
+        Tests whether a condition is met. Used for medication classification
+        and threshold checks.
+      examples:
+        - "is_beta_blocker()"
+        - "is_lowest_income_quintile()"
+
+    - verb: "calculate_"
+      purpose: "Mathematical computation"
+      returns: "Continuous numeric"
+      description: |
+        Performs a mathematical formula or computation on input variables
+        to produce a continuous numeric result.
+      examples:
+        - "calculate_gfr()"
+        - "calculate_household_income()"
+        - "calculate_pack_years()"
+
+    - verb: "categorize_"
+      purpose: "Continuous to categorical conversion"
+      returns: "Category codes (integer: 1, 2, 3, ...)"
+      description: |
+        Converts a continuous measurement into discrete categories
+        based on defined thresholds or guidelines.
+      examples:
+        - "categorize_income_quintile()"
+        - "categorize_ckd()"
+        - "categorize_exercise()"
+
+    - verb: "adjust_"
+      purpose: "Correction or transformation"
+      returns: "Adjusted numeric"
+      description: |
+        Applies a standardized correction formula to a measurement,
+        typically to account for equipment or methodology differences.
+      examples:
+        - "adjust_sbp()"
+        - "adjust_dbp()"
+
+    - verb: "derive_"
+      purpose: "Complex multi-input derivation"
+      returns: "Derived variable (categorical or continuous)"
+      description: |
+        Combines multiple input variables through complex logic to produce
+        a derived health indicator. Typically involves conditional branching
+        based on multiple clinical criteria.
+      examples:
+        - "derive_diabetes_status()"
+        - "derive_hypertension()"
+        - "derive_alcohol_risk()"
+
+  # ============================================================================
+  # NAMING RULES
+  # ============================================================================
+
+  naming_rules:
+    case: "snake_case"
+    parameters: "lowercase snake_case (e.g., clc_sex, not CLC_SEX)"
+    pattern: "[verb]_[domain]_[specifics]"
+    notes: |
+      - All function names start with an approved verb prefix
+      - Domain names use standard medical/health abbreviations
+      - Cycle-specific functions append _cycles[N]to[M] suffix
+      - Internal helper functions are not exported
+
+  # ============================================================================
+  # FUNCTION REGISTRY
+  # ============================================================================
+
+  functions:
+    # --------------------------------------------------------------------------
+    # Alcohol (alcohol.R)
+    # --------------------------------------------------------------------------
+    - name: "derive_alcohol_risk"
+      verb: "derive_"
+      file: "alcohol.R"
+      description: "Low-risk alcohol drinking score (Step 1 only)"
+      parameters: ["clc_sex", "alc_11", "alcdwky"]
+      returns: "integer (1-4 risk category)"
+
+    - name: "derive_alcohol_risk_detailed"
+      verb: "derive_"
+      file: "alcohol.R"
+      description: "Alcohol risk with former/never drinker categories"
+      parameters: ["clc_sex", "alc_11", "alcdwky", "alc_17", "alc_18"]
+      returns: "integer (1-4 category)"
+
+    # --------------------------------------------------------------------------
+    # Blood pressure (blood-pressure.R)
+    # --------------------------------------------------------------------------
+    - name: "adjust_sbp"
+      verb: "adjust_"
+      file: "blood-pressure.R"
+      description: "Adjusted systolic blood pressure"
+      parameters: ["bpmdpbps"]
+      returns: "numeric (mmHg)"
+
+    - name: "adjust_dbp"
+      verb: "adjust_"
+      file: "blood-pressure.R"
+      description: "Adjusted diastolic blood pressure"
+      parameters: ["bpmdpbpd"]
+      returns: "numeric (mmHg)"
+
+    - name: "derive_hypertension"
+      verb: "derive_"
+      file: "blood-pressure.R"
+      description: "Hypertension status from raw BP"
+      parameters: ["bpmdpbps", "bpmdpbpd", "any_htn_med2", "ccc_32", "cvd_status", "diab_status", "ckd"]
+      returns: "integer (1=yes, 2=no)"
+
+    - name: "derive_hypertension_adj"
+      verb: "derive_"
+      file: "blood-pressure.R"
+      description: "Hypertension status from adjusted BP"
+      parameters: ["sbp_adj_mmhg", "dbp_adj_mmhg", "any_htn_med2", "ccc_32", "cvd_status", "diab_status", "ckd"]
+      returns: "integer (1=yes, 2=no)"
+
+    - name: "derive_hypertension_control"
+      verb: "derive_"
+      file: "blood-pressure.R"
+      description: "Controlled hypertension status from raw BP"
+      parameters: ["bpmdpbps", "bpmdpbpd", "any_htn_med2", "ccc_32", "cvd_status", "diab_status", "ckd"]
+      returns: "integer (1=controlled, 2=not controlled)"
+
+    - name: "derive_hypertension_control_adj"
+      verb: "derive_"
+      file: "blood-pressure.R"
+      description: "Controlled hypertension status from adjusted BP"
+      parameters: ["sbp_adj_mmhg", "dbp_adj_mmhg", "any_htn_med2", "ccc_32", "cvd_status", "diab_status", "ckd"]
+      returns: "integer (1=controlled, 2=not controlled)"
+
+    # --------------------------------------------------------------------------
+    # Cholesterol and obesity (cholesterol-and-obesity.R)
+    # --------------------------------------------------------------------------
+    - name: "calculate_nonhdl"
+      verb: "calculate_"
+      file: "cholesterol-and-obesity.R"
+      description: "Non-HDL cholesterol"
+      parameters: ["lab_chol", "lab_hdl"]
+      returns: "numeric (mmol/L)"
+
+    - name: "categorize_nonhdl"
+      verb: "categorize_"
+      file: "cholesterol-and-obesity.R"
+      description: "High non-HDL cholesterol status"
+      parameters: ["nonhdl"]
+      returns: "integer (1=high, 2=not high)"
+
+    - name: "calculate_waist_height_ratio"
+      verb: "calculate_"
+      file: "cholesterol-and-obesity.R"
+      description: "Waist-to-height ratio"
+      parameters: ["hwm_11cm", "hwm_14cx"]
+      returns: "numeric (ratio)"
+
+    # --------------------------------------------------------------------------
+    # Diabetes (diabetes.R)
+    # --------------------------------------------------------------------------
+    - name: "derive_diabetes_status"
+      verb: "derive_"
+      file: "diabetes.R"
+      description: "Inclusive diabetes status combining HbA1c, self-report, and medication"
+      parameters: ["diab_a1c", "ccc_51", "diab_med2"]
+      returns: "integer (1=yes, 2=no)"
+
+    # --------------------------------------------------------------------------
+    # Diet (diet.R)
+    # --------------------------------------------------------------------------
+    - name: "calculate_fv_daily_cycles1to2"
+      verb: "calculate_"
+      file: "diet.R"
+      description: "Daily fruit and vegetable servings (cycles 1-2)"
+      parameters: ["wsdd14y", "gfvd17y", "gfvd18y", "gfvd19y", "gfvd20y", "gfvd22y", "gfvd23y"]
+      returns: "numeric (servings/day)"
+
+    - name: "calculate_fv_daily_cycles3to6"
+      verb: "calculate_"
+      file: "diet.R"
+      description: "Daily fruit and vegetable servings (cycles 3-6)"
+      parameters: ["wsdd34y", "wsdd35y", "gfvd17ay", "gfvd17by", "gfvd17cy", "gfvd17dy", "gfvd18y", "gfvd19y", "gfvd20y", "gfvd22y", "gfvd23y"]
+      returns: "numeric (servings/day)"
+
+    - name: "categorize_diet_quality"
+      verb: "categorize_"
+      file: "diet.R"
+      description: "Meets 5-a-day fruit and vegetable guideline"
+      parameters: ["fv_daily"]
+      returns: "integer (1=meets guideline, 2=does not)"
+
+    # --------------------------------------------------------------------------
+    # Exercise (exercise.R)
+    # --------------------------------------------------------------------------
+    - name: "calculate_exercise_daily_avg"
+      verb: "calculate_"
+      file: "exercise.R"
+      description: "Average exercise minutes per day from 7-day accelerometer"
+      parameters: ["ammdmva1", "ammdmva2", "ammdmva3", "ammdmva4", "ammdmva5", "ammdmva6", "ammdmva7"]
+      returns: "numeric (minutes/day)"
+
+    - name: "calculate_exercise_weekly"
+      verb: "calculate_"
+      file: "exercise.R"
+      description: "Exercise minutes per week from daily average"
+      parameters: ["mvpa_min"]
+      returns: "numeric (minutes/week)"
+
+    - name: "categorize_exercise"
+      verb: "categorize_"
+      file: "exercise.R"
+      description: "Meets 150 minutes/week exercise guideline"
+      parameters: ["exercise_min_week"]
+      returns: "integer (1=meets guideline, 2=does not)"
+
+    # --------------------------------------------------------------------------
+    # Family history (family-history.R)
+    # --------------------------------------------------------------------------
+    - name: "derive_cvd_personal_history"
+      verb: "derive_"
+      file: "family-history.R"
+      description: "Cardiovascular disease status in individual"
+      parameters: ["ccc_61", "ccc_63", "ccc_81"]
+      returns: "integer (1=yes, 2=no)"
+
+    - name: "derive_cvd_family_history"
+      verb: "derive_"
+      file: "family-history.R"
+      description: "Premature cardiovascular disease in family"
+      parameters: ["fmh_11", "fmh_12", "fmh_13", "fmh_14"]
+      returns: "integer (1=yes, 2=no)"
+
+    # --------------------------------------------------------------------------
+    # Income (income.R)
+    # --------------------------------------------------------------------------
+    - name: "calculate_household_income"
+      verb: "calculate_"
+      file: "income.R"
+      description: "Adjusted household income"
+      parameters: ["thi_01", "dhhdhsz"]
+      returns: "numeric (dollars)"
+
+    - name: "categorize_income_quintile"
+      verb: "categorize_"
+      file: "income.R"
+      description: "Income quintile classification"
+      parameters: ["adj_hh_income"]
+      returns: "integer (1-5 quintile)"
+
+    - name: "is_lowest_income_quintile"
+      verb: "is_"
+      file: "income.R"
+      description: "Whether respondent is in lowest income quintile"
+      parameters: ["income_quintile"]
+      returns: "integer (1=yes, 2=no)"
+
+    # --------------------------------------------------------------------------
+    # Kidney (kidney.R)
+    # --------------------------------------------------------------------------
+    - name: "calculate_gfr"
+      verb: "calculate_"
+      file: "kidney.R"
+      description: "Estimated glomerular filtration rate"
+      parameters: ["lab_bcre", "pgdcgt", "clc_sex", "clc_age"]
+      returns: "numeric (mL/min/1.73m2)"
+
+    - name: "categorize_ckd"
+      verb: "categorize_"
+      file: "kidney.R"
+      description: "Chronic kidney disease status from GFR"
+      parameters: ["gfr"]
+      returns: "integer (1=yes, 2=no)"
+
+    # --------------------------------------------------------------------------
+    # Medications - element-wise (medications.R)
+    # --------------------------------------------------------------------------
+    - name: "is_taking_drug_class"
+      verb: "is_"
+      file: "medications.R"
+      description: "Internal helper for medication classification"
+      parameters: ["df", "class_var_name", "med_vars", "last_taken_vars", "class_condition_fun", "log_level", "overwrite"]
+      exported: false
+
+    - name: "is_beta_blocker"
+      verb: "is_"
+      file: "medications.R"
+      description: "Beta blocker medication"
+      parameters: ["meucatc", "npi_25b"]
+      returns: "integer (0/1)"
+
+    - name: "is_ace_inhibitor"
+      verb: "is_"
+      file: "medications.R"
+      description: "ACE inhibitor medication"
+      parameters: ["meucatc", "npi_25b"]
+      returns: "integer (0/1)"
+
+    - name: "is_diuretic"
+      verb: "is_"
+      file: "medications.R"
+      description: "Diuretic medication"
+      parameters: ["meucatc", "npi_25b"]
+      returns: "integer (0/1)"
+
+    - name: "is_calcium_channel_blocker"
+      verb: "is_"
+      file: "medications.R"
+      description: "Calcium channel blocker medication"
+      parameters: ["meucatc", "npi_25b"]
+      returns: "integer (0/1)"
+
+    - name: "is_other_antihtn_med"
+      verb: "is_"
+      file: "medications.R"
+      description: "Other antihypertension medication"
+      parameters: ["meucatc", "npi_25b"]
+      returns: "integer (0/1)"
+
+    - name: "is_any_antihtn_med"
+      verb: "is_"
+      file: "medications.R"
+      description: "Any antihypertension medication"
+      parameters: ["meucatc", "npi_25b"]
+      returns: "integer (0/1)"
+
+    - name: "is_nsaid"
+      verb: "is_"
+      file: "medications.R"
+      description: "NSAID medication"
+      parameters: ["meucatc", "npi_25b"]
+      returns: "integer (0/1)"
+
+    - name: "is_diabetes_med"
+      verb: "is_"
+      file: "medications.R"
+      description: "Diabetes medication"
+      parameters: ["meucatc", "npi_25b"]
+      returns: "integer (0/1)"
+
+    # --------------------------------------------------------------------------
+    # Medications - cycle-specific (medications.R)
+    # --------------------------------------------------------------------------
+    - name: "is_bb_med_cycles1to2"
+      verb: "is_"
+      file: "medications.R"
+      description: "Beta blocker medication (cycles 1-2 ATC format)"
+      returns: "integer (0/1)"
+
+    - name: "is_ace_med_cycles1to2"
+      verb: "is_"
+      file: "medications.R"
+      description: "ACE inhibitor medication (cycles 1-2 ATC format)"
+      returns: "integer (0/1)"
+
+    - name: "is_diur_med_cycles1to2"
+      verb: "is_"
+      file: "medications.R"
+      description: "Diuretic medication (cycles 1-2 ATC format)"
+      returns: "integer (0/1)"
+
+    - name: "is_ccb_med_cycles1to2"
+      verb: "is_"
+      file: "medications.R"
+      description: "Calcium channel blocker medication (cycles 1-2 ATC format)"
+      returns: "integer (0/1)"
+
+    - name: "is_misc_htn_med_cycles1to2"
+      verb: "is_"
+      file: "medications.R"
+      description: "Other antihypertension medication (cycles 1-2 ATC format)"
+      returns: "integer (0/1)"
+
+    - name: "is_any_htn_med_cycles1to2"
+      verb: "is_"
+      file: "medications.R"
+      description: "Any antihypertension medication (cycles 1-2 ATC format)"
+      returns: "integer (0/1)"
+
+    - name: "is_nsaid_med_cycles1to2"
+      verb: "is_"
+      file: "medications.R"
+      description: "NSAID medication (cycles 1-2 ATC format)"
+      returns: "integer (0/1)"
+
+    - name: "is_diab_med_cycles1to2"
+      verb: "is_"
+      file: "medications.R"
+      description: "Diabetes medication (cycles 1-2 ATC format)"
+      returns: "integer (0/1)"
+
+    # --------------------------------------------------------------------------
+    # Smoking (smoking.R)
+    # --------------------------------------------------------------------------
+    - name: "calculate_pack_years"
+      verb: "calculate_"
+      file: "smoking.R"
+      description: "Smoking pack-years from smoking history"
+      parameters: ["smkdsty", "clc_age", "smk_54", "smk_52", "smk_31", "smk_41", "smk_53", "smk_42", "smk_21", "smk_11"]
+      returns: "numeric (pack-years)"
