@@ -27,7 +27,7 @@ test_that("derive_alcohol_risk returns correct scores", {
     alcdwky = c(3, 12, NA, 25)
   )
   expected_output_alc <- c(1, 2, 1, 3)
-  expect_equal(df_alc %>% dplyr::mutate(alc_risk_score = derive_alcohol_risk(clc_sex, alc_11, alcdwky)) %>% dplyr::pull(alc_risk_score), expected_output_alc)
+  expect_equal(df_alc |> dplyr::mutate(alc_risk_score = derive_alcohol_risk(clc_sex, alc_11, alcdwky)) |> dplyr::pull(alc_risk_score), expected_output_alc)
 })
 
 # Test for derive_alcohol_risk_detailed
@@ -66,5 +66,5 @@ test_that("derive_alcohol_risk_detailed returns correct scores", {
     alc_18 = c(2, 2, 1, 1)
   )
   expected_output_alc1 <- c(2, 3, 2, 4)
-  expect_equal(df_alc1 %>% dplyr::mutate(alc_detailed_risk_score = derive_alcohol_risk_detailed(clc_sex, alc_11, alcdwky, alc_17, alc_18)) %>% dplyr::pull(alc_detailed_risk_score), expected_output_alc1)
+  expect_equal(df_alc1 |> dplyr::mutate(alc_detailed_risk_score = derive_alcohol_risk_detailed(clc_sex, alc_11, alcdwky, alc_17, alc_18)) |> dplyr::pull(alc_detailed_risk_score), expected_output_alc1)
 })
