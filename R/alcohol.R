@@ -6,9 +6,9 @@
 #' number of standard drinks consumed per week and the respondent's sex. (Step 2,
 #' which would add additional points based on other drinking habits, is not included.).
 #'
-#' @param CLC_SEX [integer] An integer indicating the respondent's sex (1 for male, 2 for female).
-#' @param ALC_11 [integer] An integer indicating whether the respondent drank alcohol in the past year (1 for "Yes", 2 for "No").
-#' @param ALCDWKY [integer] An integer representing the number of standard drinks consumed by the respondent in a week.
+#' @param clc_sex [integer] An integer indicating the respondent's sex (1 for male, 2 for female).
+#' @param alc_11 [integer] An integer indicating whether the respondent drank alcohol in the past year (1 for "Yes", 2 for "No").
+#' @param alcdwky [integer] An integer representing the number of standard drinks consumed by the respondent in a week.
 #'
 #' @return [integer] The low drink score, with:
 #'   - 1 for "Low risk" (0 points),
@@ -20,12 +20,12 @@
 #' @details
 #' The scoring is determined by first allocating points (referred to as `step1`) based on the weekly
 #' alcohol consumption and the respondent's sex:
-#'   - If the respondent drank in the past year (ALC_11 == 1):
-#'     - For ALCDWKY <= 10, assign 0 points.
-#'     - For ALCDWKY > 10 and <= 15: assign 0 points for males (CLC_SEX == 1) and 1 point for females (CLC_SEX == 2).
-#'     - For ALCDWKY > 15 and <= 20: assign 1 point for males and 3 points for females.
-#'     - For ALCDWKY > 20: assign 3 points.
-#'   - For respondents who did not drink in the past year (ALC_11 == 2), 0 points are assigned.
+#'   - If the respondent drank in the past year (alc_11 == 1):
+#'     - For alcdwky <= 10, assign 0 points.
+#'     - For alcdwky > 10 and <= 15: assign 0 points for males (clc_sex == 1) and 1 point for females (clc_sex == 2).
+#'     - For alcdwky > 15 and <= 20: assign 1 point for males and 3 points for females.
+#'     - For alcdwky > 20: assign 3 points.
+#'   - For respondents who did not drink in the past year (alc_11 == 2), 0 points are assigned.
 #'
 #' These `step1` points are then mapped to the final categorical score as follows:
 #'   - 0 points -> score of 1 ("Low risk"),
@@ -58,61 +58,61 @@
 #' @examples
 #' # Scalar usage: Single respondent
 #' # Example: A male respondent who drank in the past year and consumes 3 standard drinks per week.
-#' low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3)
+#' derive_alcohol_risk(clc_sex = 1, alc_11 = 1, alcdwky = 3)
 #' # Expected output: 1 (Low risk)
 #'
 #' # Missing data examples showing tagged NA patterns
-#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5)
+#' result <- derive_alcohol_risk(clc_sex = 1, alc_11 = 6, alcdwky = 5)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 #' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
-#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5)
+#' result <- derive_alcohol_risk(clc_sex = 1, alc_11 = 7, alcdwky = 5)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
-#' result <- low_drink_score_fun(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA)
+#' result <- derive_alcohol_risk(clc_sex = 1, alc_11 = 1, alcdwky = NA)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
-#' low_drink_score_fun(CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2), ALCDWKY = c(3, 12, NA))
+#' derive_alcohol_risk(clc_sex = c(1, 2, 1), alc_11 = c(1, 1, 2), alcdwky = c(3, 12, NA))
 #' # Returns: c(1, 2, 1)
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
 #' # dataset %>%
-#' #   mutate(low_drink_score = low_drink_score_fun(CLC_SEX, ALC_11, ALCDWKY))
+#' #   mutate(alc_risk_score = derive_alcohol_risk(clc_sex, alc_11, alcdwky))
 #'
-#' @seealso [low_drink_score_fun1()] for extended categorization including former/never drinkers
+#' @seealso [derive_alcohol_risk_detailed()] for extended categorization including former/never drinkers
 #' @references Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
 #' @export
-low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
+derive_alcohol_risk <- function(clc_sex, alc_11, alcdwky) {
   step1 <- dplyr::case_when(
     # Sex and drinking alcohol within past year variables
     # Not applicable (takes precedence)
-    CLC_SEX == 6 | ALC_11 == 6 ~ haven::tagged_na("a"),
+    clc_sex == 6 | alc_11 == 6 ~ haven::tagged_na("a"),
     # Missing
-    CLC_SEX %in% 7:9 | ALC_11 %in% 7:9 ~ haven::tagged_na("b"),
+    clc_sex %in% 7:9 | alc_11 %in% 7:9 ~ haven::tagged_na("b"),
     # Invalid codes
-    !CLC_SEX %in% c(1, 2) | !ALC_11 %in% c(1, 2) ~ haven::tagged_na("b"),
+    !clc_sex %in% c(1, 2) | !alc_11 %in% c(1, 2) ~ haven::tagged_na("b"),
 
     # Drinks per week variable
     # Valid skip
-    ALCDWKY == 996 ~ haven::tagged_na("a"),
+    alcdwky == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    ALCDWKY %in% 997:999 ~ haven::tagged_na("b"),
+    alcdwky %in% 997:999 ~ haven::tagged_na("b"),
 
     # Logic for valid categorical values
-    ALC_11 == 2 & is.na(ALCDWKY) ~ 0,
-    ALCDWKY <= 10 ~ 0,
-    ALCDWKY > 10 & ALCDWKY <= 15 & CLC_SEX == 1 ~ 0,
-    ALCDWKY > 10 & ALCDWKY <= 15 & CLC_SEX == 2 ~ 1,
-    ALCDWKY > 15 & ALCDWKY <= 20 & CLC_SEX == 1 ~ 1,
-    ALCDWKY > 15 & ALCDWKY <= 20 & CLC_SEX == 2 ~ 3,
-    ALCDWKY > 20 ~ 3,
+    alc_11 == 2 & is.na(alcdwky) ~ 0,
+    alcdwky <= 10 ~ 0,
+    alcdwky > 10 & alcdwky <= 15 & clc_sex == 1 ~ 0,
+    alcdwky > 10 & alcdwky <= 15 & clc_sex == 2 ~ 1,
+    alcdwky > 15 & alcdwky <= 20 & clc_sex == 1 ~ 1,
+    alcdwky > 15 & alcdwky <= 20 & clc_sex == 2 ~ 3,
+    alcdwky > 20 ~ 3,
     .default = haven::tagged_na("b")
   )
 
@@ -137,23 +137,23 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #' while distinguishing between never, former, light, moderate, and heavy drinkers. The function uses information
 #' about weekly consumption, past-year use, lifetime drinking, and history of heavy drinking.
 #'
-#' @param CLC_SEX [integer] Respondent's sex (1 = male, 2 = female).
-#' @param ALC_11 [integer] Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).
-#' @param ALCDWKY [integer] Number of standard drinks consumed in a typical week (0–84).
-#' @param ALC_17 [integer] Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).
-#' @param ALC_18 [integer] Whether the respondent regularly drank more than 12 drinks per week (1 = Yes, 2 = No).
+#' @param clc_sex [integer] Respondent's sex (1 = male, 2 = female).
+#' @param alc_11 [integer] Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).
+#' @param alcdwky [integer] Number of standard drinks consumed in a typical week (0–84).
+#' @param alc_17 [integer] Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).
+#' @param alc_18 [integer] Whether the respondent regularly drank more than 12 drinks per week (1 = Yes, 2 = No).
 #'
 #' @return [integer] Score: 1 = Never drank, 2 = Low-risk (former or light) drinker, 3 = Moderate drinker (1--2 points), 4 = Heavy drinker (3--4 points).
 #' If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
 #' @details
 #' Step 1: Assign points based on weekly alcohol consumption.
-#'   - If the respondent drank in the past year (ALC_11 == 1):
+#'   - If the respondent drank in the past year (alc_11 == 1):
 #'     - 0 to 10 drinks/week: 0 points
 #'     - 11 to 15 drinks/week: 0 points for males, 1 point for females
 #'     - 16 to 20 drinks/week: 1 point for males, 3 points for females
 #'     - More than 20 drinks/week: 3 points for males, 5 points for females
-#'   - If they did not drink in the past year (ALC_11 == 2): 0 points
+#'   - If they did not drink in the past year (alc_11 == 2): 0 points
 #'
 #' Step 2: Determine the final categorical score.
 #'   - If the point score from Step 1 is 0, the final category is determined based on lifetime and past-year drinking habits:
@@ -169,68 +169,84 @@ low_drink_score_fun <- function(CLC_SEX, ALC_11, ALCDWKY) {
 #' @examples
 #' # Scalar usage: Single respondent
 #' # Example: Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
-#' low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = 1, ALC_18 = 2)
+#' derive_alcohol_risk_detailed(
+#'   clc_sex = 1, alc_11 = 1, alcdwky = 3,
+#'   alc_17 = 1, alc_18 = 2
+#' )
 #' # Expected output: 2
 #'
 #' # Missing data examples showing tagged NA patterns
-#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 6, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2)
+#' result <- derive_alcohol_risk_detailed(
+#'   clc_sex = 1, alc_11 = 6, alcdwky = 5,
+#'   alc_17 = 1, alc_18 = 2
+#' )
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 #' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 #'
-#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 7, ALCDWKY = 5, ALC_17 = 1, ALC_18 = 2)
+#' result <- derive_alcohol_risk_detailed(
+#'   clc_sex = 1, alc_11 = 7, alcdwky = 5,
+#'   alc_17 = 1, alc_18 = 2
+#' )
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
-#' result <- low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = NA, ALC_17 = 1, ALC_18 = 2)
+#' result <- derive_alcohol_risk_detailed(
+#'   clc_sex = 1, alc_11 = 1, alcdwky = NA,
+#'   alc_17 = 1, alc_18 = 2
+#' )
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
 #' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
 #' # Multiple respondents
-#' low_drink_score_fun1(
-#'   CLC_SEX = c(1, 2, 1), ALC_11 = c(1, 1, 2),
-#'   ALCDWKY = c(3, 12, NA), ALC_17 = c(1, 1, 1), ALC_18 = c(2, 2, 1)
+#' derive_alcohol_risk_detailed(
+#'   clc_sex = c(1, 2, 1), alc_11 = c(1, 1, 2),
+#'   alcdwky = c(3, 12, NA), alc_17 = c(1, 1, 1), alc_18 = c(2, 2, 1)
 #' )
 #' # Returns: c(2, 3, 2)
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
 #' # dataset %>%
-#' #   mutate(low_drink_score1 = low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18))
+#' #   mutate(
+#' #     alc_detailed_risk_score = derive_alcohol_risk_detailed(
+#' #       clc_sex, alc_11, alcdwky, alc_17, alc_18
+#' #     )
+#' #   )
 #'
-#' @seealso [low_drink_score_fun()] for basic risk scoring without drinking history
+#' @seealso [derive_alcohol_risk()] for basic risk scoring without drinking history
 #' @references Canada's Low-Risk Alcohol Drinking Guidelines, Health Canada
 #' @export
-low_drink_score_fun1 <- function(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18) {
+derive_alcohol_risk_detailed <- function(clc_sex, alc_11, alcdwky, alc_17, alc_18) {
   step1 <- dplyr::case_when(
     # Sex and drinking alcohol within past year variables
     # Not applicable (takes precedence)
-    CLC_SEX == 6 | ALC_11 == 6 ~ haven::tagged_na("a"),
+    clc_sex == 6 | alc_11 == 6 ~ haven::tagged_na("a"),
     # Missing
-    CLC_SEX %in% 7:9 | ALC_11 %in% 7:9 ~ haven::tagged_na("b"),
+    clc_sex %in% 7:9 | alc_11 %in% 7:9 ~ haven::tagged_na("b"),
     # Invalid codes
-    !CLC_SEX %in% c(1, 2) | !ALC_11 %in% c(1, 2) ~ haven::tagged_na("b"),
+    !clc_sex %in% c(1, 2) | !alc_11 %in% c(1, 2) ~ haven::tagged_na("b"),
 
     # Drinks per week variable
     # Valid skip
-    ALCDWKY == 996 ~ haven::tagged_na("a"),
+    alcdwky == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
-    ALCDWKY %in% 997:999 ~ haven::tagged_na("b"),
+    alcdwky %in% 997:999 ~ haven::tagged_na("b"),
 
-    # ALCDWKY validation when drinking in past year
-    ALC_11 == 1 & (is.na(ALCDWKY) | ALCDWKY < 0 | ALCDWKY > 84) ~ haven::tagged_na("b"),
+    # alcdwky validation when drinking in past year
+    alc_11 == 1 & (is.na(alcdwky) | alcdwky < 0 | alcdwky > 84) ~ haven::tagged_na("b"),
 
     # Logic for valid categorical values
-    ALC_11 == 2 & is.na(ALCDWKY) ~ 0,
-    ALCDWKY <= 10 ~ 0,
-    ALCDWKY > 10 & ALCDWKY <= 15 & CLC_SEX == 1 ~ 0,
-    ALCDWKY > 10 & ALCDWKY <= 15 & CLC_SEX == 2 ~ 1,
-    ALCDWKY > 15 & ALCDWKY <= 20 & CLC_SEX == 1 ~ 1,
-    ALCDWKY > 15 & ALCDWKY <= 20 & CLC_SEX == 2 ~ 3,
-    ALCDWKY > 20 & CLC_SEX == 1 ~ 3,
-    ALCDWKY > 20 & CLC_SEX == 2 ~ 5,
+    alc_11 == 2 & is.na(alcdwky) ~ 0,
+    alcdwky <= 10 ~ 0,
+    alcdwky > 10 & alcdwky <= 15 & clc_sex == 1 ~ 0,
+    alcdwky > 10 & alcdwky <= 15 & clc_sex == 2 ~ 1,
+    alcdwky > 15 & alcdwky <= 20 & clc_sex == 1 ~ 1,
+    alcdwky > 15 & alcdwky <= 20 & clc_sex == 2 ~ 3,
+    alcdwky > 20 & clc_sex == 1 ~ 3,
+    alcdwky > 20 & clc_sex == 2 ~ 5,
     .default = haven::tagged_na("b")
   )
 
@@ -239,16 +255,16 @@ low_drink_score_fun1 <- function(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18) {
     haven::is_tagged_na(step1, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(step1, "b") | is.na(step1) ~ haven::tagged_na("b"),
 
-    # Check ALC_17 / ALC_18 if needed
-    step1 == 0 & (ALC_17 %in% c(6) | ALC_18 %in% c(6)) ~ haven::tagged_na("a"),
-    step1 == 0 & (ALC_17 %in% 7:9 | ALC_18 %in% 7:9) ~ haven::tagged_na("b"),
-    step1 == 0 & (!ALC_17 %in% c(1, 2) | !ALC_18 %in% c(1, 2)) ~ haven::tagged_na("b"),
+    # Check alc_17 / alc_18 if needed
+    step1 == 0 & (alc_17 %in% c(6) | alc_18 %in% c(6)) ~ haven::tagged_na("a"),
+    step1 == 0 & (alc_17 %in% 7:9 | alc_18 %in% 7:9) ~ haven::tagged_na("b"),
+    step1 == 0 & (!alc_17 %in% c(1, 2) | !alc_18 %in% c(1, 2)) ~ haven::tagged_na("b"),
 
     # Score assignment for valid step1 values
-    step1 == 0 & ALC_17 == 2 & ALC_11 == 2 ~ 1L,
-    step1 == 0 & ALC_17 == 1 & ALC_11 == 2 & ALC_18 == 2 ~ 1L,
-    step1 == 0 & ALC_17 == 1 & ALC_11 == 2 & ALC_18 == 1 ~ 2L,
-    step1 == 0 & ALC_11 == 1 ~ 2L,
+    step1 == 0 & alc_17 == 2 & alc_11 == 2 ~ 1L,
+    step1 == 0 & alc_17 == 1 & alc_11 == 2 & alc_18 == 2 ~ 1L,
+    step1 == 0 & alc_17 == 1 & alc_11 == 2 & alc_18 == 1 ~ 2L,
+    step1 == 0 & alc_11 == 1 ~ 2L,
     step1 %in% c(1, 2) ~ 3L,
     step1 %in% 3:9 ~ 4L,
     .default = haven::tagged_na("b")

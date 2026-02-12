@@ -7,9 +7,42 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## 1. Load packages
+```{r results= 'hide', message = FALSE, warning=FALSE}
+library(chmsflow)
+```
 
-```{r eval= FALSE}
+## 1. Introduction
+
+chmsflow harmonizes variables from the Canadian Health Measures Survey (CHMS) across cycles 1-6 and derives health indicators used in health research. It works with the [recodeflow](https://big-life-lab.github.io/recodeflow/) package to transform raw CHMS variables into analysis-ready versions using recoding rules defined in CSV metadata files.
+
+### What chmsflow provides
+
+The package includes two metadata CSV files (`variables.csv` and `variable-details.csv`) that define how raw CHMS variables are recoded, and 42 functions that derive new health indicators. The table below summarizes the available variables, organized by `section` and `subject` as defined in `variables.csv`:
+
+| Section | Subject | Examples |
+|---------|---------|----------|
+| Sociodemographics | Age, sex, ethnicity | `clc_age`, `clc_sex`, `pgdcgt` |
+| Socioeconomic | Income, education, occupation, marital status | `adj_hh_income`, `income_quintile`, `edudr04` |
+| Health status | Blood pressure, hypertension | `sbp_adj_mmhg`, `htn_status`, `htn_control_status` |
+| Health status | Chronic disease (diabetes, CKD, CVD) | `diab_status`, `ckd_status`, `cvd_status` |
+| Health status | Medication (8 drug classes from ATC codes) | `ace_med`, `any_htn_med`, `diab_med` |
+| Health status | Weight, height, cholesterol | `nonhdl_mmoll`, `waist_height_ratio`, `hwmdbmi` |
+| Health status | Family history | `cvd_premature_famhist_status`, `fam_bp` |
+| Health behaviour | Alcohol, diet | `alc_risk_score`, `fv_daily_times`, `healthy_diet_indicator` |
+| Health behaviour | Exercise | `exercise_min_week`, `enough_exercise_indicator` |
+| Health behaviour | Smoking | `pack_years`, `smoke` |
+
+For the full variable list, see `variables.csv` via `vignette("variables_sheet")`.
+
+### Typical workflow
+
+1. **Merge cycle components** - At the RDC, combine household, clinic, and lab data into one object per cycle (e.g., `cycle4`). Keep medication data separate as `cyclex_meds`.
+2. **Recode medications first** - If your analysis needs medication variables, always recode them before other variables. See `vignette("recoding_medications")`.
+3. **Recode other variables** - Use `rec_with_table()` from recodeflow to transform source variables and derive new ones.
+
+## 2. Installation
+
+```{r eval=FALSE}
 # Install release version from CRAN
 install.packages("chmsflow")
 
@@ -17,32 +50,69 @@ install.packages("chmsflow")
 devtools::install_github("Big-Life-Lab/chmsflow")
 ```
 
-```{r results= 'hide', message = FALSE, warning=FALSE}
-library(chmsflow)
-```
+## 3. Quick start
 
-## 2. Transform variables into harmonized versions
+Use `rec_with_table()` from recodeflow to transform CHMS variables. The cycle data object must be named `cyclex` for recoding to work properly.
 
-Use `rec_with_table()` of recodeflow to transform the variables of a CHMS dataset. Cycle data object always has to be called "cyclex" in order for recoding to work properly.
-
-At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst's responsibility to merge their required components in one database named "cyclex". However, keep medication data separate from the rest of the cycle data ([see here](recoding_medications.html)).
-
-```{r, warning = FALSE, eval=FALSE}
-# Load recodeflow
+```{r, warning=FALSE, eval=FALSE}
 library(recodeflow)
 
-# Recoding basic variables
-cycle4_ages <- rec_with_table(cycle4, "clc_age", variable_details = variable_details, log = TRUE)
+# Recode a source variable (age)
+cycle4_ages <- rec_with_table(
+  cycle4, "clc_age",
+  variable_details = variable_details, log = TRUE
+)
 head(cycle4_ages)
+```
 
-cycle4_sexes <- rec_with_table(cycle4, "clc_sex", variable_details = variable_details, log = TRUE)
+## 4. Variable types
+
+chmsflow handles three types of variables, each recoded differently.
+
+### 4.1 Source variables (direct mapping)
+
+Source variables are mapped directly from raw CHMS columns. Variable names may differ across cycles, but chmsflow harmonizes them to a single name.
+
+```{r, warning=FALSE, eval=FALSE}
+# Recode sex (same variable name across all cycles)
+cycle4_sexes <- rec_with_table(
+  cycle4, "clc_sex",
+  variable_details = variable_details, log = TRUE
+)
 head(cycle4_sexes)
+```
 
-# Recoding a transformed variable (cont to cat)
-cycle4_categorical_ages <- rec_with_table(cycle4, "agegroup4", variable_details = variable_details, log = TRUE)
+### 4.2 Transformed variables (continuous to categorical)
+
+Some variables convert continuous measurements into categories using thresholds defined in `variable-details.csv`.
+
+```{r, warning=FALSE, eval=FALSE}
+# Recode age into 4 groups
+cycle4_categorical_ages <- rec_with_table(
+  cycle4, "agegroup4",
+  variable_details = variable_details, log = TRUE
+)
 head(cycle4_categorical_ages)
+```
 
-# Recoding a derived variable
-cycle4_adjusted_SBPs <- rec_with_table(cycle4, c("bpmdpbps", "sbp_adj"), variable_details = variable_details, log = TRUE)
+### 4.3 Derived variables (computed by functions)
+
+Derived variables are computed by R functions referenced as `Func::` entries in `variable-details.csv`. These require their input variables to be present in the data. See `vignette("derived_variables")` for details.
+
+```{r, warning=FALSE, eval=FALSE}
+# Derive adjusted systolic blood pressure
+# bpmdpbps (raw SBP) must be in the data for sbp_adj_mmhg to be computed
+cycle4_adjusted_SBPs <- rec_with_table(
+  cycle4, c("bpmdpbps", "sbp_adj_mmhg"),
+  variable_details = variable_details, log = TRUE
+)
 head(cycle4_adjusted_SBPs)
 ```
+
+## 5. Next steps
+
+- **Medication recoding** - Required before deriving hypertension or diabetes status. See `vignette("recoding_medications")`.
+- **Understanding the metadata** - Learn about `variable-details.csv` structure in `vignette("variable_details")` and `variables.csv` in `vignette("variables_sheet")`.
+- **Derived variables** - How `Func::` and `DerivedVar::` entries work in `vignette("derived_variables")`.
+- **Adding variables** - Extend chmsflow with your own variables in `vignette("how_to_add_variables")`.
+- **Missing data** - How `haven::tagged_na()` handles CHMS missing codes in `vignette("tagged_na_usage")`.

@@ -4,12 +4,12 @@
 \alias{is_calcium_channel_blocker}
 \title{Calcium channel blockers}
 \usage{
-is_calcium_channel_blocker(MEUCATC, NPI_25B)
+is_calcium_channel_blocker(meucatc, npi_25b)
 }
 \arguments{
-\item{MEUCATC}{\link{character} ATC code of the medication.}
+\item{meucatc}{\link{character} ATC code of the medication.}
 
-\item{NPI_25B}{\link{integer} Time when the medication was last taken.}
+\item{npi_25b}{\link{integer} Time when the medication was last taken.}
 }
 \value{
 \link{numeric} 1 if medication is a calcium channel blocker, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
@@ -22,8 +22,8 @@ This function processes multiple inputs efficiently.
 Identifies calcium channel blockers based on ATC codes starting with "C08".
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
-     - `MEUCATC`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-     - `NPI_25B`: `6` (Not applicable), `7-9` (Missing)
+     - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+     - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 }\if{html}{\out{</div>}}
 }
 \examples{

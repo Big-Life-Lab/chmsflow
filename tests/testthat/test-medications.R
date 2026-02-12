@@ -157,250 +157,50 @@ test_that("is_calcium_channel_blocker returns correct values", {
   expect_equal(df %>% dplyr::mutate(ccb = is_calcium_channel_blocker(med, last)) %>% dplyr::pull(ccb), c(1, 0))
 })
 
-# Test for is_other_antiHTN_med
-test_that("is_other_antiHTN_med returns correct values", {
-  # General tests
-  expect_equal(is_other_antiHTN_med("C02AB01", 1), 1)
-  expect_equal(is_other_antiHTN_med("C02KX01", 1), 0)
-
-  # Edge case tests - missing inputs
-  expect_equal(is_other_antiHTN_med("", 1), 0)
-  expect_true(haven::is_tagged_na(is_other_antiHTN_med("9999996", 1), "a"))
-  expect_true(haven::is_tagged_na(is_other_antiHTN_med("C02AB01", 6), "a"))
-  expect_true(haven::is_tagged_na(is_other_antiHTN_med("9999997", 1), "b"))
-  expect_true(haven::is_tagged_na(is_other_antiHTN_med("C02AB01", 7), "b"))
-
-  # Vector tests
-  expect_equal(is_other_antiHTN_med(c("C02AB01", "C02KX01"), c(1, 1)), c(1, 0))
-
-  # Database tests
-  df <- data.frame(med = c("C02AB01", "C02KX01"), last = c(1, 1))
-  expect_equal(df %>% dplyr::mutate(other = is_other_antiHTN_med(med, last)) %>% dplyr::pull(other), c(1, 0))
+# Test for is_other_antihtn_med
+test_that("is_other_antihtn_med returns correct values", {
+  expect_equal(is_other_antihtn_med("C02AB01", 1), 1)
+  expect_equal(is_other_antihtn_med("C02KX01", 1), 0)
+  expect_true(haven::is_tagged_na(is_other_antihtn_med("9999996", 1), "a"))
+  expect_true(haven::is_tagged_na(is_other_antihtn_med("C02AB01", 6), "a"))
+  expect_true(haven::is_tagged_na(is_other_antihtn_med("9999997", 1), "b"))
+  expect_true(haven::is_tagged_na(is_other_antihtn_med("C02AB01", 7), "b"))
+  expect_equal(is_other_antihtn_med(c("C02AB01", "C02KX01"), c(1, 1)), c(1, 0))
 })
 
-# Test for is_any_antiHTN_med
-test_that("is_any_antiHTN_med returns correct values", {
-  # General tests
-  expect_equal(is_any_antiHTN_med("C02AB01", 1), 1)
-  expect_equal(is_any_antiHTN_med("C03AA03", 1), 1)
-  expect_equal(is_any_antiHTN_med("C07AA05", 1), 1)
-  expect_equal(is_any_antiHTN_med("C08CA01", 1), 1)
-  expect_equal(is_any_antiHTN_med("C09AA02", 1), 1)
-  expect_equal(is_any_antiHTN_med("C07AA07", 1), 0)
-
-  # Edge case tests - missing inputs
-  expect_equal(is_any_antiHTN_med("", 1), 0)
-  expect_true(haven::is_tagged_na(is_any_antiHTN_med("9999996", 1), "a"))
-  expect_true(haven::is_tagged_na(is_any_antiHTN_med("C02AB01", 6), "a"))
-  expect_true(haven::is_tagged_na(is_any_antiHTN_med("9999997", 1), "b"))
-  expect_true(haven::is_tagged_na(is_any_antiHTN_med("C02AB01", 7), "b"))
-
-  # Vector tests
-  expect_equal(is_any_antiHTN_med(c("C02AB01", "C07AA07"), c(1, 1)), c(1, 0))
-
-  # Database tests
-  df <- data.frame(med = c("C02AB01", "C07AA07"), last = c(1, 1))
-  expect_equal(df %>% dplyr::mutate(any = is_any_antiHTN_med(med, last)) %>% dplyr::pull(any), c(1, 0))
+# Test for is_any_antihtn_med
+test_that("is_any_antihtn_med returns correct values", {
+  expect_equal(is_any_antihtn_med("C02AB01", 1), 1)
+  expect_equal(is_any_antihtn_med("C03AA03", 1), 1)
+  expect_equal(is_any_antihtn_med("C07AA05", 1), 1)
+  expect_equal(is_any_antihtn_med("C08CA01", 1), 1)
+  expect_equal(is_any_antihtn_med("C09AA02", 1), 1)
+  expect_equal(is_any_antihtn_med("C07AA07", 1), 0)
+  expect_true(haven::is_tagged_na(is_any_antihtn_med("9999996", 1), "a"))
+  expect_true(haven::is_tagged_na(is_any_antihtn_med("C02AB01", 6), "a"))
+  expect_true(haven::is_tagged_na(is_any_antihtn_med("9999997", 1), "b"))
+  expect_true(haven::is_tagged_na(is_any_antihtn_med("C02AB01", 7), "b"))
+  expect_equal(is_any_antihtn_med(c("C02AB01", "C07AA07"), c(1, 1)), c(1, 0))
 })
 
-# Test for is_NSAID
-test_that("is_NSAID returns correct values", {
-  # General tests
-  expect_equal(is_NSAID("M01AE01", 1), 1)
-  expect_equal(is_NSAID("M02AA01", 1), 0)
-
-  # Edge case tests - missing inputs
-  expect_equal(is_NSAID("", 1), 0)
-  expect_true(haven::is_tagged_na(is_NSAID("9999996", 1), "a"))
-  expect_true(haven::is_tagged_na(is_NSAID("M01AE01", 6), "a"))
-  expect_true(haven::is_tagged_na(is_NSAID("9999997", 1), "b"))
-  expect_true(haven::is_tagged_na(is_NSAID("M01AE01", 7), "b"))
-
-  # Vector tests
-  expect_equal(is_NSAID(c("M01AE01", "M02AA01"), c(1, 1)), c(1, 0))
-
-  # Database tests
-  df <- data.frame(med = c("M01AE01", "M02AA01"), last = c(1, 1))
-  expect_equal(df %>% dplyr::mutate(nsaid = is_NSAID(med, last)) %>% dplyr::pull(nsaid), c(1, 0))
+# Test for is_nsaid
+test_that("is_nsaid returns correct values", {
+  expect_equal(is_nsaid("M01AE01", 1), 1)
+  expect_equal(is_nsaid("M02AA01", 1), 0)
+  expect_true(haven::is_tagged_na(is_nsaid("9999996", 1), "a"))
+  expect_true(haven::is_tagged_na(is_nsaid("M01AE01", 6), "a"))
+  expect_true(haven::is_tagged_na(is_nsaid("9999997", 1), "b"))
+  expect_true(haven::is_tagged_na(is_nsaid("M01AE01", 7), "b"))
+  expect_equal(is_nsaid(c("M01AE01", "M02AA01"), c(1, 1)), c(1, 0))
 })
 
-# Test for is_diabetes_drug
-test_that("is_diabetes_drug returns correct values", {
-  # General tests
-  expect_equal(is_diabetes_drug("A10BA02", 1), 1)
-  expect_equal(is_diabetes_drug("A09AA02", 1), 0)
-
-  # Edge case tests - missing inputs
-  expect_equal(is_diabetes_drug("", 1), 0)
-  expect_true(haven::is_tagged_na(is_diabetes_drug("9999996", 1), "a"))
-  expect_true(haven::is_tagged_na(is_diabetes_drug("A10BA02", 6), "a"))
-  expect_true(haven::is_tagged_na(is_diabetes_drug("9999997", 1), "b"))
-  expect_true(haven::is_tagged_na(is_diabetes_drug("A10BA02", 7), "b"))
-
-  # Vector tests
-  expect_equal(is_diabetes_drug(c("A10BA02", "A09AA02"), c(1, 1)), c(1, 0))
-
-  # Database tests
-  df <- data.frame(med = c("A10BA02", "A09AA02"), last = c(1, 1))
-  expect_equal(df %>% dplyr::mutate(diab = is_diabetes_drug(med, last)) %>% dplyr::pull(diab), c(1, 0))
-})
-
-# Test for cycles1to2_ace_inhibitors
-test_that("cycles1to2_ace_inhibitors returns correct values", {
-  # General tests
-  expect_equal(cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = 1), 1)
-  expect_equal(cycles1to2_ace_inhibitors(atc_101a = "C08AA02", mhr_101b = 1), 0)
-
-  # Edge case tests - missing data should return tagged NA
-  # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
-  expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "9999996", mhr_101b = 1), "a"))
-  expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = 6), "a"))
-
-  # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "9999997", mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = 7), "b"))
-
-  # R NA values return tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = NA_character_, mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_ace_inhibitors(atc_101a = "C09AA02", mhr_101b = NA_real_), "b"))
-})
-
-# Test for cycles1to2_beta_blockers
-test_that("cycles1to2_beta_blockers returns correct values", {
-  # General tests
-  expect_equal(cycles1to2_beta_blockers(atc_101a = "C07AA05", mhr_101b = 1), 1)
-  expect_equal(cycles1to2_beta_blockers(atc_101a = "C07AA07", mhr_101b = 1), 0)
-
-  # Edge case tests - missing data should return tagged NA
-  # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
-  expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "9999996", mhr_101b = 1), "a"))
-  expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "C07AA05", mhr_101b = 6), "a"))
-
-  # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "9999997", mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "C07AA05", mhr_101b = 7), "b"))
-
-  # R NA values return tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = NA_character_, mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_beta_blockers(atc_101a = "C07AA05", mhr_101b = NA_real_), "b"))
-})
-
-# Test for cycles1to2_diuretics
-test_that("cycles1to2_diuretics returns correct values", {
-  # General tests
-  expect_equal(cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = 1), 1)
-  expect_equal(cycles1to2_diuretics(atc_101a = "C03BA08", mhr_101b = 1), 0)
-
-  # Edge case tests - missing data should return tagged NA
-  # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
-  expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "9999996", mhr_101b = 1), "a"))
-  expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = 6), "a"))
-
-  # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "9999997", mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = 7), "b"))
-
-  # R NA values return tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = NA_character_, mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_diuretics(atc_101a = "C03AA03", mhr_101b = NA_real_), "b"))
-})
-
-# Test for cycles1to2_calcium_channel_blockers
-test_that("cycles1to2_calcium_channel_blockers returns correct values", {
-  # General tests
-  expect_equal(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = 1), 1)
-  expect_equal(cycles1to2_calcium_channel_blockers(atc_101a = "C07CA01", mhr_101b = 1), 0)
-
-  # Edge case tests - missing data should return tagged NA
-  # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
-  expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "9999996", mhr_101b = 1), "a"))
-  expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = 6), "a"))
-
-  # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "9999997", mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = 7), "b"))
-
-  # R NA values return tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = NA_character_, mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_calcium_channel_blockers(atc_101a = "C08CA01", mhr_101b = NA_real_), "b"))
-})
-
-# Test for cycles1to2_other_antiHTN_meds
-test_that("cycles1to2_other_antiHTN_meds returns correct values", {
-  # General tests
-  expect_equal(cycles1to2_other_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 1), 1)
-  expect_equal(cycles1to2_other_antiHTN_meds(atc_101a = "C02KX01", mhr_101b = 1), 0)
-
-  # Edge case tests - missing data should return tagged NA
-  # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
-  expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "9999996", mhr_101b = 1), "a"))
-  expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 6), "a"))
-
-  # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "9999997", mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 7), "b"))
-
-  # R NA values return tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = NA_character_, mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_other_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = NA_real_), "b"))
-})
-
-# Test for cycles1to2_any_antiHTN_meds
-test_that("cycles1to2_any_antiHTN_meds returns correct values", {
-  # General tests
-  expect_equal(cycles1to2_any_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 1), 1)
-  expect_equal(cycles1to2_any_antiHTN_meds(atc_101a = "C07AA07", mhr_101b = 1), 0)
-
-  # Edge case tests - missing data should return tagged NA
-  # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
-  expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "9999996", mhr_101b = 1), "a"))
-  expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 6), "a"))
-
-  # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "9999997", mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = 7), "b"))
-
-  # R NA values return tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = NA_character_, mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_any_antiHTN_meds(atc_101a = "C02AB01", mhr_101b = NA_real_), "b"))
-})
-
-# Test for cycles1to2_nsaid
-test_that("cycles1to2_nsaid returns correct values", {
-  # General tests
-  expect_equal(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = 1), 1)
-  expect_equal(cycles1to2_nsaid(atc_101a = "M02AA01", mhr_101b = 1), 0)
-
-  # Edge case tests - missing data should return tagged NA
-  # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
-  expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "9999996", mhr_101b = 1), "a"))
-  expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = 6), "a"))
-
-  # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "9999997", mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = 7), "b"))
-
-  # R NA values return tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = NA_character_, mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_nsaid(atc_101a = "M01AE01", mhr_101b = NA_real_), "b"))
-})
-
-# Test for cycles1to2_diabetes_drugs
-test_that("cycles1to2_diabetes_drugs returns correct values", {
-  # General tests
-  expect_equal(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = 1), 1)
-  expect_equal(cycles1to2_diabetes_drugs(atc_101a = "A09AA02", mhr_101b = 1), 0)
-
-  # Edge case tests - missing data should return tagged NA
-  # Valid skip (code 9999996 or mhr 6) returns tagged NA "a"
-  expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "9999996", mhr_101b = 1), "a"))
-  expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = 6), "a"))
-
-  # Don't know/refusal (codes 9999997+ or mhr 7+) returns tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "9999997", mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = 7), "b"))
-
-  # R NA values return tagged NA "b"
-  expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = NA_character_, mhr_101b = 1), "b"))
-  expect_true(haven::is_tagged_na(cycles1to2_diabetes_drugs(atc_101a = "A10BA02", mhr_101b = NA_real_), "b"))
+# Test for is_diabetes_med
+test_that("is_diabetes_med returns correct values", {
+  expect_equal(is_diabetes_med("A10BA02", 1), 1)
+  expect_equal(is_diabetes_med("A09AA02", 1), 0)
+  expect_true(haven::is_tagged_na(is_diabetes_med("9999996", 1), "a"))
+  expect_true(haven::is_tagged_na(is_diabetes_med("A10BA02", 6), "a"))
+  expect_true(haven::is_tagged_na(is_diabetes_med("9999997", 1), "b"))
+  expect_true(haven::is_tagged_na(is_diabetes_med("A10BA02", 7), "b"))
+  expect_equal(is_diabetes_med(c("A10BA02", "A09AA02"), c(1, 1)), c(1, 0))
 })
