@@ -42,7 +42,7 @@
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(adj_hh_income = calculate_household_income(thi_01, dhhdhsz))
 #'
 #' @seealso [categorize_income_quintile()] for income classification, [is_lowest_income_quintile()] for poverty indicators
@@ -109,7 +109,7 @@ calculate_household_income <- function(thi_01, dhhdhsz) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(income_category = categorize_income_quintile(adj_hh_income))
 #'
 #' @seealso [calculate_household_income()], [is_lowest_income_quintile()]
@@ -165,7 +165,7 @@ categorize_income_quintile <- function(adj_hh_income) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(in_lowest_quintile = is_lowest_income_quintile(income_category))
 #'
 #' @seealso [categorize_income_quintile()]

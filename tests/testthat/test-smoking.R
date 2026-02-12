@@ -2,26 +2,26 @@
 
 # Test for calculate_pack_years
 test_that("calculate_pack_years returns correct pack years", {
-  # Daily smoker
+  # General tests - Daily smoker
   expect_equal(calculate_pack_years(1, 40, NA, 20, 20, NA, NA, NA, NA, NA), 20)
 
-  # Occasional smoker (former daily)
+  # General tests - Occasional smoker (former daily)
   expect_equal(calculate_pack_years(2, 50, 45, 30, NA, 5, 20, 4, NA, 1), 15.25)
 
-  # Occasional smoker (never daily)
+  # General tests - Occasional smoker (never daily)
   expect_equal(calculate_pack_years(3, 40, NA, NA, NA, 10, NA, 6, 30, NA), 1)
 
-  # Former daily smoker
+  # General tests - Former daily smoker
   expect_equal(calculate_pack_years(4, 60, 50, 20, NA, NA, 30, NA, NA, NA), 45)
 
-  # Former occasional smoker
+  # General tests - Former occasional smoker
   expect_equal(calculate_pack_years(5, 50, NA, NA, NA, NA, NA, NA, NA, 1), 0.0137)
   expect_equal(calculate_pack_years(5, 50, NA, NA, NA, NA, NA, NA, NA, 2), 0.007)
 
-  # Non-smoker
+  # General tests - Non-smoker
   expect_equal(calculate_pack_years(6, 40, NA, NA, NA, NA, NA, NA, NA, 2), 0)
 
-  # Missing data codes
+  # Edge case tests - missing data codes
   expect_true(haven::is_tagged_na(calculate_pack_years(96, 40, NA, 20, 20, NA, NA, NA, NA, NA), "a"))
   expect_true(haven::is_tagged_na(calculate_pack_years(1, 96, NA, 20, 20, NA, NA, NA, NA, NA), "a"))
   expect_true(haven::is_tagged_na(calculate_pack_years(97, 40, NA, 20, 20, NA, NA, NA, NA, NA), "b"))
@@ -58,7 +58,7 @@ test_that("calculate_pack_years returns correct pack years", {
     SMK_11 = c(NA, 2)
   )
   expect_equal(
-    df %>% dplyr::mutate(py = pack_years_fun(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11)) %>% dplyr::pull(py),
+    df |> dplyr::mutate(py = calculate_pack_years(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11)) |> dplyr::pull(py),
     c(20, 0)
   )
 })

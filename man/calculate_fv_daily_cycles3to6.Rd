@@ -89,9 +89,9 @@ calculate_fv_daily_cycles3to6(
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(total_fv = find_totalFV_cycles3to6(WSDD34Y, WSDD35Y, GFVD17AY,
-#     GFVD17BY, GFVD17CY, GFVD17DY, GFVD18Y, GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y))
+# dataset |>
+#   mutate(total_fv = calculate_fv_daily_cycles3to6(wsdd34y, wsdd35y, gfvd17ay,
+#     gfvd17by, gfvd17cy, gfvd17dy, gfvd18y, gfvd19y, gfvd20y, gfvd22y, gfvd23y))
 
 }
 \seealso{

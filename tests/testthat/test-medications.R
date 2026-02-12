@@ -79,7 +79,7 @@ test_that("is_beta_blocker returns correct values", {
   expect_equal(is_beta_blocker("C07AA05", 1), 1)
   expect_equal(is_beta_blocker("C07AA07", 1), 0)
 
-  # Edge case tests - empty/NA strings
+  # Edge case tests - missing data
   expect_equal(is_beta_blocker("", 1), 0) # missing inputs
   expect_true(haven::is_tagged_na(is_beta_blocker("9999996", 1), "a"))
   expect_true(haven::is_tagged_na(is_beta_blocker("C07AA05", 6), "a"))
@@ -91,7 +91,7 @@ test_that("is_beta_blocker returns correct values", {
 
   # Database tests
   df <- data.frame(med = c("C07AA05", "C07AA07"), last = c(1, 1))
-  expect_equal(df %>% dplyr::mutate(bb = is_beta_blocker(med, last)) %>% dplyr::pull(bb), c(1, 0))
+  expect_equal(df |> dplyr::mutate(bb = is_beta_blocker(med, last)) |> dplyr::pull(bb), c(1, 0))
 })
 
 # Test for is_ace_inhibitor
@@ -100,7 +100,7 @@ test_that("is_ace_inhibitor returns correct values", {
   expect_equal(is_ace_inhibitor("C09AA02", 1), 1)
   expect_equal(is_ace_inhibitor("C08AA02", 1), 0)
 
-  # Edge case tests - missing inputs
+  # Edge case tests - missing data
   expect_equal(is_ace_inhibitor("", 1), 0)
   expect_true(haven::is_tagged_na(is_ace_inhibitor("9999996", 1), "a"))
   expect_true(haven::is_tagged_na(is_ace_inhibitor("C09AA02", 6), "a"))
@@ -112,7 +112,7 @@ test_that("is_ace_inhibitor returns correct values", {
 
   # Database tests
   df <- data.frame(med = c("C09AA02", "C08AA02"), last = c(1, 1))
-  expect_equal(df %>% dplyr::mutate(ace = is_ace_inhibitor(med, last)) %>% dplyr::pull(ace), c(1, 0))
+  expect_equal(df |> dplyr::mutate(ace = is_ace_inhibitor(med, last)) |> dplyr::pull(ace), c(1, 0))
 })
 
 # Test for is_diuretic
@@ -121,7 +121,7 @@ test_that("is_diuretic returns correct values", {
   expect_equal(is_diuretic("C03AA03", 1), 1)
   expect_equal(is_diuretic("C03BA08", 1), 0)
 
-  # Edge case tests - missing inputs
+  # Edge case tests - missing data
   expect_equal(is_diuretic("", 1), 0)
   expect_true(haven::is_tagged_na(is_diuretic("9999996", 1), "a"))
   expect_true(haven::is_tagged_na(is_diuretic("C03AA03", 6), "a"))
@@ -133,7 +133,7 @@ test_that("is_diuretic returns correct values", {
 
   # Database tests
   df <- data.frame(med = c("C03AA03", "C03BA08"), last = c(1, 1))
-  expect_equal(df %>% dplyr::mutate(diur = is_diuretic(med, last)) %>% dplyr::pull(diur), c(1, 0))
+  expect_equal(df |> dplyr::mutate(diur = is_diuretic(med, last)) |> dplyr::pull(diur), c(1, 0))
 })
 
 # Test for is_calcium_channel_blocker
@@ -142,7 +142,7 @@ test_that("is_calcium_channel_blocker returns correct values", {
   expect_equal(is_calcium_channel_blocker("C08CA01", 1), 1)
   expect_equal(is_calcium_channel_blocker("C07CA01", 1), 0)
 
-  # Edge case tests - missing inputs
+  # Edge case tests - missing data
   expect_equal(is_calcium_channel_blocker("", 1), 0)
   expect_true(haven::is_tagged_na(is_calcium_channel_blocker("9999996", 1), "a"))
   expect_true(haven::is_tagged_na(is_calcium_channel_blocker("C08CA01", 6), "a"))
@@ -154,53 +154,333 @@ test_that("is_calcium_channel_blocker returns correct values", {
 
   # Database tests
   df <- data.frame(med = c("C08CA01", "C07CA01"), last = c(1, 1))
-  expect_equal(df %>% dplyr::mutate(ccb = is_calcium_channel_blocker(med, last)) %>% dplyr::pull(ccb), c(1, 0))
+  expect_equal(df |> dplyr::mutate(ccb = is_calcium_channel_blocker(med, last)) |> dplyr::pull(ccb), c(1, 0))
 })
 
 # Test for is_other_antihtn_med
 test_that("is_other_antihtn_med returns correct values", {
+  # General tests
   expect_equal(is_other_antihtn_med("C02AB01", 1), 1)
   expect_equal(is_other_antihtn_med("C02KX01", 1), 0)
+
+  # Edge case tests - missing data
   expect_true(haven::is_tagged_na(is_other_antihtn_med("9999996", 1), "a"))
   expect_true(haven::is_tagged_na(is_other_antihtn_med("C02AB01", 6), "a"))
   expect_true(haven::is_tagged_na(is_other_antihtn_med("9999997", 1), "b"))
   expect_true(haven::is_tagged_na(is_other_antihtn_med("C02AB01", 7), "b"))
+
+  # Vector tests
   expect_equal(is_other_antihtn_med(c("C02AB01", "C02KX01"), c(1, 1)), c(1, 0))
+
+  # Database tests
+  df <- data.frame(med = c("C02AB01", "C02KX01"), last = c(1, 1))
+  expect_equal(df |> dplyr::mutate(other_antihtn = is_other_antihtn_med(med, last)) |> dplyr::pull(other_antihtn), c(1, 0))
 })
 
 # Test for is_any_antihtn_med
 test_that("is_any_antihtn_med returns correct values", {
+  # General tests
   expect_equal(is_any_antihtn_med("C02AB01", 1), 1)
   expect_equal(is_any_antihtn_med("C03AA03", 1), 1)
   expect_equal(is_any_antihtn_med("C07AA05", 1), 1)
   expect_equal(is_any_antihtn_med("C08CA01", 1), 1)
   expect_equal(is_any_antihtn_med("C09AA02", 1), 1)
   expect_equal(is_any_antihtn_med("C07AA07", 1), 0)
+
+  # Edge case tests - missing data
   expect_true(haven::is_tagged_na(is_any_antihtn_med("9999996", 1), "a"))
   expect_true(haven::is_tagged_na(is_any_antihtn_med("C02AB01", 6), "a"))
   expect_true(haven::is_tagged_na(is_any_antihtn_med("9999997", 1), "b"))
   expect_true(haven::is_tagged_na(is_any_antihtn_med("C02AB01", 7), "b"))
+
+  # Vector tests
   expect_equal(is_any_antihtn_med(c("C02AB01", "C07AA07"), c(1, 1)), c(1, 0))
+
+  # Database tests
+  df <- data.frame(med = c("C02AB01", "C07AA07"), last = c(1, 1))
+  expect_equal(df |> dplyr::mutate(any_antihtn = is_any_antihtn_med(med, last)) |> dplyr::pull(any_antihtn), c(1, 0))
 })
 
 # Test for is_nsaid
 test_that("is_nsaid returns correct values", {
+  # General tests
   expect_equal(is_nsaid("M01AE01", 1), 1)
   expect_equal(is_nsaid("M02AA01", 1), 0)
+
+  # Edge case tests - missing data
   expect_true(haven::is_tagged_na(is_nsaid("9999996", 1), "a"))
   expect_true(haven::is_tagged_na(is_nsaid("M01AE01", 6), "a"))
   expect_true(haven::is_tagged_na(is_nsaid("9999997", 1), "b"))
   expect_true(haven::is_tagged_na(is_nsaid("M01AE01", 7), "b"))
+
+  # Vector tests
   expect_equal(is_nsaid(c("M01AE01", "M02AA01"), c(1, 1)), c(1, 0))
+
+  # Database tests
+  df <- data.frame(med = c("M01AE01", "M02AA01"), last = c(1, 1))
+  expect_equal(df |> dplyr::mutate(nsaid = is_nsaid(med, last)) |> dplyr::pull(nsaid), c(1, 0))
 })
 
 # Test for is_diabetes_med
 test_that("is_diabetes_med returns correct values", {
+  # General tests
   expect_equal(is_diabetes_med("A10BA02", 1), 1)
   expect_equal(is_diabetes_med("A09AA02", 1), 0)
+
+  # Edge case tests - missing data
   expect_true(haven::is_tagged_na(is_diabetes_med("9999996", 1), "a"))
   expect_true(haven::is_tagged_na(is_diabetes_med("A10BA02", 6), "a"))
   expect_true(haven::is_tagged_na(is_diabetes_med("9999997", 1), "b"))
   expect_true(haven::is_tagged_na(is_diabetes_med("A10BA02", 7), "b"))
+
+  # Vector tests
   expect_equal(is_diabetes_med(c("A10BA02", "A09AA02"), c(1, 1)), c(1, 0))
+
+  # Database tests
+  df <- data.frame(med = c("A10BA02", "A09AA02"), last = c(1, 1))
+  expect_equal(df |> dplyr::mutate(diabetes_med = is_diabetes_med(med, last)) |> dplyr::pull(diabetes_med), c(1, 0))
+})
+
+# Test for is_bb_med_cycles1to2
+test_that("is_bb_med_cycles1to2 returns correct values", {
+  # Match in first prescription slot
+  expect_equal(is_bb_med_cycles1to2(atc_101a = "C07AA05", mhr_101b = 1), 1)
+
+  # Non-match (excluded beta blocker)
+  expect_equal(is_bb_med_cycles1to2(atc_101a = "C07AA07", mhr_101b = 1), 0)
+
+  # All NULL returns tagged NA "b"
+  expect_true(haven::is_tagged_na(is_bb_med_cycles1to2(), "b"))
+
+  # Match in OTC slot
+  expect_equal(is_bb_med_cycles1to2(atc_201a = "C07AB02", mhr_201b = 2), 1)
+
+  # Not taken recently (last_taken > 4) - returns 0 because other NULL slots pad to valid non-matches
+  expect_equal(is_bb_med_cycles1to2(atc_101a = "C07AA05", mhr_101b = 6), 0)
+
+  # Multiple slots, one match
+  expect_equal(
+    is_bb_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C07AB02", mhr_101b = 1, mhr_102b = 1),
+    1
+  )
+
+  # Multiple slots, no match
+  expect_equal(
+    is_bb_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C09AA02", mhr_101b = 1, mhr_102b = 1),
+    0
+  )
+})
+
+# Test for is_ace_med_cycles1to2
+test_that("is_ace_med_cycles1to2 returns correct values", {
+  # Match in first prescription slot
+  expect_equal(is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 1), 1)
+
+  # Non-match
+  expect_equal(is_ace_med_cycles1to2(atc_101a = "C08AA02", mhr_101b = 1), 0)
+
+  # All NULL returns tagged NA "b"
+  expect_true(haven::is_tagged_na(is_ace_med_cycles1to2(), "b"))
+
+  # Match in OTC slot
+  expect_equal(is_ace_med_cycles1to2(atc_201a = "C09BB05", mhr_201b = 1), 1)
+
+  # Not taken recently (last_taken > 4)
+  expect_equal(is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 6), 0)
+
+  # Multiple slots, one match
+  expect_equal(
+    is_ace_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C09BB05", mhr_101b = 1, mhr_102b = 1),
+    1
+  )
+
+  # Multiple slots, no match
+  expect_equal(
+    is_ace_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C07AA05", mhr_101b = 1, mhr_102b = 1),
+    0
+  )
+})
+
+# Test for is_diur_med_cycles1to2
+test_that("is_diur_med_cycles1to2 returns correct values", {
+  # Match in first prescription slot
+  expect_equal(is_diur_med_cycles1to2(atc_101a = "C03AA03", mhr_101b = 1), 1)
+
+  # Non-match (excluded diuretic)
+  expect_equal(is_diur_med_cycles1to2(atc_101a = "C03BA08", mhr_101b = 1), 0)
+
+  # All NULL returns tagged NA "b"
+  expect_true(haven::is_tagged_na(is_diur_med_cycles1to2(), "b"))
+
+  # Match in OTC slot
+  expect_equal(is_diur_med_cycles1to2(atc_201a = "C03DA01", mhr_201b = 1), 1)
+
+  # Not taken recently (last_taken > 4)
+  expect_equal(is_diur_med_cycles1to2(atc_101a = "C03AA03", mhr_101b = 6), 0)
+
+  # Multiple slots, one match
+  expect_equal(
+    is_diur_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C03AA03", mhr_101b = 1, mhr_102b = 1),
+    1
+  )
+
+  # Multiple slots, no match
+  expect_equal(
+    is_diur_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C07AA05", mhr_101b = 1, mhr_102b = 1),
+    0
+  )
+})
+
+# Test for is_ccb_med_cycles1to2
+test_that("is_ccb_med_cycles1to2 returns correct values", {
+  # Match in first prescription slot
+  expect_equal(is_ccb_med_cycles1to2(atc_101a = "C08CA01", mhr_101b = 1), 1)
+
+  # Non-match
+  expect_equal(is_ccb_med_cycles1to2(atc_101a = "C07CA01", mhr_101b = 1), 0)
+
+  # All NULL returns tagged NA "b"
+  expect_true(haven::is_tagged_na(is_ccb_med_cycles1to2(), "b"))
+
+  # Match in OTC slot
+  expect_equal(is_ccb_med_cycles1to2(atc_201a = "C08DA01", mhr_201b = 1), 1)
+
+  # Not taken recently (last_taken > 4)
+  expect_equal(is_ccb_med_cycles1to2(atc_101a = "C08CA01", mhr_101b = 6), 0)
+
+  # Multiple slots, one match
+  expect_equal(
+    is_ccb_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C08CA01", mhr_101b = 1, mhr_102b = 1),
+    1
+  )
+
+  # Multiple slots, no match
+  expect_equal(
+    is_ccb_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C07AA05", mhr_101b = 1, mhr_102b = 1),
+    0
+  )
+})
+
+# Test for is_misc_htn_med_cycles1to2
+test_that("is_misc_htn_med_cycles1to2 returns correct values", {
+  # Match in first prescription slot
+  expect_equal(is_misc_htn_med_cycles1to2(atc_101a = "C02AB01", mhr_101b = 1), 1)
+
+  # Non-match (excluded misc antihypertensive)
+  expect_equal(is_misc_htn_med_cycles1to2(atc_101a = "C02KX01", mhr_101b = 1), 0)
+
+  # All NULL returns tagged NA "b"
+  expect_true(haven::is_tagged_na(is_misc_htn_med_cycles1to2(), "b"))
+
+  # Match in OTC slot
+  expect_equal(is_misc_htn_med_cycles1to2(atc_201a = "C02CA01", mhr_201b = 1), 1)
+
+  # Not taken recently (last_taken > 4)
+  expect_equal(is_misc_htn_med_cycles1to2(atc_101a = "C02AB01", mhr_101b = 6), 0)
+
+  # Multiple slots, one match
+  expect_equal(
+    is_misc_htn_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C02AB01", mhr_101b = 1, mhr_102b = 1),
+    1
+  )
+
+  # Multiple slots, no match
+  expect_equal(
+    is_misc_htn_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C07AA05", mhr_101b = 1, mhr_102b = 1),
+    0
+  )
+})
+
+# Test for is_any_htn_med_cycles1to2
+test_that("is_any_htn_med_cycles1to2 returns correct values", {
+  # Matches each antihypertensive class
+  expect_equal(is_any_htn_med_cycles1to2(atc_101a = "C07AA05", mhr_101b = 1), 1)
+  expect_equal(is_any_htn_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 1), 1)
+  expect_equal(is_any_htn_med_cycles1to2(atc_101a = "C03AA03", mhr_101b = 1), 1)
+  expect_equal(is_any_htn_med_cycles1to2(atc_101a = "C08CA01", mhr_101b = 1), 1)
+  expect_equal(is_any_htn_med_cycles1to2(atc_101a = "C02AB01", mhr_101b = 1), 1)
+
+  # Non-match
+  expect_equal(is_any_htn_med_cycles1to2(atc_101a = "A10BA02", mhr_101b = 1), 0)
+
+  # All NULL returns tagged NA "b"
+  expect_true(haven::is_tagged_na(is_any_htn_med_cycles1to2(), "b"))
+
+  # Match in OTC slot
+  expect_equal(is_any_htn_med_cycles1to2(atc_201a = "C07AB02", mhr_201b = 1), 1)
+
+  # Not taken recently (last_taken > 4)
+  expect_equal(is_any_htn_med_cycles1to2(atc_101a = "C07AA05", mhr_101b = 6), 0)
+
+  # Multiple slots, one match
+  expect_equal(
+    is_any_htn_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C09AA02", mhr_101b = 1, mhr_102b = 1),
+    1
+  )
+
+  # Multiple slots, no match
+  expect_equal(
+    is_any_htn_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "M01AE01", mhr_101b = 1, mhr_102b = 1),
+    0
+  )
+})
+
+# Test for is_nsaid_med_cycles1to2
+test_that("is_nsaid_med_cycles1to2 returns correct values", {
+  # Match in first prescription slot
+  expect_equal(is_nsaid_med_cycles1to2(atc_101a = "M01AE01", mhr_101b = 1), 1)
+
+  # Non-match
+  expect_equal(is_nsaid_med_cycles1to2(atc_101a = "M02AA01", mhr_101b = 1), 0)
+
+  # All NULL returns tagged NA "b"
+  expect_true(haven::is_tagged_na(is_nsaid_med_cycles1to2(), "b"))
+
+  # Match in OTC slot
+  expect_equal(is_nsaid_med_cycles1to2(atc_201a = "M01AB05", mhr_201b = 1), 1)
+
+  # Not taken recently (last_taken > 4)
+  expect_equal(is_nsaid_med_cycles1to2(atc_101a = "M01AE01", mhr_101b = 6), 0)
+
+  # Multiple slots, one match
+  expect_equal(
+    is_nsaid_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "M01AE01", mhr_101b = 1, mhr_102b = 1),
+    1
+  )
+
+  # Multiple slots, no match
+  expect_equal(
+    is_nsaid_med_cycles1to2(atc_101a = "A10BA02", atc_102a = "C07AA05", mhr_101b = 1, mhr_102b = 1),
+    0
+  )
+})
+
+# Test for is_diab_med_cycles1to2
+test_that("is_diab_med_cycles1to2 returns correct values", {
+  # Match in first prescription slot
+  expect_equal(is_diab_med_cycles1to2(atc_101a = "A10BA02", mhr_101b = 1), 1)
+
+  # Non-match
+  expect_equal(is_diab_med_cycles1to2(atc_101a = "A09AA02", mhr_101b = 1), 0)
+
+  # All NULL returns tagged NA "b"
+  expect_true(haven::is_tagged_na(is_diab_med_cycles1to2(), "b"))
+
+  # Match in OTC slot
+  expect_equal(is_diab_med_cycles1to2(atc_201a = "A10BB01", mhr_201b = 1), 1)
+
+  # Not taken recently (last_taken > 4)
+  expect_equal(is_diab_med_cycles1to2(atc_101a = "A10BA02", mhr_101b = 6), 0)
+
+  # Multiple slots, one match
+  expect_equal(
+    is_diab_med_cycles1to2(atc_101a = "C07AA05", atc_102a = "A10BA02", mhr_101b = 1, mhr_102b = 1),
+    1
+  )
+
+  # Multiple slots, no match
+  expect_equal(
+    is_diab_med_cycles1to2(atc_101a = "C07AA05", atc_102a = "C09AA02", mhr_101b = 1, mhr_102b = 1),
+    0
+  )
 })

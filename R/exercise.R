@@ -46,6 +46,12 @@
 #' )
 #' # Returns: c(35, 39.28571)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(avg_exercise = calculate_exercise_daily_avg(ammdmva1, ammdmva2,
+#' #     ammdmva3, ammdmva4, ammdmva5, ammdmva6, ammdmva7))
+#'
 #' @seealso [calculate_exercise_weekly()] for activity unit conversion, [categorize_exercise()] for activity level classification
 #' @export
 calculate_exercise_daily_avg <- function(ammdmva1, ammdmva2, ammdmva3, ammdmva4, ammdmva5, ammdmva6, ammdmva7) {
@@ -94,7 +100,7 @@ calculate_exercise_daily_avg <- function(ammdmva1, ammdmva2, ammdmva3, ammdmva4,
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(min_per_week = calculate_exercise_weekly(avg_exercise))
 #'
 #' @seealso [calculate_exercise_daily_avg()], [categorize_exercise()]
@@ -147,7 +153,7 @@ calculate_exercise_weekly <- function(mvpa_min) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(pa_category = categorize_exercise(min_per_week))
 #'
 #' @seealso [calculate_exercise_weekly()]

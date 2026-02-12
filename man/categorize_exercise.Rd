@@ -45,7 +45,7 @@ categorize_exercise(c(180, 120, 150))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(pa_category = categorize_exercise(min_per_week))
 
 }

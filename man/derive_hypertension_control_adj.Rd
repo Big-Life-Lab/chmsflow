@@ -11,7 +11,7 @@ derive_hypertension_control_adj(
   ccc_32 = 2,
   cvd_status = 2,
   diab_status = 2,
-  ckd = 2
+  ckd_status = 2
 )
 }
 \arguments{
@@ -43,7 +43,7 @@ derive_hypertension_control_adj(
 \item 2: No (default)
 }}
 
-\item{ckd}{\link{integer} An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
+\item{ckd_status}{\link{integer} An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
@@ -52,8 +52,8 @@ derive_hypertension_control_adj(
 \value{
 \link{integer} The hypertension status:
 \itemize{
-\item 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or ckd) when on hypertension medication)
-\item 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or ckd) when on hypertension medication)
+\item 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) when on hypertension medication)
+\item 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) when on hypertension medication)
 \item \code{haven::tagged_na("a")}: Not applicable
 \item \code{haven::tagged_na("b")}: Missing
 }
@@ -66,7 +66,7 @@ This function assesses whether a respondent's hypertension is controlled using a
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     **Control Thresholds:**
      - General population: < 140/90 mmHg
-     - Diabetes or ckd patients: < 130/80 mmHg
+     - Diabetes or CKD patients: < 130/80 mmHg
 
      **Logic:**
      - Only applies to respondents taking hypertension medication.
@@ -80,7 +80,7 @@ This function assesses whether a respondent's hypertension is controlled using a
      - `any_htn_med2`:
        - Tagged NA "a": Valid skip.
        - Tagged NA "b": Don't know, refusal, or not stated.
-     - `ccc_32`, `cvd_status`, `diab_status`, `ckd`:
+     - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
        - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
        - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 }\if{html}{\out{</div>}}
@@ -110,9 +110,9 @@ derive_hypertension_control_adj(
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(controlled_htn_adj = determine_controlled_adjusted_hypertension(SBP_adj,
-#     DBP_adj, ANYMED2))
+# dataset |>
+#   mutate(controlled_htn_adj = derive_hypertension_control_adj(sbp_adj_mmhg,
+#     dbp_adj_mmhg, any_htn_med2))
 
 }
 \seealso{

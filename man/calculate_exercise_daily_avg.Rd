@@ -73,9 +73,9 @@ calculate_exercise_daily_avg(
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(avg_exercise = find_week_accelerometer_average(AMMDMVA1, AMMDMVA2,
-#     AMMDMVA3, AMMDMVA4, AMMDMVA5, AMMDMVA6, AMMDMVA7))
+# dataset |>
+#   mutate(avg_exercise = calculate_exercise_daily_avg(ammdmva1, ammdmva2,
+#     ammdmva3, ammdmva4, ammdmva5, ammdmva6, ammdmva7))
 
 }
 \seealso{

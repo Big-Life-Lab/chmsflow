@@ -73,7 +73,7 @@ derive_diabetes_status(diab_a1c = c(1, 2, 2), ccc_51 = c(2, 1, 2), diab_med2 = c
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(diabetes_status = derive_diabetes_status(diab_a1c, ccc_51, diab_med2))
 
 }

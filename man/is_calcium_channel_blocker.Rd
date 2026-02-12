@@ -43,7 +43,7 @@ is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(ccb = is_calcium_channel_blocker(MEUCATC, NPI_25B))
+# dataset |>
+#   mutate(ccb = is_calcium_channel_blocker(meucatc, npi_25b))
 
 }

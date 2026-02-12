@@ -54,8 +54,8 @@ derive_cvd_personal_history(ccc_61 = c(1, 2, 2), ccc_63 = c(2, 1, 2), ccc_81 = c
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(cvd_personal_history = determine_CVD_personal_history(CCC_61, CCC_63, CCC_81))
+# dataset |>
+#   mutate(cvd_personal_history = derive_cvd_personal_history(ccc_61, ccc_63, ccc_81))
 
 }
 \seealso{

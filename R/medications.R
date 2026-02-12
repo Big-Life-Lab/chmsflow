@@ -123,8 +123,8 @@ is_taking_drug_class <- function(df, class_var_name, med_vars, last_taken_vars, 
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
-#' #   mutate(beta_blocker = is_beta_blocker(MEUCATC, NPI_25B))
+#' # dataset |>
+#' #   mutate(beta_blocker = is_beta_blocker(meucatc, npi_25b))
 #'
 #' @export
 is_beta_blocker <- function(meucatc, npi_25b) {
@@ -171,8 +171,8 @@ is_beta_blocker <- function(meucatc, npi_25b) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
-#' #   mutate(ace_inhibitor = is_ace_inhibitor(MEUCATC, NPI_25B))
+#' # dataset |>
+#' #   mutate(ace_inhibitor = is_ace_inhibitor(meucatc, npi_25b))
 #'
 #' @export
 is_ace_inhibitor <- function(meucatc, npi_25b) {
@@ -219,8 +219,8 @@ is_ace_inhibitor <- function(meucatc, npi_25b) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
-#' #   mutate(diuretic = is_diuretic(MEUCATC, NPI_25B))
+#' # dataset |>
+#' #   mutate(diuretic = is_diuretic(meucatc, npi_25b))
 #'
 #' @export
 is_diuretic <- function(meucatc, npi_25b) {
@@ -267,8 +267,8 @@ is_diuretic <- function(meucatc, npi_25b) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
-#' #   mutate(ccb = is_calcium_channel_blocker(MEUCATC, NPI_25B))
+#' # dataset |>
+#' #   mutate(ccb = is_calcium_channel_blocker(meucatc, npi_25b))
 #'
 #' @export
 is_calcium_channel_blocker <- function(meucatc, npi_25b) {
@@ -315,8 +315,8 @@ is_calcium_channel_blocker <- function(meucatc, npi_25b) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
-#' #   mutate(other_antihtn = is_other_antiHTN_med(MEUCATC, NPI_25B))
+#' # dataset |>
+#' #   mutate(other_antihtn = is_other_antihtn_med(meucatc, npi_25b))
 #'
 #' @export
 is_other_antihtn_med <- function(meucatc, npi_25b) {
@@ -363,8 +363,8 @@ is_other_antihtn_med <- function(meucatc, npi_25b) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
-#' #   mutate(any_antihtn = is_any_antiHTN_med(MEUCATC, NPI_25B))
+#' # dataset |>
+#' #   mutate(any_antihtn = is_any_antihtn_med(meucatc, npi_25b))
 #'
 #' @export
 is_any_antihtn_med <- function(meucatc, npi_25b) {
@@ -411,8 +411,8 @@ is_any_antihtn_med <- function(meucatc, npi_25b) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
-#' #   mutate(nsaid = is_NSAID(MEUCATC, NPI_25B))
+#' # dataset |>
+#' #   mutate(nsaid = is_nsaid(meucatc, npi_25b))
 #'
 #' @export
 is_nsaid <- function(meucatc, npi_25b) {
@@ -459,8 +459,8 @@ is_nsaid <- function(meucatc, npi_25b) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
-#' #   mutate(diabetes_drug = is_diabetes_drug(MEUCATC, NPI_25B))
+#' # dataset |>
+#' #   mutate(diabetes_med = is_diabetes_med(meucatc, npi_25b))
 #'
 #' @export
 is_diabetes_med <- function(meucatc, npi_25b) {

@@ -34,7 +34,7 @@
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(sbp_adj_mmhg = adjust_sbp(bpmdpbps))
 #'
 #' @seealso [adjust_dbp()] for diastolic blood pressure adjustment, [derive_hypertension()] for hypertension classification
@@ -87,7 +87,7 @@ adjust_sbp <- function(bpmdpbps) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(dbp_adj_mmhg = adjust_dbp(bpmdpbpd))
 #'
 #' @seealso [adjust_sbp()] for systolic blood pressure adjustment, [derive_hypertension()] for hypertension classification
@@ -123,13 +123,13 @@ adjust_dbp <- function(bpmdpbpd) {
 #' @param diab_status [integer] An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.
 #'   - 1: Yes
 #'   - 2: No (default)
-#' @param ckd [integer] An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
+#' @param ckd_status [integer] An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
 #'   - 1: Yes
 #'   - 2: No (default)
 #'
 #' @return [integer] The hypertension status:
-#'   - 1: High blood pressure (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or ckd) or on hypertension medication)
-#'   - 2: Normal blood pressure (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or ckd) and not on hypertension medication)
+#'   - 1: High blood pressure (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) or on hypertension medication)
+#'   - 2: Normal blood pressure (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
 #'   - `haven::tagged_na("a")`: Not applicable
 #'   - `haven::tagged_na("b")`: Missing
 #'
@@ -137,11 +137,11 @@ adjust_dbp <- function(bpmdpbpd) {
 #'
 #'          **Blood Pressure Thresholds:**
 #'          - General population: >= 140/90 mmHg indicates hypertension
-#'          - Diabetes or ckd patients: >= 130/80 mmHg indicates hypertension (lower threshold)
+#'          - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
 #'
 #'          **Medication Logic:**
 #'          - Anyone taking hypertension medication is classified as hypertensive
-#'          - Medication status may be adjusted based on comorbidities (diabetes, ckd, cardiovascular disease)
+#'          - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
 #'
 #'          **Missing Data Codes:**
 #'          - `bpmdpbps`, `bpmdpbpd`:
@@ -150,7 +150,7 @@ adjust_dbp <- function(bpmdpbpd) {
 #'          - `any_htn_med2`:
 #'            - Tagged NA "a": Valid skip.
 #'            - Tagged NA "b": Don't know, refusal, or not stated.
-#'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd`:
+#'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
 #'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
 #'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
@@ -177,12 +177,17 @@ adjust_dbp <- function(bpmdpbpd) {
 #' )
 #' # Returns: c(1, 2, 1)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(hypertension = derive_hypertension(bpmdpbps, bpmdpbpd, any_htn_med2))
+#'
 #' @seealso [adjust_sbp()], [adjust_dbp()] for blood pressure adjustment, [derive_hypertension_adj()] for adjusted BP classification
 #' @export
-derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd = 2) {
+derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
   # Adjust medication status based on other health conditions
   any_htn_med2 <- dplyr::case_when(
-    ccc_32 == 2 & (cvd_status == 1 | ckd == 1 | diab_status == 1) ~ 0,
+    ccc_32 == 2 & (cvd_status == 1 | ckd_status == 1 | diab_status == 1) ~ 0,
     haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(any_htn_med2)
@@ -194,10 +199,10 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
     bpmdpbps == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     bpmdpbps %in% 997:999 ~ haven::tagged_na("b"),
-    (diab_status == 1 | ckd == 1) & bpmdpbps >= 130 ~ 1,
-    (diab_status == 1 | ckd == 1) & bpmdpbps < 130 ~ 2,
-    !(diab_status == 1 | ckd == 1) & bpmdpbps >= 140 ~ 1,
-    !(diab_status == 1 | ckd == 1) & bpmdpbps < 140 ~ 2,
+    (diab_status == 1 | ckd_status == 1) & bpmdpbps >= 130 ~ 1,
+    (diab_status == 1 | ckd_status == 1) & bpmdpbps < 130 ~ 2,
+    !(diab_status == 1 | ckd_status == 1) & bpmdpbps >= 140 ~ 1,
+    !(diab_status == 1 | ckd_status == 1) & bpmdpbps < 140 ~ 2,
     .default = haven::tagged_na("b")
   )
 
@@ -207,10 +212,10 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
     bpmdpbpd == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     bpmdpbpd %in% 997:999 ~ haven::tagged_na("b"),
-    (diab_status == 1 | ckd == 1) & bpmdpbpd >= 80 ~ 1,
-    (diab_status == 1 | ckd == 1) & bpmdpbpd < 80 ~ 2,
-    !(diab_status == 1 | ckd == 1) & bpmdpbpd >= 90 ~ 1,
-    !(diab_status == 1 | ckd == 1) & bpmdpbpd < 90 ~ 2,
+    (diab_status == 1 | ckd_status == 1) & bpmdpbpd >= 80 ~ 1,
+    (diab_status == 1 | ckd_status == 1) & bpmdpbpd < 80 ~ 2,
+    !(diab_status == 1 | ckd_status == 1) & bpmdpbpd >= 90 ~ 1,
+    !(diab_status == 1 | ckd_status == 1) & bpmdpbpd < 90 ~ 2,
     .default = haven::tagged_na("b")
   )
 
@@ -245,13 +250,13 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 #' @param diab_status [integer] An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.
 #'   - 1: Yes
 #'   - 2: No (default)
-#' @param ckd [integer] An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
+#' @param ckd_status [integer] An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
 #'   - 1: Yes
 #'   - 2: No (default)
 #'
 #' @return [integer] The hypertension status:
-#'   - 1: High blood pressure (adjusted BP ≥ 140/90 mmHg (or ≥ 130/80 mmHg if diabetes or ckd) or on hypertension medication)
-#'   - 2: Normal blood pressure (adjusted BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or ckd) and not on hypertension medication)
+#'   - 1: High blood pressure (adjusted BP ≥ 140/90 mmHg (or ≥ 130/80 mmHg if diabetes or CKD) or on hypertension medication)
+#'   - 2: Normal blood pressure (adjusted BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
 #'   - `haven::tagged_na("a")`: Not applicable
 #'   - `haven::tagged_na("b")`: Missing
 #'
@@ -259,11 +264,11 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 #'
 #'          **Blood Pressure Thresholds:**
 #'          - General population: >= 140/90 mmHg indicates hypertension
-#'          - Diabetes or ckd patients: >= 130/80 mmHg indicates hypertension (lower threshold)
+#'          - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
 #'
 #'          **Medication Logic:**
 #'          - Anyone taking hypertension medication is classified as hypertensive
-#'          - Medication status may be adjusted based on comorbidities (diabetes, ckd, cardiovascular disease)
+#'          - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
 #'
 #'          **Missing Data Codes:**
 #'          - `sbp_adj_mmhg`, `dbp_adj_mmhg`:
@@ -272,7 +277,7 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 #'          - `any_htn_med2`:
 #'            - Tagged NA "a": Valid skip.
 #'            - Tagged NA "b": Don't know, refusal, or not stated.
-#'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd`:
+#'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
 #'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
 #'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
@@ -299,12 +304,17 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 #' )
 #' # Returns: c(1, 2, 1)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(hypertension_adj = derive_hypertension_adj(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2))
+#'
 #' @seealso [derive_hypertension()] for unadjusted BP classification
 #' @export
-derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd = 2) {
+derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
   # Adjust medication status based on other health conditions
   any_htn_med2 <- dplyr::case_when(
-    ccc_32 == 2 & (cvd_status == 1 | ckd == 1 | diab_status == 1) ~ 0,
+    ccc_32 == 2 & (cvd_status == 1 | ckd_status == 1 | diab_status == 1) ~ 0,
     haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(any_htn_med2)
@@ -316,10 +326,10 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
     sbp_adj_mmhg == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     sbp_adj_mmhg %in% 997:999 ~ haven::tagged_na("b"),
-    (diab_status == 1 | ckd == 1) & sbp_adj_mmhg >= 130 ~ 1,
-    (diab_status == 1 | ckd == 1) & sbp_adj_mmhg < 130 ~ 2,
-    !(diab_status == 1 | ckd == 1) & sbp_adj_mmhg >= 140 ~ 1,
-    !(diab_status == 1 | ckd == 1) & sbp_adj_mmhg < 140 ~ 2,
+    (diab_status == 1 | ckd_status == 1) & sbp_adj_mmhg >= 130 ~ 1,
+    (diab_status == 1 | ckd_status == 1) & sbp_adj_mmhg < 130 ~ 2,
+    !(diab_status == 1 | ckd_status == 1) & sbp_adj_mmhg >= 140 ~ 1,
+    !(diab_status == 1 | ckd_status == 1) & sbp_adj_mmhg < 140 ~ 2,
     .default = haven::tagged_na("b")
   )
 
@@ -329,10 +339,10 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
     dbp_adj_mmhg == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     dbp_adj_mmhg %in% 997:999 ~ haven::tagged_na("b"),
-    (diab_status == 1 | ckd == 1) & dbp_adj_mmhg >= 80 ~ 1,
-    (diab_status == 1 | ckd == 1) & dbp_adj_mmhg < 80 ~ 2,
-    !(diab_status == 1 | ckd == 1) & dbp_adj_mmhg >= 90 ~ 1,
-    !(diab_status == 1 | ckd == 1) & dbp_adj_mmhg < 90 ~ 2,
+    (diab_status == 1 | ckd_status == 1) & dbp_adj_mmhg >= 80 ~ 1,
+    (diab_status == 1 | ckd_status == 1) & dbp_adj_mmhg < 80 ~ 2,
+    !(diab_status == 1 | ckd_status == 1) & dbp_adj_mmhg >= 90 ~ 1,
+    !(diab_status == 1 | ckd_status == 1) & dbp_adj_mmhg < 90 ~ 2,
     .default = haven::tagged_na("b")
   )
 
@@ -367,13 +377,13 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 #' @param diab_status [integer] An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.
 #'   - 1: Yes
 #'   - 2: No (default)
-#' @param ckd [integer] An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
+#' @param ckd_status [integer] An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
 #'   - 1: Yes
 #'   - 2: No (default)
 #'
 #' @return [integer] The hypertension status:
-#'   - 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or ckd) when on hypertension medication)
-#'   - 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or ckd) when on hypertension medication)
+#'   - 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) when on hypertension medication)
+#'   - 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) when on hypertension medication)
 #'   - `haven::tagged_na("a")`: Not applicable
 #'   - `haven::tagged_na("b")`: Missing
 #'
@@ -381,7 +391,7 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 #'
 #'          **Control Thresholds:**
 #'          - General population: < 140/90 mmHg
-#'          - Diabetes or ckd patients: < 130/80 mmHg
+#'          - Diabetes or CKD patients: < 130/80 mmHg
 #'
 #'          **Logic:**
 #'          - Only applies to respondents taking hypertension medication.
@@ -395,7 +405,7 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 #'          - `any_htn_med2`:
 #'            - Tagged NA "a": Valid skip.
 #'            - Tagged NA "b": Don't know, refusal, or not stated.
-#'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd`:
+#'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
 #'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
 #'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
@@ -422,12 +432,17 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 #' )
 #' # Returns: c(2, 1, 2)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(controlled_htn = derive_hypertension_control(bpmdpbps, bpmdpbpd, any_htn_med2))
+#'
 #' @seealso [derive_hypertension_control_adj()] for controlled status with adjusted BP
 #' @export
-derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd = 2) {
+derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
   # Adjust medication status based on other health conditions
   any_htn_med2 <- dplyr::case_when(
-    ccc_32 == 2 & (cvd_status == 1 | ckd == 1 | diab_status == 1) ~ 0,
+    ccc_32 == 2 & (cvd_status == 1 | ckd_status == 1 | diab_status == 1) ~ 0,
     haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(any_htn_med2)
@@ -439,10 +454,10 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
     bpmdpbps == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     bpmdpbps %in% 997:999 ~ haven::tagged_na("b"),
-    (diab_status == 1 | ckd == 1) & bpmdpbps >= 130 ~ 1,
-    (diab_status == 1 | ckd == 1) & bpmdpbps < 130 ~ 2,
-    !(diab_status == 1 | ckd == 1) & bpmdpbps >= 140 ~ 1,
-    !(diab_status == 1 | ckd == 1) & bpmdpbps < 140 ~ 2,
+    (diab_status == 1 | ckd_status == 1) & bpmdpbps >= 130 ~ 1,
+    (diab_status == 1 | ckd_status == 1) & bpmdpbps < 130 ~ 2,
+    !(diab_status == 1 | ckd_status == 1) & bpmdpbps >= 140 ~ 1,
+    !(diab_status == 1 | ckd_status == 1) & bpmdpbps < 140 ~ 2,
     .default = haven::tagged_na("b")
   )
 
@@ -452,10 +467,10 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
     bpmdpbpd == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     bpmdpbpd %in% 997:999 ~ haven::tagged_na("b"),
-    (diab_status == 1 | ckd == 1) & bpmdpbpd >= 80 ~ 1,
-    (diab_status == 1 | ckd == 1) & bpmdpbpd < 80 ~ 2,
-    !(diab_status == 1 | ckd == 1) & bpmdpbpd >= 90 ~ 1,
-    !(diab_status == 1 | ckd == 1) & bpmdpbpd < 90 ~ 2,
+    (diab_status == 1 | ckd_status == 1) & bpmdpbpd >= 80 ~ 1,
+    (diab_status == 1 | ckd_status == 1) & bpmdpbpd < 80 ~ 2,
+    !(diab_status == 1 | ckd_status == 1) & bpmdpbpd >= 90 ~ 1,
+    !(diab_status == 1 | ckd_status == 1) & bpmdpbpd < 90 ~ 2,
     .default = haven::tagged_na("b")
   )
 
@@ -502,13 +517,13 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #' @param diab_status [integer] An optional integer indicating the presence of diabetes, affecting blood pressure thresholds.
 #'   - 1: Yes
 #'   - 2: No (default)
-#' @param ckd [integer] An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
+#' @param ckd_status [integer] An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
 #'   - 1: Yes
 #'   - 2: No (default)
 #'
 #' @return [integer] The hypertension status:
-#'   - 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or ckd) when on hypertension medication)
-#'   - 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or ckd) when on hypertension medication)
+#'   - 1: Hypertension controlled (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) when on hypertension medication)
+#'   - 2: Hypertension not controlled (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) when on hypertension medication)
 #'   - `haven::tagged_na("a")`: Not applicable
 #'   - `haven::tagged_na("b")`: Missing
 #'
@@ -516,7 +531,7 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #'
 #'          **Control Thresholds:**
 #'          - General population: < 140/90 mmHg
-#'          - Diabetes or ckd patients: < 130/80 mmHg
+#'          - Diabetes or CKD patients: < 130/80 mmHg
 #'
 #'          **Logic:**
 #'          - Only applies to respondents taking hypertension medication.
@@ -530,7 +545,7 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #'          - `any_htn_med2`:
 #'            - Tagged NA "a": Valid skip.
 #'            - Tagged NA "b": Don't know, refusal, or not stated.
-#'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd`:
+#'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
 #'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
 #'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
@@ -557,12 +572,18 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #' )
 #' # Returns: c(2, 1, 2)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(controlled_htn_adj = derive_hypertension_control_adj(sbp_adj_mmhg,
+#' #     dbp_adj_mmhg, any_htn_med2))
+#'
 #' @seealso [derive_hypertension_control()] for controlled status with unadjusted BP
 #' @export
-derive_hypertension_control_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd = 2) {
+derive_hypertension_control_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
   # Adjust medication status based on other health conditions
   any_htn_med2 <- dplyr::case_when(
-    ccc_32 == 2 & (cvd_status == 1 | ckd == 1 | diab_status == 1) ~ 0,
+    ccc_32 == 2 & (cvd_status == 1 | ckd_status == 1 | diab_status == 1) ~ 0,
     haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
     TRUE ~ as.numeric(any_htn_med2)
@@ -574,10 +595,10 @@ derive_hypertension_control_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_
     sbp_adj_mmhg == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     sbp_adj_mmhg %in% 997:999 ~ haven::tagged_na("b"),
-    (diab_status == 1 | ckd == 1) & sbp_adj_mmhg >= 130 ~ 1,
-    (diab_status == 1 | ckd == 1) & sbp_adj_mmhg < 130 ~ 2,
-    !(diab_status == 1 | ckd == 1) & sbp_adj_mmhg >= 140 ~ 1,
-    !(diab_status == 1 | ckd == 1) & sbp_adj_mmhg < 140 ~ 2,
+    (diab_status == 1 | ckd_status == 1) & sbp_adj_mmhg >= 130 ~ 1,
+    (diab_status == 1 | ckd_status == 1) & sbp_adj_mmhg < 130 ~ 2,
+    !(diab_status == 1 | ckd_status == 1) & sbp_adj_mmhg >= 140 ~ 1,
+    !(diab_status == 1 | ckd_status == 1) & sbp_adj_mmhg < 140 ~ 2,
     .default = haven::tagged_na("b")
   )
 
@@ -587,10 +608,10 @@ derive_hypertension_control_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_
     dbp_adj_mmhg == 996 ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     dbp_adj_mmhg %in% 997:999 ~ haven::tagged_na("b"),
-    (diab_status == 1 | ckd == 1) & dbp_adj_mmhg >= 80 ~ 1,
-    (diab_status == 1 | ckd == 1) & dbp_adj_mmhg < 80 ~ 2,
-    !(diab_status == 1 | ckd == 1) & dbp_adj_mmhg >= 90 ~ 1,
-    !(diab_status == 1 | ckd == 1) & dbp_adj_mmhg < 90 ~ 2,
+    (diab_status == 1 | ckd_status == 1) & dbp_adj_mmhg >= 80 ~ 1,
+    (diab_status == 1 | ckd_status == 1) & dbp_adj_mmhg < 80 ~ 2,
+    !(diab_status == 1 | ckd_status == 1) & dbp_adj_mmhg >= 90 ~ 1,
+    !(diab_status == 1 | ckd_status == 1) & dbp_adj_mmhg < 90 ~ 2,
     .default = haven::tagged_na("b")
   )
 

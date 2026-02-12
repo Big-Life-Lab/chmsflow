@@ -11,7 +11,7 @@ derive_hypertension(
   ccc_32 = 2,
   cvd_status = 2,
   diab_status = 2,
-  ckd = 2
+  ckd_status = 2
 )
 }
 \arguments{
@@ -43,7 +43,7 @@ derive_hypertension(
 \item 2: No (default)
 }}
 
-\item{ckd}{\link{integer} An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
+\item{ckd_status}{\link{integer} An optional integer indicating the presence of chronic kidney disease, affecting blood pressure thresholds.
 \itemize{
 \item 1: Yes
 \item 2: No (default)
@@ -52,8 +52,8 @@ derive_hypertension(
 \value{
 \link{integer} The hypertension status:
 \itemize{
-\item 1: High blood pressure (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or ckd) or on hypertension medication)
-\item 2: Normal blood pressure (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or ckd) and not on hypertension medication)
+\item 1: High blood pressure (BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) or on hypertension medication)
+\item 2: Normal blood pressure (BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
 \item \code{haven::tagged_na("a")}: Not applicable
 \item \code{haven::tagged_na("b")}: Missing
 }
@@ -66,11 +66,11 @@ This function implements clinical guidelines for hypertension classification:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     **Blood Pressure Thresholds:**
      - General population: >= 140/90 mmHg indicates hypertension
-     - Diabetes or ckd patients: >= 130/80 mmHg indicates hypertension (lower threshold)
+     - Diabetes or CKD patients: >= 130/80 mmHg indicates hypertension (lower threshold)
 
      **Medication Logic:**
      - Anyone taking hypertension medication is classified as hypertensive
-     - Medication status may be adjusted based on comorbidities (diabetes, ckd, cardiovascular disease)
+     - Medication status may be adjusted based on comorbidities (diabetes, CKD, cardiovascular disease)
 
      **Missing Data Codes:**
      - `bpmdpbps`, `bpmdpbpd`:
@@ -79,7 +79,7 @@ This function implements clinical guidelines for hypertension classification:
      - `any_htn_med2`:
        - Tagged NA "a": Valid skip.
        - Tagged NA "b": Don't know, refusal, or not stated.
-     - `ccc_32`, `cvd_status`, `diab_status`, `ckd`:
+     - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
        - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
        - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 }\if{html}{\out{</div>}}
@@ -109,8 +109,8 @@ derive_hypertension(
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(hypertension = determine_hypertension(BPMDPBPS, BPMDPBPD, ANYMED2))
+# dataset |>
+#   mutate(hypertension = derive_hypertension(bpmdpbps, bpmdpbpd, any_htn_med2))
 
 }
 \seealso{

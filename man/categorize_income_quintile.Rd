@@ -47,7 +47,7 @@ categorize_income_quintile(c(25000, 45000, 80000))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(income_category = categorize_income_quintile(adj_hh_income))
 
 }

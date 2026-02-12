@@ -43,7 +43,7 @@ is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(ace_inhibitor = is_ace_inhibitor(MEUCATC, NPI_25B))
+# dataset |>
+#   mutate(ace_inhibitor = is_ace_inhibitor(meucatc, npi_25b))
 
 }

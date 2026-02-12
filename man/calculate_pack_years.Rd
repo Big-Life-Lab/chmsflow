@@ -98,9 +98,9 @@ calculate_pack_years(
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(pack_years = pack_years_fun(SMKDSTY, CLC_AGE, SMK_54, SMK_52,
-#     SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11))
+# dataset |>
+#   mutate(pack_years = calculate_pack_years(smkdsty, clc_age, smk_54, smk_52,
+#     smk_31, smk_41, smk_53, smk_42, smk_21, smk_11))
 
 }
 \seealso{

@@ -36,7 +36,7 @@ calculate_exercise_weekly(c(35, 40, 20))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(min_per_week = calculate_exercise_weekly(avg_exercise))
 
 }

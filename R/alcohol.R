@@ -83,7 +83,7 @@
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(alc_risk_score = derive_alcohol_risk(clc_sex, alc_11, alcdwky))
 #'
 #' @seealso [derive_alcohol_risk_detailed()] for extended categorization including former/never drinkers
@@ -209,7 +209,7 @@ derive_alcohol_risk <- function(clc_sex, alc_11, alcdwky) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(
 #' #     alc_detailed_risk_score = derive_alcohol_risk_detailed(
 #' #       clc_sex, alc_11, alcdwky, alc_17, alc_18

@@ -44,7 +44,7 @@ categorize_diet_quality(c(3, 7, 5))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(diet_quality = categorize_diet_quality(total_fv))
 
 }

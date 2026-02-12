@@ -76,9 +76,9 @@ calculate_fv_daily_cycles1to2(
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(total_fv = find_totalFV_cycles1and2(WSDD14Y, GFVD17Y, GFVD18Y,
-#     GFVD19Y, GFVD20Y, GFVD22Y, GFVD23Y))
+# dataset |>
+#   mutate(total_fv = calculate_fv_daily_cycles1to2(wsdd14y, gfvd17y, gfvd18y,
+#     gfvd19y, gfvd20y, gfvd22y, gfvd23y))
 
 }
 \seealso{

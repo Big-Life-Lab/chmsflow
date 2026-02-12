@@ -49,7 +49,7 @@ calculate_nonhdl(lab_chol = c(5.0, 6.0, 7.0), lab_hdl = c(1.5, 1.0, 2.0))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(non_hdl = calculate_nonhdl(lab_chol, lab_hdl))
 
 }

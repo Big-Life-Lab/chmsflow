@@ -64,7 +64,7 @@ derive_cvd_family_history(
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(cvd_family_history = derive_cvd_family_history(fmh_11, fmh_12, fmh_13, fmh_14))
 
 }

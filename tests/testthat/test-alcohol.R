@@ -1,6 +1,8 @@
 # test-alcohol.R
+
 # Test for derive_alcohol_risk
 test_that("derive_alcohol_risk returns correct scores", {
+  # General tests
   expect_equal(derive_alcohol_risk(clc_sex = 1, alc_11 = 1, alcdwky = 3), 1) # Low risk for male
   expect_equal(derive_alcohol_risk(clc_sex = 2, alc_11 = 1, alcdwky = 3), 1) # Low risk for female
   expect_equal(derive_alcohol_risk(clc_sex = 1, alc_11 = 1, alcdwky = 12), 1) # Low risk for male
@@ -10,14 +12,15 @@ test_that("derive_alcohol_risk returns correct scores", {
   expect_equal(derive_alcohol_risk(clc_sex = 1, alc_11 = 1, alcdwky = 25), 3) # Medium risk for male
   expect_equal(derive_alcohol_risk(clc_sex = 2, alc_11 = 1, alcdwky = 25), 3) # Medium risk for female
   expect_equal(derive_alcohol_risk(clc_sex = 1, alc_11 = 2, alcdwky = NA), 1) # Never drinker - low risk
-  # StatsCan missing data codes
+
+  # Edge case tests - StatsCan missing data codes
   expect_true(haven::is_tagged_na(derive_alcohol_risk(1, 6, 5), "a")) # Code 6 -> tagged NA(a)
   expect_true(haven::is_tagged_na(derive_alcohol_risk(1, 7, 5), "b")) # Code 7 -> tagged NA(b)
   expect_true(haven::is_tagged_na(derive_alcohol_risk(1, 8, 5), "b")) # Code 8 -> tagged NA(b)
   expect_true(haven::is_tagged_na(derive_alcohol_risk(1, 9, 5), "b")) # Code 9 -> tagged NA(b)
   expect_true(haven::is_tagged_na(derive_alcohol_risk(1, 1, NA), "b")) # Missing alcdwky -> tagged NA(b)
 
-  # Vector usage
+  # Vector tests
   expect_equal(derive_alcohol_risk(clc_sex = c(1, 2, 1), alc_11 = c(1, 1, 2), alcdwky = c(3, 12, NA)), c(1, 2, 1))
 
   # Database tests
@@ -32,6 +35,7 @@ test_that("derive_alcohol_risk returns correct scores", {
 
 # Test for derive_alcohol_risk_detailed
 test_that("derive_alcohol_risk_detailed returns correct scores", {
+  # General tests
   expect_equal(derive_alcohol_risk_detailed(clc_sex = 1, alcdwky = NA, alc_17 = 2, alc_11 = 2, alc_18 = 2), 1) # Never drinker (male)
   expect_equal(derive_alcohol_risk_detailed(clc_sex = 1, alcdwky = NA, alc_17 = 1, alc_11 = 2, alc_18 = 2), 1) # Former drinker, no heavy (similar risk as never drinking)
   expect_equal(derive_alcohol_risk_detailed(clc_sex = 1, alcdwky = NA, alc_17 = 1, alc_11 = 2, alc_18 = 1), 2) # Former drinker, heavy
@@ -45,16 +49,16 @@ test_that("derive_alcohol_risk_detailed returns correct scores", {
   expect_equal(derive_alcohol_risk_detailed(clc_sex = 2, alcdwky = 25, alc_17 = 1, alc_11 = 1, alc_18 = 2), 4) # Heavy drinker, female
   expect_true(is.na(derive_alcohol_risk_detailed(clc_sex = 1, alcdwky = 996, alc_17 = 1, alc_11 = 1, alc_18 = 1))) # Invalid input
 
-  # StatsCan missing data codes
+  # Edge case tests - StatsCan missing data codes
   expect_true(haven::is_tagged_na(derive_alcohol_risk_detailed(1, 6, 5, 1, 2), "a")) # Code 6 -> tagged NA(a)
   expect_true(haven::is_tagged_na(derive_alcohol_risk_detailed(1, 7, 5, 1, 2), "b")) # Code 7 -> tagged NA(b)
   expect_true(haven::is_tagged_na(derive_alcohol_risk_detailed(1, 1, NA, 8, 2), "b")) # Code 8 -> tagged NA(b)
   expect_true(haven::is_tagged_na(derive_alcohol_risk_detailed(1, 1, 5, 1, 9), "b")) # Code 9 -> tagged NA(b)
 
-  # Mixed missing codes - "not applicable" takes precedence over "missing"
+  # Edge case tests - mixed missing codes ("not applicable" takes precedence)
   expect_true(haven::is_tagged_na(derive_alcohol_risk_detailed(6, 7, 5, 1, 2), "a")) # 6 + 7 -> tagged NA(a)
 
-  # Vector usage
+  # Vector tests
   expect_equal(derive_alcohol_risk_detailed(clc_sex = c(1, 2, 1), alc_11 = c(1, 1, 2), alcdwky = c(3, 12, NA), alc_17 = c(1, 1, 1), alc_18 = c(2, 2, 1)), c(2, 3, 2))
 
   # Database tests

@@ -47,7 +47,7 @@ calculate_waist_height_ratio(hwm_11cm = c(170, 180, 160), hwm_14cx = c(85, 90, 8
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(whtr = calculate_waist_height_ratio(hwm_11cm, hwm_14cx))
 
 }

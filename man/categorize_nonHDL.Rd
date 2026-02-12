@@ -44,7 +44,7 @@ categorize_nonhdl(c(5.0, 3.8, 4.3))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(non_hdl_category = categorize_nonhdl(non_hdl))
 
 }

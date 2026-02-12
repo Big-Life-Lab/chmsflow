@@ -45,7 +45,7 @@ adjust_dbp(bpmdpbpd = c(80, 90, 100))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(dbp_adj_mmhg = adjust_dbp(bpmdpbpd))
 
 }

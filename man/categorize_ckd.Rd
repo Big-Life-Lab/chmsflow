@@ -2,7 +2,7 @@
 % Please edit documentation in R/kidney.R
 \name{categorize_ckd}
 \alias{categorize_ckd}
-\title{Chronic kidney disease (ckd) derived variable}
+\title{Chronic kidney disease (CKD) derived variable}
 \usage{
 categorize_ckd(gfr)
 }
@@ -10,19 +10,19 @@ categorize_ckd(gfr)
 \item{gfr}{\link{numeric} A numeric representing the glomerular filtration rate.}
 }
 \value{
-\link{integer} The ckd stage:
+\link{integer} The CKD stage:
 \itemize{
-\item 1: gfr of 60 or below (indicating ckd)
-\item 2: gfr above 60 (not indicating ckd)
+\item 1: GFR of 60 or below (indicating CKD)
+\item 2: GFR above 60 (not indicating CKD)
 \item \code{haven::tagged_na("a")}: Not applicable
 \item \code{haven::tagged_na("b")}: Missing
 }
 }
 \description{
-This function categorizes individuals' glomerular filtration rate (gfr) into stages of Chronic Kidney Disease (ckd).
+This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
 }
 \details{
-This function applies the Kidney Disease: Improving Global Outcomes (KDIGO) guideline to classify Chronic Kidney Disease (ckd) based on gfr.
+This function applies the Kidney Disease: Improving Global Outcomes (KDIGO) guideline to classify Chronic Kidney Disease (CKD) based on GFR.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
      - Propagates tagged NAs from the input `gfr`.
@@ -30,15 +30,15 @@ This function applies the Kidney Disease: Improving Global Outcomes (KDIGO) guid
 }
 \examples{
 # Scalar usage: Single respondent
-# Example 1: Categorize a gfr of 45
+# Example 1: Categorize a GFR of 45
 categorize_ckd(45)
 # Output: 1
 
-# Example 2: Categorize a gfr of 75
+# Example 2: Categorize a GFR of 75
 categorize_ckd(75)
 # Output: 2
 
-# Example 3: Respondent has a non-response value for gfr.
+# Example 3: Respondent has a non-response value for GFR.
 result <- categorize_ckd(haven::tagged_na("b"))
 result # Shows: NA
 haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
@@ -50,12 +50,12 @@ categorize_ckd(c(45, 75, 60))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(ckd = categorize_ckd(gfr))
 
 }
 \references{
-Kidney Disease: Improving Global Outcomes (KDIGO) ckd Work Group. (2013). KDIGO 2012 clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney international supplements, 3(1), 1-150.
+Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. (2013). KDIGO 2012 clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney international supplements, 3(1), 1-150.
 }
 \seealso{
 \code{\link[=calculate_gfr]{calculate_gfr()}}

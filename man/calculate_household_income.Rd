@@ -54,7 +54,7 @@ calculate_household_income(thi_01 = c(50000, 75000, 90000), dhhdhsz = c(3, 2, 1)
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(adj_hh_income = calculate_household_income(thi_01, dhhdhsz))
 
 }

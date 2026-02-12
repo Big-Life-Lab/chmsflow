@@ -43,7 +43,7 @@ is_any_antihtn_med(c("C07AB02", "C07AA07"), c(4, 2))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(any_antihtn = is_any_antiHTN_med(MEUCATC, NPI_25B))
+# dataset |>
+#   mutate(any_antihtn = is_any_antihtn_med(meucatc, npi_25b))
 
 }

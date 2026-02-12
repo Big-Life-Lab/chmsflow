@@ -37,7 +37,7 @@
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(non_hdl = calculate_nonhdl(lab_chol, lab_hdl))
 #'
 #' @seealso [categorize_nonhdl()]
@@ -90,7 +90,7 @@ calculate_nonhdl <- function(lab_chol, lab_hdl) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(non_hdl_category = categorize_nonhdl(non_hdl))
 #'
 #' @seealso [calculate_nonhdl()]
@@ -147,7 +147,7 @@ categorize_nonhdl <- function(nonhdl) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(whtr = calculate_waist_height_ratio(hwm_11cm, hwm_14cx))
 #'
 #' @export

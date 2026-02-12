@@ -39,6 +39,11 @@
 #' derive_cvd_personal_history(ccc_61 = c(1, 2, 2), ccc_63 = c(2, 1, 2), ccc_81 = c(2, 2, 1))
 #' # Returns: c(1, 1, 1)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(cvd_personal_history = derive_cvd_personal_history(ccc_61, ccc_63, ccc_81))
+#'
 #' @seealso [derive_cvd_family_history()]
 #' @export
 derive_cvd_personal_history <- function(ccc_61, ccc_63, ccc_81) {
@@ -110,7 +115,7 @@ derive_cvd_personal_history <- function(ccc_61, ccc_63, ccc_81) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(cvd_family_history = derive_cvd_family_history(fmh_11, fmh_12, fmh_13, fmh_14))
 #'
 #' @seealso [derive_cvd_personal_history()]

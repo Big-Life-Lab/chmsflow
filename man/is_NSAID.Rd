@@ -43,7 +43,7 @@ is_nsaid(c("M01AB05", "A10BB09"), c(1, 3))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(nsaid = is_NSAID(MEUCATC, NPI_25B))
+# dataset |>
+#   mutate(nsaid = is_nsaid(meucatc, npi_25b))
 
 }

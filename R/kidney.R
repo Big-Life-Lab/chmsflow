@@ -1,6 +1,6 @@
-#' @title Estimated glomerular filtration rate (gfr)
+#' @title Estimated glomerular filtration rate (GFR)
 #'
-#' @description This function calculates the estimated glomerular filtration rate (gfr) according to Finlay's formula,
+#' @description This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
 #'              where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age.
 #'
 #' @param lab_bcre [numeric] Blood creatine (µmol/L). It should be a numeric between 14 and 785.
@@ -8,19 +8,19 @@
 #' @param clc_sex [integer] Sex (Male = 1, Female = 2). It should be an integer of either 1 or 2.
 #' @param clc_age [numeric] Age (years). It should be a numeric between 3 and 79.
 #'
-#' @return [numeric] The calculated gfr. If inputs are invalid or out of bounds, the function returns a tagged NA.
+#' @return [numeric] The calculated GFR. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
 #' @details This function implements the Modification of Diet in Renal Disease (MDRD) equation
 #'          to estimate glomerular filtration rate, a key indicator of kidney function.
 #'
 #'          **Clinical Significance:**
-#'          gfr estimates are essential for:
-#'          - Chronic kidney disease (ckd) classification
+#'          GFR estimates are essential for:
+#'          - Chronic kidney disease (CKD) classification
 #'          - Medication dosing adjustments
 #'          - Cardiovascular risk assessment
 #'
 #'          **Formula Application:**
-#'          Base: gfr = 175 × (creatinine^-1.154) × (age^-0.203)
+#'          Base: GFR = 175 × (creatinine^-1.154) × (age^-0.203)
 #'          Adjustments:
 #'          - Female: × 0.742
 #'          - Black ethnicity: × 1.210
@@ -55,16 +55,16 @@
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(gfr = calculate_gfr(lab_bcre, pgdcgt, clc_sex, clc_age))
 #'
-#' @seealso [categorize_ckd()] for ckd classification based on gfr values
+#' @seealso [categorize_ckd()] for CKD classification based on GFR values
 #' @export
 calculate_gfr <- function(lab_bcre, pgdcgt, clc_sex, clc_age) {
   # Convert serum creatinine from µmol/L to mg/dL
   serumcreat <- lab_bcre / 88.4
 
-  # Calculate gfr using the MDRD equation
+  # Calculate GFR using the MDRD equation
   gfr <- dplyr::case_when(
     # Valid skip
     lab_bcre == 9996 | clc_sex == 6 | pgdcgt == 96 | clc_age == 996 ~ haven::tagged_na("a"),
@@ -87,34 +87,34 @@ calculate_gfr <- function(lab_bcre, pgdcgt, clc_sex, clc_age) {
   return(gfr)
 }
 
-#' @title Chronic kidney disease (ckd) derived variable
+#' @title Chronic kidney disease (CKD) derived variable
 #'
-#' @description This function categorizes individuals' glomerular filtration rate (gfr) into stages of Chronic Kidney Disease (ckd).
+#' @description This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
 #'
 #' @param gfr [numeric] A numeric representing the glomerular filtration rate.
 #'
-#' @return [integer] The ckd stage:
-#'   - 1: gfr of 60 or below (indicating ckd)
-#'   - 2: gfr above 60 (not indicating ckd)
+#' @return [integer] The CKD stage:
+#'   - 1: GFR of 60 or below (indicating CKD)
+#'   - 2: GFR above 60 (not indicating CKD)
 #'   - `haven::tagged_na("a")`: Not applicable
 #'   - `haven::tagged_na("b")`: Missing
 #'
-#' @details This function applies the Kidney Disease: Improving Global Outcomes (KDIGO) guideline to classify Chronic Kidney Disease (ckd) based on gfr.
+#' @details This function applies the Kidney Disease: Improving Global Outcomes (KDIGO) guideline to classify Chronic Kidney Disease (CKD) based on GFR.
 #'
 #'          **Missing Data Codes:**
 #'          - Propagates tagged NAs from the input `gfr`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
-#' # Example 1: Categorize a gfr of 45
+#' # Example 1: Categorize a GFR of 45
 #' categorize_ckd(45)
 #' # Output: 1
 #'
-#' # Example 2: Categorize a gfr of 75
+#' # Example 2: Categorize a GFR of 75
 #' categorize_ckd(75)
 #' # Output: 2
 #'
-#' # Example 3: Respondent has a non-response value for gfr.
+#' # Example 3: Respondent has a non-response value for GFR.
 #' result <- categorize_ckd(haven::tagged_na("b"))
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
@@ -126,21 +126,21 @@ calculate_gfr <- function(lab_bcre, pgdcgt, clc_sex, clc_age) {
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(ckd = categorize_ckd(gfr))
 #'
 #' @seealso [calculate_gfr()]
-#' @references Kidney Disease: Improving Global Outcomes (KDIGO) ckd Work Group. (2013). KDIGO 2012 clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney international supplements, 3(1), 1-150.
+#' @references Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. (2013). KDIGO 2012 clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney international supplements, 3(1), 1-150.
 #' @export
 categorize_ckd <- function(gfr) {
-  # Categorize gfr into ckd stages
+  # Categorize GFR into CKD stages
   ckd <- dplyr::case_when(
     # Valid skip
     haven::is_tagged_na(gfr, "a") ~ haven::tagged_na("a"),
     # Don't know, refusal, not stated
     haven::is_tagged_na(gfr, "b") | gfr < 0 ~ haven::tagged_na("b"),
 
-    # Categorize ckd based on gfr
+    # Categorize CKD based on GFR
     gfr <= 60 ~ 1,
     gfr > 60 ~ 2,
 

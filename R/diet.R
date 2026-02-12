@@ -49,6 +49,12 @@
 #' )
 #' # Returns: c(2.164384, 2.356164)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(total_fv = calculate_fv_daily_cycles1to2(wsdd14y, gfvd17y, gfvd18y,
+#' #     gfvd19y, gfvd20y, gfvd22y, gfvd23y))
+#'
 #' @seealso [calculate_fv_daily_cycles3to6()] for cycles 3-6 fruit and vegetable consumption, [categorize_diet_quality()] for overall diet quality
 #' @export
 calculate_fv_daily_cycles1to2 <- function(wsdd14y, gfvd17y, gfvd18y, gfvd19y, gfvd20y, gfvd22y, gfvd23y) {
@@ -126,6 +132,12 @@ calculate_fv_daily_cycles1to2 <- function(wsdd14y, gfvd17y, gfvd18y, gfvd19y, gf
 #' )
 #' # Returns: c(2.931507, 3.232877)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(total_fv = calculate_fv_daily_cycles3to6(wsdd34y, wsdd35y, gfvd17ay,
+#' #     gfvd17by, gfvd17cy, gfvd17dy, gfvd18y, gfvd19y, gfvd20y, gfvd22y, gfvd23y))
+#'
 #' @seealso [calculate_fv_daily_cycles1to2()] for cycles 1-2 fruit and vegetable consumption, [categorize_diet_quality()] for overall diet quality
 #' @export
 calculate_fv_daily_cycles3to6 <- function(wsdd34y, wsdd35y, gfvd17ay, gfvd17by, gfvd17cy, gfvd17dy, gfvd18y, gfvd19y, gfvd20y, gfvd22y, gfvd23y) {
@@ -180,7 +192,7 @@ calculate_fv_daily_cycles3to6 <- function(wsdd34y, wsdd35y, gfvd17ay, gfvd17by, 
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
-#' # dataset %>%
+#' # dataset |>
 #' #   mutate(diet_quality = categorize_diet_quality(total_fv))
 #'
 #' @seealso [calculate_fv_daily_cycles1to2()], [calculate_fv_daily_cycles3to6()]

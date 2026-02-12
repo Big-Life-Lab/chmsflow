@@ -45,7 +45,7 @@ adjust_sbp(bpmdpbps = c(120, 130, 140))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(sbp_adj_mmhg = adjust_sbp(bpmdpbps))
 
 }

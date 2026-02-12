@@ -43,7 +43,7 @@ is_diuretic(c("C03AA03", "C03BA08"), c(3, 2))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(diuretic = is_diuretic(MEUCATC, NPI_25B))
+# dataset |>
+#   mutate(diuretic = is_diuretic(meucatc, npi_25b))
 
 }

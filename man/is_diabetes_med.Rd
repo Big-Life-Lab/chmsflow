@@ -43,7 +43,7 @@ is_diabetes_med(c("A10BB09", "C09AA02"), c(3, 2))
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
-#   mutate(diabetes_drug = is_diabetes_drug(MEUCATC, NPI_25B))
+# dataset |>
+#   mutate(diabetes_med = is_diabetes_med(meucatc, npi_25b))
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/kidney.R
 \name{calculate_gfr}
 \alias{calculate_gfr}
-\title{Estimated glomerular filtration rate (gfr)}
+\title{Estimated glomerular filtration rate (GFR)}
 \usage{
 calculate_gfr(lab_bcre, pgdcgt, clc_sex, clc_age)
 }
@@ -16,10 +16,10 @@ calculate_gfr(lab_bcre, pgdcgt, clc_sex, clc_age)
 \item{clc_age}{\link{numeric} Age (years). It should be a numeric between 3 and 79.}
 }
 \value{
-\link{numeric} The calculated gfr. If inputs are invalid or out of bounds, the function returns a tagged NA.
+\link{numeric} The calculated GFR. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
-This function calculates the estimated glomerular filtration rate (gfr) according to Finlay's formula,
+This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
 where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age.
 }
 \details{
@@ -27,13 +27,13 @@ This function implements the Modification of Diet in Renal Disease (MDRD) equati
 to estimate glomerular filtration rate, a key indicator of kidney function.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     **Clinical Significance:**
-     gfr estimates are essential for:
-     - Chronic kidney disease (ckd) classification
+     GFR estimates are essential for:
+     - Chronic kidney disease (CKD) classification
      - Medication dosing adjustments
      - Cardiovascular risk assessment
 
      **Formula Application:**
-     Base: gfr = 175 × (creatinine^-1.154) × (age^-0.203)
+     Base: GFR = 175 × (creatinine^-1.154) × (age^-0.203)
      Adjustments:
      - Female: × 0.742
      - Black ethnicity: × 1.210
@@ -69,10 +69,10 @@ calculate_gfr(
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
-# dataset \%>\%
+# dataset |>
 #   mutate(gfr = calculate_gfr(lab_bcre, pgdcgt, clc_sex, clc_age))
 
 }
 \seealso{
-\code{\link[=categorize_ckd]{categorize_ckd()}} for ckd classification based on gfr values
+\code{\link[=categorize_ckd]{categorize_ckd()}} for CKD classification based on GFR values
 }
