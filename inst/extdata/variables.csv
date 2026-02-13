@@ -121,7 +121,7 @@ hwm_13kg,Weight,Weight measured (kilograms),Health status,Weight,Continuous,kg,"
 hwm_14cx,Waist circumference,Waist circumference (centimetres) - NIH protocol,Health status,Weight,Continuous,cm,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle1::hwm_14cm, cycle6::HWM_14CX, [hwm_14cx]"
 hwmdbmi,Body mass index,Body Mass Index - (D),Health status,Weight,Continuous,kg/m2,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle6::HWMDBMI, [hwmdbmi]"
 img_03,Immigration status,"Landed immigrant	",Socioeconomic,Immigration,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle1::sdcfimm, cycle2::sdcfimm, cycle3::imm_03, cycle4::imm_03, cycle6::IMG_03, [img_03]"
-imputed,Household income imputation flag,Household income imputation flag (2 categories - yes/no),Socioeconomic,Income,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle1::incfimp4, cycle2::incfimp4, cycle5::incfhhld, cycle6::THIFIMP4, [thifimp4]"
+income_impflag,Household income imputation flag,Household income imputation flag (2 categories - yes/no),Socioeconomic,Income,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle1::incfimp4, cycle2::incfimp4, cycle5::incfhhld, cycle6::THIFIMP4, [thifimp4]"
 income_quintile,Household income quntile,Adjusted household income quintile,Socioeconomic,Income,Categorical,N/A,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6",DerivedVar::[adj_hh_income]
 lab_alkp,Alkaline phosphatase,Alkaline phosphatase (U/L),Health behaviour,Alcohol,Continuous,U/L,"cycle1, cycle2, cycle3, cycle4, cycle5, cycle6","cycle6::LAB_ALKP, [lab_alkp]"
 lab_alt,Alanine aminotransferase,Alanine aminotransferase (ALT) (U/L),Health behaviour,Alcohol,Continuous,U/L,"cycle1, cycle2, cycle4, cycle6","cycle6::LAB_ALT, [lab_alt]"
