@@ -192,7 +192,7 @@ cycle3_htn_data <- recode_after_meds(
   c(
     # Blood pressure (raw + adjusted)
     "bpmdpbps", "bpmdpbpd", "sbp_adj_mmhg", "dbp_adj_mmhg",
-    # Medication inputs (pre-computed in cycle3_with_meds)
+    # Medication inputs (merged in Step 1)
     "any_htn_med", "ccc_32",
     # Diabetes chain (input to htn functions)
     "lab_hba1", "diab_a1c", "ccc_51", "diab_med", "diab_status",
@@ -242,7 +242,7 @@ cycle1_htn_data <- recode_after_meds(
   c(
     # Blood pressure (raw + adjusted)
     "bpmdpbps", "bpmdpbpd", "sbp_adj_mmhg", "dbp_adj_mmhg",
-    # Medication inputs (pre-computed in cycle1_with_meds)
+    # Medication inputs (merged in Step 1)
     "any_htn_med", "ccc_32",
     # Diabetes chain (input to htn functions)
     "lab_hba1", "diab_a1c", "ccc_51", "diab_med", "diab_status",
