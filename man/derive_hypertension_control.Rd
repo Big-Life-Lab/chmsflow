@@ -7,7 +7,7 @@
 derive_hypertension_control(
   bpmdpbps,
   bpmdpbpd,
-  any_htn_med2,
+  any_htn_med,
   ccc_32 = 2,
   cvd_status = 2,
   diab_status = 2,
@@ -19,7 +19,7 @@ derive_hypertension_control(
 
 \item{bpmdpbpd}{\link{integer} An integer representing the diastolic blood pressure measurement of the respondent.}
 
-\item{any_htn_med2}{\link{integer} An integer indicating whether the respondent is on medication for hypertension.
+\item{any_htn_med}{\link{integer} An integer indicating whether the respondent is on medication for hypertension.
 \itemize{
 \item 1: Yes
 \item 0: No
@@ -77,7 +77,7 @@ This function assesses whether a respondent's hypertension is controlled:
      - `bpmdpbps`, `bpmdpbpd`:
        - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
        - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
-     - `any_htn_med2`:
+     - `any_htn_med`:
        - Tagged NA "a": Valid skip.
        - Tagged NA "b": Don't know, refusal, or not stated.
      - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
@@ -88,15 +88,15 @@ This function assesses whether a respondent's hypertension is controlled:
 \examples{
 # Scalar usage: Single respondent
 # Example 1: Respondent has systolic BP = 150, diastolic BP = 95, and on medication.
-derive_hypertension_control(bpmdpbps = 150, bpmdpbpd = 95, any_htn_med2 = 1)
+derive_hypertension_control(bpmdpbps = 150, bpmdpbpd = 95, any_htn_med = 1)
 # Output: 2 (Hypertension not controlled due to high SBP and SBP despite medication usage).
 
 # Example 2: Respondent has systolic BP = 120, diastolic BP = 80, and on medication.
-derive_hypertension_control(bpmdpbps = 120, bpmdpbpd = 80, any_htn_med2 = 1)
+derive_hypertension_control(bpmdpbps = 120, bpmdpbpd = 80, any_htn_med = 1)
 # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 
 # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-result <- derive_hypertension_control(bpmdpbps = 996, bpmdpbpd = 996, any_htn_med2 = 0)
+result <- derive_hypertension_control(bpmdpbps = 996, bpmdpbpd = 996, any_htn_med = 0)
 result # Shows: NA
 haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
@@ -104,14 +104,14 @@ format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 # Multiple respondents
 derive_hypertension_control(
   bpmdpbps = c(150, 120, 135), bpmdpbpd = c(95, 80, 85),
-  any_htn_med2 = c(1, 1, 1), diab_status = c(2, 2, 1)
+  any_htn_med = c(1, 1, 1), diab_status = c(2, 2, 1)
 )
 # Returns: c(2, 1, 2)
 
 # Database usage: Applied to survey datasets
 # library(dplyr)
 # dataset |>
-#   mutate(controlled_htn = derive_hypertension_control(bpmdpbps, bpmdpbpd, any_htn_med2))
+#   mutate(controlled_htn = derive_hypertension_control(bpmdpbps, bpmdpbpd, any_htn_med))
 
 }
 \seealso{
