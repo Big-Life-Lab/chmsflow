@@ -581,6 +581,7 @@ test_that("recode_after_meds passes through derived medication variables", {
   mock_cycle <- data.frame(clinicid = c(1, 2), any_htn_med = c(1, 0))
   result <- recode_after_meds(mock_cycle, "any_htn_med", database_name = "cycle3")
 
+  expect_true("clinicid" %in% names(result))
   expect_true("any_htn_med" %in% names(result))
   expect_equal(as.numeric(as.character(result$any_htn_med)), c(1, 0))
 })

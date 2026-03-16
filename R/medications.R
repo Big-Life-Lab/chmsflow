@@ -2090,10 +2090,7 @@ recode_meds_cycles3to6 <- function(data, meds_data, variables, by = "clinicid",
 #' @return [data.frame] Recoded data frame returned by `recodeflow::rec_with_table()`.
 #'
 #' @examples
-#' # library(dplyr)
-#' # cycle3 <- cycle3 |>
-#' #   left_join(recode_meds_cycles3to6(cycle3_meds, c("any_htn_med", "diab_med")),
-#' #             by = "clinicid")
+#' # cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
 #' # cycle3_diab <- recode_after_meds(
 #' #   cycle3,
 #' #   c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
@@ -2106,10 +2103,11 @@ recode_after_meds <- function(data, variables, by = "clinicid",
                               variable_details = chmsflow::variable_details) {
   if (is.null(database_name)) database_name <- deparse(substitute(data))
   variable_details <- variable_details[!grepl("_meds", variable_details$databaseStart), ]
-  recodeflow::rec_with_table(
+  recoded <- recodeflow::rec_with_table(
     data,
-    c(by, variables),
+    variables,
     database_name = database_name,
     variable_details = variable_details
   )
+  dplyr::bind_cols(data[, by, drop = FALSE], recoded)
 }

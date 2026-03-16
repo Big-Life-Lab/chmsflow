@@ -41,119 +41,16 @@ Medication data is structured differently across CHMS cycles:
 
 ## 2. When to use medication recoding
 
-If your analysis requires medication variables, ***always perform medication recoding first***, before recoding any other variables.
+If your analysis requires medication variables, ***always perform medication recoding first***, before recoding any other variables. Two downstream health outcome variables depend on medication status:
 
-Two downstream health outcome variables depend on medication status:
+- **Hypertension** — `any_htn_med` must be merged into the main cycle dataset before deriving hypertension outcomes.
+- **Diabetes** — `diab_med` must be merged before deriving diabetes outcomes.
 
-- **Hypertension** - `any_htn_med` is a required input for `derive_hypertension()`, `derive_hypertension_adj()`, `derive_hypertension_control()`, and `derive_hypertension_control_adj()`.
-- **Diabetes** - `diab_med` is a required input for `derive_diabetes_status()`.
+## 3. Workflow
 
-Use `recode_meds_cycles1to2()` or `recode_meds_cycles3to6()` to derive medication variables and merge them into the main cycle dataset before recoding health outcomes. This avoids passing long lists of raw medication columns into downstream `rec_with_table()` calls.
+The workflow is the same for all cycles: recode medication variables and merge into the main cycle dataset using `recode_meds_cycles1to2()` or `recode_meds_cycles3to6()`, then derive health outcomes using `recode_after_meds()`. Use `recode_after_meds()` instead of `rec_with_table()` — it automatically excludes medication-specific rows from `variable_details` so pre-computed medication columns are passed through rather than re-derived.
 
-## 3. Quick start
-
-A minimal example for cycles 3-6: recode ACE inhibitor status, aggregate per respondent, and merge with main cycle data.
-
-```{r, warning=FALSE}
-# Recode ace_med from multi-row medication data
-cycle3_ace_data <- rec_with_table(
-  cycle3_meds,
-  c("clinicid", "meucatc", "npi_25b", "ace_med"),
-  variable_details = variable_details
-)
-
-# Aggregate to one row per respondent (take max: 1 if any row matched)
-cycle3_ace_data <- cycle3_ace_data |>
-  group_by(clinicid) |>
-  summarize(ace_med = max(as.numeric(as.character(ace_med))))
-
-# Merge with main cycle data
-cycle3 <- merge(cycle3, cycle3_ace_data, by = "clinicid")
-head(select(cycle3, clinicid, ace_med))
-```
-
-## 4. Detailed workflow
-
-### 4.1 Recode medication variables for individual cycles
-
-The medication data object must always be named `cyclex_meds` for the recoding scripts to function correctly. All other data for the same cycle should be stored separately under the name `cyclex`, as specified in `recoding-variables.qmd`.
-
-```{r, warning=FALSE}
-# Recoding basic variables from cycles 2 and 3
-cycle2_medication_data <- rec_with_table(
-  cycle2_meds,
-  c("clinicid", "atc_101a", "mhr_101b"),
-  variable_details = variable_details
-)
-head(cycle2_medication_data)
-
-cycle3_medication_data <- rec_with_table(
-  cycle3_meds,
-  c("clinicid", "meucatc", "npi_25b"),
-  variable_details = variable_details
-)
-head(cycle3_medication_data)
-```
-
-#### Cycles 1-2 (flat format)
-
-For cycles 1-2, all raw ATC code and time-last-taken columns must be listed explicitly in the `rec_with_table()` call:
-
-```{r, warning=FALSE}
-# Recoding derived variable ace_med for cycle 2
-cycle2_ace_medication_data <- rec_with_table(
-  cycle2_meds,
-  c(
-    "clinicid",
-    "atc_101a", "atc_102a", "atc_103a", "atc_104a", "atc_105a",
-    "atc_106a", "atc_107a", "atc_108a", "atc_109a", "atc_110a",
-    "atc_111a", "atc_112a", "atc_113a", "atc_114a", "atc_115a",
-    "atc_201a", "atc_202a", "atc_203a", "atc_204a", "atc_205a",
-    "atc_206a", "atc_207a", "atc_208a", "atc_209a", "atc_210a",
-    "atc_211a", "atc_212a", "atc_213a", "atc_214a", "atc_215a",
-    "atc_131a", "atc_132a", "atc_133a", "atc_134a", "atc_135a",
-    "atc_231a", "atc_232a", "atc_233a", "atc_234a", "atc_235a",
-    "mhr_101b", "mhr_102b", "mhr_103b", "mhr_104b", "mhr_105b",
-    "mhr_106b", "mhr_107b", "mhr_108b", "mhr_109b", "mhr_110b",
-    "mhr_111b", "mhr_112b", "mhr_113b", "mhr_114b", "mhr_115b",
-    "mhr_201b", "mhr_202b", "mhr_203b", "mhr_204b", "mhr_205b",
-    "mhr_206b", "mhr_207b", "mhr_208b", "mhr_209b", "mhr_210b",
-    "mhr_211b", "mhr_212b", "mhr_213b", "mhr_214b", "mhr_215b",
-    "mhr_131b", "mhr_132b", "mhr_133b", "mhr_134b", "mhr_135b",
-    "mhr_231b", "mhr_232b", "mhr_233b", "mhr_234b", "mhr_235b",
-    "ace_med"
-  ),
-  variable_details = variable_details
-)
-head(select(cycle2_ace_medication_data, clinicid, ace_med))
-```
-
-#### Cycles 3-6 (multi-row format)
-
-For cycles 3-6, only `meucatc` and `npi_25b` are needed:
-
-```{r, warning=FALSE}
-# Recoding derived variable ace_med for cycle 3
-cycle3_ace_medication_data <- rec_with_table(
-  cycle3_meds,
-  c("clinicid", "meucatc", "npi_25b", "ace_med"),
-  variable_details = variable_details
-)
-head(cycle3_ace_medication_data)
-```
-
-## 5. Integration with health outcomes
-
-Two downstream variables depend on medication status:
-
-- **Hypertension** — `any_htn_med` is required for `derive_hypertension()` and its variants.
-- **Diabetes** — `diab_med` is required for `derive_diabetes_status()`.
-
-The workflow is the same for all cycles: recode medication variables and merge into the main cycle dataset, then derive health outcomes.
-
-Use `recode_after_meds()` instead of `rec_with_table()` when deriving variables that depend on pre-computed medication inputs. It automatically excludes medication-specific rows from `variable_details` so the pre-computed columns are passed through rather than re-derived.
-
-### 5.1 Cycles 1-2
+### 3.1 Cycles 1-2
 
 Cycles 1-2 medication data uses uppercase column names (`CLINICID`, `ATC_101A`, etc.). `recode_meds_cycles1to2()` normalizes these internally.
 
@@ -196,7 +93,7 @@ cycle1_htn_data <- recode_after_meds(
 head(select(cycle1_htn_data, clinicid, htn_status, htn_adj_status))
 ```
 
-### 5.2 Cycles 3-6
+### 3.2 Cycles 3-6
 
 **Step 1** — Recode medication variables and merge with main cycle data. Requires: `cycle3`, `cycle3_meds`.
 
@@ -237,6 +134,38 @@ cycle3_htn_data <- recode_after_meds(
   )
 )
 head(select(cycle3_htn_data, clinicid, htn_status, htn_adj_status))
+```
+
+## 4. Advanced: using individual classification functions
+
+The `is_*` functions underlie the wrapper functions and are available directly for custom workflows — for example, deriving a single drug class without the full pipeline, or integrating classification logic into your own aggregation steps.
+
+Each function accepts an ATC code and a time-last-taken value and returns `1`, `0`, or a `tagged_na()` code:
+
+```{r, warning=FALSE}
+# Single medication classification
+is_beta_blocker("C07AA05", 1) # returns 1
+is_ace_inhibitor("C09AA02", 1) # returns 1
+is_diabetes_med("A10BA02", 1) # returns 1
+```
+
+### Cycle format differences
+
+**Cycles 1-2** — one row per respondent with up to 80 `atc_*/mhr_*` column pairs. The `is_*_med_cycles1to2()` variants accept named arguments for each slot:
+
+```{r, warning=FALSE}
+# Classification using cycles 1-2 wide-format columns
+is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 1) # returns 1
+is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 6) # returns 0 (not taken recently)
+```
+
+**Cycles 3-6** — one row per medication per respondent with two columns: `meucatc` (ATC code) and `npi_25b` (time last taken). Classify per row, then aggregate across rows per respondent:
+
+```{r, warning=FALSE}
+cycle3_meds |>
+  mutate(ace_med = is_ace_inhibitor(meucatc, npi_25b)) |>
+  group_by(clinicid) |>
+  summarize(ace_med = max(as.numeric(as.character(ace_med))))
 ```
 
 ## Appendix: Installation

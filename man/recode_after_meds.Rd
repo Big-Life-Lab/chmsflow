@@ -39,10 +39,7 @@ Use this instead of \code{rec_with_table()} when deriving variables whose inputs
 include derived medication variables.
 }
 \examples{
-# library(dplyr)
-# cycle3 <- cycle3 |>
-#   left_join(recode_meds_cycles3to6(cycle3_meds, c("any_htn_med", "diab_med")),
-#             by = "clinicid")
+# cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
 # cycle3_diab <- recode_after_meds(
 #   cycle3,
 #   c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
