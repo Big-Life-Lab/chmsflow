@@ -6,41 +6,43 @@
 \usage{
 recode_meds_cycles3to6(
   data,
+  meds_data,
   variables,
   by = "clinicid",
-  database_name = NULL,
+  meds_database_name = NULL,
   variable_details = chmsflow::variable_details
 )
 }
 \arguments{
-\item{data}{\link{data.frame} Long-format medication data (cycles 3-6) with columns
+\item{data}{\link{data.frame} Main cycle data to merge medication variables into.}
+
+\item{meds_data}{\link{data.frame} Long-format medication data (cycles 3-6) with columns
 \code{clinicid}, \code{meucatc}, and \code{npi_25b}.}
 
 \item{variables}{\link{character} Medication variable names to derive (e.g., \code{"any_htn_med"}).}
 
 \item{by}{\link{character} Respondent identifier column. Default is \code{"clinicid"}.}
 
-\item{database_name}{\link{character} Name of the database in \code{variable_details}. Defaults to
-the name of the \code{data} argument. Override when passing a transformed object (e.g., \code{head()}).}
+\item{meds_database_name}{\link{character} Name of the meds database in \code{variable_details}.
+Defaults to the name of the \code{meds_data} argument. Override when passing a transformed
+object (e.g., \code{head()}).}
 
 \item{variable_details}{\link{data.frame} Variable details table. Defaults to \code{chmsflow::variable_details}.}
 }
 \value{
-\link{data.frame} One row per respondent with derived medication variables as numeric,
-ready to merge with main cycle data.
+\link{data.frame} \code{data} with derived medication variables merged in as numeric columns.
 }
 \description{
 Recodes medication variables from cycles 3-6 long-format data (one row per
-medication per respondent) and aggregates to one row per respondent. Wraps
-\code{recodeflow::rec_with_table()} and \code{\link[=aggregate_meds_by_person]{aggregate_meds_by_person()}}.
+medication per respondent), aggregates to one row per respondent, and merges into the
+main cycle dataset. Wraps \code{recodeflow::rec_with_table()} and \code{\link[=aggregate_meds_by_person]{aggregate_meds_by_person()}}.
 }
 \examples{
-# library(dplyr)
-# cycle3_meds_recoded <- recode_meds_cycles3to6(
+# cycle3 <- recode_meds_cycles3to6(
+#   cycle3,
 #   cycle3_meds,
 #   c("any_htn_med", "diab_med")
 # )
-# cycle3 <- left_join(cycle3, cycle3_meds_recoded, by = "clinicid")
 
 }
 \seealso{

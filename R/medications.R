@@ -1942,6 +1942,56 @@ is_diab_med_cycles1to2 <- function(
   return(med_vector)
 }
 
+#' @title Recode medication variables for cycles 1-2 (wide format)
+#'
+#' @description Recodes medication variables from cycles 1-2 wide-format data (one row per
+#' respondent, up to 80 ATC/MHR columns), and merges into the main cycle dataset. Wraps
+#' `recodeflow::rec_with_table()` and converts factor outputs to numeric.
+#'
+#' @param data [data.frame] Main cycle data to merge medication variables into.
+#' @param meds_data [data.frame] Wide-format medication data (cycles 1-2). Must contain
+#'   `clinicid`, `atc_101a` through `atc_235a`, and `mhr_101b` through `mhr_235b` as columns.
+#' @param variables [character] Medication variable names to derive (e.g., `"any_htn_med"`).
+#' @param by [character] Respondent identifier column. Default is `"clinicid"`.
+#' @param meds_database_name [character] Name of the meds database in `variable_details`.
+#'   Defaults to the name of the `meds_data` argument. Override when passing a transformed
+#'   object (e.g., `head()`).
+#' @param variable_details [data.frame] Variable details table. Defaults to `chmsflow::variable_details`.
+#'
+#' @return [data.frame] `data` with derived medication variables merged in as numeric columns.
+#'
+#' @examples
+#' # cycle1 <- recode_meds_cycles1to2(
+#' #   cycle1,
+#' #   cycle1_meds,
+#' #   c("any_htn_med", "diab_med")
+#' # )
+#'
+#' @seealso [recode_meds_cycles3to6()], [aggregate_meds_by_person()]
+#' @export
+recode_meds_cycles1to2 <- function(data, meds_data, variables, by = "clinicid",
+                                   meds_database_name = NULL,
+                                   variable_details = chmsflow::variable_details) {
+  if (is.null(meds_database_name)) meds_database_name <- deparse(substitute(meds_data))
+  names(meds_data) <- tolower(names(meds_data))
+  atc_mhr_cols <- c(
+    paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a"),
+    paste0("mhr_", c(101:115, 131:135, 201:215, 231:235), "b")
+  )
+  meds_recoded <- recodeflow::rec_with_table(
+    meds_data,
+    c(by, atc_mhr_cols, variables),
+    database_name = meds_database_name,
+    variable_details = variable_details
+  ) |>
+    dplyr::select(dplyr::all_of(c(by, variables))) |>
+    dplyr::mutate(dplyr::across(
+      dplyr::all_of(variables),
+      ~ as.numeric(as.character(.x))
+    ))
+  dplyr::left_join(data, meds_recoded, by = by)
+}
+
 #' @title Aggregate medication variables to one row per person
 #'
 #' @description Collapses long-format medication data (cycles 3-6) to one row per respondent
@@ -1980,90 +2030,42 @@ aggregate_meds_by_person <- function(data, variables, by = "clinicid") {
 #' @title Recode medication variables for cycles 3-6 (long format)
 #'
 #' @description Recodes medication variables from cycles 3-6 long-format data (one row per
-#' medication per respondent) and aggregates to one row per respondent. Wraps
-#' `recodeflow::rec_with_table()` and [aggregate_meds_by_person()].
+#' medication per respondent), aggregates to one row per respondent, and merges into the
+#' main cycle dataset. Wraps `recodeflow::rec_with_table()` and [aggregate_meds_by_person()].
 #'
-#' @param data [data.frame] Long-format medication data (cycles 3-6) with columns
+#' @param data [data.frame] Main cycle data to merge medication variables into.
+#' @param meds_data [data.frame] Long-format medication data (cycles 3-6) with columns
 #'   `clinicid`, `meucatc`, and `npi_25b`.
 #' @param variables [character] Medication variable names to derive (e.g., `"any_htn_med"`).
 #' @param by [character] Respondent identifier column. Default is `"clinicid"`.
-#' @param database_name [character] Name of the database in `variable_details`. Defaults to
-#'   the name of the `data` argument. Override when passing a transformed object (e.g., `head()`).
+#' @param meds_database_name [character] Name of the meds database in `variable_details`.
+#'   Defaults to the name of the `meds_data` argument. Override when passing a transformed
+#'   object (e.g., `head()`).
 #' @param variable_details [data.frame] Variable details table. Defaults to `chmsflow::variable_details`.
 #'
-#' @return [data.frame] One row per respondent with derived medication variables as numeric,
-#'   ready to merge with main cycle data.
+#' @return [data.frame] `data` with derived medication variables merged in as numeric columns.
 #'
 #' @examples
-#' # library(dplyr)
-#' # cycle3_meds_recoded <- recode_meds_cycles3to6(
+#' # cycle3 <- recode_meds_cycles3to6(
+#' #   cycle3,
 #' #   cycle3_meds,
 #' #   c("any_htn_med", "diab_med")
 #' # )
-#' # cycle3 <- left_join(cycle3, cycle3_meds_recoded, by = "clinicid")
 #'
 #' @seealso [recode_meds_cycles1to2()], [aggregate_meds_by_person()]
 #' @export
-recode_meds_cycles3to6 <- function(data, variables, by = "clinicid",
-                                   database_name = NULL,
+recode_meds_cycles3to6 <- function(data, meds_data, variables, by = "clinicid",
+                                   meds_database_name = NULL,
                                    variable_details = chmsflow::variable_details) {
-  if (is.null(database_name)) database_name <- deparse(substitute(data))
-  recodeflow::rec_with_table(
-    data,
+  if (is.null(meds_database_name)) meds_database_name <- deparse(substitute(meds_data))
+  meds_recoded <- recodeflow::rec_with_table(
+    meds_data,
     c(by, "meucatc", "npi_25b", variables),
-    database_name = database_name,
+    database_name = meds_database_name,
     variable_details = variable_details
   ) |>
     aggregate_meds_by_person(variables = variables, by = by)
-}
-
-#' @title Recode medication variables for cycles 1-2 (wide format)
-#'
-#' @description Recodes medication variables from cycles 1-2 wide-format data (one row per
-#' respondent, up to 80 ATC/MHR columns). Wraps `recodeflow::rec_with_table()` and converts
-#' factor outputs to numeric, returning only the respondent identifier and requested variables.
-#'
-#' @param data [data.frame] Wide-format medication data (cycles 1-2). Must contain
-#'   `clinicid`, `atc_101a` through `atc_235a`, and `mhr_101b` through `mhr_235b` as columns.
-#' @param variables [character] Medication variable names to derive (e.g., `"any_htn_med"`).
-#' @param by [character] Respondent identifier column. Default is `"clinicid"`.
-#' @param database_name [character] Name of the database in `variable_details`. Defaults to
-#'   the name of the `data` argument. Override when passing a transformed object (e.g., `head()`).
-#' @param variable_details [data.frame] Variable details table. Defaults to `chmsflow::variable_details`.
-#'
-#' @return [data.frame] One row per respondent with derived medication variables as numeric,
-#'   ready to merge with main cycle data.
-#'
-#' @examples
-#' # library(dplyr)
-#' # cycle1_meds_recoded <- recode_meds_cycles1to2(
-#' #   cycle1_meds,
-#' #   c("any_htn_med", "diab_med")
-#' # )
-#' # cycle1 <- left_join(cycle1, cycle1_meds_recoded, by = "clinicid")
-#'
-#' @seealso [recode_meds_cycles3to6()], [aggregate_meds_by_person()]
-#' @export
-recode_meds_cycles1to2 <- function(data, variables, by = "clinicid",
-                                   database_name = NULL,
-                                   variable_details = chmsflow::variable_details) {
-  if (is.null(database_name)) database_name <- deparse(substitute(data))
-  names(data) <- tolower(names(data))
-  atc_mhr_cols <- c(
-    paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a"),
-    paste0("mhr_", c(101:115, 131:135, 201:215, 231:235), "b")
-  )
-  recodeflow::rec_with_table(
-    data,
-    c(by, atc_mhr_cols, variables),
-    database_name = database_name,
-    variable_details = variable_details
-  ) |>
-    dplyr::select(dplyr::all_of(c(by, variables))) |>
-    dplyr::mutate(dplyr::across(
-      dplyr::all_of(variables),
-      ~ as.numeric(as.character(.x))
-    ))
+  dplyr::left_join(data, meds_recoded, by = by)
 }
 
 #' @title Recode variables that depend on derived medication variable inputs

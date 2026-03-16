@@ -11,6 +11,8 @@ vignette: >
 
 ```{r results='hide', message=FALSE, warning=FALSE, eval=TRUE}
 library(chmsflow)
+library(recodeflow)
+library(dplyr)
 ```
 
 ## 1. Introduction
@@ -53,9 +55,6 @@ Use `recode_meds_cycles1to2()` or `recode_meds_cycles3to6()` to derive medicatio
 A minimal example for cycles 3-6: recode ACE inhibitor status, aggregate per respondent, and merge with main cycle data.
 
 ```{r, warning=FALSE}
-library(recodeflow)
-library(dplyr)
-
 # Recode ace_med from multi-row medication data
 cycle3_ace_data <- rec_with_table(
   cycle3_meds,
@@ -80,9 +79,6 @@ head(select(cycle3, clinicid, ace_med))
 The medication data object must always be named `cyclex_meds` for the recoding scripts to function correctly. All other data for the same cycle should be stored separately under the name `cyclex`, as specified in `recoding-variables.qmd`.
 
 ```{r, warning=FALSE}
-library(recodeflow)
-library(dplyr)
-
 # Recoding basic variables from cycles 2 and 3
 cycle2_medication_data <- rec_with_table(
   cycle2_meds,
@@ -157,19 +153,55 @@ The workflow is the same for all cycles: recode medication variables and merge i
 
 Use `recode_after_meds()` instead of `rec_with_table()` when deriving variables that depend on pre-computed medication inputs. It automatically excludes medication-specific rows from `variable_details` so the pre-computed columns are passed through rather than re-derived.
 
-### 5.1 Cycles 3-6
+### 5.1 Cycles 1-2
+
+Cycles 1-2 medication data uses uppercase column names (`CLINICID`, `ATC_101A`, etc.). `recode_meds_cycles1to2()` normalizes these internally.
+
+**Step 1** — Recode medication variables and merge with main cycle data. Requires: `cycle1`, `cycle1_meds`.
+
+```{r, warning=FALSE}
+cycle1 <- recode_meds_cycles1to2(cycle1, cycle1_meds, c("any_htn_med", "diab_med"))
+```
+
+**Step 2** — Derive diabetes status. Requires: `cycle1` from Step 1.
+
+```{r, warning=FALSE}
+cycle1_diab_data <- recode_after_meds(
+  cycle1,
+  c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
+)
+head(select(cycle1_diab_data, clinicid, diab_status))
+```
+
+**Step 3** — Derive hypertension status. Requires: `cycle1` from Step 1.
+
+```{r, warning=FALSE}
+cycle1_htn_data <- recode_after_meds(
+  cycle1,
+  c(
+    # Blood pressure (raw + adjusted)
+    "bpmdpbps", "bpmdpbpd", "sbp_adj_mmhg", "dbp_adj_mmhg",
+    # Medication inputs (merged in Step 1)
+    "any_htn_med", "ccc_32",
+    # Diabetes chain (input to htn functions)
+    "lab_hba1", "diab_a1c", "ccc_51", "diab_med", "diab_status",
+    # CVD chain
+    "ccc_61", "ccc_63", "ccc_81", "cvd_status",
+    # CKD chain
+    "lab_bcre", "pgdcgt", "clc_sex", "clc_age", "gfr_ml_min", "ckd_status",
+    # Hypertension outcomes
+    "htn_status", "htn_adj_status", "htn_control_status", "htn_control_adj_status"
+  )
+)
+head(select(cycle1_htn_data, clinicid, htn_status, htn_adj_status))
+```
+
+### 5.2 Cycles 3-6
 
 **Step 1** — Recode medication variables and merge with main cycle data. Requires: `cycle3`, `cycle3_meds`.
 
 ```{r, warning=FALSE}
-library(recodeflow)
-library(dplyr)
-
-cycle3 <- cycle3 |>
-  left_join(
-    recode_meds_cycles3to6(cycle3_meds, c("any_htn_med", "diab_med")),
-    by = "clinicid"
-  )
+cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
 ```
 
 **Step 2** — Derive diabetes status. Requires: `cycle3` from Step 1.
@@ -205,56 +237,6 @@ cycle3_htn_data <- recode_after_meds(
   )
 )
 head(select(cycle3_htn_data, clinicid, htn_status, htn_adj_status))
-```
-
-### 5.2 Cycles 1-2
-
-Cycles 1-2 medication data uses uppercase column names (`CLINICID`, `ATC_101A`, etc.). `recode_meds_cycles1to2()` normalizes these internally.
-
-**Step 1** — Recode medication variables and merge with main cycle data. Requires: `cycle1`, `cycle1_meds`.
-
-```{r, warning=FALSE}
-library(recodeflow)
-library(dplyr)
-
-cycle1 <- cycle1 |>
-  left_join(
-    recode_meds_cycles1to2(cycle1_meds, c("any_htn_med", "diab_med")),
-    by = "clinicid"
-  )
-```
-
-**Step 2** — Derive diabetes status. Requires: `cycle1` from Step 1.
-
-```{r, warning=FALSE}
-cycle1_diab_data <- recode_after_meds(
-  cycle1,
-  c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
-)
-head(select(cycle1_diab_data, clinicid, diab_status))
-```
-
-**Step 3** — Derive hypertension status. Requires: `cycle1` from Step 1.
-
-```{r, warning=FALSE}
-cycle1_htn_data <- recode_after_meds(
-  cycle1,
-  c(
-    # Blood pressure (raw + adjusted)
-    "bpmdpbps", "bpmdpbpd", "sbp_adj_mmhg", "dbp_adj_mmhg",
-    # Medication inputs (merged in Step 1)
-    "any_htn_med", "ccc_32",
-    # Diabetes chain (input to htn functions)
-    "lab_hba1", "diab_a1c", "ccc_51", "diab_med", "diab_status",
-    # CVD chain
-    "ccc_61", "ccc_63", "ccc_81", "cvd_status",
-    # CKD chain
-    "lab_bcre", "pgdcgt", "clc_sex", "clc_age", "gfr_ml_min", "ckd_status",
-    # Hypertension outcomes
-    "htn_status", "htn_adj_status", "htn_control_status", "htn_control_adj_status"
-  )
-)
-head(select(cycle1_htn_data, clinicid, htn_status, htn_adj_status))
 ```
 
 ## Appendix: Installation

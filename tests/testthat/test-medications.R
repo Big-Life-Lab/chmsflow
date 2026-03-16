@@ -485,6 +485,38 @@ test_that("is_diab_med_cycles1to2 returns correct values", {
   )
 })
 
+# Test for recode_meds_cycles1to2
+test_that("recode_meds_cycles1to2 merges numeric med variables into main cycle data", {
+  # General tests - wide-format meds data (one row per person, 80 ATC/MHR columns)
+  mock_cycle1 <- data.frame(clinicid = c(1, 2), some_var = c(10, 20))
+  atc_cols <- paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a")
+  mhr_cols <- paste0("mhr_", c(101:115, 131:135, 201:215, 231:235), "b")
+  mock_meds <- cbind(
+    data.frame(clinicid = c(1, 2)),
+    setNames(data.frame(matrix(NA_character_, nrow = 2, ncol = length(atc_cols))), atc_cols),
+    setNames(data.frame(matrix(NA_real_, nrow = 2, ncol = length(mhr_cols))), mhr_cols)
+  )
+  # Person 1 takes a beta blocker; person 2 has no medications
+  mock_meds$atc_101a[1] <- "C07AA05"
+  mock_meds$mhr_101b[1] <- 1
+
+  result <- recode_meds_cycles1to2(
+    mock_cycle1,
+    mock_meds,
+    "any_htn_med",
+    meds_database_name = "cycle1_meds"
+  )
+
+  # Output structure - same rows as main cycle data with med column added
+  expect_equal(nrow(result), 2)
+  expect_true("some_var" %in% names(result))
+  expect_true(is.numeric(result$any_htn_med))
+
+  # General tests - person 1 has antihypertensive; person 2 does not
+  expect_equal(result$any_htn_med[result$clinicid == 1], 1)
+  expect_equal(result$any_htn_med[result$clinicid == 2], 0)
+})
+
 # Test for aggregate_meds_by_person
 test_that("aggregate_meds_by_person returns one row per person with max value", {
   # General tests - multiple rows per person, max aggregation
@@ -513,57 +545,34 @@ test_that("aggregate_meds_by_person returns tagged_na('b') when all values are N
 })
 
 # Test for recode_meds_cycles3to6
-test_that("recode_meds_cycles3to6 returns one numeric row per person", {
+test_that("recode_meds_cycles3to6 merges numeric med variables into main cycle data", {
   # General tests - long-format meds data (one row per medication per person)
+  mock_cycle3 <- data.frame(clinicid = c(1, 2), some_var = c(10, 20))
   mock_meds <- data.frame(
     clinicid = c(1, 1, 2),
     meucatc  = c("C07AA05", "A10BA02", "M01AE01"),
     npi_25b  = c(1, 1, 1)
   )
   result <- recode_meds_cycles3to6(
+    mock_cycle3,
     mock_meds,
     c("any_htn_med", "diab_med"),
-    database_name = "cycle3_meds"
+    meds_database_name = "cycle3_meds"
   )
 
-  # Output structure - one row per person, numeric columns
+  # Output structure - same rows as main cycle data with med columns added
   expect_equal(nrow(result), 2)
+  expect_true("some_var" %in% names(result))
   expect_true(is.numeric(result$any_htn_med))
   expect_true(is.numeric(result$diab_med))
+
   # General tests - person 1 has beta blocker (any_htn_med=1) and diabetes med (diab_med=1)
   expect_equal(result$any_htn_med[result$clinicid == 1], 1)
   expect_equal(result$diab_med[result$clinicid == 1], 1)
+
   # General tests - person 2 has NSAID only (neither htn nor diab med)
   expect_equal(result$any_htn_med[result$clinicid == 2], 0)
   expect_equal(result$diab_med[result$clinicid == 2], 0)
-})
-
-# Test for recode_meds_cycles1to2
-test_that("recode_meds_cycles1to2 returns one numeric row per person", {
-  # General tests - wide-format meds data (one row per person, 80 ATC/MHR columns)
-  atc_cols <- paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a")
-  mhr_cols <- paste0("mhr_", c(101:115, 131:135, 201:215, 231:235), "b")
-  mock_meds <- cbind(
-    data.frame(clinicid = c(1, 2)),
-    setNames(data.frame(matrix(NA_character_, nrow = 2, ncol = length(atc_cols))), atc_cols),
-    setNames(data.frame(matrix(NA_real_, nrow = 2, ncol = length(mhr_cols))), mhr_cols)
-  )
-  # Person 1 takes a beta blocker; person 2 has no medications
-  mock_meds$atc_101a[1] <- "C07AA05"
-  mock_meds$mhr_101b[1] <- 1
-
-  result <- recode_meds_cycles1to2(
-    mock_meds,
-    "any_htn_med",
-    database_name = "cycle1_meds"
-  )
-
-  # Output structure - one row per person, numeric column
-  expect_equal(nrow(result), 2)
-  expect_true(is.numeric(result$any_htn_med))
-  # General tests - person 1 has antihypertensive; person 2 does not
-  expect_equal(result$any_htn_med[result$clinicid == 1], 1)
-  expect_equal(result$any_htn_med[result$clinicid == 2], 0)
 })
 
 # Test for recode_after_meds

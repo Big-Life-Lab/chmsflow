@@ -6,41 +6,43 @@
 \usage{
 recode_meds_cycles1to2(
   data,
+  meds_data,
   variables,
   by = "clinicid",
-  database_name = NULL,
+  meds_database_name = NULL,
   variable_details = chmsflow::variable_details
 )
 }
 \arguments{
-\item{data}{\link{data.frame} Wide-format medication data (cycles 1-2). Must contain
+\item{data}{\link{data.frame} Main cycle data to merge medication variables into.}
+
+\item{meds_data}{\link{data.frame} Wide-format medication data (cycles 1-2). Must contain
 \code{clinicid}, \code{atc_101a} through \code{atc_235a}, and \code{mhr_101b} through \code{mhr_235b} as columns.}
 
 \item{variables}{\link{character} Medication variable names to derive (e.g., \code{"any_htn_med"}).}
 
 \item{by}{\link{character} Respondent identifier column. Default is \code{"clinicid"}.}
 
-\item{database_name}{\link{character} Name of the database in \code{variable_details}. Defaults to
-the name of the \code{data} argument. Override when passing a transformed object (e.g., \code{head()}).}
+\item{meds_database_name}{\link{character} Name of the meds database in \code{variable_details}.
+Defaults to the name of the \code{meds_data} argument. Override when passing a transformed
+object (e.g., \code{head()}).}
 
 \item{variable_details}{\link{data.frame} Variable details table. Defaults to \code{chmsflow::variable_details}.}
 }
 \value{
-\link{data.frame} One row per respondent with derived medication variables as numeric,
-ready to merge with main cycle data.
+\link{data.frame} \code{data} with derived medication variables merged in as numeric columns.
 }
 \description{
 Recodes medication variables from cycles 1-2 wide-format data (one row per
-respondent, up to 80 ATC/MHR columns). Wraps \code{recodeflow::rec_with_table()} and converts
-factor outputs to numeric, returning only the respondent identifier and requested variables.
+respondent, up to 80 ATC/MHR columns), and merges into the main cycle dataset. Wraps
+\code{recodeflow::rec_with_table()} and converts factor outputs to numeric.
 }
 \examples{
-# library(dplyr)
-# cycle1_meds_recoded <- recode_meds_cycles1to2(
+# cycle1 <- recode_meds_cycles1to2(
+#   cycle1,
 #   cycle1_meds,
 #   c("any_htn_med", "diab_med")
 # )
-# cycle1 <- left_join(cycle1, cycle1_meds_recoded, by = "clinicid")
 
 }
 \seealso{
