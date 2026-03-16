@@ -546,7 +546,7 @@ test_that("recode_meds_cycles1to2 returns one numeric row per person", {
   mock_meds <- cbind(
     data.frame(clinicid = c(1, 2)),
     setNames(data.frame(matrix(NA_character_, nrow = 2, ncol = length(atc_cols))), atc_cols),
-    setNames(data.frame(matrix(NA_real_,      nrow = 2, ncol = length(mhr_cols))), mhr_cols)
+    setNames(data.frame(matrix(NA_real_, nrow = 2, ncol = length(mhr_cols))), mhr_cols)
   )
   # Person 1 takes a beta blocker; person 2 has no medications
   mock_meds$atc_101a[1] <- "C07AA05"
