@@ -484,3 +484,101 @@ test_that("is_diab_med_cycles1to2 returns correct values", {
     0
   )
 })
+
+# Test for aggregate_meds_by_person
+test_that("aggregate_meds_by_person returns one row per person with max value", {
+  # General tests - multiple rows per person, max aggregation
+  df <- data.frame(
+    clinicid = c(1, 1, 2, 2),
+    any_htn_med = c(0, 1, 0, 0),
+    diab_med = c(1, 0, 0, 0)
+  )
+  result <- aggregate_meds_by_person(df, variables = c("any_htn_med", "diab_med"))
+
+  # One row per person
+  expect_equal(nrow(result), 2)
+  # Person 1: max of (0,1)=1 for any_htn_med; max of (1,0)=1 for diab_med
+  expect_equal(result$any_htn_med[result$clinicid == 1], 1)
+  expect_equal(result$diab_med[result$clinicid == 1], 1)
+  # Person 2: all zeros
+  expect_equal(result$any_htn_med[result$clinicid == 2], 0)
+  expect_equal(result$diab_med[result$clinicid == 2], 0)
+})
+
+test_that("aggregate_meds_by_person returns tagged_na('b') when all values are NA", {
+  # Edge case tests - all NA rows for a person returns missing code
+  df <- data.frame(clinicid = c(1, 1), any_htn_med = c(NA_real_, NA_real_))
+  result <- aggregate_meds_by_person(df, variables = "any_htn_med")
+  expect_true(haven::is_tagged_na(result$any_htn_med[1], "b"))
+})
+
+# Test for recode_meds_cycles3to6
+test_that("recode_meds_cycles3to6 returns one numeric row per person", {
+  # General tests - long-format meds data (one row per medication per person)
+  mock_meds <- data.frame(
+    clinicid = c(1, 1, 2),
+    meucatc  = c("C07AA05", "A10BA02", "M01AE01"),
+    npi_25b  = c(1, 1, 1)
+  )
+  result <- recode_meds_cycles3to6(
+    mock_meds,
+    c("any_htn_med", "diab_med"),
+    database_name = "cycle3_meds"
+  )
+
+  # Output structure - one row per person, numeric columns
+  expect_equal(nrow(result), 2)
+  expect_true(is.numeric(result$any_htn_med))
+  expect_true(is.numeric(result$diab_med))
+  # General tests - person 1 has beta blocker (any_htn_med=1) and diabetes med (diab_med=1)
+  expect_equal(result$any_htn_med[result$clinicid == 1], 1)
+  expect_equal(result$diab_med[result$clinicid == 1], 1)
+  # General tests - person 2 has NSAID only (neither htn nor diab med)
+  expect_equal(result$any_htn_med[result$clinicid == 2], 0)
+  expect_equal(result$diab_med[result$clinicid == 2], 0)
+})
+
+# Test for recode_meds_cycles1to2
+test_that("recode_meds_cycles1to2 returns one numeric row per person", {
+  # General tests - wide-format meds data (one row per person, 80 ATC/MHR columns)
+  atc_cols <- paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a")
+  mhr_cols <- paste0("mhr_", c(101:115, 131:135, 201:215, 231:235), "b")
+  mock_meds <- cbind(
+    data.frame(clinicid = c(1, 2)),
+    setNames(data.frame(matrix(NA_character_, nrow = 2, ncol = length(atc_cols))), atc_cols),
+    setNames(data.frame(matrix(NA_real_,      nrow = 2, ncol = length(mhr_cols))), mhr_cols)
+  )
+  # Person 1 takes a beta blocker; person 2 has no medications
+  mock_meds$atc_101a[1] <- "C07AA05"
+  mock_meds$mhr_101b[1] <- 1
+
+  result <- recode_meds_cycles1to2(
+    mock_meds,
+    "any_htn_med",
+    database_name = "cycle1_meds"
+  )
+
+  # Output structure - one row per person, numeric column
+  expect_equal(nrow(result), 2)
+  expect_true(is.numeric(result$any_htn_med))
+  # General tests - person 1 has antihypertensive; person 2 does not
+  expect_equal(result$any_htn_med[result$clinicid == 1], 1)
+  expect_equal(result$any_htn_med[result$clinicid == 2], 0)
+})
+
+# Test for recode_after_meds
+test_that("recode_after_meds passes through derived medication variables", {
+  # General tests - derived medication variable already in main cycle data is passed through
+  mock_cycle <- data.frame(clinicid = c(1, 2), any_htn_med = c(1, 0))
+  result <- recode_after_meds(mock_cycle, "any_htn_med", database_name = "cycle3")
+
+  expect_true("any_htn_med" %in% names(result))
+  expect_equal(as.numeric(as.character(result$any_htn_med)), c(1, 0))
+})
+
+test_that("recode_after_meds excludes _meds rows from variable_details", {
+  # Edge case tests - without the filter, rec_with_table would try to derive
+  # any_htn_med from meucatc/npi_25b which are absent from main cycle data
+  mock_cycle <- data.frame(clinicid = c(1, 2), any_htn_med = c(1, 0))
+  expect_no_error(recode_after_meds(mock_cycle, "any_htn_med", database_name = "cycle3"))
+})
