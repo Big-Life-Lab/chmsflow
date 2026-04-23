@@ -92,3 +92,9 @@ packrat.lock
 
 # Claude use
 .claude/
+
+# Built vignettes
+inst/doc
+
+# IDE workspace files
+*.code-workspace
