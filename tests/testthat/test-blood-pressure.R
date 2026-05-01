@@ -169,3 +169,28 @@ test_that("derive_hypertension_control_adj returns correct controlled adjusted h
   df <- data.frame(SBP = c(139, 140), DBP = c(89, 89), ANYMED2 = c(1, 1))
   expect_equal(df |> dplyr::mutate(ctrl = derive_hypertension_control_adj(SBP, DBP, ANYMED2)) |> dplyr::pull(ctrl), c(1, 2))
 })
+
+# Tagged-NA input propagation tests
+# These verify the chained-derivation contract: a tagged NA input from a prior
+# step (e.g., adjust_sbp() returning haven::tagged_na("a") for sentinel 996)
+# must produce a tagged NA output, not a plain NA or a numeric class.
+
+test_that("derive_hypertension propagates tagged NA input on bpmdpbps", {
+  expect_true(haven::is_tagged_na(derive_hypertension(haven::tagged_na("a"), 80, 0)))
+  expect_true(haven::is_tagged_na(derive_hypertension(haven::tagged_na("b"), 80, 0)))
+})
+
+test_that("derive_hypertension_adj propagates tagged NA input on sbp_adj_mmhg", {
+  expect_true(haven::is_tagged_na(derive_hypertension_adj(haven::tagged_na("a"), 80, 0)))
+  expect_true(haven::is_tagged_na(derive_hypertension_adj(haven::tagged_na("b"), 80, 0)))
+})
+
+test_that("derive_hypertension_control propagates tagged NA input on bpmdpbps", {
+  expect_true(haven::is_tagged_na(derive_hypertension_control(haven::tagged_na("a"), 80, 1)))
+  expect_true(haven::is_tagged_na(derive_hypertension_control(haven::tagged_na("b"), 80, 1)))
+})
+
+test_that("derive_hypertension_control_adj propagates tagged NA input on sbp_adj_mmhg", {
+  expect_true(haven::is_tagged_na(derive_hypertension_control_adj(haven::tagged_na("a"), 80, 1)))
+  expect_true(haven::is_tagged_na(derive_hypertension_control_adj(haven::tagged_na("b"), 80, 1)))
+})

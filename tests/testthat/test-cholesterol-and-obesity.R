@@ -74,3 +74,22 @@ test_that("calculate_waist_height_ratio returns correct waist-to-height ratio", 
   df <- data.frame(HT = c(170, 180), WAIST = c(85, 90))
   expect_equal(df |> dplyr::mutate(whr = calculate_waist_height_ratio(HT, WAIST)) |> dplyr::pull(whr), c(0.5, 0.5))
 })
+
+# Tagged-NA input propagation tests
+# These verify the chained-derivation contract: a tagged NA input from a prior
+# step must produce a tagged NA output, not a plain NA or a numeric class.
+
+test_that("calculate_nonhdl propagates tagged NA input on lab_chol", {
+  expect_true(haven::is_tagged_na(calculate_nonhdl(haven::tagged_na("a"), 1.5)))
+  expect_true(haven::is_tagged_na(calculate_nonhdl(haven::tagged_na("b"), 1.5)))
+})
+
+test_that("categorize_nonhdl propagates tagged NA input on nonhdl", {
+  expect_true(haven::is_tagged_na(categorize_nonhdl(haven::tagged_na("a"))))
+  expect_true(haven::is_tagged_na(categorize_nonhdl(haven::tagged_na("b"))))
+})
+
+test_that("calculate_waist_height_ratio propagates tagged NA input on hwm_11cm", {
+  expect_true(haven::is_tagged_na(calculate_waist_height_ratio(haven::tagged_na("a"), 85)))
+  expect_true(haven::is_tagged_na(calculate_waist_height_ratio(haven::tagged_na("b"), 85)))
+})

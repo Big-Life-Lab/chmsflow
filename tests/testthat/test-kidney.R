@@ -66,3 +66,17 @@ test_that("categorize_ckd returns correct CKD category", {
   df <- data.frame(gfr = c(60, 61, 90))
   expect_equal(df |> dplyr::mutate(ckd = categorize_ckd(gfr)) |> dplyr::pull(ckd), c(1, 2, 2))
 })
+
+# Tagged-NA input propagation tests
+# These verify the chained-derivation contract: a tagged NA input from a prior
+# step must produce a tagged NA output, not a plain NA or a numeric class.
+
+test_that("calculate_gfr propagates tagged NA input on lab_bcre", {
+  expect_true(haven::is_tagged_na(calculate_gfr(haven::tagged_na("a"), 1, 1, 50)))
+  expect_true(haven::is_tagged_na(calculate_gfr(haven::tagged_na("b"), 1, 1, 50)))
+})
+
+test_that("categorize_ckd propagates tagged NA input on gfr", {
+  expect_true(haven::is_tagged_na(categorize_ckd(haven::tagged_na("a"))))
+  expect_true(haven::is_tagged_na(categorize_ckd(haven::tagged_na("b"))))
+})
