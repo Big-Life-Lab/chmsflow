@@ -2,24 +2,23 @@
 % Please edit documentation in R/exercise.R
 \name{calculate_exercise_weekly}
 \alias{calculate_exercise_weekly}
-\title{Weekly minutes of moderate-to-vigorous physical activity (MVPA) from daily average}
+\title{Minutes per week from minutes per day}
 \usage{
 calculate_exercise_weekly(mvpa_min)
 }
 \arguments{
-\item{mvpa_min}{\link{numeric} A numeric representing the average daily minutes of moderate-to-vigorous physical activity (MVPA) across a week of accelerometer use.}
+\item{mvpa_min}{\link{numeric} A numeric representing the average minutes of exercise per day across a week of accelerometer use.}
 }
 \value{
-\link{numeric} The total weekly minutes of MVPA. If inputs are invalid or out of bounds, the function returns a tagged NA.
+\link{numeric} The average minutes of exercise per one week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
-This function takes the average daily minutes of moderate-to-vigorous physical activity (MVPA) across
-a week of accelerometer use as an input (\code{mvpa_min}) and calculates the equivalent weekly MVPA minutes. The
-result is returned as a numeric value.
+This function takes the average minutes of exercise per day across a week of accelerometer use as an input (\code{mvpa_min}) and
+calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value.
 }
 \details{
-The function multiplies the average daily MVPA minutes (\code{mvpa_min}) by 7 to obtain the equivalent
-weekly MVPA minutes.
+The function simply multiplies the average minutes of exercise per day (\code{mvpa_min}) by 7 to obtain the equivalent
+minutes of exercise per one week of accelerometer use.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     **Missing Data Codes:**
      - Propagates tagged NAs from the input `mvpa_min`.
@@ -27,7 +26,7 @@ weekly MVPA minutes.
 }
 \examples{
 # Scalar usage: Single respondent
-# Example: Convert average daily MVPA minutes to weekly MVPA minutes.
+# Example: Convert average minutes of exercise per day to minutes per week.
 calculate_exercise_weekly(35)
 # Output: 245
 

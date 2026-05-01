@@ -1,18 +1,18 @@
-#' @title Average daily minutes of moderate-to-vigorous physical activity (MVPA) from accelerometer data
+#' @title Average minutes of exercise per day for week-long accelerometer data
 #'
-#' @description This function calculates the average daily minutes of moderate-to-vigorous physical activity (MVPA)
-#' across a week of accelerometer measurement. It takes seven parameters, each representing the MVPA minutes on a
-#' specific day (Day 1 to Day 7). The function computes the daily average across the week.
+#' @description This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
+#' parameters, each representing the minutes of exercise on a specific day (Day 1 to Day 7) of accelerometer measurement.
+#' The function computes the average of these values to obtain the average minutes of exercise per day.
 #'
-#' @param ammdmva1 [numeric] A numeric representing minutes of moderate-to-vigorous physical activity (MVPA) on Day 1 of accelerometer measurement.
-#' @param ammdmva2 [numeric] A numeric representing minutes of MVPA on Day 2 of accelerometer measurement.
-#' @param ammdmva3 [numeric] A numeric representing minutes of MVPA on Day 3 of accelerometer measurement.
-#' @param ammdmva4 [numeric] A numeric representing minutes of MVPA on Day 4 of accelerometer measurement.
-#' @param ammdmva5 [numeric] A numeric representing minutes of MVPA on Day 5 of accelerometer measurement.
-#' @param ammdmva6 [numeric] A numeric representing minutes of MVPA on Day 6 of accelerometer measurement.
-#' @param ammdmva7 [numeric] A numeric representing minutes of MVPA on Day 7 of accelerometer measurement.
+#' @param ammdmva1 [numeric] A numeric representing minutes of exercise on Day 1 of accelerometer measurement.
+#' @param ammdmva2 [numeric] A numeric representing minutes of exercise on Day 2 of accelerometer measurement.
+#' @param ammdmva3 [numeric] A numeric representing minutes of exercise on Day 3 of accelerometer measurement.
+#' @param ammdmva4 [numeric] A numeric representing minutes of exercise on Day 4 of accelerometer measurement.
+#' @param ammdmva5 [numeric] A numeric representing minutes of exercise on Day 5 of accelerometer measurement.
+#' @param ammdmva6 [numeric] A numeric representing minutes of exercise on Day 6 of accelerometer measurement.
+#' @param ammdmva7 [numeric] A numeric representing minutes of exercise on Day 7 of accelerometer measurement.
 #'
-#' @return [numeric] The average daily minutes of MVPA across a week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
+#' @return [numeric] The average minutes of exercise per day across a week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
 #' @details This function processes physical activity data from accelerometer measurements
 #'          to create a weekly activity summary.
@@ -73,25 +73,24 @@ calculate_exercise_daily_avg <- function(ammdmva1, ammdmva2, ammdmva3, ammdmva4,
   )
 }
 
-#' @title Weekly minutes of moderate-to-vigorous physical activity (MVPA) from daily average
+#' @title Minutes per week from minutes per day
 #'
-#' @description This function takes the average daily minutes of moderate-to-vigorous physical activity (MVPA) across
-#' a week of accelerometer use as an input (`mvpa_min`) and calculates the equivalent weekly MVPA minutes. The
-#' result is returned as a numeric value.
+#' @description This function takes the average minutes of exercise per day across a week of accelerometer use as an input (`mvpa_min`) and
+#' calculates the equivalent minutes of exercise per one week of accelerometer use. The result is returned as a numeric value.
 #'
-#' @param mvpa_min [numeric] A numeric representing the average daily minutes of moderate-to-vigorous physical activity (MVPA) across a week of accelerometer use.
+#' @param mvpa_min [numeric] A numeric representing the average minutes of exercise per day across a week of accelerometer use.
 #'
-#' @return [numeric] The total weekly minutes of MVPA. If inputs are invalid or out of bounds, the function returns a tagged NA.
+#' @return [numeric] The average minutes of exercise per one week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
-#' @details The function multiplies the average daily MVPA minutes (`mvpa_min`) by 7 to obtain the equivalent
-#'          weekly MVPA minutes.
+#' @details The function simply multiplies the average minutes of exercise per day (`mvpa_min`) by 7 to obtain the equivalent
+#'          minutes of exercise per one week of accelerometer use.
 #'
 #'          **Missing Data Codes:**
 #'          - Propagates tagged NAs from the input `mvpa_min`.
 #'
 #' @examples
 #' # Scalar usage: Single respondent
-#' # Example: Convert average daily MVPA minutes to weekly MVPA minutes.
+#' # Example: Convert average minutes of exercise per day to minutes per week.
 #' calculate_exercise_weekly(35)
 #' # Output: 245
 #'
@@ -120,15 +119,14 @@ calculate_exercise_weekly <- function(mvpa_min) {
   )
 }
 
-#' @title Categorical weekly moderate-to-vigorous physical activity (MVPA) indicator
+#' @title Categorical weekly physical activity indicator
 #'
-#' @description This function categorizes individuals' weekly moderate-to-vigorous physical activity (MVPA)
-#' levels against the 150 minutes/week guideline.
+#' @description This function categorizes individuals' weekly physical activity levels based on a threshold value.
 #'
 #' @param exercise_min_week [numeric] A numeric representing an individual's minutes of moderate-to-vigorous
 #'   physical activity (MVPA) per week.
 #'
-#' @return [integer] A categorical indicating the MVPA category:
+#' @return [integer] A categorical indicating the physical activity category:
 #'   - 1: Meets or exceeds the recommended 150 minutes of MVPA per week (exercise_min_week >= 150)
 #'   - 2: Below the recommended 150 minutes of MVPA per week (exercise_min_week < 150)
 #'   - `haven::tagged_na("a")`: Not applicable
