@@ -1,4 +1,4 @@
-# chmsflow (development version)
+# chmsflow 0.1.0 (Medication Fixes)
 
 ## Breaking changes
 
@@ -22,7 +22,7 @@
 
 - New vignette `recoding_medications.qmd` documents the medication-recoding workflow for both cycle groupings, with a section on calling the underlying `is_*` classifiers directly.
 
-# chmsflow 0.1.0 (First Version)
+# chmsflow 0.1.0 (First Steps)
 
 ## Features
 
