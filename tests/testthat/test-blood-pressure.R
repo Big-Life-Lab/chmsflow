@@ -194,3 +194,14 @@ test_that("derive_hypertension_control_adj propagates tagged NA input on sbp_adj
   expect_true(haven::is_tagged_na(derive_hypertension_control_adj(haven::tagged_na("a"), 80, 1)))
   expect_true(haven::is_tagged_na(derive_hypertension_control_adj(haven::tagged_na("b"), 80, 1)))
 })
+
+# Mixed-length / empty-vector tests - guard against R's silent recycling rules
+# masking a length mismatch in user input
+
+test_that("derive_hypertension handles empty and mismatched-length input", {
+  # Empty - length-0 input must produce length-0 output
+  expect_length(derive_hypertension(numeric(0), numeric(0), numeric(0)), 0)
+  # Mismatch - documents current behavior: dplyr::case_when recycles silently
+  # rather than erroring. Strict length checking is a candidate for follow-up.
+  expect_no_error(derive_hypertension(c(140, 150), c(80), 0))
+})

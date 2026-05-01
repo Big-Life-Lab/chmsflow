@@ -67,3 +67,12 @@ test_that("categorize_diet_quality returns correct diet category", {
   df <- data.frame(fv = c(5, 4.9, 6))
   expect_equal(df |> dplyr::mutate(diet = categorize_diet_quality(fv)) |> dplyr::pull(diet), c(1, 2, 1))
 })
+
+# Mixed-length / empty-vector tests
+test_that("calculate_fv_daily_cycles3to6 handles empty input", {
+  empty <- numeric(0)
+  expect_length(
+    calculate_fv_daily_cycles3to6(empty, empty, empty, empty, empty, empty, empty, empty, empty, empty, empty),
+    0
+  )
+})

@@ -93,3 +93,10 @@ test_that("calculate_waist_height_ratio propagates tagged NA input on hwm_11cm",
   expect_true(haven::is_tagged_na(calculate_waist_height_ratio(haven::tagged_na("a"), 85)))
   expect_true(haven::is_tagged_na(calculate_waist_height_ratio(haven::tagged_na("b"), 85)))
 })
+
+# Mixed-length / empty-vector tests
+test_that("calculate_nonhdl handles empty and mismatched-length input", {
+  expect_length(calculate_nonhdl(numeric(0), numeric(0)), 0)
+  # Documents current behavior: arithmetic recycles silently on mismatch
+  expect_no_error(calculate_nonhdl(c(5, 6), c(1.5)))
+})

@@ -62,3 +62,12 @@ test_that("calculate_pack_years returns correct pack years", {
     c(20, 0)
   )
 })
+
+# Mixed-length / empty-vector tests
+test_that("calculate_pack_years handles empty input", {
+  empty <- numeric(0)
+  expect_length(
+    calculate_pack_years(empty, empty, empty, empty, empty, empty, empty, empty, empty, empty),
+    0
+  )
+})

@@ -72,3 +72,10 @@ test_that("derive_alcohol_risk_detailed returns correct scores", {
   expected_output_alc1 <- c(2, 3, 2, 4)
   expect_equal(df_alc1 |> dplyr::mutate(alc_detailed_risk_score = derive_alcohol_risk_detailed(clc_sex, alc_11, alcdwky, alc_17, alc_18)) |> dplyr::pull(alc_detailed_risk_score), expected_output_alc1)
 })
+
+# Mixed-length / empty-vector tests
+test_that("derive_alcohol_risk handles empty and mismatched-length input", {
+  expect_length(derive_alcohol_risk(numeric(0), numeric(0), numeric(0)), 0)
+  # Documents current behavior: dplyr::case_when recycles silently on mismatch
+  expect_no_error(derive_alcohol_risk(c(1, 2), c(1), c(0, 0)))
+})

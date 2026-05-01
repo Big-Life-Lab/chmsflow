@@ -63,3 +63,12 @@ test_that("categorize_exercise returns correct physical activity category", {
   df <- data.frame(minweek = c(150, 149, 200))
   expect_equal(df |> dplyr::mutate(cat = categorize_exercise(minweek)) |> dplyr::pull(cat), c(1, 2, 1))
 })
+
+# Mixed-length / empty-vector tests
+test_that("calculate_exercise_daily_avg handles empty input", {
+  empty <- numeric(0)
+  expect_length(
+    calculate_exercise_daily_avg(empty, empty, empty, empty, empty, empty, empty),
+    0
+  )
+})

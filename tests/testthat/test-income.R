@@ -84,3 +84,10 @@ test_that("is_lowest_income_quintile returns correct lowest income quintile stat
   df <- data.frame(quintile = c(1, 2, 5))
   expect_equal(df |> dplyr::mutate(low = is_lowest_income_quintile(quintile)) |> dplyr::pull(low), c(1, 2, 2))
 })
+
+# Mixed-length / empty-vector tests
+test_that("calculate_household_income handles empty and mismatched-length input", {
+  expect_length(calculate_household_income(numeric(0), numeric(0)), 0)
+  # Documents current behavior: arithmetic recycles silently on mismatch
+  expect_no_error(calculate_household_income(c(50000, 60000), c(2)))
+})

@@ -58,3 +58,10 @@ test_that("derive_cvd_family_history returns correct CVD family history", {
   df <- data.frame(CCC_280 = c(1, 2, 1), CCC_281 = c(50, NA, 70), CCC_290 = c(2, 1, 2), CCC_291 = c(NA, 55, NA))
   expect_equal(df |> dplyr::mutate(fam = derive_cvd_family_history(CCC_280, CCC_281, CCC_290, CCC_291)) |> dplyr::pull(fam), c(1, 1, 2))
 })
+
+# Mixed-length / empty-vector tests
+test_that("derive_cvd_personal_history handles empty and mismatched-length input", {
+  expect_length(derive_cvd_personal_history(numeric(0), numeric(0), numeric(0)), 0)
+  # Documents current behavior: dplyr::case_when recycles silently on mismatch
+  expect_no_error(derive_cvd_personal_history(c(1, 2), c(1), c(2, 1)))
+})

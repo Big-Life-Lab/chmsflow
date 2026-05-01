@@ -44,3 +44,10 @@ test_that("derive_diabetes_status returns correct diabetes status", {
   df <- data.frame(CCC_32 = c(1, 2, 2), DIABX = c(2, 1, 2), DIAB_MED = c(0, 0, 1))
   expect_equal(df |> dplyr::mutate(diab = derive_diabetes_status(CCC_32, DIABX, DIAB_MED)) |> dplyr::pull(diab), c(1, 1, 1))
 })
+
+# Mixed-length / empty-vector tests
+test_that("derive_diabetes_status handles empty and mismatched-length input", {
+  expect_length(derive_diabetes_status(numeric(0), numeric(0), numeric(0)), 0)
+  # Documents current behavior: dplyr::case_when recycles silently on mismatch
+  expect_no_error(derive_diabetes_status(c(1, 2), c(1), c(0, 0)))
+})

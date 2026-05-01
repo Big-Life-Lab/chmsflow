@@ -80,3 +80,10 @@ test_that("categorize_ckd propagates tagged NA input on gfr", {
   expect_true(haven::is_tagged_na(categorize_ckd(haven::tagged_na("a"))))
   expect_true(haven::is_tagged_na(categorize_ckd(haven::tagged_na("b"))))
 })
+
+# Mixed-length / empty-vector tests
+test_that("calculate_gfr handles empty and mismatched-length input", {
+  expect_length(calculate_gfr(numeric(0), numeric(0), numeric(0), numeric(0)), 0)
+  # Documents current behavior: arithmetic recycles silently on mismatch
+  expect_no_error(calculate_gfr(c(50, 60), c(1, 1), c(1), c(50, 60)))
+})
