@@ -550,8 +550,8 @@ is_bb_med_cycles1to2 <- function(
   # Check if any result is 0 (explicit non-match with valid data)
   has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
   # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
 
   # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
   med_vector <- dplyr::case_when(
@@ -731,8 +731,8 @@ is_ace_med_cycles1to2 <- function(
   # Check if any result is 0 (explicit non-match with valid data)
   has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
   # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
 
   # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
   med_vector <- dplyr::case_when(
@@ -912,8 +912,8 @@ is_diur_med_cycles1to2 <- function(
   # Check if any result is 0 (explicit non-match with valid data)
   has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
   # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
 
   # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
   med_vector <- dplyr::case_when(
@@ -1093,8 +1093,8 @@ is_ccb_med_cycles1to2 <- function(
   # Check if any result is 0 (explicit non-match with valid data)
   has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
   # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
 
   # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
   med_vector <- dplyr::case_when(
@@ -1274,8 +1274,8 @@ is_misc_htn_med_cycles1to2 <- function(
   # Check if any result is 0 (explicit non-match with valid data)
   has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
   # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
 
   # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
   med_vector <- dplyr::case_when(
@@ -1455,8 +1455,8 @@ is_any_htn_med_cycles1to2 <- function(
   # Check if any result is 0 (explicit non-match with valid data)
   has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
   # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
 
   # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
   med_vector <- dplyr::case_when(
@@ -1636,8 +1636,8 @@ is_nsaid_med_cycles1to2 <- function(
   # Check if any result is 0 (explicit non-match with valid data)
   has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
   # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
 
   # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
   med_vector <- dplyr::case_when(
@@ -1817,8 +1817,8 @@ is_diab_med_cycles1to2 <- function(
   # Check if any result is 0 (explicit non-match with valid data)
   has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
   # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) & any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) & (any(haven::is_tagged_na(row, "b")) | any(is.na(row) & !haven::is_tagged_na(row))))
+  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
+  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
 
   # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
   med_vector <- dplyr::case_when(
