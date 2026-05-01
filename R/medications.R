@@ -2139,5 +2139,12 @@ recode_after_meds <- function(data, variables, by = "clinicid",
     database_name = database_name,
     variable_details = variable_details
   )
-  dplyr::bind_cols(data[, by, drop = FALSE], recoded)
+  stopifnot(
+    "rec_with_table() returned a different number of rows than `data`; row alignment cannot be trusted" =
+      nrow(recoded) == nrow(data)
+  )
+  if (!(by %in% names(recoded))) {
+    recoded <- dplyr::bind_cols(data[, by, drop = FALSE], recoded)
+  }
+  recoded
 }

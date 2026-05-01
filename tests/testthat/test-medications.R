@@ -632,3 +632,21 @@ test_that("recode_after_meds excludes _meds rows from variable_details", {
   mock_cycle <- data.frame(clinicid = c(1, 2), any_htn_med = c(1, 0))
   expect_no_error(recode_after_meds(mock_cycle, "any_htn_med", database_name = "cycle3"))
 })
+
+test_that("recode_after_meds returns exactly one `by` column", {
+  # Edge case tests - guard against bind_cols silently emitting clinicid...1 / clinicid...2
+  # if rec_with_table ever passes the by column through itself
+  mock_cycle <- data.frame(clinicid = c(1, 2), any_htn_med = c(1, 0))
+  result <- recode_after_meds(mock_cycle, "any_htn_med", database_name = "cycle3")
+  expect_equal(sum(names(result) == "clinicid"), 1)
+})
+
+test_that("recode_after_meds preserves row alignment when data is row-shuffled", {
+  # Edge case tests - row-shuffled input must produce row-aligned output, otherwise
+  # respondents get paired with the wrong recoded values
+  mock_cycle <- data.frame(clinicid = 1:4, any_htn_med = c(1, 0, 1, 0))
+  shuffled <- mock_cycle[c(3, 1, 4, 2), ]
+  result <- recode_after_meds(shuffled, "any_htn_med", database_name = "cycle3")
+  expect_equal(result$clinicid, c(3, 1, 4, 2))
+  expect_equal(as.numeric(as.character(result$any_htn_med)), c(1, 1, 0, 0))
+})
