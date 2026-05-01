@@ -17,9 +17,9 @@ derive_alcohol_risk(clc_sex, alc_11, alcdwky)
 \link{integer} The low drink score, with:
 \itemize{
 \item 1 for "Low risk" (0 points),
-\item 2 for "Marginal risk" (1–2 points),
-\item 3 for "Medium risk" (3–4 points), and
-\item 4 for "High risk" (5–9 points).
+\item 2 for "Marginal risk" (1-2 points),
+\item 3 for "Medium risk" (3-4 points), and
+\item 4 for "High risk" (5-9 points).
 If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 }
@@ -46,9 +46,9 @@ alcohol consumption and the respondent's sex:
 These \code{step1} points are then mapped to the final categorical score as follows:
 \itemize{
 \item 0 points -> score of 1 ("Low risk"),
-\item 1–2 points -> score of 2 ("Marginal risk"),
-\item 3–4 points -> score of 3 ("Medium risk"),
-\item 5–9 points -> score of 4 ("High risk").
+\item 1-2 points -> score of 2 ("Marginal risk"),
+\item 3-4 points -> score of 3 ("Medium risk"),
+\item 5-9 points -> score of 4 ("High risk").
 }
 
 This function implements Canada's Low-Risk Alcohol Drinking Guidelines (Step 1 only) to assess

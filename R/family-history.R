@@ -79,8 +79,8 @@ derive_cvd_personal_history <- function(ccc_61, ccc_63, ccc_81) {
 #' @param fmh_14 [numeric] A numeric: Represents the youngest age at diagnosis of stroke in an immediate family member.
 #'
 #' @return [integer] The CVD family history:
-#'   - 1: "Yes" — Family history of premature CVD exists (diagnosis before age 60).
-#'   - 2: "No" — No family history of premature CVD.
+#'   - 1: "Yes" -- Family history of premature CVD exists (diagnosis before age 60).
+#'   - 2: "No" -- No family history of premature CVD.
 #'   - `haven::tagged_na("a")`: Not applicable
 #'   - `haven::tagged_na("b")`: Missing
 #'

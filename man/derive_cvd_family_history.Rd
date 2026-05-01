@@ -22,8 +22,8 @@ derive_cvd_family_history(fmh_11, fmh_12, fmh_13, fmh_14)
 \value{
 \link{integer} The CVD family history:
 \itemize{
-\item 1: "Yes" — Family history of premature CVD exists (diagnosis before age 60).
-\item 2: "No" — No family history of premature CVD.
+\item 1: "Yes" -- Family history of premature CVD exists (diagnosis before age 60).
+\item 2: "No" -- No family history of premature CVD.
 \item \code{haven::tagged_na("a")}: Not applicable
 \item \code{haven::tagged_na("b")}: Missing
 }

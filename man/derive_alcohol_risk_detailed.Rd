@@ -11,7 +11,7 @@ derive_alcohol_risk_detailed(clc_sex, alc_11, alcdwky, alc_17, alc_18)
 
 \item{alc_11}{\link{integer} Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).}
 
-\item{alcdwky}{\link{integer} Number of standard drinks consumed in a typical week (0–84).}
+\item{alcdwky}{\link{integer} Number of standard drinks consumed in a typical week (0-84).}
 
 \item{alc_17}{\link{integer} Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).}
 

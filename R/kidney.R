@@ -3,7 +3,7 @@
 #' @description This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
 #'              where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age.
 #'
-#' @param lab_bcre [numeric] Blood creatine (µmol/L). It should be a numeric between 14 and 785.
+#' @param lab_bcre [numeric] Blood creatine (umol/L). It should be a numeric between 14 and 785.
 #' @param pgdcgt [integer] Ethnicity (13 categories). It should be an integer between 1 and 13.
 #' @param clc_sex [integer] Sex (Male = 1, Female = 2). It should be an integer of either 1 or 2.
 #' @param clc_age [numeric] Age (years). It should be a numeric between 3 and 79.
@@ -20,13 +20,13 @@
 #'          - Cardiovascular risk assessment
 #'
 #'          **Formula Application:**
-#'          Base: GFR = 175 × (creatinine^-1.154) × (age^-0.203)
+#'          Base: GFR = 175 x (creatinine^-1.154) x (age^-0.203)
 #'          Adjustments:
-#'          - Female: × 0.742
-#'          - Black ethnicity: × 1.210
+#'          - Female: x 0.742
+#'          - Black ethnicity: x 1.210
 #'
 #'          **Unit Conversion:**
-#'          Serum creatinine converted from µmol/L to mg/dL (÷ 88.4)
+#'          Serum creatinine converted from umol/L to mg/dL (/ 88.4)
 #'
 #'          **Missing Data Codes:**
 #'          - `lab_bcre`: `9996` (Not applicable), `9997-9999` (Missing)
@@ -36,7 +36,7 @@
 #'
 #' @examples
 #' # Scalar usage: Single respondent
-#' # Example 1: Calculate gfr for a 45-year-old white female with serum creatine of 80 µmol/L.
+#' # Example 1: Calculate gfr for a 45-year-old white female with serum creatine of 80 umol/L.
 #' calculate_gfr(lab_bcre = 80, pgdcgt = 1, clc_sex = 2, clc_age = 45)
 #' # Output: 67.27905
 #'
@@ -61,7 +61,7 @@
 #' @seealso [categorize_ckd()] for CKD classification based on GFR values
 #' @export
 calculate_gfr <- function(lab_bcre, pgdcgt, clc_sex, clc_age) {
-  # Convert serum creatinine from µmol/L to mg/dL
+  # Convert serum creatinine from umol/L to mg/dL
   serumcreat <- lab_bcre / 88.4
 
   # Calculate GFR using the MDRD equation

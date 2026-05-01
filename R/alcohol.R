@@ -12,9 +12,9 @@
 #'
 #' @return [integer] The low drink score, with:
 #'   - 1 for "Low risk" (0 points),
-#'   - 2 for "Marginal risk" (1–2 points),
-#'   - 3 for "Medium risk" (3–4 points), and
-#'   - 4 for "High risk" (5–9 points).
+#'   - 2 for "Marginal risk" (1-2 points),
+#'   - 3 for "Medium risk" (3-4 points), and
+#'   - 4 for "High risk" (5-9 points).
 #' If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
 #' @details
@@ -29,9 +29,9 @@
 #'
 #' These `step1` points are then mapped to the final categorical score as follows:
 #'   - 0 points -> score of 1 ("Low risk"),
-#'   - 1–2 points -> score of 2 ("Marginal risk"),
-#'   - 3–4 points -> score of 3 ("Medium risk"),
-#'   - 5–9 points -> score of 4 ("High risk").
+#'   - 1-2 points -> score of 2 ("Marginal risk"),
+#'   - 3-4 points -> score of 3 ("Medium risk"),
+#'   - 5-9 points -> score of 4 ("High risk").
 #'
 #' @details
 #' This function implements Canada's Low-Risk Alcohol Drinking Guidelines (Step 1 only) to assess
@@ -139,7 +139,7 @@ derive_alcohol_risk <- function(clc_sex, alc_11, alcdwky) {
 #'
 #' @param clc_sex [integer] Respondent's sex (1 = male, 2 = female).
 #' @param alc_11 [integer] Whether the respondent drank alcohol in the past year (1 = Yes, 2 = No).
-#' @param alcdwky [integer] Number of standard drinks consumed in a typical week (0–84).
+#' @param alcdwky [integer] Number of standard drinks consumed in a typical week (0-84).
 #' @param alc_17 [integer] Whether the respondent ever drank alcohol in their lifetime (1 = Yes, 2 = No).
 #' @param alc_18 [integer] Whether the respondent regularly drank more than 12 drinks per week (1 = Yes, 2 = No).
 #'

@@ -7,7 +7,7 @@
 calculate_gfr(lab_bcre, pgdcgt, clc_sex, clc_age)
 }
 \arguments{
-\item{lab_bcre}{\link{numeric} Blood creatine (µmol/L). It should be a numeric between 14 and 785.}
+\item{lab_bcre}{\link{numeric} Blood creatine (umol/L). It should be a numeric between 14 and 785.}
 
 \item{pgdcgt}{\link{integer} Ethnicity (13 categories). It should be an integer between 1 and 13.}
 
@@ -33,13 +33,13 @@ to estimate glomerular filtration rate, a key indicator of kidney function.
      - Cardiovascular risk assessment
 
      **Formula Application:**
-     Base: GFR = 175 × (creatinine^-1.154) × (age^-0.203)
+     Base: GFR = 175 x (creatinine^-1.154) x (age^-0.203)
      Adjustments:
-     - Female: × 0.742
-     - Black ethnicity: × 1.210
+     - Female: x 0.742
+     - Black ethnicity: x 1.210
 
      **Unit Conversion:**
-     Serum creatinine converted from µmol/L to mg/dL (÷ 88.4)
+     Serum creatinine converted from umol/L to mg/dL (/ 88.4)
 
      **Missing Data Codes:**
      - `lab_bcre`: `9996` (Not applicable), `9997-9999` (Missing)
@@ -50,7 +50,7 @@ to estimate glomerular filtration rate, a key indicator of kidney function.
 }
 \examples{
 # Scalar usage: Single respondent
-# Example 1: Calculate gfr for a 45-year-old white female with serum creatine of 80 µmol/L.
+# Example 1: Calculate gfr for a 45-year-old white female with serum creatine of 80 umol/L.
 calculate_gfr(lab_bcre = 80, pgdcgt = 1, clc_sex = 2, clc_age = 45)
 # Output: 67.27905
 
