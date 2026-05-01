@@ -30,20 +30,20 @@ Defaults to the name of the \code{data} argument.}
 }
 \description{
 Wraps \code{recodeflow::rec_with_table()} for use after derived medication
-variables (e.g., \code{any_htn_med}, \code{diab_med}) have been recoded and merged into
-the main cycle dataset. Automatically excludes medication-specific rows from
-\code{variable_details} so that \code{rec_with_table()} does not attempt to re-derive
-medication variables from raw ATC/MHR columns.
-
-Use this instead of \code{rec_with_table()} when deriving variables whose inputs
-include derived medication variables.
+variables (e.g., \code{any_htn_med}, \code{diab_med}) have been recoded and merged into the
+main cycle dataset. Use this instead of \code{rec_with_table()} when deriving variables
+whose inputs include derived medication variables: it automatically excludes
+medication-specific rows from \code{variable_details} so that pre-computed medication
+columns are passed through via the \code{copy} entries rather than re-derived from raw
+ATC/MHR columns.
 }
 \examples{
-# cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
-# cycle3_diab <- recode_after_meds(
-#   cycle3,
-#   c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
-# )
+cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
+cycle3_diab <- recode_after_meds(
+  cycle3,
+  c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
+)
+head(cycle3_diab[, c("clinicid", "diab_status")])
 
 }
 \seealso{

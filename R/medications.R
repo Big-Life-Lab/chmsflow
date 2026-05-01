@@ -2052,7 +2052,11 @@ factor_to_tagged_numeric <- function(x) {
 #'
 #' @param data [data.frame] Main cycle data to merge medication variables into.
 #' @param meds_data [data.frame] Wide-format medication data (cycles 1-2). Must contain
-#'   `clinicid`, `atc_101a` through `atc_235a`, and `mhr_101b` through `mhr_235b` as columns.
+#'   `clinicid`, ATC code columns `atc_101a`-`atc_115a`, `atc_131a`-`atc_135a`,
+#'   `atc_201a`-`atc_215a`, `atc_231a`-`atc_235a`, and matching time-last-taken columns
+#'   `mhr_101b`-`mhr_115b`, `mhr_131b`-`mhr_135b`, `mhr_201b`-`mhr_215b`,
+#'   `mhr_231b`-`mhr_235b`. Column names are normalized to lowercase before recoding,
+#'   so uppercase variants (e.g., `CLINICID`, `ATC_101A`) are accepted.
 #' @param variables [character] Medication variable names to derive (e.g., `"any_htn_med"`).
 #' @param by [character] Respondent identifier column. Default is `"clinicid"`.
 #' @param meds_database_name [character] Name of the meds database in `variable_details`.
@@ -2063,11 +2067,12 @@ factor_to_tagged_numeric <- function(x) {
 #' @return [data.frame] `data` with derived medication variables merged in as numeric columns.
 #'
 #' @examples
-#' # cycle1 <- recode_meds_cycles1to2(
-#' #   cycle1,
-#' #   cycle1_meds,
-#' #   c("any_htn_med", "diab_med")
-#' # )
+#' result <- recode_meds_cycles1to2(
+#'   cycle1,
+#'   cycle1_meds,
+#'   c("any_htn_med", "diab_med")
+#' )
+#' head(result[, c("clinicid", "any_htn_med", "diab_med")])
 #'
 #' @seealso [recode_meds_cycles3to6()], [aggregate_meds_by_person()]
 #' @export
@@ -2110,8 +2115,12 @@ recode_meds_cycles1to2 <- function(data, meds_data, variables, by = "clinicid",
 #' @return [data.frame] One row per respondent with aggregated medication variables as numeric.
 #'
 #' @examples
-#' # This function is typically called via recode_meds_cycles3to6()
-#' # See that function for usage examples.
+#' df <- data.frame(
+#'   clinicid    = c(1, 1, 2, 2),
+#'   any_htn_med = c(0, 1, 0, 0),
+#'   diab_med    = c(1, 0, 0, 0)
+#' )
+#' aggregate_meds_by_person(df, variables = c("any_htn_med", "diab_med"))
 #'
 #' @seealso [recode_meds_cycles3to6()], [recode_meds_cycles1to2()]
 #' @export
@@ -2155,11 +2164,12 @@ aggregate_meds_by_person <- function(data, variables, by = "clinicid") {
 #' @return [data.frame] `data` with derived medication variables merged in as numeric columns.
 #'
 #' @examples
-#' # cycle3 <- recode_meds_cycles3to6(
-#' #   cycle3,
-#' #   cycle3_meds,
-#' #   c("any_htn_med", "diab_med")
-#' # )
+#' result <- recode_meds_cycles3to6(
+#'   cycle3,
+#'   cycle3_meds,
+#'   c("any_htn_med", "diab_med")
+#' )
+#' head(result[, c("clinicid", "any_htn_med", "diab_med")])
 #'
 #' @seealso [recode_meds_cycles1to2()], [aggregate_meds_by_person()]
 #' @export
@@ -2182,13 +2192,12 @@ recode_meds_cycles3to6 <- function(data, meds_data, variables, by = "clinicid",
 #' @title Recode variables that depend on derived medication variable inputs
 #'
 #' @description Wraps `recodeflow::rec_with_table()` for use after derived medication
-#' variables (e.g., `any_htn_med`, `diab_med`) have been recoded and merged into
-#' the main cycle dataset. Automatically excludes medication-specific rows from
-#' `variable_details` so that `rec_with_table()` does not attempt to re-derive
-#' medication variables from raw ATC/MHR columns.
-#'
-#' Use this instead of `rec_with_table()` when deriving variables whose inputs
-#' include derived medication variables.
+#' variables (e.g., `any_htn_med`, `diab_med`) have been recoded and merged into the
+#' main cycle dataset. Use this instead of `rec_with_table()` when deriving variables
+#' whose inputs include derived medication variables: it automatically excludes
+#' medication-specific rows from `variable_details` so that pre-computed medication
+#' columns are passed through via the `copy` entries rather than re-derived from raw
+#' ATC/MHR columns.
 #'
 #' @param data [data.frame] Main cycle data with derived medication variables already merged.
 #' @param variables [character] Variable names to recode.
@@ -2201,11 +2210,12 @@ recode_meds_cycles3to6 <- function(data, meds_data, variables, by = "clinicid",
 #' @return [data.frame] Recoded data frame returned by `recodeflow::rec_with_table()`.
 #'
 #' @examples
-#' # cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
-#' # cycle3_diab <- recode_after_meds(
-#' #   cycle3,
-#' #   c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
-#' # )
+#' cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
+#' cycle3_diab <- recode_after_meds(
+#'   cycle3,
+#'   c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
+#' )
+#' head(cycle3_diab[, c("clinicid", "diab_status")])
 #'
 #' @seealso [recode_meds_cycles3to6()], [recode_meds_cycles1to2()]
 #' @export

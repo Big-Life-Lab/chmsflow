@@ -38,11 +38,12 @@ medication per respondent), aggregates to one row per respondent, and merges int
 main cycle dataset. Wraps \code{recodeflow::rec_with_table()} and \code{\link[=aggregate_meds_by_person]{aggregate_meds_by_person()}}.
 }
 \examples{
-# cycle3 <- recode_meds_cycles3to6(
-#   cycle3,
-#   cycle3_meds,
-#   c("any_htn_med", "diab_med")
-# )
+result <- recode_meds_cycles3to6(
+  cycle3,
+  cycle3_meds,
+  c("any_htn_med", "diab_med")
+)
+head(result[, c("clinicid", "any_htn_med", "diab_med")])
 
 }
 \seealso{

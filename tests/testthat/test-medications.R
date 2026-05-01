@@ -641,6 +641,52 @@ test_that("recode_after_meds returns exactly one `by` column", {
   expect_equal(sum(names(result) == "clinicid"), 1)
 })
 
+test_that("recode_meds_cycles1to2 normalizes uppercase column names", {
+  # Edge case tests - cycles 1-2 RDC data ships with uppercase columns (CLINICID,
+  # ATC_101A, etc.); the function tolower()s them internally
+  mock_cycle1 <- data.frame(clinicid = c(1, 2), some_var = c(10, 20))
+  atc_cols_upper <- paste0("ATC_", c(101:115, 131:135, 201:215, 231:235), "A")
+  mhr_cols_upper <- paste0("MHR_", c(101:115, 131:135, 201:215, 231:235), "B")
+  mock_meds <- cbind(
+    data.frame(CLINICID = c(1, 2)),
+    setNames(data.frame(matrix(NA_character_, nrow = 2, ncol = length(atc_cols_upper))), atc_cols_upper),
+    setNames(data.frame(matrix(NA_real_, nrow = 2, ncol = length(mhr_cols_upper))), mhr_cols_upper)
+  )
+  mock_meds$ATC_101A[1] <- "C07AA05"
+  mock_meds$MHR_101B[1] <- 1
+  result <- recode_meds_cycles1to2(
+    mock_cycle1, mock_meds, "any_htn_med",
+    meds_database_name = "cycle1_meds"
+  )
+  expect_equal(result$any_htn_med[result$clinicid == 1], 1)
+  expect_equal(result$any_htn_med[result$clinicid == 2], 0)
+})
+
+test_that("derive_hypertension accepts any_htn_med argument by name", {
+  # Edge case tests - guard against rename regression: positional-arg calls would
+  # silently pass even if any_htn_med were renamed back to any_htn_med2
+  result <- derive_hypertension(
+    bpmdpbps = 145,
+    bpmdpbpd = 95,
+    any_htn_med = 1,
+    ccc_32 = 2,
+    cvd_status = 2,
+    diab_status = 2,
+    ckd = 2
+  )
+  expect_true(is.numeric(result) || haven::is_tagged_na(result))
+})
+
+test_that("derive_diabetes_status accepts diab_med argument by name", {
+  # Edge case tests - guard against rename regression
+  result <- derive_diabetes_status(
+    diab_a1c = 1,
+    ccc_51 = 2,
+    diab_med = 0
+  )
+  expect_true(is.numeric(result) || haven::is_tagged_na(result))
+})
+
 test_that("recode_meds_cycles3to6 errors on duplicate clinicid in aggregated meds_data", {
   # Edge case tests - aggregate_meds_by_person collapses to one row per person, so a
   # duplicate clinicid downstream of it would only happen via a programming error.

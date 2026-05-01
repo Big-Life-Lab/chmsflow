@@ -17,7 +17,11 @@ recode_meds_cycles1to2(
 \item{data}{\link{data.frame} Main cycle data to merge medication variables into.}
 
 \item{meds_data}{\link{data.frame} Wide-format medication data (cycles 1-2). Must contain
-\code{clinicid}, \code{atc_101a} through \code{atc_235a}, and \code{mhr_101b} through \code{mhr_235b} as columns.}
+\code{clinicid}, ATC code columns \code{atc_101a}-\code{atc_115a}, \code{atc_131a}-\code{atc_135a},
+\code{atc_201a}-\code{atc_215a}, \code{atc_231a}-\code{atc_235a}, and matching time-last-taken columns
+\code{mhr_101b}-\code{mhr_115b}, \code{mhr_131b}-\code{mhr_135b}, \code{mhr_201b}-\code{mhr_215b},
+\code{mhr_231b}-\code{mhr_235b}. Column names are normalized to lowercase before recoding,
+so uppercase variants (e.g., \code{CLINICID}, \code{ATC_101A}) are accepted.}
 
 \item{variables}{\link{character} Medication variable names to derive (e.g., \code{"any_htn_med"}).}
 
@@ -38,11 +42,12 @@ respondent, up to 80 ATC/MHR columns), and merges into the main cycle dataset. W
 \code{recodeflow::rec_with_table()} and converts factor outputs to numeric.
 }
 \examples{
-# cycle1 <- recode_meds_cycles1to2(
-#   cycle1,
-#   cycle1_meds,
-#   c("any_htn_med", "diab_med")
-# )
+result <- recode_meds_cycles1to2(
+  cycle1,
+  cycle1_meds,
+  c("any_htn_med", "diab_med")
+)
+head(result[, c("clinicid", "any_htn_med", "diab_med")])
 
 }
 \seealso{

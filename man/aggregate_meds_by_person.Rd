@@ -23,8 +23,12 @@ by taking the maximum value of each medication variable across all rows. A resul
 all rows for a respondent are missing.
 }
 \examples{
-# This function is typically called via recode_meds_cycles3to6()
-# See that function for usage examples.
+df <- data.frame(
+  clinicid    = c(1, 1, 2, 2),
+  any_htn_med = c(0, 1, 0, 0),
+  diab_med    = c(1, 0, 0, 0)
+)
+aggregate_meds_by_person(df, variables = c("any_htn_med", "diab_med"))
 
 }
 \seealso{
