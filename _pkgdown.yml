@@ -93,7 +93,6 @@ reference:
   - is_nsaid
   - is_nsaid_med_cycles1to2
   - is_other_antihtn_med
-  - is_taking_drug_class
 - title: Medication recoding functions
   desc: Functions for recoding and aggregating CHMS medication variables
   contents:

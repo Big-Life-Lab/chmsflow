@@ -313,13 +313,6 @@ function_naming_schema:
     # --------------------------------------------------------------------------
     # Medications - element-wise (medications.R)
     # --------------------------------------------------------------------------
-    - name: "is_taking_drug_class"
-      verb: "is_"
-      file: "medications.R"
-      description: "Internal helper for medication classification"
-      parameters: ["df", "class_var_name", "med_vars", "last_taken_vars", "class_condition_fun", "log_level", "overwrite"]
-      exported: false
-
     - name: "is_beta_blocker"
       verb: "is_"
       file: "medications.R"
