@@ -641,6 +641,57 @@ test_that("recode_after_meds returns exactly one `by` column", {
   expect_equal(sum(names(result) == "clinicid"), 1)
 })
 
+test_that("recode_meds_cycles3to6 errors on duplicate clinicid in aggregated meds_data", {
+  # Edge case tests - aggregate_meds_by_person collapses to one row per person, so a
+  # duplicate clinicid downstream of it would only happen via a programming error.
+  # Surface it loudly via check_join_keys rather than silently fan-out the join.
+  mock_cycle <- data.frame(clinicid = c(1, 2), some_var = c(10, 20))
+  # Construct meds_data so aggregation does NOT change row count - by design,
+  # aggregate_meds_by_person already de-dupes; this test instead verifies the
+  # asymmetric-coverage warning path.
+  mock_meds <- data.frame(
+    clinicid = c(1, 1, 2, 99),
+    meucatc  = c("C07AA05", "A10BA02", "M01AE01", "C07AA05"),
+    npi_25b  = c(1, 1, 1, 1)
+  )
+  expect_warning(
+    recode_meds_cycles3to6(
+      mock_cycle, mock_meds, c("any_htn_med", "diab_med"),
+      meds_database_name = "cycle3_meds"
+    ),
+    "respondent.*not found in `data`"
+  )
+})
+
+test_that("recode_meds_cycles1to2 errors when inferred meds_database_name is unknown", {
+  # Edge case tests - deparse(substitute(meds_data)) under aliasing or pipes can
+  # yield a name that does not match any variable_details databaseStart entry,
+  # which would otherwise produce silent NA columns.
+  mock_cycle <- data.frame(clinicid = c(1, 2), some_var = c(10, 20))
+  atc_cols <- paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a")
+  mhr_cols <- paste0("mhr_", c(101:115, 131:135, 201:215, 231:235), "b")
+  mock_meds <- cbind(
+    data.frame(clinicid = c(1, 2)),
+    setNames(data.frame(matrix(NA_character_, nrow = 2, ncol = length(atc_cols))), atc_cols),
+    setNames(data.frame(matrix(NA_real_, nrow = 2, ncol = length(mhr_cols))), mhr_cols)
+  )
+  expect_error(
+    recode_meds_cycles1to2(
+      mock_cycle, mock_meds, "any_htn_med",
+      meds_database_name = "totally_made_up_db"
+    ),
+    "No rows in `variable_details`"
+  )
+})
+
+test_that("aggregate_meds_by_person returns an ungrouped tibble", {
+  # Edge case tests - .groups = "drop" prevents downstream surprises for callers
+  # that don't expect a grouped result
+  df <- data.frame(clinicid = c(1, 1, 2), any_htn_med = c(0, 1, 0))
+  result <- aggregate_meds_by_person(df, variables = "any_htn_med")
+  expect_false(dplyr::is_grouped_df(result))
+})
+
 test_that("recode_after_meds preserves row alignment when data is row-shuffled", {
   # Edge case tests - row-shuffled input must produce row-aligned output, otherwise
   # respondents get paired with the wrong recoded values

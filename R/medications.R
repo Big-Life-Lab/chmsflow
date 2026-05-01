@@ -1942,6 +1942,80 @@ is_diab_med_cycles1to2 <- function(
   return(med_vector)
 }
 
+#' Identify variable_details rows whose databaseStart entries are all `_meds` databases
+#'
+#' Internal helper for [recode_after_meds()]. The previous `grepl("_meds", ...)` was an
+#' unanchored substring match: a future databaseStart like `non_meds_cohort` or
+#' `_medstudy` would be silently dropped. This helper splits databaseStart by comma and
+#' returns TRUE only when every token ends in `_meds`, so mixed rows (e.g. a `copy` row
+#' covering `cycle1, cycle2_meds`) are kept.
+#'
+#' @param database_start Character vector of databaseStart entries, e.g.
+#'   `c("cycle1_meds, cycle2_meds", "cycle1, cycle2")`.
+#' @return Logical vector, same length as `database_start`.
+#' @noRd
+is_meds_only_database <- function(database_start) {
+  vapply(
+    strsplit(as.character(database_start), ",\\s*"),
+    function(tokens) length(tokens) > 0 && all(grepl("_meds$", trimws(tokens))),
+    logical(1)
+  )
+}
+
+#' Stop if a database name does not appear in any variable_details databaseStart entry
+#'
+#' Internal helper. When wrapper functions derive `database_name` /
+#' `meds_database_name` via `deparse(substitute())`, an unrecognised name causes
+#' `rec_with_table()` to return silent NAs. This helper raises an actionable error
+#' pointing the user to the explicit-override argument.
+#'
+#' @noRd
+validate_database_name <- function(database_name, variable_details, override_arg) {
+  db_starts <- strsplit(as.character(variable_details$databaseStart), ",\\s*")
+  matches <- vapply(db_starts, function(x) database_name %in% trimws(x), logical(1))
+  if (!any(matches)) {
+    stop(sprintf(
+      "No rows in `variable_details` have `databaseStart` matching '%s'. The name was inferred from the calling argument; pass `%s = '<name>'` explicitly to override (e.g. `%s = 'cycle1_meds'`).",
+      database_name, override_arg, override_arg
+    ), call. = FALSE)
+  }
+  invisible(NULL)
+}
+
+#' Validate join keys between main cycle data and recoded medication data
+#'
+#' Internal helper for [recode_meds_cycles1to2()] and [recode_meds_cycles3to6()].
+#' `dplyr::left_join` silently fans out duplicate keys, silently leaves untagged NA
+#' for missing keys, and silently drops keys present only on the right. This helper
+#' makes all three audible: stop on duplicate keys (never valid in CHMS), warn with
+#' counts on asymmetric coverage.
+#'
+#' @noRd
+check_join_keys <- function(data, target, by, target_label) {
+  target_keys <- target[[by]]
+  if (any(duplicated(target_keys))) {
+    stop(sprintf(
+      "%d duplicate `%s` value(s) in %s; refusing to left_join to prevent silent row fan-out into `data`.",
+      sum(duplicated(target_keys)), by, target_label
+    ), call. = FALSE)
+  }
+  missing_in_target <- setdiff(data[[by]], target_keys)
+  if (length(missing_in_target) > 0) {
+    warning(sprintf(
+      "%d respondent(s) in `data` not found in %s; medication columns will be NA.",
+      length(missing_in_target), target_label
+    ), call. = FALSE)
+  }
+  missing_in_data <- setdiff(target_keys, data[[by]])
+  if (length(missing_in_data) > 0) {
+    warning(sprintf(
+      "%d respondent(s) in %s not found in `data`; rows will be dropped from result.",
+      length(missing_in_data), target_label
+    ), call. = FALSE)
+  }
+  invisible(NULL)
+}
+
 #' Convert a recoded factor or character to numeric while preserving tagged NAs
 #'
 #' Internal helper used by [recode_meds_cycles1to2()] and [aggregate_meds_by_person()].
@@ -2001,6 +2075,7 @@ recode_meds_cycles1to2 <- function(data, meds_data, variables, by = "clinicid",
                                    meds_database_name = NULL,
                                    variable_details = chmsflow::variable_details) {
   if (is.null(meds_database_name)) meds_database_name <- deparse(substitute(meds_data))
+  validate_database_name(meds_database_name, variable_details, "meds_database_name")
   names(meds_data) <- tolower(names(meds_data))
   atc_mhr_cols <- c(
     paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a"),
@@ -2017,6 +2092,7 @@ recode_meds_cycles1to2 <- function(data, meds_data, variables, by = "clinicid",
       dplyr::all_of(variables),
       ~ factor_to_tagged_numeric(.x)
     ))
+  check_join_keys(data, meds_recoded, by, "meds_data")
   dplyr::left_join(data, meds_recoded, by = by)
 }
 
@@ -2042,19 +2118,22 @@ recode_meds_cycles1to2 <- function(data, meds_data, variables, by = "clinicid",
 aggregate_meds_by_person <- function(data, variables, by = "clinicid") {
   data |>
     dplyr::group_by(dplyr::across(dplyr::all_of(by))) |>
-    dplyr::summarize(dplyr::across(
-      dplyr::all_of(variables),
-      ~ {
-        vals <- factor_to_tagged_numeric(.x)
-        if (all(haven::is_tagged_na(vals, "a"))) {
-          haven::tagged_na("a")
-        } else if (all(is.na(vals))) {
-          haven::tagged_na("b")
-        } else {
-          max(vals, na.rm = TRUE)
+    dplyr::summarize(
+      dplyr::across(
+        dplyr::all_of(variables),
+        ~ {
+          vals <- factor_to_tagged_numeric(.x)
+          if (all(haven::is_tagged_na(vals, "a"))) {
+            haven::tagged_na("a")
+          } else if (all(is.na(vals))) {
+            haven::tagged_na("b")
+          } else {
+            max(vals, na.rm = TRUE)
+          }
         }
-      }
-    ))
+      ),
+      .groups = "drop"
+    )
 }
 
 #' @title Recode medication variables for cycles 3-6 (long format)
@@ -2088,6 +2167,7 @@ recode_meds_cycles3to6 <- function(data, meds_data, variables, by = "clinicid",
                                    meds_database_name = NULL,
                                    variable_details = chmsflow::variable_details) {
   if (is.null(meds_database_name)) meds_database_name <- deparse(substitute(meds_data))
+  validate_database_name(meds_database_name, variable_details, "meds_database_name")
   meds_recoded <- recodeflow::rec_with_table(
     meds_data,
     c(by, "meucatc", "npi_25b", variables),
@@ -2095,6 +2175,7 @@ recode_meds_cycles3to6 <- function(data, meds_data, variables, by = "clinicid",
     variable_details = variable_details
   ) |>
     aggregate_meds_by_person(variables = variables, by = by)
+  check_join_keys(data, meds_recoded, by, "aggregated meds_data")
   dplyr::left_join(data, meds_recoded, by = by)
 }
 
@@ -2132,7 +2213,8 @@ recode_after_meds <- function(data, variables, by = "clinicid",
                               database_name = NULL,
                               variable_details = chmsflow::variable_details) {
   if (is.null(database_name)) database_name <- deparse(substitute(data))
-  variable_details <- variable_details[!grepl("_meds", variable_details$databaseStart), ]
+  variable_details <- variable_details[!is_meds_only_database(variable_details$databaseStart), ]
+  validate_database_name(database_name, variable_details, "database_name")
   recoded <- recodeflow::rec_with_table(
     data,
     variables,
