@@ -2,7 +2,7 @@
 % Please edit documentation in R/exercise.R
 \name{calculate_exercise_daily_avg}
 \alias{calculate_exercise_daily_avg}
-\title{Average minutes of exercise per day for week-long accelerometer data}
+\title{Average daily minutes of moderate-to-vigorous physical activity (MVPA) from accelerometer data}
 \usage{
 calculate_exercise_daily_avg(
   ammdmva1,
@@ -15,27 +15,27 @@ calculate_exercise_daily_avg(
 )
 }
 \arguments{
-\item{ammdmva1}{\link{numeric} A numeric representing minutes of exercise on Day 1 of accelerometer measurement.}
+\item{ammdmva1}{\link{numeric} A numeric representing minutes of moderate-to-vigorous physical activity (MVPA) on Day 1 of accelerometer measurement.}
 
-\item{ammdmva2}{\link{numeric} A numeric representing minutes of exercise on Day 2 of accelerometer measurement.}
+\item{ammdmva2}{\link{numeric} A numeric representing minutes of MVPA on Day 2 of accelerometer measurement.}
 
-\item{ammdmva3}{\link{numeric} A numeric representing minutes of exercise on Day 3 of accelerometer measurement.}
+\item{ammdmva3}{\link{numeric} A numeric representing minutes of MVPA on Day 3 of accelerometer measurement.}
 
-\item{ammdmva4}{\link{numeric} A numeric representing minutes of exercise on Day 4 of accelerometer measurement.}
+\item{ammdmva4}{\link{numeric} A numeric representing minutes of MVPA on Day 4 of accelerometer measurement.}
 
-\item{ammdmva5}{\link{numeric} A numeric representing minutes of exercise on Day 5 of accelerometer measurement.}
+\item{ammdmva5}{\link{numeric} A numeric representing minutes of MVPA on Day 5 of accelerometer measurement.}
 
-\item{ammdmva6}{\link{numeric} A numeric representing minutes of exercise on Day 6 of accelerometer measurement.}
+\item{ammdmva6}{\link{numeric} A numeric representing minutes of MVPA on Day 6 of accelerometer measurement.}
 
-\item{ammdmva7}{\link{numeric} A numeric representing minutes of exercise on Day 7 of accelerometer measurement.}
+\item{ammdmva7}{\link{numeric} A numeric representing minutes of MVPA on Day 7 of accelerometer measurement.}
 }
 \value{
-\link{numeric} The average minutes of exercise per day across a week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
+\link{numeric} The average daily minutes of MVPA across a week of accelerometer use. If inputs are invalid or out of bounds, the function returns a tagged NA.
 }
 \description{
-This function calculates the average minutes of exercise per day across a week of accelerometer data. It takes seven
-parameters, each representing the minutes of exercise on a specific day (Day 1 to Day 7) of accelerometer measurement.
-The function computes the average of these values to obtain the average minutes of exercise per day.
+This function calculates the average daily minutes of moderate-to-vigorous physical activity (MVPA)
+across a week of accelerometer measurement. It takes seven parameters, each representing the MVPA minutes on a
+specific day (Day 1 to Day 7). The function computes the daily average across the week.
 }
 \details{
 This function processes physical activity data from accelerometer measurements

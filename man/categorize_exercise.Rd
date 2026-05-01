@@ -2,7 +2,7 @@
 % Please edit documentation in R/exercise.R
 \name{categorize_exercise}
 \alias{categorize_exercise}
-\title{Categorical weekly physical activity indicator}
+\title{Categorical weekly moderate-to-vigorous physical activity (MVPA) indicator}
 \usage{
 categorize_exercise(exercise_min_week)
 }
@@ -11,7 +11,7 @@ categorize_exercise(exercise_min_week)
 physical activity (MVPA) per week.}
 }
 \value{
-\link{integer} A categorical indicating the physical activity category:
+\link{integer} A categorical indicating the MVPA category:
 \itemize{
 \item 1: Meets or exceeds the recommended 150 minutes of MVPA per week (exercise_min_week >= 150)
 \item 2: Below the recommended 150 minutes of MVPA per week (exercise_min_week < 150)
@@ -20,7 +20,8 @@ physical activity (MVPA) per week.}
 }
 }
 \description{
-This function categorizes individuals' weekly physical activity levels based on a threshold value.
+This function categorizes individuals' weekly moderate-to-vigorous physical activity (MVPA)
+levels against the 150 minutes/week guideline.
 }
 \details{
 This function applies the national physical activity guideline of 150 minutes of moderate-to-vigorous physical activity (MVPA) per week.
