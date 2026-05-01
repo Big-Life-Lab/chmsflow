@@ -1,8 +1,6 @@
 ---
 title: "Recoding CHMS medication variables"
 format: html
-execute:
-  eval: false
 vignette: >
   %\VignetteIndexEntry{Recoding CHMS medication variables}
   %\VignetteEngine{quarto::html}
