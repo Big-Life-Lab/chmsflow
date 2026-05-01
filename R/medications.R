@@ -561,8 +561,6 @@ is_bb_med_cycles1to2 <- function(
     has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
-
-  return(med_vector)
 }
 
 #' @title ACE inhibitors - cycles 1-2
@@ -744,8 +742,6 @@ is_ace_med_cycles1to2 <- function(
     has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
-
-  return(med_vector)
 }
 
 #' @title Diuretics - cycles 1-2
@@ -927,8 +923,6 @@ is_diur_med_cycles1to2 <- function(
     has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
-
-  return(med_vector)
 }
 
 #' @title Calcium channel blockers - cycles 1-2
@@ -1110,8 +1104,6 @@ is_ccb_med_cycles1to2 <- function(
     has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
-
-  return(med_vector)
 }
 
 #' @title Other anti-hypertensive medications - cycles 1-2
@@ -1293,8 +1285,6 @@ is_misc_htn_med_cycles1to2 <- function(
     has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
-
-  return(med_vector)
 }
 
 #' @title Any anti-hypertensive medications - cycles 1-2
@@ -1476,8 +1466,6 @@ is_any_htn_med_cycles1to2 <- function(
     has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
-
-  return(med_vector)
 }
 
 #' @title Non-steroidal anti-inflammatory drugs (NSAIDs) - cycles 1-2
@@ -1659,8 +1647,6 @@ is_nsaid_med_cycles1to2 <- function(
     has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
-
-  return(med_vector)
 }
 
 #' @title Diabetes medications - cycles 1-2
@@ -1842,8 +1828,6 @@ is_diab_med_cycles1to2 <- function(
     has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
-
-  return(med_vector)
 }
 
 #' Identify variable_details rows whose databaseStart entries are all `_meds` databases
