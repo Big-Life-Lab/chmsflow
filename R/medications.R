@@ -1942,6 +1942,34 @@ is_diab_med_cycles1to2 <- function(
   return(med_vector)
 }
 
+#' Convert a recoded factor or character to numeric while preserving tagged NAs
+#'
+#' Internal helper used by [recode_meds_cycles1to2()] and [aggregate_meds_by_person()].
+#' `as.numeric(as.character(.x))` strips `haven::tagged_na()` information, collapsing
+#' valid skips (`NA::a`) and missing/refused (`NA::b`) into plain `NA_real_`. This
+#' helper restores those tags so downstream consumers (e.g. `derive_hypertension()`
+#' checking `is_tagged_na(any_htn_med, "b")`) behave correctly.
+#'
+#' @param x A factor, character, or numeric vector. Tagged-NA inputs are preserved.
+#' @return Numeric vector with `tagged_na("a")` / `tagged_na("b")` restored where present.
+#' @noRd
+factor_to_tagged_numeric <- function(x) {
+  was_a <- if (is.numeric(x)) haven::is_tagged_na(x, "a") else rep(FALSE, length(x))
+  was_b <- if (is.numeric(x)) haven::is_tagged_na(x, "b") else rep(FALSE, length(x))
+
+  s <- as.character(x)
+  out <- suppressWarnings(as.numeric(s))
+
+  not_na_s <- !is.na(s)
+  out[not_na_s & s == "NA::a"] <- haven::tagged_na("a")
+  out[not_na_s & s == "NA::b"] <- haven::tagged_na("b")
+
+  out[was_a] <- haven::tagged_na("a")
+  out[was_b] <- haven::tagged_na("b")
+
+  out
+}
+
 #' @title Recode medication variables for cycles 1-2 (wide format)
 #'
 #' @description Recodes medication variables from cycles 1-2 wide-format data (one row per
@@ -1987,7 +2015,7 @@ recode_meds_cycles1to2 <- function(data, meds_data, variables, by = "clinicid",
     dplyr::select(dplyr::all_of(c(by, variables))) |>
     dplyr::mutate(dplyr::across(
       dplyr::all_of(variables),
-      ~ as.numeric(as.character(.x))
+      ~ factor_to_tagged_numeric(.x)
     ))
   dplyr::left_join(data, meds_recoded, by = by)
 }
@@ -2017,8 +2045,10 @@ aggregate_meds_by_person <- function(data, variables, by = "clinicid") {
     dplyr::summarize(dplyr::across(
       dplyr::all_of(variables),
       ~ {
-        vals <- as.numeric(as.character(.x))
-        if (all(is.na(vals))) {
+        vals <- factor_to_tagged_numeric(.x)
+        if (all(haven::is_tagged_na(vals, "a"))) {
+          haven::tagged_na("a")
+        } else if (all(is.na(vals))) {
           haven::tagged_na("b")
         } else {
           max(vals, na.rm = TRUE)

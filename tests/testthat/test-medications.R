@@ -544,6 +544,46 @@ test_that("aggregate_meds_by_person returns tagged_na('b') when all values are N
   expect_true(haven::is_tagged_na(result$any_htn_med[1], "b"))
 })
 
+test_that("aggregate_meds_by_person returns tagged_na('a') when all values are tagged_na('a')", {
+  # Respondent legitimately not in meds sub-sample - must not be reclassified as missing
+  df <- data.frame(
+    clinicid = c(1, 1, 1),
+    any_htn_med = c(haven::tagged_na("a"), haven::tagged_na("a"), haven::tagged_na("a"))
+  )
+  result <- aggregate_meds_by_person(df, variables = "any_htn_med")
+  expect_true(haven::is_tagged_na(result$any_htn_med[1], "a"))
+})
+
+test_that("aggregate_meds_by_person prefers concrete value over tagged_na('a')", {
+  # Mixed valid skip + concrete: concrete wins via max()
+  df <- data.frame(
+    clinicid = c(1, 1, 1),
+    any_htn_med = c(haven::tagged_na("a"), 0, 1)
+  )
+  result <- aggregate_meds_by_person(df, variables = "any_htn_med")
+  expect_equal(unname(result$any_htn_med[1]), 1)
+})
+
+test_that("aggregate_meds_by_person prefers concrete value over tagged_na('b')", {
+  # Mixed missing + concrete: concrete wins via max()
+  df <- data.frame(
+    clinicid = c(1, 1),
+    any_htn_med = c(haven::tagged_na("b"), 0)
+  )
+  result <- aggregate_meds_by_person(df, variables = "any_htn_med")
+  expect_equal(unname(result$any_htn_med[1]), 0)
+})
+
+test_that("aggregate_meds_by_person treats mixed tags without concretes as missing", {
+  # Mixed tagged_na('a') and tagged_na('b'): falls through to 'b'
+  df <- data.frame(
+    clinicid = c(1, 1),
+    any_htn_med = c(haven::tagged_na("a"), haven::tagged_na("b"))
+  )
+  result <- aggregate_meds_by_person(df, variables = "any_htn_med")
+  expect_true(haven::is_tagged_na(result$any_htn_med[1], "b"))
+})
+
 # Test for recode_meds_cycles3to6
 test_that("recode_meds_cycles3to6 merges numeric med variables into main cycle data", {
   # General tests - long-format meds data (one row per medication per person)
