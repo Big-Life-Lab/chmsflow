@@ -614,14 +614,10 @@ test_that("derive_diabetes_status accepts diab_med argument by name", {
   expect_true(is.numeric(result) || haven::is_tagged_na(result))
 })
 
-test_that("recode_meds_cycles3to6 errors on duplicate clinicid in aggregated meds_data", {
-  # Edge case tests - aggregate_meds_by_person collapses to one row per person, so a
-  # duplicate clinicid downstream of it would only happen via a programming error.
-  # Surface it loudly via check_join_keys rather than silently fan-out the join.
+test_that("recode_meds_cycles3to6 warns when meds respondents are absent from cycle data", {
+  # Edge case tests - clinicid 99 exists in meds_data but not in cycle data,
+  # so check_join_keys should warn that those rows will be dropped from result.
   mock_cycle <- data.frame(clinicid = c(1, 2), some_var = c(10, 20))
-  # Construct meds_data so aggregation does NOT change row count - by design,
-  # aggregate_meds_by_person already de-dupes; this test instead verifies the
-  # asymmetric-coverage warning path.
   mock_meds <- data.frame(
     clinicid = c(1, 1, 2, 99),
     meucatc  = c("C07AA05", "A10BA02", "M01AE01", "C07AA05"),
@@ -633,6 +629,24 @@ test_that("recode_meds_cycles3to6 errors on duplicate clinicid in aggregated med
       meds_database_name = "cycle3_meds"
     ),
     "respondent.*not found in `data`"
+  )
+})
+
+test_that("recode_meds_cycles3to6 warns when cycle respondents are absent from meds_data", {
+  # Edge case tests - clinicid 3 exists in cycle data but not in meds_data,
+  # so check_join_keys should warn that medication columns will be NA.
+  mock_cycle <- data.frame(clinicid = c(1, 2, 3), some_var = c(10, 20, 30))
+  mock_meds <- data.frame(
+    clinicid = c(1, 2),
+    meucatc  = c("C07AA05", "M01AE01"),
+    npi_25b  = c(1, 1)
+  )
+  expect_warning(
+    recode_meds_cycles3to6(
+      mock_cycle, mock_meds, "any_htn_med",
+      meds_database_name = "cycle3_meds"
+    ),
+    "respondent.*not found in.*meds_data"
   )
 })
 

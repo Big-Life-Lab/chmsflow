@@ -2124,6 +2124,8 @@ recode_after_meds <- function(data, variables, by = "clinicid",
       nrow(recoded) == nrow(data)
   )
   if (!(by %in% names(recoded))) {
+    # rec_with_table() preserves input row order; the row-shuffle test in
+    # test-medications.R guards against any future regression of that contract.
     recoded <- dplyr::bind_cols(data[, by, drop = FALSE], recoded)
   }
   recoded

@@ -162,9 +162,16 @@ is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 6) # returns 0 (not taken
 ```{r, warning=FALSE}
 cycle3_meds |>
   mutate(ace_med = is_ace_inhibitor(meucatc, npi_25b)) |>
-  group_by(clinicid) |>
-  summarize(ace_med = max(as.numeric(as.character(ace_med))))
+  aggregate_meds_by_person(variables = "ace_med")
 ```
+
+::: {.callout-warning}
+Avoid using `as.numeric(as.character(.x))` to aggregate medication columns.
+That pattern strips `tagged_na("a")` (valid skip) and `tagged_na("b")`
+(missing/refused) distinctions, collapsing them into plain `NA`.
+Use `aggregate_meds_by_person()` instead — it preserves tagged-NA semantics
+across the aggregation.
+:::
 
 ## Appendix: Installation
 
