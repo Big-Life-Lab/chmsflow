@@ -170,83 +170,83 @@ is_misc_htn_med_cycles1to2(
 
 \item{mhr_101b}{\link{integer} Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).}
 
-\item{mhr_102b}{\link{integer} Response for when the second prescription medication was last taken (1–6).}
+\item{mhr_102b}{\link{integer} Response for when the second prescription medication was last taken (1-6).}
 
-\item{mhr_103b}{\link{integer} Response for when the third prescription medication was last taken (1–6).}
+\item{mhr_103b}{\link{integer} Response for when the third prescription medication was last taken (1-6).}
 
-\item{mhr_104b}{\link{integer} Response for when the fourth prescription medication was last taken (1–6).}
+\item{mhr_104b}{\link{integer} Response for when the fourth prescription medication was last taken (1-6).}
 
-\item{mhr_105b}{\link{integer} Response for when the fifth prescription medication was last taken (1–6).}
+\item{mhr_105b}{\link{integer} Response for when the fifth prescription medication was last taken (1-6).}
 
-\item{mhr_106b}{\link{integer} Response for when the sixth prescription medication was last taken (1–6).}
+\item{mhr_106b}{\link{integer} Response for when the sixth prescription medication was last taken (1-6).}
 
-\item{mhr_107b}{\link{integer} Response for when the seventh prescription medication was last taken (1–6).}
+\item{mhr_107b}{\link{integer} Response for when the seventh prescription medication was last taken (1-6).}
 
-\item{mhr_108b}{\link{integer} Response for when the eighth prescription medication was last taken (1–6).}
+\item{mhr_108b}{\link{integer} Response for when the eighth prescription medication was last taken (1-6).}
 
-\item{mhr_109b}{\link{integer} Response for when the ninth prescription medication was last taken (1–6).}
+\item{mhr_109b}{\link{integer} Response for when the ninth prescription medication was last taken (1-6).}
 
-\item{mhr_110b}{\link{integer} Response for when the tenth prescription medication was last taken (1–6).}
+\item{mhr_110b}{\link{integer} Response for when the tenth prescription medication was last taken (1-6).}
 
-\item{mhr_111b}{\link{integer} Response for when the eleventh prescription medication was last taken (1–6).}
+\item{mhr_111b}{\link{integer} Response for when the eleventh prescription medication was last taken (1-6).}
 
-\item{mhr_112b}{\link{integer} Response for when the twelfth prescription medication was last taken (1–6).}
+\item{mhr_112b}{\link{integer} Response for when the twelfth prescription medication was last taken (1-6).}
 
-\item{mhr_113b}{\link{integer} Response for when the thirteenth prescription medication was last taken (1–6).}
+\item{mhr_113b}{\link{integer} Response for when the thirteenth prescription medication was last taken (1-6).}
 
-\item{mhr_114b}{\link{integer} Response for when the fourteenth prescription medication was last taken (1–6).}
+\item{mhr_114b}{\link{integer} Response for when the fourteenth prescription medication was last taken (1-6).}
 
-\item{mhr_115b}{\link{integer} Response for when the fifteenth prescription medication was last taken (1–6).}
+\item{mhr_115b}{\link{integer} Response for when the fifteenth prescription medication was last taken (1-6).}
 
-\item{mhr_201b}{\link{integer} Response for when the first over-the-counter medication was last taken (1–6).}
+\item{mhr_201b}{\link{integer} Response for when the first over-the-counter medication was last taken (1-6).}
 
-\item{mhr_202b}{\link{integer} Response for when the second over-the-counter medication was last taken (1–6).}
+\item{mhr_202b}{\link{integer} Response for when the second over-the-counter medication was last taken (1-6).}
 
-\item{mhr_203b}{\link{integer} Response for when the third over-the-counter medication was last taken (1–6).}
+\item{mhr_203b}{\link{integer} Response for when the third over-the-counter medication was last taken (1-6).}
 
-\item{mhr_204b}{\link{integer} Response for when the fourth over-the-counter medication was last taken (1–6).}
+\item{mhr_204b}{\link{integer} Response for when the fourth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_205b}{\link{integer} Response for when the fifth over-the-counter medication was last taken (1–6).}
+\item{mhr_205b}{\link{integer} Response for when the fifth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_206b}{\link{integer} Response for when the sixth over-the-counter medication was last taken (1–6).}
+\item{mhr_206b}{\link{integer} Response for when the sixth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_207b}{\link{integer} Response for when the seventh over-the-counter medication was last taken (1–6).}
+\item{mhr_207b}{\link{integer} Response for when the seventh over-the-counter medication was last taken (1-6).}
 
-\item{mhr_208b}{\link{integer} Response for when the eighth over-the-counter medication was last taken (1–6).}
+\item{mhr_208b}{\link{integer} Response for when the eighth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_209b}{\link{integer} Response for when the ninth over-the-counter medication was last taken (1–6).}
+\item{mhr_209b}{\link{integer} Response for when the ninth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_210b}{\link{integer} Response for when the tenth over-the-counter medication was last taken (1–6).}
+\item{mhr_210b}{\link{integer} Response for when the tenth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_211b}{\link{integer} Response for when the eleventh over-the-counter medication was last taken (1–6).}
+\item{mhr_211b}{\link{integer} Response for when the eleventh over-the-counter medication was last taken (1-6).}
 
-\item{mhr_212b}{\link{integer} Response for when the twelfth over-the-counter medication was last taken (1–6).}
+\item{mhr_212b}{\link{integer} Response for when the twelfth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_213b}{\link{integer} Response for when the thirteenth over-the-counter medication was last taken (1–6).}
+\item{mhr_213b}{\link{integer} Response for when the thirteenth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_214b}{\link{integer} Response for when the fourteenth over-the-counter medication was last taken (1–6).}
+\item{mhr_214b}{\link{integer} Response for when the fourteenth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_215b}{\link{integer} Response for when the fifteenth over-the-counter medication was last taken (1–6).}
+\item{mhr_215b}{\link{integer} Response for when the fifteenth over-the-counter medication was last taken (1-6).}
 
-\item{mhr_131b}{\link{integer} Response for when the first new prescription medication was last taken (1–6).}
+\item{mhr_131b}{\link{integer} Response for when the first new prescription medication was last taken (1-6).}
 
-\item{mhr_132b}{\link{integer} Response for when the second new prescription medication was last taken (1–6).}
+\item{mhr_132b}{\link{integer} Response for when the second new prescription medication was last taken (1-6).}
 
-\item{mhr_133b}{\link{integer} Response for when the third new prescription medication was last taken (1–6).}
+\item{mhr_133b}{\link{integer} Response for when the third new prescription medication was last taken (1-6).}
 
-\item{mhr_134b}{\link{integer} Response for when the fourth new prescription medication was last taken (1–6).}
+\item{mhr_134b}{\link{integer} Response for when the fourth new prescription medication was last taken (1-6).}
 
-\item{mhr_135b}{\link{integer} Response for when the fifth new prescription medication was last taken (1–6).}
+\item{mhr_135b}{\link{integer} Response for when the fifth new prescription medication was last taken (1-6).}
 
-\item{mhr_231b}{\link{integer} Response for when the first new over-the-counter medication was last taken (1–6).}
+\item{mhr_231b}{\link{integer} Response for when the first new over-the-counter medication was last taken (1-6).}
 
-\item{mhr_232b}{\link{integer} Response for when the second new over-the-counter medication was last taken (1–6).}
+\item{mhr_232b}{\link{integer} Response for when the second new over-the-counter medication was last taken (1-6).}
 
-\item{mhr_233b}{\link{integer} Response for when the third new over-the-counter medication was last taken (1–6).}
+\item{mhr_233b}{\link{integer} Response for when the third new over-the-counter medication was last taken (1-6).}
 
-\item{mhr_234b}{\link{integer} Response for when the fourth new over-the-counter medication was last taken (1–6).}
+\item{mhr_234b}{\link{integer} Response for when the fourth new over-the-counter medication was last taken (1-6).}
 
-\item{mhr_235b}{\link{integer} Response for when the fifth new over-the-counter medication was last taken (1–6).}
+\item{mhr_235b}{\link{integer} Response for when the fifth new over-the-counter medication was last taken (1-6).}
 }
 \value{
 \link{numeric} Returns 1 if the person is taking another type of anti-hypertensive medication, 0 otherwise. If all medication information is missing, it returns a tagged NA.

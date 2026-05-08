@@ -428,45 +428,45 @@ is_diabetes_med <- function(meucatc, npi_25b) {
 #' @param atc_234a [character] ATC code of respondent's fourth new over-the-counter medication.
 #' @param atc_235a [character] ATC code of respondent's fifth new over-the-counter medication.
 #' @param mhr_101b [integer] Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).
-#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1–6).
-#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1–6).
-#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1–6).
-#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1–6).
-#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1–6).
-#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1–6).
-#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1–6).
-#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1–6).
-#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1–6).
-#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1–6).
-#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1–6).
-#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1–6).
-#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1–6).
-#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1–6).
-#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1–6).
-#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1–6).
-#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1–6).
-#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1–6).
-#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1–6).
-#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1–6).
-#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1–6).
-#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1–6).
-#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1–6).
-#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1–6).
-#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1–6).
-#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1–6).
-#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1–6).
-#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1–6).
-#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1–6).
-#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1–6).
-#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1–6).
-#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1–6).
-#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1–6).
-#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1–6).
-#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1–6).
-#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1–6).
+#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1-6).
+#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1-6).
+#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1-6).
+#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1-6).
+#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1-6).
+#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1-6).
+#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1-6).
+#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1-6).
+#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1-6).
+#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1-6).
+#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1-6).
+#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1-6).
+#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1-6).
+#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1-6).
+#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1-6).
+#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1-6).
+#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1-6).
+#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1-6).
+#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1-6).
+#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1-6).
+#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1-6).
+#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1-6).
+#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1-6).
+#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1-6).
+#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1-6).
+#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1-6).
+#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1-6).
+#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1-6).
+#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1-6).
+#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1-6).
+#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1-6).
+#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1-6).
+#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1-6).
+#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1-6).
+#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1-6).
+#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1-6).
 #'
 #' @return [numeric] Returns 1 if the respondent is taking beta blockers, 0 otherwise. If all medication information is missing, returns a tagged NA.
 #'
@@ -609,45 +609,45 @@ is_bb_med_cycles1to2 <- function(
 #' @param atc_234a [character] ATC code of respondent's fourth new over-the-counter medication.
 #' @param atc_235a [character] ATC code of respondent's fifth new over-the-counter medication.
 #' @param mhr_101b [integer] Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).
-#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1–6).
-#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1–6).
-#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1–6).
-#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1–6).
-#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1–6).
-#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1–6).
-#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1–6).
-#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1–6).
-#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1–6).
-#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1–6).
-#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1–6).
-#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1–6).
-#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1–6).
-#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1–6).
-#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1–6).
-#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1–6).
-#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1–6).
-#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1–6).
-#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1–6).
-#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1–6).
-#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1–6).
-#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1–6).
-#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1–6).
-#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1–6).
-#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1–6).
-#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1–6).
-#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1–6).
-#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1–6).
-#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1–6).
-#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1–6).
-#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1–6).
-#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1–6).
-#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1–6).
-#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1–6).
-#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1–6).
-#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1–6).
+#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1-6).
+#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1-6).
+#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1-6).
+#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1-6).
+#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1-6).
+#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1-6).
+#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1-6).
+#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1-6).
+#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1-6).
+#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1-6).
+#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1-6).
+#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1-6).
+#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1-6).
+#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1-6).
+#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1-6).
+#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1-6).
+#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1-6).
+#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1-6).
+#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1-6).
+#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1-6).
+#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1-6).
+#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1-6).
+#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1-6).
+#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1-6).
+#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1-6).
+#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1-6).
+#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1-6).
+#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1-6).
+#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1-6).
+#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1-6).
+#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1-6).
+#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1-6).
+#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1-6).
+#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1-6).
+#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1-6).
+#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1-6).
 #'
 #' @return [numeric] Returns 1 if the person is taking ACE inhibitors, 0 otherwise. If all medication information is missing, it returns a tagged NA.
 #'
@@ -790,45 +790,45 @@ is_ace_med_cycles1to2 <- function(
 #' @param atc_234a [character] ATC code of respondent's fourth new over-the-counter medication.
 #' @param atc_235a [character] ATC code of respondent's fifth new over-the-counter medication.
 #' @param mhr_101b [integer] Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).
-#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1–6).
-#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1–6).
-#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1–6).
-#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1–6).
-#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1–6).
-#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1–6).
-#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1–6).
-#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1–6).
-#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1–6).
-#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1–6).
-#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1–6).
-#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1–6).
-#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1–6).
-#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1–6).
-#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1–6).
-#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1–6).
-#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1–6).
-#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1–6).
-#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1–6).
-#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1–6).
-#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1–6).
-#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1–6).
-#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1–6).
-#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1–6).
-#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1–6).
-#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1–6).
-#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1–6).
-#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1–6).
-#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1–6).
-#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1–6).
-#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1–6).
-#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1–6).
-#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1–6).
-#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1–6).
-#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1–6).
-#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1–6).
+#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1-6).
+#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1-6).
+#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1-6).
+#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1-6).
+#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1-6).
+#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1-6).
+#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1-6).
+#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1-6).
+#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1-6).
+#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1-6).
+#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1-6).
+#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1-6).
+#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1-6).
+#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1-6).
+#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1-6).
+#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1-6).
+#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1-6).
+#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1-6).
+#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1-6).
+#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1-6).
+#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1-6).
+#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1-6).
+#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1-6).
+#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1-6).
+#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1-6).
+#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1-6).
+#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1-6).
+#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1-6).
+#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1-6).
+#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1-6).
+#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1-6).
+#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1-6).
+#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1-6).
+#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1-6).
+#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1-6).
+#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1-6).
 #'
 #' @return [numeric] Returns 1 if the person is taking diuretics, 0 otherwise. If all medication information is missing, it returns a tagged NA.
 #'
@@ -971,45 +971,45 @@ is_diur_med_cycles1to2 <- function(
 #' @param atc_234a [character] ATC code of respondent's fourth new over-the-counter medication.
 #' @param atc_235a [character] ATC code of respondent's fifth new over-the-counter medication.
 #' @param mhr_101b [integer] Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).
-#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1–6).
-#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1–6).
-#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1–6).
-#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1–6).
-#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1–6).
-#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1–6).
-#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1–6).
-#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1–6).
-#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1–6).
-#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1–6).
-#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1–6).
-#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1–6).
-#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1–6).
-#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1–6).
-#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1–6).
-#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1–6).
-#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1–6).
-#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1–6).
-#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1–6).
-#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1–6).
-#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1–6).
-#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1–6).
-#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1–6).
-#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1–6).
-#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1–6).
-#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1–6).
-#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1–6).
-#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1–6).
-#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1–6).
-#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1–6).
-#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1–6).
-#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1–6).
-#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1–6).
-#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1–6).
-#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1–6).
-#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1–6).
+#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1-6).
+#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1-6).
+#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1-6).
+#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1-6).
+#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1-6).
+#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1-6).
+#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1-6).
+#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1-6).
+#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1-6).
+#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1-6).
+#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1-6).
+#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1-6).
+#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1-6).
+#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1-6).
+#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1-6).
+#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1-6).
+#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1-6).
+#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1-6).
+#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1-6).
+#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1-6).
+#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1-6).
+#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1-6).
+#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1-6).
+#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1-6).
+#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1-6).
+#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1-6).
+#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1-6).
+#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1-6).
+#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1-6).
+#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1-6).
+#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1-6).
+#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1-6).
+#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1-6).
+#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1-6).
+#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1-6).
+#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1-6).
 #'
 #' @return [numeric] Returns 1 if the person is taking calcium channel blockers, 0 otherwise. If all medication information is missing, it returns a tagged NA.
 #'
@@ -1152,45 +1152,45 @@ is_ccb_med_cycles1to2 <- function(
 #' @param atc_234a [character] ATC code of respondent's fourth new over-the-counter medication.
 #' @param atc_235a [character] ATC code of respondent's fifth new over-the-counter medication.
 #' @param mhr_101b [integer] Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).
-#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1–6).
-#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1–6).
-#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1–6).
-#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1–6).
-#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1–6).
-#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1–6).
-#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1–6).
-#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1–6).
-#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1–6).
-#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1–6).
-#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1–6).
-#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1–6).
-#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1–6).
-#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1–6).
-#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1–6).
-#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1–6).
-#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1–6).
-#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1–6).
-#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1–6).
-#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1–6).
-#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1–6).
-#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1–6).
-#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1–6).
-#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1–6).
-#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1–6).
-#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1–6).
-#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1–6).
-#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1–6).
-#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1–6).
-#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1–6).
-#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1–6).
-#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1–6).
-#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1–6).
-#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1–6).
-#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1–6).
-#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1–6).
+#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1-6).
+#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1-6).
+#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1-6).
+#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1-6).
+#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1-6).
+#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1-6).
+#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1-6).
+#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1-6).
+#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1-6).
+#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1-6).
+#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1-6).
+#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1-6).
+#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1-6).
+#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1-6).
+#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1-6).
+#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1-6).
+#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1-6).
+#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1-6).
+#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1-6).
+#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1-6).
+#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1-6).
+#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1-6).
+#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1-6).
+#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1-6).
+#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1-6).
+#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1-6).
+#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1-6).
+#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1-6).
+#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1-6).
+#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1-6).
+#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1-6).
+#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1-6).
+#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1-6).
+#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1-6).
+#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1-6).
+#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1-6).
 #'
 #' @return [numeric] Returns 1 if the person is taking another type of anti-hypertensive medication, 0 otherwise. If all medication information is missing, it returns a tagged NA.
 #'
@@ -1333,45 +1333,45 @@ is_misc_htn_med_cycles1to2 <- function(
 #' @param atc_234a [character] ATC code of respondent's fourth new over-the-counter medication.
 #' @param atc_235a [character] ATC code of respondent's fifth new over-the-counter medication.
 #' @param mhr_101b [integer] Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).
-#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1–6).
-#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1–6).
-#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1–6).
-#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1–6).
-#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1–6).
-#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1–6).
-#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1–6).
-#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1–6).
-#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1–6).
-#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1–6).
-#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1–6).
-#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1–6).
-#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1–6).
-#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1–6).
-#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1–6).
-#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1–6).
-#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1–6).
-#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1–6).
-#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1–6).
-#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1–6).
-#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1–6).
-#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1–6).
-#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1–6).
-#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1–6).
-#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1–6).
-#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1–6).
-#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1–6).
-#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1–6).
-#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1–6).
-#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1–6).
-#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1–6).
-#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1–6).
-#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1–6).
-#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1–6).
-#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1–6).
-#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1–6).
+#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1-6).
+#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1-6).
+#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1-6).
+#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1-6).
+#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1-6).
+#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1-6).
+#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1-6).
+#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1-6).
+#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1-6).
+#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1-6).
+#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1-6).
+#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1-6).
+#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1-6).
+#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1-6).
+#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1-6).
+#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1-6).
+#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1-6).
+#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1-6).
+#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1-6).
+#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1-6).
+#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1-6).
+#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1-6).
+#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1-6).
+#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1-6).
+#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1-6).
+#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1-6).
+#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1-6).
+#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1-6).
+#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1-6).
+#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1-6).
+#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1-6).
+#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1-6).
+#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1-6).
+#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1-6).
+#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1-6).
+#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1-6).
 #'
 #' @return [numeric] Returns 1 if the person is taking any anti-hypertensive medication, 0 otherwise. If all medication information is missing, it returns a tagged NA.
 #'
@@ -1514,45 +1514,45 @@ is_any_htn_med_cycles1to2 <- function(
 #' @param atc_234a [character] ATC code of respondent's fourth new over-the-counter medication.
 #' @param atc_235a [character] ATC code of respondent's fifth new over-the-counter medication.
 #' @param mhr_101b [integer] Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).
-#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1–6).
-#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1–6).
-#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1–6).
-#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1–6).
-#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1–6).
-#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1–6).
-#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1–6).
-#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1–6).
-#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1–6).
-#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1–6).
-#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1–6).
-#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1–6).
-#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1–6).
-#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1–6).
-#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1–6).
-#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1–6).
-#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1–6).
-#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1–6).
-#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1–6).
-#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1–6).
-#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1–6).
-#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1–6).
-#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1–6).
-#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1–6).
-#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1–6).
-#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1–6).
-#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1–6).
-#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1–6).
-#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1–6).
-#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1–6).
-#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1–6).
-#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1–6).
-#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1–6).
-#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1–6).
-#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1–6).
-#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1–6).
+#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1-6).
+#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1-6).
+#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1-6).
+#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1-6).
+#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1-6).
+#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1-6).
+#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1-6).
+#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1-6).
+#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1-6).
+#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1-6).
+#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1-6).
+#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1-6).
+#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1-6).
+#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1-6).
+#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1-6).
+#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1-6).
+#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1-6).
+#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1-6).
+#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1-6).
+#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1-6).
+#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1-6).
+#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1-6).
+#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1-6).
+#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1-6).
+#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1-6).
+#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1-6).
+#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1-6).
+#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1-6).
+#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1-6).
+#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1-6).
+#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1-6).
+#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1-6).
+#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1-6).
+#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1-6).
+#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1-6).
+#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1-6).
 #'
 #' @return [numeric] Returns 1 if the person is taking any NSAIDs, 0 otherwise. If all medication information is missing, it returns a tagged NA.
 #'
@@ -1695,45 +1695,45 @@ is_nsaid_med_cycles1to2 <- function(
 #' @param atc_234a [character] ATC code of respondent's fourth new over-the-counter medication.
 #' @param atc_235a [character] ATC code of respondent's fifth new over-the-counter medication.
 #' @param mhr_101b [integer] Response for when the first prescription medication was last taken (1 = Today, …, 6 = Never).
-#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1–6).
-#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1–6).
-#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1–6).
-#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1–6).
-#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1–6).
-#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1–6).
-#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1–6).
-#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1–6).
-#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1–6).
-#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1–6).
-#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1–6).
-#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1–6).
-#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1–6).
-#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1–6).
-#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1–6).
-#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1–6).
-#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1–6).
-#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1–6).
-#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1–6).
-#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1–6).
-#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1–6).
-#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1–6).
-#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1–6).
-#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1–6).
-#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1–6).
-#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1–6).
-#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1–6).
-#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1–6).
-#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1–6).
-#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1–6).
-#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1–6).
-#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1–6).
-#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1–6).
-#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1–6).
-#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1–6).
-#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1–6).
-#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1–6).
+#' @param mhr_102b [integer] Response for when the second prescription medication was last taken (1-6).
+#' @param mhr_103b [integer] Response for when the third prescription medication was last taken (1-6).
+#' @param mhr_104b [integer] Response for when the fourth prescription medication was last taken (1-6).
+#' @param mhr_105b [integer] Response for when the fifth prescription medication was last taken (1-6).
+#' @param mhr_106b [integer] Response for when the sixth prescription medication was last taken (1-6).
+#' @param mhr_107b [integer] Response for when the seventh prescription medication was last taken (1-6).
+#' @param mhr_108b [integer] Response for when the eighth prescription medication was last taken (1-6).
+#' @param mhr_109b [integer] Response for when the ninth prescription medication was last taken (1-6).
+#' @param mhr_110b [integer] Response for when the tenth prescription medication was last taken (1-6).
+#' @param mhr_111b [integer] Response for when the eleventh prescription medication was last taken (1-6).
+#' @param mhr_112b [integer] Response for when the twelfth prescription medication was last taken (1-6).
+#' @param mhr_113b [integer] Response for when the thirteenth prescription medication was last taken (1-6).
+#' @param mhr_114b [integer] Response for when the fourteenth prescription medication was last taken (1-6).
+#' @param mhr_115b [integer] Response for when the fifteenth prescription medication was last taken (1-6).
+#' @param mhr_201b [integer] Response for when the first over-the-counter medication was last taken (1-6).
+#' @param mhr_202b [integer] Response for when the second over-the-counter medication was last taken (1-6).
+#' @param mhr_203b [integer] Response for when the third over-the-counter medication was last taken (1-6).
+#' @param mhr_204b [integer] Response for when the fourth over-the-counter medication was last taken (1-6).
+#' @param mhr_205b [integer] Response for when the fifth over-the-counter medication was last taken (1-6).
+#' @param mhr_206b [integer] Response for when the sixth over-the-counter medication was last taken (1-6).
+#' @param mhr_207b [integer] Response for when the seventh over-the-counter medication was last taken (1-6).
+#' @param mhr_208b [integer] Response for when the eighth over-the-counter medication was last taken (1-6).
+#' @param mhr_209b [integer] Response for when the ninth over-the-counter medication was last taken (1-6).
+#' @param mhr_210b [integer] Response for when the tenth over-the-counter medication was last taken (1-6).
+#' @param mhr_211b [integer] Response for when the eleventh over-the-counter medication was last taken (1-6).
+#' @param mhr_212b [integer] Response for when the twelfth over-the-counter medication was last taken (1-6).
+#' @param mhr_213b [integer] Response for when the thirteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_214b [integer] Response for when the fourteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_215b [integer] Response for when the fifteenth over-the-counter medication was last taken (1-6).
+#' @param mhr_131b [integer] Response for when the first new prescription medication was last taken (1-6).
+#' @param mhr_132b [integer] Response for when the second new prescription medication was last taken (1-6).
+#' @param mhr_133b [integer] Response for when the third new prescription medication was last taken (1-6).
+#' @param mhr_134b [integer] Response for when the fourth new prescription medication was last taken (1-6).
+#' @param mhr_135b [integer] Response for when the fifth new prescription medication was last taken (1-6).
+#' @param mhr_231b [integer] Response for when the first new over-the-counter medication was last taken (1-6).
+#' @param mhr_232b [integer] Response for when the second new over-the-counter medication was last taken (1-6).
+#' @param mhr_233b [integer] Response for when the third new over-the-counter medication was last taken (1-6).
+#' @param mhr_234b [integer] Response for when the fourth new over-the-counter medication was last taken (1-6).
+#' @param mhr_235b [integer] Response for when the fifth new over-the-counter medication was last taken (1-6).
 #'
 #' @return [numeric] Returns 1 if the person is taking any diabetes drugs, 0 otherwise. If all medication information is missing, it returns a tagged NA.
 #'
