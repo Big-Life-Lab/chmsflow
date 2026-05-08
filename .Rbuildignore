@@ -9,14 +9,15 @@
 ^README.html
 ^CRAN-RELEASE$
 ^CODE_OF_CONDUCT.md
-^.github
 ^\.github$
-^.lintr
+^\.lintr$
 ^doc$
 ^Meta$
-^.quarto
-^_freeze
+^\.quarto$
+^_freeze$
 ^\.claude$
+^CLAUDE\.md$
+^\.tmp$
 .*\.log$
 ^renv$
 ^renv\.lock$
@@ -25,3 +26,5 @@
 ^vignette_.*\.txt$
 ^vignette_.*\.log$
 ^vignettes/.*_files$
+^vignettes/\.quarto$
+^vignettes/_freeze$
