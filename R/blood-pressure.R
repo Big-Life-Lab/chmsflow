@@ -111,7 +111,7 @@ adjust_dbp <- function(bpmdpbpd) {
 #'
 #' @param bpmdpbps [integer] An integer representing the systolic blood pressure measurement of the respondent.
 #' @param bpmdpbpd [integer] An integer representing the diastolic blood pressure measurement of the respondent.
-#' @param any_htn_med2 [integer] An integer indicating whether the respondent is on medication for hypertension.
+#' @param any_htn_med [integer] An integer indicating whether the respondent is on medication for hypertension.
 #'   - 1: Yes
 #'   - 0: No
 #' @param ccc_32 [integer] An optional integer indicating whether the respondent is actually on medication for hypertension.
@@ -147,7 +147,7 @@ adjust_dbp <- function(bpmdpbpd) {
 #'          - `bpmdpbps`, `bpmdpbpd`:
 #'            - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
 #'            - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
-#'          - `any_htn_med2`:
+#'          - `any_htn_med`:
 #'            - Tagged NA "a": Valid skip.
 #'            - Tagged NA "b": Don't know, refusal, or not stated.
 #'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
@@ -157,15 +157,15 @@ adjust_dbp <- function(bpmdpbpd) {
 #' @examples
 #' # Scalar usage: Single respondent
 #' # Example 1: Respondent has systolic BP = 150, diastolic BP = 95, and on medication.
-#' derive_hypertension(bpmdpbps = 150, bpmdpbpd = 95, any_htn_med2 = 1)
+#' derive_hypertension(bpmdpbps = 150, bpmdpbpd = 95, any_htn_med = 1)
 #' # Output: 1 (High blood pressure due to systolic BP, diastolic BP, and medication usage).
 #'
 #' # Example 2: Respondent has systolic BP = 120, diastolic BP = 80, and not on medication.
-#' derive_hypertension(bpmdpbps = 120, bpmdpbpd = 80, any_htn_med2 = 0)
+#' derive_hypertension(bpmdpbps = 120, bpmdpbpd = 80, any_htn_med = 0)
 #' # Output: 2 (Normal blood pressure as BP is below 140/90 mmHg and not on medication).
 #'
 #' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-#' result <- derive_hypertension(bpmdpbps = 996, bpmdpbpd = 996, any_htn_med2 = 0)
+#' result <- derive_hypertension(bpmdpbps = 996, bpmdpbpd = 996, any_htn_med = 0)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 #' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
@@ -173,24 +173,24 @@ adjust_dbp <- function(bpmdpbpd) {
 #' # Multiple respondents
 #' derive_hypertension(
 #'   bpmdpbps = c(150, 120, 135), bpmdpbpd = c(95, 80, 85),
-#'   any_htn_med2 = c(1, 0, 1), diab_status = c(2, 2, 1)
+#'   any_htn_med = c(1, 0, 1), diab_status = c(2, 2, 1)
 #' )
 #' # Returns: c(1, 2, 1)
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
 #' # dataset |>
-#' #   mutate(hypertension = derive_hypertension(bpmdpbps, bpmdpbpd, any_htn_med2))
+#' #   mutate(hypertension = derive_hypertension(bpmdpbps, bpmdpbpd, any_htn_med))
 #'
 #' @seealso [adjust_sbp()], [adjust_dbp()] for blood pressure adjustment, [derive_hypertension_adj()] for adjusted BP classification
 #' @export
-derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
+derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
   # Adjust medication status based on other health conditions
-  any_htn_med2 <- dplyr::case_when(
+  any_htn_med <- dplyr::case_when(
     ccc_32 == 2 & (cvd_status == 1 | ckd_status == 1 | diab_status == 1) ~ 0,
-    haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
-    haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
-    TRUE ~ as.numeric(any_htn_med2)
+    haven::is_tagged_na(any_htn_med, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(any_htn_med, "b") ~ haven::tagged_na("b"),
+    TRUE ~ as.numeric(as.character(any_htn_med))
   )
 
   # Determine high systolic blood pressure status
@@ -221,12 +221,12 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 
   # Determine overall hypertension status
   dplyr::case_when(
-    !is.na(any_htn_med2) & any_htn_med2 == 1 ~ 1,
+    !is.na(any_htn_med) & any_htn_med == 1 ~ 1,
     highsys140 == 1 | highdias90 == 1 ~ 1,
-    highsys140 == 2 & highdias90 == 2 & (any_htn_med2 == 0 | is.na(any_htn_med2)) ~ 2,
+    highsys140 == 2 & highdias90 == 2 & (any_htn_med == 0 | is.na(any_htn_med)) ~ 2,
     haven::is_tagged_na(highsys140, "a") | haven::is_tagged_na(highdias90, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(highsys140, "b") | haven::is_tagged_na(highdias90, "b") |
-      haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
+      haven::is_tagged_na(any_htn_med, "b") ~ haven::tagged_na("b"),
     .default = haven::tagged_na("b")
   )
 }
@@ -238,7 +238,7 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 #'
 #' @param sbp_adj_mmhg [integer] An integer representing the adjusted systolic blood pressure measurement of the respondent.
 #' @param dbp_adj_mmhg [integer] An integer representing the adjusted diastolic blood pressure measurement of the respondent.
-#' @param any_htn_med2 [integer] An integer indicating whether the respondent is on medication for hypertension.
+#' @param any_htn_med [integer] An integer indicating whether the respondent is on medication for hypertension.
 #'   - 1: Yes
 #'   - 0: No
 #' @param ccc_32 [integer] An optional integer indicating whether the respondent is actually on medication for hypertension.
@@ -274,7 +274,7 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 #'          - `sbp_adj_mmhg`, `dbp_adj_mmhg`:
 #'            - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
 #'            - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
-#'          - `any_htn_med2`:
+#'          - `any_htn_med`:
 #'            - Tagged NA "a": Valid skip.
 #'            - Tagged NA "b": Don't know, refusal, or not stated.
 #'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
@@ -284,15 +284,15 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 #' @examples
 #' # Scalar usage: Single respondent
 #' # Example 1: Respondent has adjusted SBP = 150, adjusted DBP = 95, and on medication.
-#' derive_hypertension_adj(sbp_adj_mmhg = 150, dbp_adj_mmhg = 95, any_htn_med2 = 1)
+#' derive_hypertension_adj(sbp_adj_mmhg = 150, dbp_adj_mmhg = 95, any_htn_med = 1)
 #' # Output: 1 (High blood pressure due to adjusted SBP, adjusted DBP, and medication usage).
 #'
 #' # Example 2: Respondent has adjusted SBP = 120, adjusted DBP = 80, and not on medication.
-#' derive_hypertension_adj(sbp_adj_mmhg = 120, dbp_adj_mmhg = 80, any_htn_med2 = 2)
+#' derive_hypertension_adj(sbp_adj_mmhg = 120, dbp_adj_mmhg = 80, any_htn_med = 2)
 #' # Output: 2 (Normal blood pressure as adjusted BP is below 140/90 mmHg and not on medication).
 #'
 #' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-#' result <- derive_hypertension_adj(sbp_adj_mmhg = 996, dbp_adj_mmhg = 996, any_htn_med2 = 0)
+#' result <- derive_hypertension_adj(sbp_adj_mmhg = 996, dbp_adj_mmhg = 996, any_htn_med = 0)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 #' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
@@ -300,24 +300,24 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cv
 #' # Multiple respondents
 #' derive_hypertension_adj(
 #'   sbp_adj_mmhg = c(150, 120, 135), dbp_adj_mmhg = c(95, 80, 85),
-#'   any_htn_med2 = c(1, 0, 1), diab_status = c(2, 2, 1)
+#'   any_htn_med = c(1, 0, 1), diab_status = c(2, 2, 1)
 #' )
 #' # Returns: c(1, 2, 1)
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
 #' # dataset |>
-#' #   mutate(hypertension_adj = derive_hypertension_adj(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2))
+#' #   mutate(hypertension_adj = derive_hypertension_adj(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med))
 #'
 #' @seealso [derive_hypertension()] for unadjusted BP classification
 #' @export
-derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
+derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
   # Adjust medication status based on other health conditions
-  any_htn_med2 <- dplyr::case_when(
+  any_htn_med <- dplyr::case_when(
     ccc_32 == 2 & (cvd_status == 1 | ckd_status == 1 | diab_status == 1) ~ 0,
-    haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
-    haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
-    TRUE ~ as.numeric(any_htn_med2)
+    haven::is_tagged_na(any_htn_med, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(any_htn_med, "b") ~ haven::tagged_na("b"),
+    TRUE ~ as.numeric(as.character(any_htn_med))
   )
 
   # Determine high systolic blood pressure status
@@ -348,12 +348,12 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 
   # Determine overall hypertension status
   dplyr::case_when(
-    !is.na(any_htn_med2) & any_htn_med2 == 1 ~ 1,
+    !is.na(any_htn_med) & any_htn_med == 1 ~ 1,
     highsys140 == 1 | highdias90 == 1 ~ 1,
-    highsys140 == 2 & highdias90 == 2 & (any_htn_med2 == 0 | is.na(any_htn_med2)) ~ 2,
+    highsys140 == 2 & highdias90 == 2 & (any_htn_med == 0 | is.na(any_htn_med)) ~ 2,
     haven::is_tagged_na(highsys140, "a") | haven::is_tagged_na(highdias90, "a") ~ haven::tagged_na("a"),
     haven::is_tagged_na(highsys140, "b") | haven::is_tagged_na(highdias90, "b") |
-      haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
+      haven::is_tagged_na(any_htn_med, "b") ~ haven::tagged_na("b"),
     .default = haven::tagged_na("b")
   )
 }
@@ -365,7 +365,7 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 #'
 #' @param bpmdpbps [integer] An integer representing the systolic blood pressure measurement of the respondent.
 #' @param bpmdpbpd [integer] An integer representing the diastolic blood pressure measurement of the respondent.
-#' @param any_htn_med2 [integer] An integer indicating whether the respondent is on medication for hypertension.
+#' @param any_htn_med [integer] An integer indicating whether the respondent is on medication for hypertension.
 #'   - 1: Yes
 #'   - 0: No
 #' @param ccc_32 [integer] An optional integer indicating whether the respondent is actually on medication for hypertension.
@@ -402,7 +402,7 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 #'          - `bpmdpbps`, `bpmdpbpd`:
 #'            - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
 #'            - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
-#'          - `any_htn_med2`:
+#'          - `any_htn_med`:
 #'            - Tagged NA "a": Valid skip.
 #'            - Tagged NA "b": Don't know, refusal, or not stated.
 #'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
@@ -412,15 +412,15 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 #' @examples
 #' # Scalar usage: Single respondent
 #' # Example 1: Respondent has systolic BP = 150, diastolic BP = 95, and on medication.
-#' derive_hypertension_control(bpmdpbps = 150, bpmdpbpd = 95, any_htn_med2 = 1)
+#' derive_hypertension_control(bpmdpbps = 150, bpmdpbpd = 95, any_htn_med = 1)
 #' # Output: 2 (Hypertension not controlled due to high SBP and SBP despite medication usage).
 #'
 #' # Example 2: Respondent has systolic BP = 120, diastolic BP = 80, and on medication.
-#' derive_hypertension_control(bpmdpbps = 120, bpmdpbpd = 80, any_htn_med2 = 1)
+#' derive_hypertension_control(bpmdpbps = 120, bpmdpbpd = 80, any_htn_med = 1)
 #' # Output: 1 (Hypertension controlled as BP is below 140/90 mmHg and on medication).
 #'
 #' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-#' result <- derive_hypertension_control(bpmdpbps = 996, bpmdpbpd = 996, any_htn_med2 = 0)
+#' result <- derive_hypertension_control(bpmdpbps = 996, bpmdpbpd = 996, any_htn_med = 0)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 #' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
@@ -428,24 +428,24 @@ derive_hypertension_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, cc
 #' # Multiple respondents
 #' derive_hypertension_control(
 #'   bpmdpbps = c(150, 120, 135), bpmdpbpd = c(95, 80, 85),
-#'   any_htn_med2 = c(1, 1, 1), diab_status = c(2, 2, 1)
+#'   any_htn_med = c(1, 1, 1), diab_status = c(2, 2, 1)
 #' )
 #' # Returns: c(2, 1, 2)
 #'
 #' # Database usage: Applied to survey datasets
 #' # library(dplyr)
 #' # dataset |>
-#' #   mutate(controlled_htn = derive_hypertension_control(bpmdpbps, bpmdpbpd, any_htn_med2))
+#' #   mutate(controlled_htn = derive_hypertension_control(bpmdpbps, bpmdpbpd, any_htn_med))
 #'
 #' @seealso [derive_hypertension_control_adj()] for controlled status with adjusted BP
 #' @export
-derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
+derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
   # Adjust medication status based on other health conditions
-  any_htn_med2 <- dplyr::case_when(
+  any_htn_med <- dplyr::case_when(
     ccc_32 == 2 & (cvd_status == 1 | ckd_status == 1 | diab_status == 1) ~ 0,
-    haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
-    haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
-    TRUE ~ as.numeric(any_htn_med2)
+    haven::is_tagged_na(any_htn_med, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(any_htn_med, "b") ~ haven::tagged_na("b"),
+    TRUE ~ as.numeric(as.character(any_htn_med))
   )
 
   # Determine high systolic blood pressure status
@@ -477,21 +477,21 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
   # Determine overall controlled hypertension status
   dplyr::case_when(
     # On meds
-    any_htn_med2 == 1 & (highsys140 == 1 | highdias90 == 1) ~ 2, # Not controlled
-    any_htn_med2 == 1 & (highsys140 == 2 & highdias90 == 2) ~ 1, # Controlled
+    any_htn_med == 1 & (highsys140 == 1 | highdias90 == 1) ~ 2, # Not controlled
+    any_htn_med == 1 & (highsys140 == 2 & highdias90 == 2) ~ 1, # Controlled
 
     # Not on meds
-    any_htn_med2 == 0 ~ 2,
+    any_htn_med == 0 ~ 2,
 
     # Propagate NA(a) if any relevant measure is NA(a)
     haven::is_tagged_na(highsys140, "a") |
       haven::is_tagged_na(highdias90, "a") |
-      haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
+      haven::is_tagged_na(any_htn_med, "a") ~ haven::tagged_na("a"),
 
     # Otherwise NA(b) if missing/invalid
     haven::is_tagged_na(highsys140, "b") |
       haven::is_tagged_na(highdias90, "b") |
-      haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
+      haven::is_tagged_na(any_htn_med, "b") ~ haven::tagged_na("b"),
 
     # Default fallback
     .default = haven::tagged_na("b")
@@ -505,7 +505,7 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #'
 #' @param sbp_adj_mmhg [integer] An integer representing the adjusted systolic blood pressure measurement of the respondent.
 #' @param dbp_adj_mmhg [integer] An integer representing the adjusted diastolic blood pressure measurement of the respondent.
-#' @param any_htn_med2 [integer] An integer indicating whether the respondent is on medication for hypertension.
+#' @param any_htn_med [integer] An integer indicating whether the respondent is on medication for hypertension.
 #'   - 1: Yes
 #'   - 0: No
 #' @param ccc_32 [integer] An optional integer indicating whether the respondent is actually on medication for hypertension.
@@ -542,7 +542,7 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #'          - `sbp_adj_mmhg`, `dbp_adj_mmhg`:
 #'            - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
 #'            - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
-#'          - `any_htn_med2`:
+#'          - `any_htn_med`:
 #'            - Tagged NA "a": Valid skip.
 #'            - Tagged NA "b": Don't know, refusal, or not stated.
 #'          - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
@@ -552,15 +552,15 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #' @examples
 #' # Scalar usage: Single respondent
 #' # Example 1: Respondent has adjusted SBP = 150, adjusted DBP = 95, and on medication.
-#' derive_hypertension_control_adj(sbp_adj_mmhg = 150, dbp_adj_mmhg = 95, any_htn_med2 = 1)
+#' derive_hypertension_control_adj(sbp_adj_mmhg = 150, dbp_adj_mmhg = 95, any_htn_med = 1)
 #' # Output: 2 (Hypertension not controlled due to high adjusted SBP and DBP despite medication usage).
 #'
 #' # Example 2: Respondent has adjusted SBP = 120, adjusted DBP = 80, and on medication.
-#' derive_hypertension_control_adj(sbp_adj_mmhg = 120, dbp_adj_mmhg = 80, any_htn_med2 = 1)
+#' derive_hypertension_control_adj(sbp_adj_mmhg = 120, dbp_adj_mmhg = 80, any_htn_med = 1)
 #' # Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
 #'
 #' # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-#' result <- derive_hypertension_control_adj(sbp_adj_mmhg = 996, dbp_adj_mmhg = 996, any_htn_med2 = 0)
+#' result <- derive_hypertension_control_adj(sbp_adj_mmhg = 996, dbp_adj_mmhg = 996, any_htn_med = 0)
 #' result # Shows: NA
 #' haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 #' format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
@@ -568,7 +568,7 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #' # Multiple respondents
 #' derive_hypertension_control_adj(
 #'   sbp_adj_mmhg = c(150, 120, 135), dbp_adj_mmhg = c(95, 80, 85),
-#'   any_htn_med2 = c(1, 1, 1), diab_status = c(2, 2, 1)
+#'   any_htn_med = c(1, 1, 1), diab_status = c(2, 2, 1)
 #' )
 #' # Returns: c(2, 1, 2)
 #'
@@ -576,17 +576,17 @@ derive_hypertension_control <- function(bpmdpbps, bpmdpbpd, any_htn_med2, ccc_32
 #' # library(dplyr)
 #' # dataset |>
 #' #   mutate(controlled_htn_adj = derive_hypertension_control_adj(sbp_adj_mmhg,
-#' #     dbp_adj_mmhg, any_htn_med2))
+#' #     dbp_adj_mmhg, any_htn_med))
 #'
 #' @seealso [derive_hypertension_control()] for controlled status with unadjusted BP
 #' @export
-derive_hypertension_control_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med2, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
+derive_hypertension_control_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_med, ccc_32 = 2, cvd_status = 2, diab_status = 2, ckd_status = 2) {
   # Adjust medication status based on other health conditions
-  any_htn_med2 <- dplyr::case_when(
+  any_htn_med <- dplyr::case_when(
     ccc_32 == 2 & (cvd_status == 1 | ckd_status == 1 | diab_status == 1) ~ 0,
-    haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
-    haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
-    TRUE ~ as.numeric(any_htn_med2)
+    haven::is_tagged_na(any_htn_med, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(any_htn_med, "b") ~ haven::tagged_na("b"),
+    TRUE ~ as.numeric(as.character(any_htn_med))
   )
 
   # Determine high systolic blood pressure status
@@ -617,21 +617,21 @@ derive_hypertension_control_adj <- function(sbp_adj_mmhg, dbp_adj_mmhg, any_htn_
 
   dplyr::case_when(
     # On meds
-    any_htn_med2 == 1 & (highsys140_adj == 1 | highdias90_adj == 1) ~ 2, # Not controlled
-    any_htn_med2 == 1 & (highsys140_adj == 2 & highdias90_adj == 2) ~ 1, # Controlled
+    any_htn_med == 1 & (highsys140_adj == 1 | highdias90_adj == 1) ~ 2, # Not controlled
+    any_htn_med == 1 & (highsys140_adj == 2 & highdias90_adj == 2) ~ 1, # Controlled
 
     # Not on meds
-    any_htn_med2 == 0 ~ 2,
+    any_htn_med == 0 ~ 2,
 
     # Propagate NA(a) if any relevant measure is NA(a)
     haven::is_tagged_na(highsys140_adj, "a") |
       haven::is_tagged_na(highdias90_adj, "a") |
-      haven::is_tagged_na(any_htn_med2, "a") ~ haven::tagged_na("a"),
+      haven::is_tagged_na(any_htn_med, "a") ~ haven::tagged_na("a"),
 
     # Otherwise NA(b) if missing/invalid
     haven::is_tagged_na(highsys140_adj, "b") |
       haven::is_tagged_na(highdias90_adj, "b") |
-      haven::is_tagged_na(any_htn_med2, "b") ~ haven::tagged_na("b"),
+      haven::is_tagged_na(any_htn_med, "b") ~ haven::tagged_na("b"),
 
     # Default fallback
     .default = haven::tagged_na("b")

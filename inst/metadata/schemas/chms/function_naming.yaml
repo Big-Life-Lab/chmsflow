@@ -68,6 +68,27 @@ function_naming_schema:
         - "derive_hypertension()"
         - "derive_alcohol_risk()"
 
+    - verb: "recode_"
+      purpose: "Recode raw data using variable_details metadata"
+      returns: "Data frame with recoded medication columns merged in"
+      description: |
+        Applies rec_with_table() recoding logic to medication data and joins
+        the results back into the main cycle data frame. Handles cycle-specific
+        data formats (wide for cycles 1-2, long for cycles 3-6).
+      examples:
+        - "recode_meds_cycles1to2()"
+        - "recode_meds_cycles3to6()"
+        - "recode_after_meds()"
+
+    - verb: "aggregate_"
+      purpose: "Collapse repeated-measures data to one row per respondent"
+      returns: "Data frame with one row per respondent"
+      description: |
+        Reduces long-format data (multiple rows per respondent) to a single
+        summary row per respondent using a summary function (e.g., max()).
+      examples:
+        - "aggregate_meds_by_person()"
+
   # ============================================================================
   # NAMING RULES
   # ============================================================================
@@ -125,28 +146,28 @@ function_naming_schema:
       verb: "derive_"
       file: "blood-pressure.R"
       description: "Hypertension status from raw BP"
-      parameters: ["bpmdpbps", "bpmdpbpd", "any_htn_med2", "ccc_32", "cvd_status", "diab_status", "ckd"]
+      parameters: ["bpmdpbps", "bpmdpbpd", "any_htn_med", "ccc_32", "cvd_status", "diab_status", "ckd"]
       returns: "integer (1=yes, 2=no)"
 
     - name: "derive_hypertension_adj"
       verb: "derive_"
       file: "blood-pressure.R"
       description: "Hypertension status from adjusted BP"
-      parameters: ["sbp_adj_mmhg", "dbp_adj_mmhg", "any_htn_med2", "ccc_32", "cvd_status", "diab_status", "ckd"]
+      parameters: ["sbp_adj_mmhg", "dbp_adj_mmhg", "any_htn_med", "ccc_32", "cvd_status", "diab_status", "ckd"]
       returns: "integer (1=yes, 2=no)"
 
     - name: "derive_hypertension_control"
       verb: "derive_"
       file: "blood-pressure.R"
       description: "Controlled hypertension status from raw BP"
-      parameters: ["bpmdpbps", "bpmdpbpd", "any_htn_med2", "ccc_32", "cvd_status", "diab_status", "ckd"]
+      parameters: ["bpmdpbps", "bpmdpbpd", "any_htn_med", "ccc_32", "cvd_status", "diab_status", "ckd"]
       returns: "integer (1=controlled, 2=not controlled)"
 
     - name: "derive_hypertension_control_adj"
       verb: "derive_"
       file: "blood-pressure.R"
       description: "Controlled hypertension status from adjusted BP"
-      parameters: ["sbp_adj_mmhg", "dbp_adj_mmhg", "any_htn_med2", "ccc_32", "cvd_status", "diab_status", "ckd"]
+      parameters: ["sbp_adj_mmhg", "dbp_adj_mmhg", "any_htn_med", "ccc_32", "cvd_status", "diab_status", "ckd"]
       returns: "integer (1=controlled, 2=not controlled)"
 
     # --------------------------------------------------------------------------
@@ -180,7 +201,7 @@ function_naming_schema:
       verb: "derive_"
       file: "diabetes.R"
       description: "Inclusive diabetes status combining HbA1c, self-report, and medication"
-      parameters: ["diab_a1c", "ccc_51", "diab_med2"]
+      parameters: ["diab_a1c", "ccc_51", "diab_med"]
       returns: "integer (1=yes, 2=no)"
 
     # --------------------------------------------------------------------------
@@ -292,13 +313,6 @@ function_naming_schema:
     # --------------------------------------------------------------------------
     # Medications - element-wise (medications.R)
     # --------------------------------------------------------------------------
-    - name: "is_taking_drug_class"
-      verb: "is_"
-      file: "medications.R"
-      description: "Internal helper for medication classification"
-      parameters: ["df", "class_var_name", "med_vars", "last_taken_vars", "class_condition_fun", "log_level", "overwrite"]
-      exported: false
-
     - name: "is_beta_blocker"
       verb: "is_"
       file: "medications.R"
@@ -405,6 +419,37 @@ function_naming_schema:
       file: "medications.R"
       description: "Diabetes medication (cycles 1-2 ATC format)"
       returns: "integer (0/1)"
+
+    # --------------------------------------------------------------------------
+    # Medications - wrapper functions (medications.R)
+    # --------------------------------------------------------------------------
+    - name: "recode_meds_cycles1to2"
+      verb: "recode_"
+      file: "medications.R"
+      description: "Recode wide-format medication data (cycles 1-2) and merge into main cycle data"
+      parameters: ["data", "meds_data", "variables", "by", "meds_database_name", "variable_details"]
+      returns: "data frame (main cycle data with medication columns added)"
+
+    - name: "recode_meds_cycles3to6"
+      verb: "recode_"
+      file: "medications.R"
+      description: "Recode long-format medication data (cycles 3-6), aggregate, and merge into main cycle data"
+      parameters: ["data", "meds_data", "variables", "by", "meds_database_name", "variable_details"]
+      returns: "data frame (main cycle data with medication columns added)"
+
+    - name: "aggregate_meds_by_person"
+      verb: "aggregate_"
+      file: "medications.R"
+      description: "Collapse long-format medication data to one row per respondent using max()"
+      parameters: ["data", "variables", "by"]
+      returns: "data frame (one row per respondent)"
+
+    - name: "recode_after_meds"
+      verb: "recode_"
+      file: "medications.R"
+      description: "Recode main cycle variables that depend on pre-computed medication columns"
+      parameters: ["data", "variables", "by", "database_name", "variable_details"]
+      returns: "data frame (recoded variables with by column prepended)"
 
     # --------------------------------------------------------------------------
     # Smoking (smoking.R)

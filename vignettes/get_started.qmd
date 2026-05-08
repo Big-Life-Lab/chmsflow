@@ -1,13 +1,15 @@
 ---
 title: "Get started"
 format: html
+execute:
+  eval: false
 vignette: >
   %\VignetteIndexEntry{Get started}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r results= 'hide', message = FALSE, warning=FALSE}
+```{r results='hide', message=FALSE, warning=FALSE, eval=TRUE}
 library(chmsflow)
 ```
 
@@ -42,7 +44,7 @@ For the full variable list, see `variables.csv` via `vignette("variables_sheet")
 
 ## 2. Installation
 
-```{r eval=FALSE}
+```{r, eval=FALSE}
 # Install release version from CRAN
 install.packages("chmsflow")
 
@@ -54,7 +56,7 @@ devtools::install_github("Big-Life-Lab/chmsflow")
 
 Use `rec_with_table()` from recodeflow to transform CHMS variables. The cycle data object must be named `cyclex` for recoding to work properly.
 
-```{r, warning=FALSE, eval=FALSE}
+```{r, warning=FALSE}
 library(recodeflow)
 
 # Recode a source variable (age)
@@ -73,7 +75,7 @@ chmsflow handles three types of variables, each recoded differently.
 
 Source variables are mapped directly from raw CHMS columns. Variable names may differ across cycles, but chmsflow harmonizes them to a single name.
 
-```{r, warning=FALSE, eval=FALSE}
+```{r, warning=FALSE}
 # Recode sex (same variable name across all cycles)
 cycle4_sexes <- rec_with_table(
   cycle4, "clc_sex",
@@ -86,7 +88,7 @@ head(cycle4_sexes)
 
 Some variables convert continuous measurements into categories using thresholds defined in `variable-details.csv`.
 
-```{r, warning=FALSE, eval=FALSE}
+```{r, warning=FALSE}
 # Recode age into 4 groups
 cycle4_categorical_ages <- rec_with_table(
   cycle4, "agegroup4",
@@ -99,7 +101,7 @@ head(cycle4_categorical_ages)
 
 Derived variables are computed by R functions referenced as `Func::` entries in `variable-details.csv`. These require their input variables to be present in the data. See `vignette("derived_variables")` for details.
 
-```{r, warning=FALSE, eval=FALSE}
+```{r, warning=FALSE}
 # Derive adjusted systolic blood pressure
 # bpmdpbps (raw SBP) must be in the data for sbp_adj_mmhg to be computed
 cycle4_adjusted_SBPs <- rec_with_table(

@@ -7,7 +7,7 @@
 derive_hypertension_control_adj(
   sbp_adj_mmhg,
   dbp_adj_mmhg,
-  any_htn_med2,
+  any_htn_med,
   ccc_32 = 2,
   cvd_status = 2,
   diab_status = 2,
@@ -19,7 +19,7 @@ derive_hypertension_control_adj(
 
 \item{dbp_adj_mmhg}{\link{integer} An integer representing the adjusted diastolic blood pressure measurement of the respondent.}
 
-\item{any_htn_med2}{\link{integer} An integer indicating whether the respondent is on medication for hypertension.
+\item{any_htn_med}{\link{integer} An integer indicating whether the respondent is on medication for hypertension.
 \itemize{
 \item 1: Yes
 \item 0: No
@@ -77,7 +77,7 @@ This function assesses whether a respondent's hypertension is controlled using a
      - `sbp_adj_mmhg`, `dbp_adj_mmhg`:
        - `996`: Valid skip. Handled as `haven::tagged_na("a")`.
        - `997-999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
-     - `any_htn_med2`:
+     - `any_htn_med`:
        - Tagged NA "a": Valid skip.
        - Tagged NA "b": Don't know, refusal, or not stated.
      - `ccc_32`, `cvd_status`, `diab_status`, `ckd_status`:
@@ -88,15 +88,15 @@ This function assesses whether a respondent's hypertension is controlled using a
 \examples{
 # Scalar usage: Single respondent
 # Example 1: Respondent has adjusted SBP = 150, adjusted DBP = 95, and on medication.
-derive_hypertension_control_adj(sbp_adj_mmhg = 150, dbp_adj_mmhg = 95, any_htn_med2 = 1)
+derive_hypertension_control_adj(sbp_adj_mmhg = 150, dbp_adj_mmhg = 95, any_htn_med = 1)
 # Output: 2 (Hypertension not controlled due to high adjusted SBP and DBP despite medication usage).
 
 # Example 2: Respondent has adjusted SBP = 120, adjusted DBP = 80, and on medication.
-derive_hypertension_control_adj(sbp_adj_mmhg = 120, dbp_adj_mmhg = 80, any_htn_med2 = 1)
+derive_hypertension_control_adj(sbp_adj_mmhg = 120, dbp_adj_mmhg = 80, any_htn_med = 1)
 # Output: 1 (Hypertension controlled as adjusted BP is below 140/90 mmHg and on medication).
 
 # Example 3: Respondent has non-response BP values of 996 for both systolic and diastolic.
-result <- derive_hypertension_control_adj(sbp_adj_mmhg = 996, dbp_adj_mmhg = 996, any_htn_med2 = 0)
+result <- derive_hypertension_control_adj(sbp_adj_mmhg = 996, dbp_adj_mmhg = 996, any_htn_med = 0)
 result # Shows: NA
 haven::is_tagged_na(result, "a") # Shows: TRUE (confirms it's tagged NA(a))
 format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
@@ -104,7 +104,7 @@ format(result, tag = TRUE) # Shows: "NA(a)" (displays the tag)
 # Multiple respondents
 derive_hypertension_control_adj(
   sbp_adj_mmhg = c(150, 120, 135), dbp_adj_mmhg = c(95, 80, 85),
-  any_htn_med2 = c(1, 1, 1), diab_status = c(2, 2, 1)
+  any_htn_med = c(1, 1, 1), diab_status = c(2, 2, 1)
 )
 # Returns: c(2, 1, 2)
 
@@ -112,7 +112,7 @@ derive_hypertension_control_adj(
 # library(dplyr)
 # dataset |>
 #   mutate(controlled_htn_adj = derive_hypertension_control_adj(sbp_adj_mmhg,
-#     dbp_adj_mmhg, any_htn_med2))
+#     dbp_adj_mmhg, any_htn_med))
 
 }
 \seealso{
