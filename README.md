@@ -6,8 +6,6 @@
 
 <!-- badges: end -->
 
-> **WARNING:** This package is not yet released to the public and is not intended for general use.
-
 `chmsflow` is an R package designed to simplify the use of the Canadian Health Measures Survey (CHMS). It harmonizes variables across different survey cycles (Cycles 1-6, 2007-2019), creating consistent and analysis-ready datasets.
 
 ## The Challenge of Harmonizing CHMS Data
