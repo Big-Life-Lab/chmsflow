@@ -79,7 +79,7 @@ variables and how to add them.
 When creating derived variables from CHMS variables, it is important to
 distinguish the different NA values. Certain derived variables include the use
 of variables that may not be applicable to respondents. For example,
-[smoking pack-years](https://big-life-lab.github.io/chmsflow/reference/calculate_pack_years.html)
+[smoking pack-years](../reference/calculate_pack_years.html)
 involves the use of smoking variables that may not be applicable to all CHMS
 respondents (i.e. non-smokers who have never smoked). In this scenario,
 respondents who had values of `NA(a)` for the various base smoking variables
@@ -89,7 +89,7 @@ identified as having smoked at one point in their lives, but had values of
 pack-years as pack-years cannot be calculated due to missing values.
 
 On the other hand, there are certain derived variables that use variables that
-are applicable to all respondents. For example, [WHR](https://big-life-lab.github.io/chmsflow/reference/calculate_waist_height_ratio.html) uses CHMS
+are applicable to all respondents. For example, [WHR](../reference/calculate_waist_height_ratio.html) uses CHMS
 height and waist circumference variables which are asked to all CHMS respondents. In this
 scenario, all NA variables would be tagged as `NA(b)` as these variables are
 applicable to everyone, and respondents with NA values would be classified as
