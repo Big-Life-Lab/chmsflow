@@ -255,7 +255,7 @@ derive_hypertension <- function(bpmdpbps, bpmdpbpd, any_htn_med, ccc_32 = 2, cvd
 #'   - 2: No (default)
 #'
 #' @return [integer] The hypertension status:
-#'   - 1: High blood pressure (adjusted BP ≥ 140/90 mmHg (or ≥ 130/80 mmHg if diabetes or CKD) or on hypertension medication)
+#'   - 1: High blood pressure (adjusted BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) or on hypertension medication)
 #'   - 2: Normal blood pressure (adjusted BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
 #'   - `haven::tagged_na("a")`: Not applicable
 #'   - `haven::tagged_na("b")`: Missing

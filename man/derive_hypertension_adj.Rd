@@ -52,7 +52,7 @@ derive_hypertension_adj(
 \value{
 \link{integer} The hypertension status:
 \itemize{
-\item 1: High blood pressure (adjusted BP ≥ 140/90 mmHg (or ≥ 130/80 mmHg if diabetes or CKD) or on hypertension medication)
+\item 1: High blood pressure (adjusted BP >= 140/90 mmHg (or >= 130/80 mmHg if diabetes or CKD) or on hypertension medication)
 \item 2: Normal blood pressure (adjusted BP < 140/90 mmHg (or < 130/80 mmHg if diabetes or CKD) and not on hypertension medication)
 \item \code{haven::tagged_na("a")}: Not applicable
 \item \code{haven::tagged_na("b")}: Missing
