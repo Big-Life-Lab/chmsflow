@@ -1,3 +1,34 @@
+#' Classify a medication against ATC-prefix and exclusion rules
+#'
+#' Internal helper that consolidates the shared skeleton of the eight scalar
+#' medication predicates (`is_beta_blocker()`, `is_ace_inhibitor()`, etc.).
+#' Each predicate calls this with its prefix(es) and exclusion list; behavior
+#' for valid skips, missing/refused, and recency cutoffs lives in one place.
+#'
+#' @param meucatc [character] ATC code(s).
+#' @param npi_25b [integer] Time(s) the medication was last taken.
+#' @param prefix [character] One or more ATC prefixes. A medication matches if
+#'   `meucatc` starts with any of them.
+#' @param exclude [character] ATC codes to exclude even if they match a prefix.
+#'   Defaults to no exclusions.
+#' @return [numeric] 1 (matches), 0 (does not match), or `haven::tagged_na()`
+#'   for sentinel missing codes.
+#' @noRd
+is_atc_class <- function(meucatc, npi_25b, prefix, exclude = character()) {
+  has_prefix <- purrr::map(prefix, \(p) startsWith(meucatc, p)) |>
+    purrr::reduce(`|`)
+
+  dplyr::case_when(
+    # Valid skip
+    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+    # Match: starts with one of `prefix`, not on `exclude` list, taken recently
+    has_prefix & !(meucatc %in% exclude) & npi_25b <= 4 ~ 1,
+    .default = 0
+  )
+}
+
 #' @title Beta blockers
 #' @description This function determines whether a given medication is a beta blocker.
 #' This function processes multiple inputs efficiently.
@@ -32,18 +63,7 @@
 #'
 #' @export
 is_beta_blocker <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for beta blockers
-    startsWith(meucatc, "C07") & !(meucatc %in% c("C07AA07", "C07AA12", "C07AG02")) & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not a beta blocker)
-    .default = 0
-  )
+  is_atc_class(meucatc, npi_25b, "C07", c("C07AA07", "C07AA12", "C07AG02"))
 }
 
 #' @title ACE inhibitors
@@ -80,18 +100,7 @@ is_beta_blocker <- function(meucatc, npi_25b) {
 #'
 #' @export
 is_ace_inhibitor <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for ACE inhibitors
-    startsWith(meucatc, "C09") & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not an ACE inhibitor)
-    .default = 0
-  )
+  is_atc_class(meucatc, npi_25b, "C09")
 }
 
 #' @title Diuretics
@@ -128,18 +137,7 @@ is_ace_inhibitor <- function(meucatc, npi_25b) {
 #'
 #' @export
 is_diuretic <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for diuretics
-    startsWith(meucatc, "C03") & !(meucatc %in% c("C03BA08", "C03CA01")) & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not a diuretic)
-    .default = 0
-  )
+  is_atc_class(meucatc, npi_25b, "C03", c("C03BA08", "C03CA01"))
 }
 
 #' @title Calcium channel blockers
@@ -176,18 +174,7 @@ is_diuretic <- function(meucatc, npi_25b) {
 #'
 #' @export
 is_calcium_channel_blocker <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for calcium channel blockers
-    startsWith(meucatc, "C08") & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not a calcium channel blocker)
-    .default = 0
-  )
+  is_atc_class(meucatc, npi_25b, "C08")
 }
 
 #' @title Other anti-hypertensive medications
@@ -224,18 +211,7 @@ is_calcium_channel_blocker <- function(meucatc, npi_25b) {
 #'
 #' @export
 is_other_antihtn_med <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for other anti-hypertensive medications
-    startsWith(meucatc, "C02") & !(meucatc %in% c("C02KX01")) & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not another anti-hypertensive medication)
-    .default = 0
-  )
+  is_atc_class(meucatc, npi_25b, "C02", "C02KX01")
 }
 
 #' @title Any anti-hypertensive medications
@@ -272,17 +248,10 @@ is_other_antihtn_med <- function(meucatc, npi_25b) {
 #'
 #' @export
 is_any_antihtn_med <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for any anti-hypertensive medications
-    grepl("^(C02|C03|C07|C08|C09)", meucatc) & !(meucatc %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not an anti-hypertensive medication)
-    .default = 0
+  is_atc_class(
+    meucatc, npi_25b,
+    prefix  = c("C02", "C03", "C07", "C08", "C09"),
+    exclude = c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")
   )
 }
 
@@ -320,18 +289,7 @@ is_any_antihtn_med <- function(meucatc, npi_25b) {
 #'
 #' @export
 is_nsaid <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for NSAIDs
-    startsWith(meucatc, "M01A") & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not an NSAID)
-    .default = 0
-  )
+  is_atc_class(meucatc, npi_25b, "M01A")
 }
 
 #' @title Diabetes medications
@@ -368,18 +326,7 @@ is_nsaid <- function(meucatc, npi_25b) {
 #'
 #' @export
 is_diabetes_med <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for diabetes drugs
-    startsWith(meucatc, "A10") & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not a diabetes drug)
-    .default = 0
-  )
+  is_atc_class(meucatc, npi_25b, "A10")
 }
 
 #' @title Beta blockers - cycles 1-2
