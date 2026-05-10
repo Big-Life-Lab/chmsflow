@@ -250,7 +250,7 @@ is_other_antihtn_med <- function(meucatc, npi_25b) {
 is_any_antihtn_med <- function(meucatc, npi_25b) {
   is_atc_class(
     meucatc, npi_25b,
-    prefix  = c("C02", "C03", "C07", "C08", "C09"),
+    prefix = c("C02", "C03", "C07", "C08", "C09"),
     exclude = c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")
   )
 }

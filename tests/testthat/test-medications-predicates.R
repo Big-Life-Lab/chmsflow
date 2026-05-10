@@ -167,4 +167,3 @@ test_that("is_diabetes_med returns correct values", {
   df <- data.frame(med = c("A10BA02", "A09AA02"), last = c(1, 1))
   expect_equal(df |> dplyr::mutate(diabetes_med = is_diabetes_med(med, last)) |> dplyr::pull(diabetes_med), c(1, 0))
 })
-

@@ -243,4 +243,3 @@ test_that("is_diab_med_cycles1to2 returns correct values", {
     0
   )
 })
-
