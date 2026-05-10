@@ -29,6 +29,61 @@ is_atc_class <- function(meucatc, npi_25b, prefix, exclude = character()) {
   )
 }
 
+#' Reduce 80 wide-format ATC/MHR slots into a single tagged-NA aware indicator
+#'
+#' Internal helper that consolidates the shared body of the eight
+#' `is_*_med_cycles1to2()` wrappers. Each wrapper accepts up to 80 named
+#' `atc_*`/`mhr_*` arguments (load-bearing for the `DerivedVar::` metadata
+#' contract) and reduces them via a scalar predicate (`is_beta_blocker()`,
+#' etc.) to produce a per-respondent indicator.
+#'
+#' Tagged-NA semantics: returns `tagged_na("a")` only when all 80 slots are
+#' tagged "a"; returns `tagged_na("b")` when all slots are NA but at least
+#' one is tagged "b" or untagged-NA; otherwise the max of valid 0/1 results
+#' wins (1 takes precedence over 0).
+#'
+#' @param predicate [function] A scalar predicate accepting `(meucatc, npi_25b)`
+#'   and returning 0/1 or `haven::tagged_na()`.
+#' @param atc_args [list] List of ATC code arguments (one per slot, length up to 40).
+#' @param mhr_args [list] List of time-last-taken arguments (one per slot, length up to 40).
+#' @return [numeric] 1, 0, or `haven::tagged_na()`. Length matches the longest
+#'   non-`NULL` input vector (typically 1).
+#' @noRd
+is_atc_class_cycles1to2 <- function(predicate, atc_args, mhr_args) {
+  max_len <- max(lengths(c(atc_args, mhr_args)), 0)
+  if (max_len == 0) {
+    return(haven::tagged_na("b"))
+  }
+
+  atc <- purrr::map(
+    atc_args,
+    \(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len)
+  )
+  mhr <- purrr::map(
+    mhr_args,
+    \(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len)
+  )
+
+  results <- predicate(unlist(atc), unlist(mhr)) |>
+    matrix(nrow = max_len)
+
+  has_one <- rowSums(results == 1, na.rm = TRUE) > 0
+  has_zero <- rowSums(results == 0, na.rm = TRUE) > 0
+  has_na_a <- apply(results, 1, \(r) all(is.na(r)) && any(haven::is_tagged_na(r, "a")))
+  has_na_b <- apply(
+    results, 1,
+    \(r) all(is.na(r)) && (any(haven::is_tagged_na(r, "b")) || any(is.na(r) & !haven::is_tagged_na(r)))
+  )
+
+  dplyr::case_when(
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
+    .default = 0
+  )
+}
+
 #' @title Beta blockers
 #' @description This function determines whether a given medication is a beta blocker.
 #' This function processes multiple inputs efficiently.
@@ -445,68 +500,28 @@ is_bb_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_beta_blocker, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_beta_blocker,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -626,68 +641,28 @@ is_ace_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_ace_inhibitor, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_ace_inhibitor,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -807,68 +782,28 @@ is_diur_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_diuretic, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_diuretic,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -988,68 +923,28 @@ is_ccb_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_calcium_channel_blocker, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_calcium_channel_blocker,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1169,68 +1064,28 @@ is_misc_htn_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_other_antihtn_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_other_antihtn_med,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1350,68 +1205,28 @@ is_any_htn_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_any_antihtn_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_any_antihtn_med,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1531,68 +1346,28 @@ is_nsaid_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_nsaid, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_nsaid,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1712,68 +1487,28 @@ is_diab_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_diabetes_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_diabetes_med,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
