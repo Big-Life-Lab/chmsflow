@@ -1651,7 +1651,7 @@ recode_meds_cycles1to2 <- function(data, meds_data, variables, by = "clinicid",
                                    variable_details = chmsflow::variable_details) {
   if (is.null(meds_database_name)) meds_database_name <- deparse(substitute(meds_data))
   validate_database_name(meds_database_name, variable_details, "meds_database_name")
-  names(meds_data) <- tolower(names(meds_data))
+  meds_data <- dplyr::rename_with(meds_data, tolower)
   atc_mhr_cols <- c(
     paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a"),
     paste0("mhr_", c(101:115, 131:135, 201:215, 231:235), "b")
@@ -1808,7 +1808,7 @@ recode_after_meds <- function(data, variables, by = "clinicid",
   if (!(by %in% names(recoded))) {
     # rec_with_table() preserves input row order; the row-shuffle test in
     # test-medications.R guards against any future regression of that contract.
-    recoded <- dplyr::bind_cols(data[, by, drop = FALSE], recoded)
+    recoded <- dplyr::bind_cols(dplyr::select(data, dplyr::all_of(by)), recoded)
   }
   recoded
 }
