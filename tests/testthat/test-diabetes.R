@@ -51,3 +51,13 @@ test_that("derive_diabetes_status handles empty and mismatched-length input", {
   # Documents current behavior: dplyr::case_when recycles silently on mismatch
   expect_no_error(derive_diabetes_status(c(1, 2), c(1), c(0, 0)))
 })
+
+test_that("derive_diabetes_status accepts diab_med argument by name", {
+  # Edge case tests - guard against rename regression
+  result <- derive_diabetes_status(
+    diab_a1c = 1,
+    ccc_51 = 2,
+    diab_med = 0
+  )
+  expect_true(is.numeric(result) || haven::is_tagged_na(result))
+})
