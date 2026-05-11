@@ -28,7 +28,7 @@ chmsflow uses two CSV metadata files to define how raw CHMS variables are harmon
 - **`variables.csv`** -- lists every harmonized variable with its name, label, type, and unit
 - **`variable-details.csv`** -- defines the row-by-row recoding rules that `rec_with_table()` applies
 
-This vignette is a column-by-column reference for both files. For an explanation of how these files fit into the harmonization workflow, see `vignette("methodology")`.
+This vignette is a column-by-column reference for both files. For an explanation of how these files fit into the harmonization workflow, see [Methodology](methodology.html).
 
 ## `variables.csv`
 
@@ -45,17 +45,23 @@ datatable(variables, filter = "top", options = list(pageLength = 5))
 
 ### Columns
 
-| Column | Description |
-|--------|-------------|
-| `variable` | Name of the harmonized variable |
-| `label` | Short label |
-| `labelLong` | Detailed label |
-| `section` | Broad grouping (e.g., sociodemographics, health behaviour, health status) |
-| `subject` | Specific topic (e.g., age, smoking, blood pressure) |
-| `variableType` | `Categorical` or `Continuous` |
-| `units` | Units of the harmonized variable, or `N/A` |
-| `databaseStart` | CHMS cycles that contain the variable |
-| `variableStart` | Source variable names, with cycle-specific exceptions where needed |
+**1. `variable`** -- the name of the harmonized variable.
+
+**2. `label`** -- a short label for the variable.
+
+**3. `labelLong`** -- a more detailed label for the variable.
+
+**4. `section`** -- the broad grouping where this variable belongs (e.g., sociodemographics, health behaviour, health status).
+
+**5. `subject`** -- the specific topic the variable pertains to (e.g., age, smoking, blood pressure).
+
+**6. `variableType`** -- whether the harmonized variable is `Categorical` or `Continuous`.
+
+**7. `units`** -- the units of the harmonized variable, or `N/A` if unitless.
+
+**8. `databaseStart`** -- the CHMS cycles that contain the variable, separated by commas.
+
+**9. `variableStart`** -- the source variable names as listed in each CHMS cycle. Uses the same format conventions as `variable-details.csv` (see below).
 
 ## `variable-details.csv`
 
@@ -200,4 +206,4 @@ Derived variables use two special column values:
 - **`variableStart`**: `DerivedVar::[var1, var2, var3]` -- lists the input variables
 - **`recEnd`**: `Func::function_name` -- names the R function that computes the derived variable
 
-See `vignette("derived_variables")` for details on how derived variables work.
+See [Derived variables](derived_variables.html) for details on how derived variables work.

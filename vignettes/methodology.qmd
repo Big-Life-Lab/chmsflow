@@ -29,7 +29,7 @@ Even when variable names are stable, the coding categories may differ. CHMS resp
 
 ### Medication data format changes
 
-Cycles 1--2 store medication data in a wide format: up to 80 columns of ATC code and time-last-taken pairs per respondent. Cycles 3--6 use a long format: one row per medication per respondent with two columns (`meucatc` and `npi_25b`). chmsflow provides separate functions for each format (`recode_meds_cycles1to2()` and `recode_meds_cycles3to6()`) with identical call signatures, so the downstream workflow is the same regardless of cycle. See `vignette("recoding_medications")` for details.
+Cycles 1--2 store medication data in a wide format: up to 80 columns of ATC code and time-last-taken pairs per respondent. Cycles 3--6 use a long format: one row per medication per respondent with two columns (`meucatc` and `npi_25b`). chmsflow provides separate functions for each format (`recode_meds_cycles1to2()` and `recode_meds_cycles3to6()`) with identical call signatures, so the downstream workflow is the same regardless of cycle. See [Recoding medications](recoding_medications.html) for details.
 
 ## How chmsflow works
 
@@ -42,7 +42,7 @@ chmsflow builds on the [recodeflow](https://big-life-lab.github.io/recodeflow/) 
 
 The recoding logic lives in `recodeflow::rec_with_table()`, which reads the metadata and applies the mappings. This separation means that adding or correcting a recoding rule is a CSV edit, not a code change.
 
-For detailed schema documentation, see `vignette("variables_and_variable_details")`.
+For detailed schema documentation, see [Variable schema reference](variables_and_variable_details.html).
 
 ### The `variableStart` column
 
@@ -70,7 +70,7 @@ CHMS uses numeric codes for missing data (e.g., `996` for valid skip, `997--999`
 - `tagged_na("a")` -- valid skip (not applicable to this respondent)
 - `tagged_na("b")` -- missing (don't know, refusal, or not stated)
 
-This distinction matters for analysis. For example, a respondent who was never asked about smoking (valid skip) should be treated differently from one who refused to answer (missing). See `vignette("tagged_na_usage")` for a full explanation.
+This distinction matters for analysis. For example, a respondent who was never asked about smoking (valid skip) should be treated differently from one who refused to answer (missing). See [Missing data (tagged_na)](tagged_na_usage.html) for a full explanation.
 
 ### Derived variables
 
@@ -80,18 +80,17 @@ Some harmonized variables cannot be created by simple value mapping. These are c
 - `derive_hypertension()` -- hypertension status from adjusted blood pressure, medication use, and comorbidities
 - `calculate_pack_years()` -- smoking pack-years from smoking history variables
 
-The `DerivedVar::` prefix in `variableStart` lists the input variables that must be present in the data before the function can run. See `vignette("derived_variables")` for details.
+The `DerivedVar::` prefix in `variableStart` lists the input variables that must be present in the data before the function can run. See [Derived variables](derived_variables.html) for details.
 
 ## Known limits
 
 - **Cycle 1 naming divergences** require mixed-format `variableStart` entries. These are documented in the metadata but can be surprising if you inspect the raw CHMS data directly.
 - **Not all CHMS variables are harmonized.** chmsflow currently covers variables used in cardiometabolic health research. The [613apps data dictionary](https://www.613apps.ca/data-dictionary-builder/) provides a broader reference for all CHMS variables.
 - **Harmonization decisions are embedded in the metadata.** Researchers should review `variable-details.csv` to confirm that the recoding rules are appropriate for their specific research question. The mappings follow clinical and epidemiological conventions but may not suit every analytic purpose.
-- **Survey weights and bootstrap variance estimation** are outside chmsflow's scope. Researchers must apply appropriate weights from the CHMS master file.
 
 ## References
 
 - Statistics Canada. [Canadian Health Measures Survey (CHMS)](https://www.statcan.gc.ca/en/survey/household/5071). Survey overview and documentation.
-- Manuel, D. et al. CHMS user guide materials. Available at [OSF](https://osf.io/v27mw/files/v8ahd).
+- Statistics Canada. CHMS user guide materials. Available at [OSF](https://osf.io/v27mw/files/v8ahd).
 - [613apps data dictionary builder](https://www.613apps.ca/data-dictionary-builder/). Interactive CHMS variable lookup (select "CHMS" under "Choose survey").
 - Big Life Lab. [recodeflow](https://big-life-lab.github.io/recodeflow/). The general-purpose harmonization engine underlying chmsflow.

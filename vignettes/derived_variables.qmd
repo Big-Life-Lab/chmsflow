@@ -44,10 +44,10 @@ cycle2_gfr <- recodeflow::rec_with_table(
 )
 ```
 
-For variables that depend on medication status (e.g., hypertension, diabetes), use `recode_after_meds()` instead of `rec_with_table()`. See `vignette("recoding_medications")` and `vignette("analysis_walkthrough")` for the full workflow.
+For variables that depend on medication status (e.g., hypertension, diabetes), use `recode_after_meds()` instead of `rec_with_table()`. See [Recoding medications](recoding_medications.html) and [Analysis walkthrough](analysis_walkthrough.html) for the full workflow.
 
 ## Creating a derived variable
 
-To add a new derived variable to chmsflow, you need to create a harmonized set of input variables and an R function that computes the derived value. See `vignette("how_to_add_variables")` for step-by-step instructions.
+To add a new derived variable to chmsflow, you need to create a harmonized set of input variables and an R function that computes the derived value. See [How to add variables](how_to_add_variables.html) for step-by-step instructions.
 
-For details on the metadata schema, see `vignette("variables_and_variable_details")`.
+For details on the metadata schema, see [Variable schema reference](variables_and_variable_details.html).

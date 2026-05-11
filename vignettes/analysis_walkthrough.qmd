@@ -35,11 +35,11 @@ dim(cycle3)
 dim(cycle3_meds)
 ```
 
-At an RDC, you would load real CHMS data from Stata or SAS files instead. See `vignette("using_chmsflow_at_an_rdc")` for setup instructions.
+At an RDC, you would load real CHMS data from Stata or SAS files instead. See [Using chmsflow at an RDC](using_chmsflow_at_an_rdc.html) for setup instructions.
 
 ## 2. Recode medications
 
-Medication recoding must happen before deriving hypertension status, because the hypertension derivation uses `any_htn_med` as an input. For full details on medication recoding, see `vignette("recoding_medications")`.
+Medication recoding must happen before deriving hypertension status, because the hypertension derivation uses `any_htn_med` as an input. For full details on medication recoding, see [Recoding medications](recoding_medications.html).
 
 `recode_meds_cycles3to6()` classifies each medication row by drug class, aggregates to one row per respondent, and merges the result into the main cycle data.
 
@@ -105,7 +105,7 @@ To see the distribution:
 table(cycle3_htn$htn_status, useNA = "always")
 ```
 
-For more on how chmsflow handles missing data codes, see `vignette("tagged_na_usage")`.
+For more on how chmsflow handles missing data codes, see [Missing data (tagged_na)](tagged_na_usage.html).
 
 ## 5. Combine cycles
 
@@ -136,8 +136,8 @@ combined |>
 
 ## Next steps
 
-- **Medication recoding details** -- `vignette("recoding_medications")`
-- **Understanding the metadata** -- `vignette("variables_and_variable_details")`
-- **Derived variables** -- `vignette("derived_variables")`
-- **Missing data** -- `vignette("tagged_na_usage")`
-- **Methodology** -- `vignette("methodology")`
+- **Medication recoding details** -- [Recoding medications](recoding_medications.html)
+- **Understanding the metadata** -- [Variable schema reference](variables_and_variable_details.html)
+- **Derived variables** -- [Derived variables](derived_variables.html)
+- **Missing data** -- [Missing data (tagged_na)](tagged_na_usage.html)
+- **Methodology** -- [Methodology](methodology.html)
