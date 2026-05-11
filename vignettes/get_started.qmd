@@ -15,7 +15,7 @@ library(chmsflow)
 
 ## 1. Introduction
 
-chmsflow harmonizes variables from the Canadian Health Measures Survey (CHMS) across cycles 1-6 and derives health indicators used in health research. It works with the [recodeflow](https://big-life-lab.github.io/recodeflow/) package to transform raw CHMS variables into analysis-ready versions using recoding rules defined in CSV metadata files.
+chmsflow harmonizes variables from the Canadian Health Measures Survey (CHMS) across cycles 1--6 and derives health indicators used in health research. It works with the [recodeflow](https://big-life-lab.github.io/recodeflow/) package to transform raw CHMS variables into analysis-ready versions using recoding rules defined in CSV metadata files.
 
 ### What chmsflow provides
 

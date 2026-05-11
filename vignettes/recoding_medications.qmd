@@ -19,7 +19,7 @@ chmsflow provides 16 functions that classify medications from ATC codes recorded
 
 ### Available medication variables
 
-| Variable | Drug class | ATC prefix | Cycles 3-6 function | Cycles 1-2 function |
+| Variable | Drug class | ATC prefix | Cycles 3--6 function | Cycles 1--2 function |
 |----------|------------|------------|----------------------|----------------------|
 | `ace_med` | ACE inhibitors | C09 | `is_ace_inhibitor()` | `is_ace_med_cycles1to2()` |
 | `bb_med` | Beta blockers | C07 | `is_beta_blocker()` | `is_bb_med_cycles1to2()` |
@@ -34,8 +34,8 @@ chmsflow provides 16 functions that classify medications from ATC codes recorded
 
 Medication data is structured differently across CHMS cycles:
 
-- **Cycles 1-2** store medications in a flat format with up to 80 individual columns (`atc_101a` to `atc_235a` for ATC codes, `mhr_101b` to `mhr_235b` for time last taken). The cycles 1-2 wrapper functions accept all of these columns as parameters.
-- **Cycles 3-6** store medications in a multi-row format with two variables per row: `meucatc` (ATC code) and `npi_25b` (time last taken). Each respondent may have multiple rows. After recoding, results must be aggregated by `clinicid`.
+- **Cycles 1--2** store medications in a flat format with up to 80 individual columns (`atc_101a` to `atc_235a` for ATC codes, `mhr_101b` to `mhr_235b` for time last taken). The cycles 1--2 wrapper functions accept all of these columns as parameters.
+- **Cycles 3--6** store medications in a multi-row format with two variables per row: `meucatc` (ATC code) and `npi_25b` (time last taken). Each respondent may have multiple rows. After recoding, results must be aggregated by `clinicid`.
 
 ## 2. When to use medication recoding
 
@@ -48,9 +48,9 @@ If your analysis requires medication variables, ***always perform medication rec
 
 The workflow is the same for all cycles: recode medication variables and merge into the main cycle dataset using `recode_meds_cycles1to2()` or `recode_meds_cycles3to6()`, then derive health outcomes using `recode_after_meds()`. Use `recode_after_meds()` instead of `rec_with_table()` — it automatically excludes medication-specific rows from `variable_details` so pre-computed medication columns are passed through rather than re-derived.
 
-### 3.1 Cycles 1-2
+### 3.1 Cycles 1--2
 
-Cycles 1-2 medication data uses uppercase column names (`CLINICID`, `ATC_101A`, etc.). `recode_meds_cycles1to2()` normalizes these internally.
+Cycles 1--2 medication data uses uppercase column names (`CLINICID`, `ATC_101A`, etc.). `recode_meds_cycles1to2()` normalizes these internally.
 
 **Step 1** — Recode medication variables and merge with main cycle data. Requires: `cycle1`, `cycle1_meds`.
 
@@ -91,7 +91,7 @@ cycle1_htn_data <- recode_after_meds(
 head(select(cycle1_htn_data, clinicid, htn_status, htn_adj_status))
 ```
 
-### 3.2 Cycles 3-6
+### 3.2 Cycles 3--6
 
 **Step 1** — Recode medication variables and merge with main cycle data. Requires: `cycle3`, `cycle3_meds`.
 
@@ -149,15 +149,15 @@ is_diabetes_med("A10BA02", 1) # returns 1
 
 ### Cycle format differences
 
-**Cycles 1-2** — one row per respondent with up to 80 `atc_*/mhr_*` column pairs. The `is_*_med_cycles1to2()` variants accept named arguments for each slot:
+**Cycles 1--2** — one row per respondent with up to 80 `atc_*/mhr_*` column pairs. The `is_*_med_cycles1to2()` variants accept named arguments for each slot:
 
 ```{r, warning=FALSE}
-# Classification using cycles 1-2 wide-format columns
+# Classification using cycles 1--2 wide-format columns
 is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 1) # returns 1
 is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 6) # returns 0 (not taken recently)
 ```
 
-**Cycles 3-6** — one row per medication per respondent with two columns: `meucatc` (ATC code) and `npi_25b` (time last taken). Classify per row, then aggregate across rows per respondent:
+**Cycles 3--6** — one row per medication per respondent with two columns: `meucatc` (ATC code) and `npi_25b` (time last taken). Classify per row, then aggregate across rows per respondent:
 
 ```{r, warning=FALSE}
 cycle3_meds |>
