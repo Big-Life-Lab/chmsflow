@@ -195,7 +195,6 @@ calculate_pack_years <- function(smkdsty, clc_age, smk_54, smk_52, smk_31, smk_4
     smkdsty == 96 ~ haven::tagged_na("a"),
     # Smoking status: don't know, refusal, not stated
     smkdsty %in% 97:99 ~ haven::tagged_na("b"),
-
     .default = haven::tagged_na("b")
   )
   return(pack_years)
