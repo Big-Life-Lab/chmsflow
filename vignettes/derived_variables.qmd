@@ -11,62 +11,43 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction
-
-There are two types derived variables in the CHMS surveys. Both types of derived variables are supported in `chmsflow`. 
-
-- Variable mapping - mapping two or more variables into a single variable.
-- Variables that derived using math equations.
-
-`chmsflow` calculates these more complex derived variables using functions that are referenced in `variable_details.csv` within `RecTo` section with the prefix 'Func::'. The variables used in the function are referenced in the `variableStart` section with the prefix 'DerivedVar::'. For example, GFR (`gfr`) includes `Func::calculate_gfr` in the `RecTo` section; and `DerivedVar::[lab_bcre, pgdcgt, clc_sex, clc_age]` in the `variableStart` section, which indicates the four starting variables (`lab_bcre, pgdcgt, clc_sex, clc_age`).
-
-## Example - Glomerular filtration rate (GFR)
-
-A derived variable for GFR has been created in `chmsflow` that uses harmonized blood creatine (lab_bcre - in µmol/L), ethnicity (pgdcgt - 13 categories), sex (clc_sex - 2 categories), and age (clc_age - in years) variables across all CHMS cycles.
-
-Using `rec_with_table()` you can transform the derived WHR variable across multiple CHMS cycles and create a transformed dataset.
-
-In order derive variables, you must load the existing custom function associated with the derived variable
-```{r, warning=FALSE, message=FALSE, eval=FALSE}
-# Function for derived GFR variable
-calculate_gfr <- function(lab_bcre, pgdcgt, clc_sex, clc_age) {
-  GFR <- 0
-  serumcreat <- 0
-
-  if (any(!lab_bcre %in% 14:785) || (any(!clc_sex %in% c(1, 2)) || any(!pgdcgt %in% 1:13)) || any(!clc_age %in% 3:79)) {
-    GFR <- haven::tagged_na("b") # GFR is NA if any non-responses found
-  } else {
-    serumcreat <- lab_bcre / 88.4 # Proceeds without non-responses
-
-    if (!is.na(clc_sex) && !is.na(pgdcgt) && serumcreat != 0) {
-      if (clc_sex == 2 && pgdcgt == 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((clc_age)^(-0.203)) * (0.742) * (1.210) # female and black
-      } else if (clc_sex == 2 && pgdcgt != 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((clc_age)^(-0.203)) * (0.742) # female and not black
-      } else if (clc_sex == 1 && pgdcgt == 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((clc_age)^(-0.203)) * (1.210) # male and black
-      } else if (clc_sex == 1 && pgdcgt != 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((clc_age)^(-0.203)) # male and not black
-      }
-    } else {
-      GFR <- haven::tagged_na("b") # Handle case where clc_sex or pgdcgt is NA or serumcreat is 0
-    }
-  }
-
-  return(GFR)
-}
-```
-
 ```{r, warning=FALSE, message=FALSE}
 library(chmsflow)
 ```
 
-```{r, warning = FALSE, eval=FALSE}
-cycle2_gfr <- recodeflow:::rec_with_table(cycle2, variables = c("gfr", "lab_bcre", "pgdcgt", "clc_sex", "clc_age"), variable_details = variable_details, log = TRUE)
+## Introduction
+
+There are two types of derived variables in the CHMS surveys. Both are supported in chmsflow.
+
+- **Variable mapping** -- mapping two or more variables into a single variable.
+- **Computed variables** -- variables derived using mathematical equations or clinical logic.
+
+chmsflow computes derived variables using functions referenced in `variable-details.csv`. The `recEnd` column uses the prefix `Func::` to name the R function, and the `variableStart` column uses the prefix `DerivedVar::` to list the input variables.
+
+For example, GFR (`gfr_ml_min`) has:
+
+- `recEnd`: `Func::calculate_gfr`
+- `variableStart`: `DerivedVar::[lab_bcre, pgdcgt, clc_sex, clc_age]`
+
+This tells `rec_with_table()` to call `calculate_gfr()` with the four input variables.
+
+## How to use derived variables
+
+Since derived variables depend on their input variables, you must list both the derived variable and its inputs when calling `rec_with_table()`:
+
+```{r, warning=FALSE, eval=FALSE}
+cycle2_gfr <- recodeflow::rec_with_table(
+  cycle2,
+  variables = c("lab_bcre", "pgdcgt", "clc_sex", "clc_age", "gfr_ml_min"),
+  variable_details = variable_details,
+  log = TRUE
+)
 ```
 
-Since derived variables are based on previously transformed variables, if you want to only transform your derived variable, you must also specify its base CHMS variables in `rec_with_table()` as shown above. So for the derived GFR variable, you will have to also specify the blood creatine (lab_bcre), ethnicity (pgdcgt), sex (clc_sex), and age (clc_age) variables.
+For variables that depend on medication status (e.g., hypertension, diabetes), use `recode_after_meds()` instead of `rec_with_table()`. See `vignette("recoding_medications")` and `vignette("analysis_walkthrough")` for the full workflow.
 
 ## Creating a derived variable
 
-Creating a derived variable requires the harmonization of existing CHMS variables, and a custom function that uses those harmonized variables. For more information on how to create a derived variable [see here](how_to_add_variables.html)
+To add a new derived variable to chmsflow, you need to create a harmonized set of input variables and an R function that computes the derived value. See `vignette("how_to_add_variables")` for step-by-step instructions.
+
+For details on the metadata schema, see `vignette("variables_and_variable_details")`.
