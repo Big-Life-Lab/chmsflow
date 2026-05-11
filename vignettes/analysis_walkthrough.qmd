@@ -1,0 +1,143 @@
+---
+title: "Analysis walkthrough: hypertension prevalence"
+format: html
+vignette: >
+  %\VignetteIndexEntry{Analysis walkthrough: hypertension prevalence}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r results='hide', message=FALSE, warning=FALSE}
+library(chmsflow)
+library(recodeflow)
+library(dplyr)
+```
+
+## Overview
+
+This tutorial walks through a complete analysis using chmsflow: estimating hypertension prevalence across CHMS cycles 3--6. By the end, you will have a harmonized dataset with hypertension status derived for each respondent across four survey cycles.
+
+The steps are:
+
+1. Load cycle data and medication data
+2. Recode medications and merge into cycle data
+3. Derive hypertension status and its input variables
+4. Inspect results
+5. Combine cycles into one dataset
+
+## 1. Load data
+
+chmsflow includes bundled dummy data for all six CHMS cycles. Each cycle has a main dataset (`cycle3`, `cycle4`, etc.) and a medication dataset (`cycle3_meds`, `cycle4_meds`, etc.).
+
+```{r}
+# Bundled dummy data is loaded automatically with library(chmsflow)
+dim(cycle3)
+dim(cycle3_meds)
+```
+
+At an RDC, you would load real CHMS data from Stata or SAS files instead. See `vignette("using_chmsflow_at_an_rdc")` for setup instructions.
+
+## 2. Recode medications
+
+Medication recoding must happen before deriving hypertension status, because the hypertension derivation uses `any_htn_med` as an input. For full details on medication recoding, see `vignette("recoding_medications")`.
+
+`recode_meds_cycles3to6()` classifies each medication row by drug class, aggregates to one row per respondent, and merges the result into the main cycle data.
+
+```{r, warning=FALSE}
+cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
+cycle4 <- recode_meds_cycles3to6(cycle4, cycle4_meds, c("any_htn_med", "diab_med"))
+cycle5 <- recode_meds_cycles3to6(cycle5, cycle5_meds, c("any_htn_med", "diab_med"))
+cycle6 <- recode_meds_cycles3to6(cycle6, cycle6_meds, c("any_htn_med", "diab_med"))
+```
+
+After this step, `any_htn_med` and `diab_med` are columns in each cycle dataset.
+
+```{r}
+select(cycle3, clinicid, any_htn_med, diab_med) |> head()
+```
+
+## 3. Derive hypertension status
+
+Use `recode_after_meds()` instead of `rec_with_table()` for variables that depend on medication status. It automatically excludes medication-specific rows from `variable_details` so the pre-computed medication columns are passed through rather than re-derived.
+
+Hypertension derivation requires a chain of intermediate variables: blood pressure measurements, comorbidities (diabetes, CVD, CKD), and their inputs. List all of them so `recode_after_meds()` can derive them in order.
+
+```{r, warning=FALSE}
+htn_variables <- c(
+  # Blood pressure (raw + adjusted)
+  "bpmdpbps", "bpmdpbpd", "sbp_adj_mmhg", "dbp_adj_mmhg",
+  # Medication inputs (merged in step 2)
+  "any_htn_med", "ccc_32",
+  # Diabetes chain (input to hypertension functions)
+  "lab_hba1", "diab_a1c", "ccc_51", "diab_med", "diab_status",
+  # CVD chain
+  "ccc_61", "ccc_63", "ccc_81", "cvd_status",
+  # CKD chain
+  "lab_bcre", "pgdcgt", "clc_sex", "clc_age", "gfr_ml_min", "ckd_status",
+  # Hypertension outcomes
+  "htn_status", "htn_adj_status", "htn_control_status", "htn_control_adj_status"
+)
+
+cycle3_htn <- recode_after_meds(cycle3, htn_variables)
+cycle4_htn <- recode_after_meds(cycle4, htn_variables)
+cycle5_htn <- recode_after_meds(cycle5, htn_variables)
+cycle6_htn <- recode_after_meds(cycle6, htn_variables)
+```
+
+## 4. Inspect results
+
+Each result contains the derived hypertension variables alongside `clinicid`. Values are:
+
+- `1` -- high blood pressure
+- `2` -- normal blood pressure
+- `tagged_na("a")` -- not applicable
+- `tagged_na("b")` -- missing
+
+```{r}
+cycle3_htn |>
+  select(clinicid, htn_status, htn_adj_status) |>
+  head(10)
+```
+
+To see the distribution:
+
+```{r}
+table(cycle3_htn$htn_status, useNA = "always")
+```
+
+For more on how chmsflow handles missing data codes, see `vignette("tagged_na_usage")`.
+
+## 5. Combine cycles
+
+Add a cycle identifier to each dataset and bind them together.
+
+```{r}
+cycle3_htn$cycle <- 3
+cycle4_htn$cycle <- 4
+cycle5_htn$cycle <- 5
+cycle6_htn$cycle <- 6
+
+combined <- bind_rows(cycle3_htn, cycle4_htn, cycle5_htn, cycle6_htn)
+dim(combined)
+```
+
+Hypertension prevalence by cycle:
+
+```{r}
+combined |>
+  filter(!is.na(htn_status)) |>
+  group_by(cycle) |>
+  summarise(
+    n = n(),
+    n_htn = sum(htn_status == 1),
+    prevalence = mean(htn_status == 1)
+  )
+```
+
+## Next steps
+
+- **Medication recoding details** -- `vignette("recoding_medications")`
+- **Understanding the metadata** -- `vignette("variables_and_variable_details")`
+- **Derived variables** -- `vignette("derived_variables")`
+- **Missing data** -- `vignette("tagged_na_usage")`
+- **Methodology** -- `vignette("methodology")`
