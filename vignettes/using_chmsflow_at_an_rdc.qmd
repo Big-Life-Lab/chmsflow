@@ -96,3 +96,9 @@ From here, the workflow is identical to what you tested with dummy data. See [An
 - **Test thoroughly outside the RDC.** RDC time is limited. Use chmsflow's dummy data to verify your code runs end-to-end before going in.
 - **Bring all dependencies.** Check what chmsflow imports by running `tools::package_dependencies("chmsflow", recursive = TRUE)` outside the RDC, and make sure all of those packages are on your P drive.
 - **Keep medication data separate.** Do not merge medication files into the main cycle files before loading. chmsflow expects them as separate objects for `recode_meds_cycles1to2()` and `recode_meds_cycles3to6()`.
+
+## Next steps
+
+- **Run a complete analysis** -- Follow the [Analysis walkthrough](analysis_walkthrough.html) to estimate hypertension prevalence across cycles 3--6 using dummy data, then bring the same code into the RDC.
+- **Recode medications** -- If your analysis needs medication variables, see [Recoding medications](recoding_medications.html) for the full pipeline.
+- **Understand the methodology** -- For background on why harmonization is non-trivial, see [Methodology](methodology.html).

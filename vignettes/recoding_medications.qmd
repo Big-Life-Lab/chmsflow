@@ -173,12 +173,9 @@ Use `aggregate_meds_by_person()` instead — it preserves tagged-NA semantics
 across the aggregation.
 :::
 
-## Appendix: Installation
+## Next steps
 
-```{r, eval=FALSE}
-# Install release version from CRAN
-install.packages("chmsflow")
-
-# Install the most recent version from GitHub
-devtools::install_github("Big-Life-Lab/chmsflow")
-```
+- **Full analysis example** -- See how medication recoding fits into an end-to-end workflow in [Analysis walkthrough](analysis_walkthrough.html).
+- **Understand missing data** -- Learn how `tagged_na("a")` and `tagged_na("b")` are preserved through the medication pipeline in [Missing data (tagged_na)](tagged_na_usage.html).
+- **Inspect the metadata** -- See how medication variables are defined in `variable-details.csv` in [Variable schema reference](variables_and_variable_details.html).
+- **Work at an RDC** -- For loading real CHMS medication data at a Research Data Centre, see [Using chmsflow at an RDC](using_chmsflow_at_an_rdc.html).

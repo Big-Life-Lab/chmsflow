@@ -235,3 +235,9 @@ It is possible to create a derived variable that involves derived variables. Whe
 kable(variable_details[308:311, ])
 kable(variables[80, ])
 ```
+
+## Next steps
+
+- **Understand the schema** -- For a column-by-column reference of `variables.csv` and `variable-details.csv`, see [Variable schema reference](variables_and_variable_details.html).
+- **See derived variables in context** -- Learn how `Func::` and `DerivedVar::` entries are used in [Derived variables](derived_variables.html).
+- **Contribute to chmsflow** -- See the [contributing guide](https://github.com/Big-Life-Lab/chmsflow/blob/dev/CONTRIBUTING.md) for how to submit your additions.

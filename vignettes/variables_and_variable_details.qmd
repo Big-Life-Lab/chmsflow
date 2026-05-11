@@ -207,3 +207,9 @@ Derived variables use two special column values:
 - **`recEnd`**: `Func::function_name` -- names the R function that computes the derived variable
 
 See [Derived variables](derived_variables.html) for details on how derived variables work.
+
+## Next steps
+
+- **See it in action** -- Follow the [Analysis walkthrough](analysis_walkthrough.html) to see how these metadata files drive a real analysis.
+- **Understand the methodology** -- For the design rationale behind the rules-as-data approach, see [Methodology](methodology.html).
+- **Add your own variables** -- To extend the schema with custom variables, see [How to add variables](how_to_add_variables.html).

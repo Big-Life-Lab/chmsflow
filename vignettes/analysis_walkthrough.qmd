@@ -136,8 +136,9 @@ combined |>
 
 ## Next steps
 
-- **Medication recoding details** -- [Recoding medications](recoding_medications.html)
-- **Understanding the metadata** -- [Variable schema reference](variables_and_variable_details.html)
-- **Derived variables** -- [Derived variables](derived_variables.html)
-- **Missing data** -- [Missing data (tagged_na)](tagged_na_usage.html)
-- **Methodology** -- [Methodology](methodology.html)
+- **Add more drug classes** -- This walkthrough used `any_htn_med` and `diab_med`, but chmsflow supports 8 drug classes. See [Recoding medications](recoding_medications.html) for the full list and how to use individual classification functions.
+- **Include cycles 1--2** -- Cycles 1--2 use a different medication format but the same downstream workflow. See [Recoding medications](recoding_medications.html) for the cycles 1--2 pipeline.
+- **Understand the recoding rules** -- To inspect or customize how variables are harmonized, see [Variable schema reference](variables_and_variable_details.html).
+- **Handle missing data carefully** -- The `tagged_na("a")` and `tagged_na("b")` values in results carry different meanings. See [Missing data (tagged_na)](tagged_na_usage.html).
+- **Work at an RDC** -- To run this analysis on real CHMS data, see [Using chmsflow at an RDC](using_chmsflow_at_an_rdc.html).
+- **Understand the methodology** -- For why harmonization is non-trivial and how chmsflow works under the hood, see [Methodology](methodology.html).

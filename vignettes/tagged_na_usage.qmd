@@ -98,3 +98,9 @@ missing.
 When creating deriving variables, it is important to examine the base CHMS
 variables to check for the presence of `NA(a)` and `NA(b)`. This can be done
 by reviewing CHMS documentation.
+
+## Next steps
+
+- **See tagged NAs in practice** -- The [Analysis walkthrough](analysis_walkthrough.html) shows how tagged NAs appear in hypertension derivation results.
+- **Understand derived variables** -- Learn how `Func::` and `DerivedVar::` entries work in [Derived variables](derived_variables.html).
+- **Inspect the recoding rules** -- See how missing data codes are mapped in [Variable schema reference](variables_and_variable_details.html).

@@ -88,6 +88,13 @@ The `DerivedVar::` prefix in `variableStart` lists the input variables that must
 - **Not all CHMS variables are harmonized.** chmsflow currently covers variables used in cardiometabolic health research. The [613apps data dictionary](https://www.613apps.ca/data-dictionary-builder/) provides a broader reference for all CHMS variables.
 - **Harmonization decisions are embedded in the metadata.** Researchers should review `variable-details.csv` to confirm that the recoding rules are appropriate for their specific research question. The mappings follow clinical and epidemiological conventions but may not suit every analytic purpose.
 
+## Next steps
+
+- **See it in action** -- Follow the [Analysis walkthrough](analysis_walkthrough.html) to run a complete hypertension prevalence analysis using chmsflow.
+- **Inspect the recoding rules** -- Browse the metadata column by column in [Variable schema reference](variables_and_variable_details.html).
+- **Understand missing data** -- Learn how `tagged_na()` preserves the reason for missingness in [Missing data (tagged_na)](tagged_na_usage.html).
+- **Add your own variables** -- Extend chmsflow with custom harmonized variables in [How to add variables](how_to_add_variables.html).
+
 ## References
 
 - Statistics Canada. [Canadian Health Measures Survey (CHMS)](https://www.statcan.gc.ca/en/survey/household/5071). Survey overview and documentation.
