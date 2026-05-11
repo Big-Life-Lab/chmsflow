@@ -2,14 +2,14 @@
 title: "Get started"
 format: html
 execute:
-  eval: false
+  eval: true
 vignette: >
   %\VignetteIndexEntry{Get started}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r results='hide', message=FALSE, warning=FALSE, eval=TRUE}
+```{r results='hide', message=FALSE, warning=FALSE}
 library(chmsflow)
 ```
 

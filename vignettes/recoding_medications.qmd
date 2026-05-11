@@ -41,24 +41,24 @@ Medication data is structured differently across CHMS cycles:
 
 If your analysis requires medication variables, ***always perform medication recoding first***, before recoding any other variables. Two downstream health outcome variables depend on medication status:
 
-- **Hypertension** — `any_htn_med` must be merged into the main cycle dataset before deriving hypertension outcomes.
-- **Diabetes** — `diab_med` must be merged before deriving diabetes outcomes.
+- **Hypertension** -- `any_htn_med` must be merged into the main cycle dataset before deriving hypertension outcomes.
+- **Diabetes** -- `diab_med` must be merged before deriving diabetes outcomes.
 
 ## 3. Workflow
 
-The workflow is the same for all cycles: recode medication variables and merge into the main cycle dataset using `recode_meds_cycles1to2()` or `recode_meds_cycles3to6()`, then derive health outcomes using `recode_after_meds()`. Use `recode_after_meds()` instead of `rec_with_table()` — it automatically excludes medication-specific rows from `variable_details` so pre-computed medication columns are passed through rather than re-derived.
+The workflow is the same for all cycles: recode medication variables and merge into the main cycle dataset using `recode_meds_cycles1to2()` or `recode_meds_cycles3to6()`, then derive health outcomes using `recode_after_meds()`. Use `recode_after_meds()` instead of `rec_with_table()` -- it automatically excludes medication-specific rows from `variable_details` so pre-computed medication columns are passed through rather than re-derived.
 
 ### 3.1 Cycles 1--2
 
 Cycles 1--2 medication data uses uppercase column names (`CLINICID`, `ATC_101A`, etc.). `recode_meds_cycles1to2()` normalizes these internally.
 
-**Step 1** — Recode medication variables and merge with main cycle data. Requires: `cycle1`, `cycle1_meds`.
+**Step 1** -- Recode medication variables and merge with main cycle data. Requires: `cycle1`, `cycle1_meds`.
 
 ```{r, warning=FALSE}
 cycle1 <- recode_meds_cycles1to2(cycle1, cycle1_meds, c("any_htn_med", "diab_med"))
 ```
 
-**Step 2** — Derive diabetes status. Requires: `cycle1` from Step 1.
+**Step 2** -- Derive diabetes status. Requires: `cycle1` from Step 1.
 
 ```{r, warning=FALSE}
 cycle1_diab_data <- recode_after_meds(
@@ -68,7 +68,7 @@ cycle1_diab_data <- recode_after_meds(
 head(select(cycle1_diab_data, clinicid, diab_status))
 ```
 
-**Step 3** — Derive hypertension status. Requires: `cycle1` from Step 1.
+**Step 3** -- Derive hypertension status. Requires: `cycle1` from Step 1.
 
 ```{r, warning=FALSE}
 cycle1_htn_data <- recode_after_meds(
@@ -93,13 +93,13 @@ head(select(cycle1_htn_data, clinicid, htn_status, htn_adj_status))
 
 ### 3.2 Cycles 3--6
 
-**Step 1** — Recode medication variables and merge with main cycle data. Requires: `cycle3`, `cycle3_meds`.
+**Step 1** -- Recode medication variables and merge with main cycle data. Requires: `cycle3`, `cycle3_meds`.
 
 ```{r, warning=FALSE}
 cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
 ```
 
-**Step 2** — Derive diabetes status. Requires: `cycle3` from Step 1.
+**Step 2** -- Derive diabetes status. Requires: `cycle3` from Step 1.
 
 ```{r, warning=FALSE}
 cycle3_diab_data <- recode_after_meds(
@@ -109,7 +109,7 @@ cycle3_diab_data <- recode_after_meds(
 head(select(cycle3_diab_data, clinicid, diab_status))
 ```
 
-**Step 3** — Derive hypertension status. Requires: `cycle3` from Step 1.
+**Step 3** -- Derive hypertension status. Requires: `cycle3` from Step 1.
 
 `cvd_status`, `diab_status`, and `ckd_status` are intermediate inputs to the hypertension functions. Their full input chains must also be listed so `recode_after_meds()` can derive them.
 
@@ -136,7 +136,7 @@ head(select(cycle3_htn_data, clinicid, htn_status, htn_adj_status))
 
 ## 4. Advanced: using individual classification functions
 
-The `is_*` functions underlie the wrapper functions and are available directly for custom workflows — for example, deriving a single drug class without the full pipeline, or integrating classification logic into your own aggregation steps.
+The `is_*` functions underlie the wrapper functions and are available directly for custom workflows -- for example, deriving a single drug class without the full pipeline, or integrating classification logic into your own aggregation steps.
 
 Each function accepts an ATC code and a time-last-taken value and returns `1`, `0`, or a `tagged_na()` code:
 
@@ -149,7 +149,7 @@ is_diabetes_med("A10BA02", 1) # returns 1
 
 ### Cycle format differences
 
-**Cycles 1--2** — one row per respondent with up to 80 `atc_*/mhr_*` column pairs. The `is_*_med_cycles1to2()` variants accept named arguments for each slot:
+**Cycles 1--2** -- one row per respondent with up to 80 `atc_*/mhr_*` column pairs. The `is_*_med_cycles1to2()` variants accept named arguments for each slot:
 
 ```{r, warning=FALSE}
 # Classification using cycles 1--2 wide-format columns
@@ -157,7 +157,7 @@ is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 1) # returns 1
 is_ace_med_cycles1to2(atc_101a = "C09AA02", mhr_101b = 6) # returns 0 (not taken recently)
 ```
 
-**Cycles 3--6** — one row per medication per respondent with two columns: `meucatc` (ATC code) and `npi_25b` (time last taken). Classify per row, then aggregate across rows per respondent:
+**Cycles 3--6** -- one row per medication per respondent with two columns: `meucatc` (ATC code) and `npi_25b` (time last taken). Classify per row, then aggregate across rows per respondent:
 
 ```{r, warning=FALSE}
 cycle3_meds |>
@@ -169,7 +169,7 @@ cycle3_meds |>
 Avoid using `as.numeric(as.character(.x))` to aggregate medication columns.
 That pattern strips `tagged_na("a")` (valid skip) and `tagged_na("b")`
 (missing/refused) distinctions, collapsing them into plain `NA`.
-Use `aggregate_meds_by_person()` instead — it preserves tagged-NA semantics
+Use `aggregate_meds_by_person()` instead -- it preserves tagged-NA semantics
 across the aggregation.
 :::
 
