@@ -54,6 +54,6 @@ For details on the metadata schema, see [Variable schema reference](variables_an
 
 ## Next steps
 
-- **See derived variables in a full analysis** -- The [Analysis walkthrough](analysis_walkthrough.html) demonstrates deriving hypertension status across four CHMS cycles.
+- **See derived variables in a full analysis** -- The [Analysis walkthrough](analysis_walkthrough.html) demonstrates deriving hypertension status from CHMS cycle 3 data.
 - **Handle missing data** -- Learn how `tagged_na()` codes propagate through derived variable functions in [Missing data (tagged_na)](tagged_na_usage.html).
 - **Understand the methodology** -- For the design rationale behind the rules-as-data approach, see [Methodology](methodology.html).
