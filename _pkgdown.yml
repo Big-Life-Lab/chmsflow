@@ -49,6 +49,7 @@ navbar:
 articles:
 - title: "Tutorial"
   contents:
+  - get_started
   - analysis_walkthrough
 - title: "How-to guides"
   contents:
