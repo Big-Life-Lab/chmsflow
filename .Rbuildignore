@@ -20,6 +20,10 @@
 ^CLAUDE\.md$
 ^\.tmp$
 .*\.log$
+^\.RData$
+^\.Rhistory$
+.*\.Rcheck$
+.*\.tar\.gz$
 ^renv$
 ^renv\.lock$
 ^test_vignettes\.R$
