@@ -87,6 +87,7 @@ The `DerivedVar::` prefix in `variableStart` lists the input variables that must
 - **Cycle 1 naming divergences** require mixed-format `variableStart` entries. These are documented in the metadata but can be surprising if you inspect the raw CHMS data directly.
 - **Not all CHMS variables are harmonized.** chmsflow currently covers variables used in cardiometabolic health research. The [613apps data dictionary](https://www.613apps.ca/data-dictionary-builder/) provides a broader reference for all CHMS variables.
 - **Harmonization decisions are embedded in the metadata.** Researchers should review `variable-details.csv` to confirm that the recoding rules are appropriate for their specific research question. The mappings follow clinical and epidemiological conventions but may not suit every analytic purpose.
+- **Survey design is out of scope.** chmsflow harmonizes and derives variables but does not implement CHMS survey design, weights, or bootstrap variance estimation.
 
 ## Next steps
 
