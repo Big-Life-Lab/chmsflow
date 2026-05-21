@@ -14,33 +14,57 @@ navbar:
   structure:
     left:
     - home
-    - get_started
-    - articles
+    - tutorial
+    - howto
+    - explanation
     - reference
     - news
     right: github
   components:
-    get_started:
-      text: Get started
-      href: articles/get_started.html
+    tutorial:
+      text: Tutorial
+      href: articles/analysis_walkthrough.html
+    howto:
+      text: How-to guides
+      menu:
+      - text: Recoding medications
+        href: articles/recoding_medications.html
+      - text: Using chmsflow at an RDC
+        href: articles/using_chmsflow_at_an_rdc.html
+      - text: Adding variables
+        href: articles/how_to_add_variables.html
+    explanation:
+      text: Explanation
+      menu:
+      - text: Methodology
+        href: articles/methodology.html
+      - text: Missing data (tagged NA)
+        href: articles/tagged_na_usage.html
+      - text: Derived variables
+        href: articles/derived_variables.html
+    reference:
+      text: Reference
+      href: reference/index.html
 
 articles:
-- title: "Get Started"
-  desc: "Essential guides to get you started with chmsflow"
+- title: "Tutorial"
   contents:
   - get_started
-- title: "Data Structure Guides"
-  desc: "Understanding CHMS data structure and variables"
-  contents:
-  - variables_sheet
-  - variable_details
-- title: "Variable Processing"
-  desc: "How to recode and derive variables"
+  - analysis_walkthrough
+- title: "How-to guides"
   contents:
   - recoding_medications
-  - derived_variables
+  - using_chmsflow_at_an_rdc
   - how_to_add_variables
+- title: "Explanation"
+  contents:
+  - methodology
   - tagged_na_usage
+  - derived_variables
+- title: "Reference"
+  desc: "Variable schema reference"
+  contents:
+  - variables_and_variable_details
 
 reference:
 - title: Worksheets
