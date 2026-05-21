@@ -15,7 +15,7 @@ Description: Supporting the use of the Canadian Health Measures Survey (CHMS)
     3(26), 754. <doi:10.21105/joss.00754>.
 Depends:
     R (>= 4.0)
-Imports: dplyr, haven, recodeflow
+Imports: dplyr, haven, purrr, recodeflow
 License: MIT + file LICENSE
 URL: https://github.com/Big-Life-Lab/chmsflow, https://big-life-lab.github.io/chmsflow/
 BugReports: https://github.com/Big-Life-Lab/chmsflow/issues

@@ -205,3 +205,18 @@ test_that("derive_hypertension handles empty and mismatched-length input", {
   # rather than erroring. Strict length checking is a candidate for follow-up.
   expect_no_error(derive_hypertension(c(140, 150), c(80), 0))
 })
+
+test_that("derive_hypertension accepts any_htn_med argument by name", {
+  # Edge case tests - guard against rename regression: positional-arg calls would
+  # silently pass even if any_htn_med were renamed back to any_htn_med2
+  result <- derive_hypertension(
+    bpmdpbps = 145,
+    bpmdpbpd = 95,
+    any_htn_med = 1,
+    ccc_32 = 2,
+    cvd_status = 2,
+    diab_status = 2,
+    ckd = 2
+  )
+  expect_true(is.numeric(result) || haven::is_tagged_na(result))
+})
