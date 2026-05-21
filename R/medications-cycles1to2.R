@@ -1,383 +1,54 @@
-#' @title Beta blockers
-#' @description This function determines whether a given medication is a beta blocker.
-#' This function processes multiple inputs efficiently.
-#' @param meucatc [character] ATC code of the medication.
-#' @param npi_25b [integer] Time when the medication was last taken.
-#' @return [numeric] 1 if medication is a beta blocker, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
-#' @details Identifies beta blockers based on ATC codes starting with "C07", excluding specific sub-codes.
+#' Reduce 80 wide-format ATC/MHR slots into a single tagged-NA aware indicator
 #'
-#'          **Missing Data Codes:**
-#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
+#' Internal helper that consolidates the shared body of the eight
+#' `is_*_med_cycles1to2()` wrappers. Each wrapper accepts up to 80 named
+#' `atc_*`/`mhr_*` arguments (load-bearing for the `DerivedVar::` metadata
+#' contract) and reduces them via a scalar predicate (`is_beta_blocker()`,
+#' etc.) to produce a per-respondent indicator.
 #'
-#' @examples
-#' # Scalar usage: Single respondent
-#' is_beta_blocker("C07AA13", 3)
-#' # Returns: 1
+#' Tagged-NA semantics: returns `tagged_na("a")` only when all 80 slots are
+#' tagged "a"; returns `tagged_na("b")` when all slots are NA but at least
+#' one is tagged "b" or untagged-NA; otherwise the max of valid 0/1 results
+#' wins (1 takes precedence over 0).
 #'
-#' # Example: Respondent has non-response values for all inputs.
-#' result <- is_beta_blocker("9999998", 8)
-#' result # Shows: NA
-#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
-#'
-#' # Multiple respondents
-#' is_beta_blocker(c("C07AA13", "C07AA07"), c(3, 4))
-#' # Returns: c(1, 0)
-#'
-#' # Database usage: Applied to survey datasets
-#' # library(dplyr)
-#' # dataset |>
-#' #   mutate(beta_blocker = is_beta_blocker(meucatc, npi_25b))
-#'
-#' @export
-is_beta_blocker <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+#' @param predicate [function] A scalar predicate accepting `(meucatc, npi_25b)`
+#'   and returning 0/1 or `haven::tagged_na()`.
+#' @param atc_args [list] List of ATC code arguments (one per slot, length up to 40).
+#' @param mhr_args [list] List of time-last-taken arguments (one per slot, length up to 40).
+#' @return [numeric] 1, 0, or `haven::tagged_na()`. Length matches the longest
+#'   non-`NULL` input vector (typically 1).
+#' @noRd
+is_atc_class_cycles1to2 <- function(predicate, atc_args, mhr_args) {
+  max_len <- max(lengths(c(atc_args, mhr_args)), 0)
+  if (max_len == 0) {
+    return(haven::tagged_na("b"))
+  }
 
-    # Check for beta blockers
-    startsWith(meucatc, "C07") & !(meucatc %in% c("C07AA07", "C07AA12", "C07AG02")) & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not a beta blocker)
-    .default = 0
+  atc <- purrr::map(
+    atc_args,
+    \(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len)
   )
-}
-
-#' @title ACE inhibitors
-#' @description This function checks if a given medication is an ACE inhibitor.
-#' This function processes multiple inputs efficiently.
-#' @param meucatc [character] ATC code of the medication.
-#' @param npi_25b [integer] Time when the medication was last taken.
-#' @return [numeric] 1 if medication is an ACE inhibitor, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
-#' @details Identifies ACE inhibitors based on ATC codes starting with "C09".
-#'
-#'          **Missing Data Codes:**
-#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
-#'
-#' @examples
-#' # Scalar usage: Single respondent
-#' is_ace_inhibitor("C09AB03", 2)
-#' # Returns: 1
-#'
-#' # Example: Respondent has non-response values for all inputs.
-#' result <- is_ace_inhibitor("9999998", 8)
-#' result # Shows: NA
-#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
-#'
-#' # Multiple respondents
-#' is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1))
-#' # Returns: c(1, 0)
-#'
-#' # Database usage: Applied to survey datasets
-#' # library(dplyr)
-#' # dataset |>
-#' #   mutate(ace_inhibitor = is_ace_inhibitor(meucatc, npi_25b))
-#'
-#' @export
-is_ace_inhibitor <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for ACE inhibitors
-    startsWith(meucatc, "C09") & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not an ACE inhibitor)
-    .default = 0
+  mhr <- purrr::map(
+    mhr_args,
+    \(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len)
   )
-}
 
-#' @title Diuretics
-#' @description This function checks if a given medication is a diuretic.
-#' This function processes multiple inputs efficiently.
-#' @param meucatc [character] ATC code of the medication.
-#' @param npi_25b [integer] Time when the medication was last taken.
-#' @return [numeric] 1 if medication is a diuretic, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
-#' @details Identifies diuretics based on ATC codes starting with "C03", excluding specific sub-codes.
-#'
-#'          **Missing Data Codes:**
-#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
-#'
-#' @examples
-#' # Scalar usage: Single respondent
-#' is_diuretic("C03AA03", 3)
-#' # Returns: 1
-#'
-#' # Example: Respondent has non-response values for all inputs.
-#' result <- is_diuretic("9999998", 8)
-#' result # Shows: NA
-#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
-#'
-#' # Multiple respondents
-#' is_diuretic(c("C03AA03", "C03BA08"), c(3, 2))
-#' # Returns: c(1, 0)
-#'
-#' # Database usage: Applied to survey datasets
-#' # library(dplyr)
-#' # dataset |>
-#' #   mutate(diuretic = is_diuretic(meucatc, npi_25b))
-#'
-#' @export
-is_diuretic <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
+  results <- predicate(unlist(atc), unlist(mhr)) |>
+    matrix(nrow = max_len)
 
-    # Check for diuretics
-    startsWith(meucatc, "C03") & !(meucatc %in% c("C03BA08", "C03CA01")) & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not a diuretic)
-    .default = 0
+  has_one <- rowSums(results == 1, na.rm = TRUE) > 0
+  has_zero <- rowSums(results == 0, na.rm = TRUE) > 0
+  has_na_a <- apply(results, 1, \(r) all(is.na(r)) && any(haven::is_tagged_na(r, "a")))
+  has_na_b <- apply(
+    results, 1,
+    \(r) all(is.na(r)) && (any(haven::is_tagged_na(r, "b")) || any(is.na(r) & !haven::is_tagged_na(r)))
   )
-}
 
-#' @title Calcium channel blockers
-#' @description This function checks if a given medication is a calcium channel blocker.
-#' This function processes multiple inputs efficiently.
-#' @param meucatc [character] ATC code of the medication.
-#' @param npi_25b [integer] Time when the medication was last taken.
-#' @return [numeric] 1 if medication is a calcium channel blocker, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
-#' @details Identifies calcium channel blockers based on ATC codes starting with "C08".
-#'
-#'          **Missing Data Codes:**
-#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
-#'
-#' @examples
-#' # Scalar usage: Single respondent
-#' is_calcium_channel_blocker("C08CA05", 1)
-#' # Returns: 1
-#'
-#' # Example: Respondent has non-response values for all inputs.
-#' result <- is_calcium_channel_blocker("9999998", 8)
-#' result # Shows: NA
-#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
-#'
-#' # Multiple respondents
-#' is_calcium_channel_blocker(c("C08CA05", "C01AA05"), c(1, 2))
-#' # Returns: c(1, 0)
-#'
-#' # Database usage: Applied to survey datasets
-#' # library(dplyr)
-#' # dataset |>
-#' #   mutate(ccb = is_calcium_channel_blocker(meucatc, npi_25b))
-#'
-#' @export
-is_calcium_channel_blocker <- function(meucatc, npi_25b) {
   dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for calcium channel blockers
-    startsWith(meucatc, "C08") & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not a calcium channel blocker)
-    .default = 0
-  )
-}
-
-#' @title Other anti-hypertensive medications
-#' @description This function checks if a given medication is another anti-hypertensive drug.
-#' This function processes multiple inputs efficiently.
-#' @param meucatc [character] ATC code of the medication.
-#' @param npi_25b [integer] Time when the medication was last taken.
-#' @return [numeric] 1 if medication is another anti-hypertensive drug, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
-#' @details Identifies other anti-hypertensive drugs based on ATC codes starting with "C02", excluding a specific sub-code.
-#'
-#'          **Missing Data Codes:**
-#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
-#'
-#' @examples
-#' # Scalar usage: Single respondent
-#' is_other_antihtn_med("C02AC04", 3)
-#' # Returns: 1
-#'
-#' # Example: Respondent has non-response values for all inputs.
-#' result <- is_other_antihtn_med("9999998", 8)
-#' result # Shows: NA
-#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
-#'
-#' # Multiple respondents
-#' is_other_antihtn_med(c("C02AC04", "C02KX01"), c(3, 2))
-#' # Returns: c(1, 0)
-#'
-#' # Database usage: Applied to survey datasets
-#' # library(dplyr)
-#' # dataset |>
-#' #   mutate(other_antihtn = is_other_antihtn_med(meucatc, npi_25b))
-#'
-#' @export
-is_other_antihtn_med <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for other anti-hypertensive medications
-    startsWith(meucatc, "C02") & !(meucatc %in% c("C02KX01")) & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not another anti-hypertensive medication)
-    .default = 0
-  )
-}
-
-#' @title Any anti-hypertensive medications
-#' @description This function checks if a given medication is any anti-hypertensive drug.
-#' This function processes multiple inputs efficiently.
-#' @param meucatc [character] ATC code of the medication.
-#' @param npi_25b [integer] Time when the medication was last taken.
-#' @return [numeric] 1 if medication is an anti-hypertensive drug, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
-#' @details Identifies anti-hypertensive drugs based on ATC codes starting with "C02", "C03", "C07", "C08", or "C09", excluding specific sub-codes.
-#'
-#'          **Missing Data Codes:**
-#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
-#'
-#' @examples
-#' # Scalar usage: Single respondent
-#' is_any_antihtn_med("C07AB02", 4)
-#' # Returns: 1
-#'
-#' # Example: Respondent has non-response values for all inputs.
-#' result <- is_any_antihtn_med("9999998", 8)
-#' result # Shows: NA
-#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
-#'
-#' # Multiple respondents
-#' is_any_antihtn_med(c("C07AB02", "C07AA07"), c(4, 2))
-#' # Returns: c(1, 0)
-#'
-#' # Database usage: Applied to survey datasets
-#' # library(dplyr)
-#' # dataset |>
-#' #   mutate(any_antihtn = is_any_antihtn_med(meucatc, npi_25b))
-#'
-#' @export
-is_any_antihtn_med <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for any anti-hypertensive medications
-    grepl("^(C02|C03|C07|C08|C09)", meucatc) & !(meucatc %in% c("C07AA07", "C07AA12", "C07AG02", "C03BA08", "C03CA01", "C02KX01")) & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not an anti-hypertensive medication)
-    .default = 0
-  )
-}
-
-#' @title Non-steroidal anti-inflammatory drugs (NSAIDs)
-#' @description This function checks if a given medication is an NSAID.
-#' This function processes multiple inputs efficiently.
-#' @param meucatc [character] ATC code of the medication.
-#' @param npi_25b [integer] Time when the medication was last taken.
-#' @return [numeric] 1 if medication is an NSAID, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
-#' @details Identifies NSAIDs based on ATC codes starting with "M01A".
-#'
-#'          **Missing Data Codes:**
-#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
-#'
-#' @examples
-#' # Scalar usage: Single respondent
-#' is_nsaid("M01AB05", 1)
-#' # Returns: 1
-#'
-#' # Example: Respondent has non-response values for all inputs.
-#' result <- is_nsaid("9999998", 8)
-#' result # Shows: NA
-#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
-#'
-#' # Multiple respondents
-#' is_nsaid(c("M01AB05", "A10BB09"), c(1, 3))
-#' # Returns: c(1, 0)
-#'
-#' # Database usage: Applied to survey datasets
-#' # library(dplyr)
-#' # dataset |>
-#' #   mutate(nsaid = is_nsaid(meucatc, npi_25b))
-#'
-#' @export
-is_nsaid <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for NSAIDs
-    startsWith(meucatc, "M01A") & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not an NSAID)
-    .default = 0
-  )
-}
-
-#' @title Diabetes medications
-#' @description This function checks if a given medication is a diabetes drug.
-#' This function processes multiple inputs efficiently.
-#' @param meucatc [character] ATC code of the medication.
-#' @param npi_25b [integer] Time when the medication was last taken.
-#' @return [numeric] 1 if medication is a diabetes drug, 0 otherwise. If inputs are invalid or out of bounds, the function returns a tagged NA.
-#' @details Identifies diabetes drugs based on ATC codes starting with "A10".
-#'
-#'          **Missing Data Codes:**
-#'          - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
-#'          - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
-#'
-#' @examples
-#' # Scalar usage: Single respondent
-#' is_diabetes_med("A10BB09", 3)
-#' # Returns: 1
-#'
-#' # Example: Respondent has non-response values for all inputs.
-#' result <- is_diabetes_med("9999998", 8)
-#' result # Shows: NA
-#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
-#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
-#'
-#' # Multiple respondents
-#' is_diabetes_med(c("A10BB09", "C09AA02"), c(3, 2))
-#' # Returns: c(1, 0)
-#'
-#' # Database usage: Applied to survey datasets
-#' # library(dplyr)
-#' # dataset |>
-#' #   mutate(diabetes_med = is_diabetes_med(meucatc, npi_25b))
-#'
-#' @export
-is_diabetes_med <- function(meucatc, npi_25b) {
-  dplyr::case_when(
-    # Valid skip
-    meucatc == 9999996 | npi_25b == 6 ~ haven::tagged_na("a"),
-    # Don't know, refusal, not stated
-    meucatc %in% c(9999997, 9999998, 9999999) | npi_25b %in% c(7, 8, 9) ~ haven::tagged_na("b"),
-
-    # Check for diabetes drugs
-    startsWith(meucatc, "A10") & npi_25b <= 4 ~ 1,
-
-    # Default to 0 (not a diabetes drug)
+    has_one ~ 1,
+    has_zero ~ 0,
+    has_na_a ~ haven::tagged_na("a"),
+    has_na_b ~ haven::tagged_na("b"),
     .default = 0
   )
 }
@@ -498,68 +169,28 @@ is_bb_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_beta_blocker, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_beta_blocker,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -679,68 +310,28 @@ is_ace_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_ace_inhibitor, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_ace_inhibitor,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -860,68 +451,28 @@ is_diur_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_diuretic, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_diuretic,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1041,68 +592,28 @@ is_ccb_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_calcium_channel_blocker, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_calcium_channel_blocker,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1222,68 +733,28 @@ is_misc_htn_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_other_antihtn_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_other_antihtn_med,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1403,68 +874,28 @@ is_any_htn_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_any_antihtn_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_any_antihtn_med,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1584,68 +1015,28 @@ is_nsaid_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_nsaid, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
+  is_atc_class_cycles1to2(
+    predicate = is_nsaid,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
+    )
   )
 }
 
@@ -1765,368 +1156,27 @@ is_diab_med_cycles1to2 <- function(
   mhr_131b = NULL, mhr_132b = NULL, mhr_133b = NULL, mhr_134b = NULL, mhr_135b = NULL,
   mhr_231b = NULL, mhr_232b = NULL, mhr_233b = NULL, mhr_234b = NULL, mhr_235b = NULL
 ) {
-  # Collect all arguments
-  atc_args <- list(
-    atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
-    atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
-    atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
-    atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
-    atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
-    atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
-    atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
-    atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
-  )
-
-  mhr_args <- list(
-    mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
-    mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
-    mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
-    mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
-    mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
-    mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
-    mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
-    mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
-  )
-
-  # Determine the maximum length of the input vectors
-  max_len <- max(unlist(sapply(c(atc_args, mhr_args), length)), 0)
-
-  # If max_len is 0 (all inputs are NULL), return tagged NA
-  if (max_len == 0) {
-    return(haven::tagged_na("b"))
-  }
-
-  # Pad shorter vectors with NA to match the longest vector length
-  atc_padded <- lapply(atc_args, function(x) if (is.null(x)) rep(NA_character_, max_len) else rep(x, length.out = max_len))
-  mhr_padded <- lapply(mhr_args, function(x) if (is.null(x)) rep(NA_real_, max_len) else rep(x, length.out = max_len))
-
-  # Combine into a temporary data frame
-  drugs_df <- data.frame(
-    atc_code = unlist(atc_padded),
-    last_taken = unlist(mhr_padded)
-  )
-
-  # Apply the condition function to each pair of med and last_taken vars
-  results_list <- mapply(is_diabetes_med, drugs_df$atc_code, drugs_df$last_taken, SIMPLIFY = FALSE)
-
-  # Combine the results into a matrix
-  results_matrix <- do.call(cbind, results_list)
-
-  # For each row (respondent), check if any of the results are 1 (taking the drug)
-  has_one <- rowSums(results_matrix == 1, na.rm = TRUE) > 0
-  # Check if any result is 0 (explicit non-match with valid data)
-  has_zero <- rowSums(results_matrix == 0, na.rm = TRUE) > 0
-  # Only consider tagged NAs when there are no valid results (0 or 1)
-  has_na_a <- apply(results_matrix, 1, function(row) all(is.na(row)) && any(haven::is_tagged_na(row, "a")))
-  has_na_b <- apply(results_matrix, 1, function(row) all(is.na(row)) && (any(haven::is_tagged_na(row, "b")) || any(is.na(row) & !haven::is_tagged_na(row))))
-
-  # If any result is 1, return 1; if any result is 0, return 0; if all NA "a", return NA "a"; if all NA "b", return NA "b"
-  med_vector <- dplyr::case_when(
-    has_one ~ 1,
-    has_zero ~ 0,
-    has_na_a ~ haven::tagged_na("a"),
-    has_na_b ~ haven::tagged_na("b"),
-    .default = 0
-  )
-}
-
-#' Identify variable_details rows whose databaseStart entries are all `_meds` databases
-#'
-#' Internal helper for [recode_after_meds()]. The previous `grepl("_meds", ...)` was an
-#' unanchored substring match: a future databaseStart like `non_meds_cohort` or
-#' `_medstudy` would be silently dropped. This helper splits databaseStart by comma and
-#' returns TRUE only when every token ends in `_meds`, so mixed rows (e.g. a `copy` row
-#' covering `cycle1, cycle2_meds`) are kept.
-#'
-#' @param database_start Character vector of databaseStart entries, e.g.
-#'   `c("cycle1_meds, cycle2_meds", "cycle1, cycle2")`.
-#' @return Logical vector, same length as `database_start`.
-#' @noRd
-is_meds_only_database <- function(database_start) {
-  vapply(
-    strsplit(as.character(database_start), ",\\s*"),
-    function(tokens) length(tokens) > 0 && all(grepl("_meds$", trimws(tokens))),
-    logical(1)
-  )
-}
-
-#' Stop if a database name does not appear in any variable_details databaseStart entry
-#'
-#' Internal helper. When wrapper functions derive `database_name` /
-#' `meds_database_name` via `deparse(substitute())`, an unrecognised name causes
-#' `rec_with_table()` to return silent NAs. This helper raises an actionable error
-#' pointing the user to the explicit-override argument.
-#'
-#' @noRd
-validate_database_name <- function(database_name, variable_details, override_arg) {
-  db_starts <- strsplit(as.character(variable_details$databaseStart), ",\\s*")
-  matches <- vapply(db_starts, function(x) database_name %in% trimws(x), logical(1))
-  if (!any(matches)) {
-    stop(sprintf(
-      "No rows in `variable_details` have `databaseStart` matching '%s'. The name was inferred from the calling argument; pass `%s = '<name>'` explicitly to override (e.g. `%s = 'cycle1_meds'`).",
-      database_name, override_arg, override_arg
-    ), call. = FALSE)
-  }
-  invisible(NULL)
-}
-
-#' Validate join keys between main cycle data and recoded medication data
-#'
-#' Internal helper for [recode_meds_cycles1to2()] and [recode_meds_cycles3to6()].
-#' `dplyr::left_join` silently fans out duplicate keys, silently leaves untagged NA
-#' for missing keys, and silently drops keys present only on the right. This helper
-#' makes all three audible: stop on duplicate keys (never valid in CHMS), warn with
-#' counts on asymmetric coverage.
-#'
-#' @noRd
-check_join_keys <- function(data, target, by, target_label) {
-  target_keys <- target[[by]]
-  if (any(duplicated(target_keys))) {
-    stop(sprintf(
-      "%d duplicate `%s` value(s) in %s; refusing to left_join to prevent silent row fan-out into `data`.",
-      sum(duplicated(target_keys)), by, target_label
-    ), call. = FALSE)
-  }
-  missing_in_target <- setdiff(data[[by]], target_keys)
-  if (length(missing_in_target) > 0) {
-    warning(sprintf(
-      "%d respondent(s) in `data` not found in %s; medication columns will be NA.",
-      length(missing_in_target), target_label
-    ), call. = FALSE)
-  }
-  missing_in_data <- setdiff(target_keys, data[[by]])
-  if (length(missing_in_data) > 0) {
-    warning(sprintf(
-      "%d respondent(s) in %s not found in `data`; rows will be dropped from result.",
-      length(missing_in_data), target_label
-    ), call. = FALSE)
-  }
-  invisible(NULL)
-}
-
-#' Convert a recoded factor or character to numeric while preserving tagged NAs
-#'
-#' Internal helper used by [recode_meds_cycles1to2()] and [aggregate_meds_by_person()].
-#' `as.numeric(as.character(.x))` strips `haven::tagged_na()` information, collapsing
-#' valid skips (`NA::a`) and missing/refused (`NA::b`) into plain `NA_real_`. This
-#' helper restores those tags so downstream consumers (e.g. `derive_hypertension()`
-#' checking `is_tagged_na(any_htn_med, "b")`) behave correctly.
-#'
-#' @param x A factor, character, or numeric vector. Tagged-NA inputs are preserved.
-#' @return Numeric vector with `tagged_na("a")` / `tagged_na("b")` restored where present.
-#' @noRd
-factor_to_tagged_numeric <- function(x) {
-  was_a <- if (is.numeric(x)) haven::is_tagged_na(x, "a") else rep(FALSE, length(x))
-  was_b <- if (is.numeric(x)) haven::is_tagged_na(x, "b") else rep(FALSE, length(x))
-
-  s <- as.character(x)
-  out <- suppressWarnings(as.numeric(s))
-
-  not_na_s <- !is.na(s)
-  out[not_na_s & s == "NA::a"] <- haven::tagged_na("a")
-  out[not_na_s & s == "NA::b"] <- haven::tagged_na("b")
-
-  out[was_a] <- haven::tagged_na("a")
-  out[was_b] <- haven::tagged_na("b")
-
-  out
-}
-
-#' @title Recode medication variables for cycles 1-2 (wide format)
-#'
-#' @description Recodes medication variables from cycles 1-2 wide-format data (one row per
-#' respondent, up to 80 ATC/MHR columns), and merges into the main cycle dataset. Wraps
-#' `recodeflow::rec_with_table()` and converts factor outputs to numeric.
-#'
-#' @param data [data.frame] Main cycle data to merge medication variables into.
-#' @param meds_data [data.frame] Wide-format medication data (cycles 1-2). Must contain
-#'   `clinicid`, ATC code columns `atc_101a`-`atc_115a`, `atc_131a`-`atc_135a`,
-#'   `atc_201a`-`atc_215a`, `atc_231a`-`atc_235a`, and matching time-last-taken columns
-#'   `mhr_101b`-`mhr_115b`, `mhr_131b`-`mhr_135b`, `mhr_201b`-`mhr_215b`,
-#'   `mhr_231b`-`mhr_235b`. Column names are normalized to lowercase before recoding,
-#'   so uppercase variants (e.g., `CLINICID`, `ATC_101A`) are accepted.
-#' @param variables [character] Medication variable names to derive (e.g., `"any_htn_med"`).
-#' @param by [character] Respondent identifier column. Default is `"clinicid"`.
-#' @param meds_database_name [character] Name of the meds database in `variable_details`.
-#'   Defaults to the name of the `meds_data` argument. Override when passing a transformed
-#'   object (e.g., `head()`).
-#' @param variable_details [data.frame] Variable details table. Defaults to `chmsflow::variable_details`.
-#'
-#' @return [data.frame] `data` with derived medication variables merged in as numeric columns.
-#'
-#' @examples
-#' result <- recode_meds_cycles1to2(
-#'   cycle1,
-#'   cycle1_meds,
-#'   c("any_htn_med", "diab_med")
-#' )
-#' head(result[, c("clinicid", "any_htn_med", "diab_med")])
-#'
-#' @seealso [recode_meds_cycles3to6()], [aggregate_meds_by_person()]
-#' @export
-recode_meds_cycles1to2 <- function(data, meds_data, variables, by = "clinicid",
-                                   meds_database_name = NULL,
-                                   variable_details = chmsflow::variable_details) {
-  if (is.null(meds_database_name)) meds_database_name <- deparse(substitute(meds_data))
-  validate_database_name(meds_database_name, variable_details, "meds_database_name")
-  names(meds_data) <- tolower(names(meds_data))
-  atc_mhr_cols <- c(
-    paste0("atc_", c(101:115, 131:135, 201:215, 231:235), "a"),
-    paste0("mhr_", c(101:115, 131:135, 201:215, 231:235), "b")
-  )
-  meds_recoded <- recodeflow::rec_with_table(
-    meds_data,
-    c(by, atc_mhr_cols, variables),
-    database_name = meds_database_name,
-    variable_details = variable_details
-  ) |>
-    dplyr::select(dplyr::all_of(c(by, variables))) |>
-    dplyr::mutate(dplyr::across(
-      dplyr::all_of(variables),
-      ~ factor_to_tagged_numeric(.x)
-    ))
-  check_join_keys(data, meds_recoded, by, "meds_data")
-  dplyr::left_join(data, meds_recoded, by = by)
-}
-
-#' @title Aggregate medication variables to one row per person
-#'
-#' @description Collapses long-format medication data (cycles 3-6) to one row per respondent
-#' by taking the maximum value of each medication variable across all rows. A result of 1
-#' (taking the medication) takes precedence over 0. Tagged NAs are propagated only when
-#' all rows for a respondent are missing.
-#'
-#' @param data [data.frame] Long-format medication data with multiple rows per respondent.
-#' @param variables [character] Variable names to aggregate.
-#' @param by [character] The respondent identifier column. Default is `"clinicid"`.
-#'
-#' @return [data.frame] One row per respondent with aggregated medication variables as numeric.
-#'
-#' @examples
-#' df <- data.frame(
-#'   clinicid    = c(1, 1, 2, 2),
-#'   any_htn_med = c(0, 1, 0, 0),
-#'   diab_med    = c(1, 0, 0, 0)
-#' )
-#' aggregate_meds_by_person(df, variables = c("any_htn_med", "diab_med"))
-#'
-#' @seealso [recode_meds_cycles3to6()], [recode_meds_cycles1to2()]
-#' @export
-aggregate_meds_by_person <- function(data, variables, by = "clinicid") {
-  data |>
-    dplyr::group_by(dplyr::across(dplyr::all_of(by))) |>
-    dplyr::summarize(
-      dplyr::across(
-        dplyr::all_of(variables),
-        ~ {
-          vals <- factor_to_tagged_numeric(.x)
-          if (all(haven::is_tagged_na(vals, "a"))) {
-            haven::tagged_na("a")
-          } else if (all(is.na(vals))) {
-            haven::tagged_na("b")
-          } else {
-            max(vals, na.rm = TRUE)
-          }
-        }
-      ),
-      .groups = "drop"
+  is_atc_class_cycles1to2(
+    predicate = is_diabetes_med,
+    atc_args = list(
+      atc_101a, atc_102a, atc_103a, atc_104a, atc_105a,
+      atc_106a, atc_107a, atc_108a, atc_109a, atc_110a,
+      atc_111a, atc_112a, atc_113a, atc_114a, atc_115a,
+      atc_201a, atc_202a, atc_203a, atc_204a, atc_205a,
+      atc_206a, atc_207a, atc_208a, atc_209a, atc_210a,
+      atc_211a, atc_212a, atc_213a, atc_214a, atc_215a,
+      atc_131a, atc_132a, atc_133a, atc_134a, atc_135a,
+      atc_231a, atc_232a, atc_233a, atc_234a, atc_235a
+    ),
+    mhr_args = list(
+      mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b,
+      mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b,
+      mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b,
+      mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b,
+      mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b,
+      mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b,
+      mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b,
+      mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b
     )
-}
-
-#' @title Recode medication variables for cycles 3-6 (long format)
-#'
-#' @description Recodes medication variables from cycles 3-6 long-format data (one row per
-#' medication per respondent), aggregates to one row per respondent, and merges into the
-#' main cycle dataset. Wraps `recodeflow::rec_with_table()` and [aggregate_meds_by_person()].
-#'
-#' @param data [data.frame] Main cycle data to merge medication variables into.
-#' @param meds_data [data.frame] Long-format medication data (cycles 3-6) with columns
-#'   `clinicid`, `meucatc`, and `npi_25b`.
-#' @param variables [character] Medication variable names to derive (e.g., `"any_htn_med"`).
-#' @param by [character] Respondent identifier column. Default is `"clinicid"`.
-#' @param meds_database_name [character] Name of the meds database in `variable_details`.
-#'   Defaults to the name of the `meds_data` argument. Override when passing a transformed
-#'   object (e.g., `head()`).
-#' @param variable_details [data.frame] Variable details table. Defaults to `chmsflow::variable_details`.
-#'
-#' @return [data.frame] `data` with derived medication variables merged in as numeric columns.
-#'
-#' @examples
-#' result <- recode_meds_cycles3to6(
-#'   cycle3,
-#'   cycle3_meds,
-#'   c("any_htn_med", "diab_med")
-#' )
-#' head(result[, c("clinicid", "any_htn_med", "diab_med")])
-#'
-#' @seealso [recode_meds_cycles1to2()], [aggregate_meds_by_person()]
-#' @export
-recode_meds_cycles3to6 <- function(data, meds_data, variables, by = "clinicid",
-                                   meds_database_name = NULL,
-                                   variable_details = chmsflow::variable_details) {
-  if (is.null(meds_database_name)) meds_database_name <- deparse(substitute(meds_data))
-  validate_database_name(meds_database_name, variable_details, "meds_database_name")
-  meds_recoded <- recodeflow::rec_with_table(
-    meds_data,
-    c(by, "meucatc", "npi_25b", variables),
-    database_name = meds_database_name,
-    variable_details = variable_details
-  ) |>
-    aggregate_meds_by_person(variables = variables, by = by)
-  check_join_keys(data, meds_recoded, by, "aggregated meds_data")
-  dplyr::left_join(data, meds_recoded, by = by)
-}
-
-#' @title Recode variables that depend on derived medication variable inputs
-#'
-#' @description Wraps `recodeflow::rec_with_table()` for use after derived medication
-#' variables (e.g., `any_htn_med`, `diab_med`) have been recoded and merged into the
-#' main cycle dataset. Use this instead of `rec_with_table()` when deriving variables
-#' whose inputs include derived medication variables: it automatically excludes
-#' medication-specific rows from `variable_details` so that pre-computed medication
-#' columns are passed through via the `copy` entries rather than re-derived from raw
-#' ATC/MHR columns.
-#'
-#' @param data [data.frame] Main cycle data with derived medication variables already merged.
-#' @param variables [character] Variable names to recode.
-#' @param by [character] Respondent identifier column. Default is `"clinicid"`.
-#' @param database_name [character] Name of the database in `variable_details`.
-#'   Defaults to the name of the `data` argument.
-#' @param variable_details [data.frame] Variable details table. Defaults to
-#'   `chmsflow::variable_details`.
-#'
-#' @return [data.frame] Recoded data frame returned by `recodeflow::rec_with_table()`.
-#'
-#' @examples
-#' cycle3 <- recode_meds_cycles3to6(cycle3, cycle3_meds, c("any_htn_med", "diab_med"))
-#' cycle3_diab <- recode_after_meds(
-#'   cycle3,
-#'   c("lab_hba1", "diab_a1c", "diab_med", "ccc_51", "diab_status")
-#' )
-#' head(cycle3_diab[, c("clinicid", "diab_status")])
-#'
-#' @seealso [recode_meds_cycles3to6()], [recode_meds_cycles1to2()]
-#' @export
-recode_after_meds <- function(data, variables, by = "clinicid",
-                              database_name = NULL,
-                              variable_details = chmsflow::variable_details) {
-  if (is.null(database_name)) database_name <- deparse(substitute(data))
-  variable_details <- variable_details[!is_meds_only_database(variable_details$databaseStart), ]
-  validate_database_name(database_name, variable_details, "database_name")
-  recoded <- recodeflow::rec_with_table(
-    data,
-    variables,
-    database_name = database_name,
-    variable_details = variable_details
   )
-  stopifnot(
-    "rec_with_table() returned a different number of rows than `data`; row alignment cannot be trusted" =
-      nrow(recoded) == nrow(data)
-  )
-  if (!(by %in% names(recoded))) {
-    # rec_with_table() preserves input row order; the row-shuffle test in
-    # test-medications.R guards against any future regression of that contract.
-    recoded <- dplyr::bind_cols(data[, by, drop = FALSE], recoded)
-  }
-  recoded
 }
