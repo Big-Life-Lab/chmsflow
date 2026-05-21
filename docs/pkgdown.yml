@@ -1,5 +1,5 @@
-pandoc: 3.1.11
-pkgdown: 2.1.3
+pandoc: 3.8.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   derived_variables: derived_variables.html
@@ -9,7 +9,7 @@ articles:
   tagged_na_usage: tagged_na_usage.html
   variable_details: variable_details.html
   variables_sheet: variables_sheet.html
-last_built: 2025-10-25T23:36Z
+last_built: 2026-05-21T21:09Z
 urls:
   reference: https://big-life-lab.github.io/chmsflow/reference
   article: https://big-life-lab.github.io/chmsflow/articles

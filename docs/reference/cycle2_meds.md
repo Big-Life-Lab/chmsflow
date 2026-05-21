@@ -1,0 +1,100 @@
+# CHMS Cycle 2 Medications
+
+This dummy data representing the medication portion of the second cycle
+of the Canadian Health Measures Survey (CHMS). The CHMS survey is
+conducted by Statistics Canada.
+
+## Value
+
+- cycle2_meds:
+
+  a data frame
+
+## Examples
+
+``` r
+data(cycle2_meds)
+str(cycle2_meds)
+#> 'data.frame':    4 obs. of  81 variables:
+#>  $ clinicid: num  1 2 3 4
+#>  $ atc_101a: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02"
+#>  $ atc_102a: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03"
+#>  $ atc_103a: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03"
+#>  $ atc_104a: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02"
+#>  $ atc_105a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_106a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_107a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_108a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_109a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_110a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_111a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_112a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_113a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_114a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_115a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_201a: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02"
+#>  $ atc_202a: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02"
+#>  $ atc_203a: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02"
+#>  $ atc_204a: chr  "C03BC02" "C08CA01" "C07AA05" "C07AA06"
+#>  $ atc_205a: chr  "C02KX01" "C02AA05" "C07AG02" "C07AA06"
+#>  $ atc_206a: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03"
+#>  $ atc_207a: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03"
+#>  $ atc_208a: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02"
+#>  $ atc_209a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_210a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_211a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_212a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_213a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_214a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_215a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_131a: chr  "C07AA05" "C09AA06" "C08CA01" "A10BC02"
+#>  $ atc_132a: chr  "C03BA08" "C07AA07" "C07AA12" "M01AG02"
+#>  $ atc_133a: chr  "C03BC02" "C08CA01" "C07AA05" "C07AA06"
+#>  $ atc_134a: chr  "C02KX01" "C02AA05" "C07AG02" "C07AA06"
+#>  $ atc_135a: chr  "A01AB05" "C09AA02" "C07AB02" "C03AA03"
+#>  $ atc_231a: chr  "C02CC07" "C08CA06" "C07AB07" "C07AB03"
+#>  $ atc_232a: chr  "C03CA01" "C03CA01" "C09AA04" "C08CA02"
+#>  $ atc_233a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_234a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ atc_235a: chr  "C09AA04" "C07AB02" "C08CA02" "A10BD05"
+#>  $ mhr_101b: num  2 3 1 3
+#>  $ mhr_102b: num  1 4 3 2
+#>  $ mhr_103b: num  3 2 1 4
+#>  $ mhr_104b: num  1 2 4 3
+#>  $ mhr_105b: num  3 2 1 4
+#>  $ mhr_106b: num  3 2 1 4
+#>  $ mhr_107b: num  3 2 1 4
+#>  $ mhr_108b: num  3 2 1 4
+#>  $ mhr_109b: num  3 2 1 4
+#>  $ mhr_110b: num  3 2 1 4
+#>  $ mhr_111b: num  3 2 1 4
+#>  $ mhr_112b: num  3 2 1 4
+#>  $ mhr_113b: num  3 2 1 4
+#>  $ mhr_114b: num  3 2 1 4
+#>  $ mhr_115b: num  3 2 1 4
+#>  $ mhr_201b: num  3 2 2 3
+#>  $ mhr_202b: num  2 3 1 3
+#>  $ mhr_203b: num  3 2 2 3
+#>  $ mhr_204b: num  3 1 5 1
+#>  $ mhr_205b: num  1 2 3 4
+#>  $ mhr_206b: num  1 4 3 2
+#>  $ mhr_207b: num  3 2 1 4
+#>  $ mhr_208b: num  1 2 4 3
+#>  $ mhr_209b: num  3 2 1 4
+#>  $ mhr_210b: num  3 2 1 4
+#>  $ mhr_211b: num  3 2 1 4
+#>  $ mhr_212b: num  3 2 1 4
+#>  $ mhr_213b: num  3 2 1 4
+#>  $ mhr_214b: num  3 2 1 4
+#>  $ mhr_215b: num  3 2 1 4
+#>  $ mhr_131b: num  2 3 1 3
+#>  $ mhr_132b: num  3 2 2 3
+#>  $ mhr_133b: num  3 1 5 1
+#>  $ mhr_134b: num  1 2 3 4
+#>  $ mhr_135b: num  1 4 3 2
+#>  $ mhr_231b: num  3 2 1 4
+#>  $ mhr_232b: num  1 2 4 3
+#>  $ mhr_233b: num  3 2 1 4
+#>  $ mhr_234b: num  3 2 1 4
+#>  $ mhr_235b: num  3 2 1 4
+```

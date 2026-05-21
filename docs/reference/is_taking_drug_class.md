@@ -1,0 +1,74 @@
+# Number of occurrences of a specific drug class based on given conditions
+
+This function calculates the number of occurrences of a specific drug
+class in the data frame. The calculation is based on custom conditions
+specified by the user.
+
+## Usage
+
+``` r
+is_taking_drug_class(
+  df,
+  class_var_name,
+  med_vars,
+  last_taken_vars,
+  class_condition_fun,
+  log_level = "INFO",
+  overwrite = FALSE
+)
+```
+
+## Arguments
+
+- df:
+
+  The data frame containing medication and last taken information.
+
+- class_var_name:
+
+  The name of the new variable representing the drug class.
+
+- med_vars:
+
+  A character vector containing the names of medication variables in the
+  data frame.
+
+- last_taken_vars:
+
+  A character vector containing the names of last taken variables in the
+  data frame.
+
+- class_condition_fun:
+
+  A custom condition function that determines whether a medication
+  belongs to the drug class. The function should accept two arguments:
+  med_code (character) and last_taken (numeric). It should return an
+  integer, 1 if the medication belongs to the class, 0 otherwise.
+
+- log_level:
+
+  The log level for logging messages (default is "INFO").
+
+- overwrite:
+
+  Logical value indicating whether to overwrite the 'class_var_name' if
+  it already exists in the data frame (default is FALSE).
+
+## Value
+
+The input data frame 'df' with an additional column representing the
+drug class.
+
+## Details
+
+The 'class_condition_fun' is applied to each pair of medication and last
+taken variables. The resulting values (0 or 1) are summed for each row,
+and the sum is stored in the new 'class_var_name' column. The function
+performs logging to provide information about the process and potential
+issues. If 'overwrite' is TRUE, the function will overwrite the existing
+'class_var_name' column in the data frame. If 'overwrite' is FALSE and
+the variable already exists, the function will log an error and stop the
+execution. The function also checks if 'med_vars' and 'last_taken_vars'
+are present in the data frame and have the same length. If any issues
+are encountered, appropriate log messages are generated, and the
+function stops.

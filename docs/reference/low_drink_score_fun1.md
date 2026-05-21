@@ -1,0 +1,102 @@
+# Low risk drinking score - former/never categories
+
+Computes a categorical alcohol consumption score based on Canada's
+Low-Risk Alcohol Drinking Guidelines (Step 1), while distinguishing
+between never, former, light, moderate, and heavy drinkers. The function
+uses information about weekly consumption, past-year use, lifetime
+drinking, and history of heavy drinking.
+
+## Usage
+
+``` r
+low_drink_score_fun1(CLC_SEX, ALC_11, ALCDWKY, ALC_17, ALC_18)
+```
+
+## Arguments
+
+- CLC_SEX:
+
+  Integer. Respondent's sex (1 = male, 2 = female).
+
+- ALC_11:
+
+  Integer. Whether the respondent drank alcohol in the past year (1 =
+  Yes, 2 = No).
+
+- ALCDWKY:
+
+  Integer. Number of standard drinks consumed in a typical week (0–84).
+
+- ALC_17:
+
+  Integer. Whether the respondent ever drank alcohol in their lifetime
+  (1 = Yes, 2 = No).
+
+- ALC_18:
+
+  Integer. Whether the respondent regularly drank more than 12 drinks
+  per week (1 = Yes, 2 = No).
+
+## Value
+
+An integer score:
+
+- 1 = Never drank
+
+- 2 = Low-risk (former or light) drinker
+
+- 3 = Moderate drinker (1–2 points)
+
+- 4 = Heavy drinker (3–4 points)
+
+If inputs are invalid or out of bounds, the function returns a tagged
+NA.
+
+## Details
+
+**Step 1: Assign points based on weekly alcohol consumption.**
+
+- If the respondent drank in the past year (ALC_11 == 1):
+
+  - 0 to 10 drinks/week: 0 points
+
+  - 11 to 15 drinks/week: 0 points for males, 1 point for females
+
+  - 16 to 20 drinks/week: 1 point for males, 3 points for females
+
+  - More than 20 drinks/week: 3 points for males, 5 points for females
+
+- If they did not drink in the past year (ALC_11 == 2): 0 points
+
+**Step 2: Determine the final categorical score.**
+
+- If the point score from Step 1 is 0, the final category is determined
+  based on lifetime and past-year drinking habits:
+
+  - A score of 1 (Never drinker) is assigned if the respondent either
+    never drank alcohol in their lifetime or is a former drinker who did
+    not regularly consume more than 12 drinks a week.
+
+  - A score of 2 (Low-risk drinker) is assigned if the respondent drank
+    in the past year (but still scored 0 points) or is a former drinker
+    with a history of regularly consuming more than 12 drinks a week.
+
+- If the point score from Step 1 is 1 or 2, the respondent is classified
+  as a **Moderate drinker** (Score = 3).
+
+- If the point score from Step 1 is 3 or more, the respondent is
+  classified as a **Heavy drinker** (Score = 4).
+
+## Note
+
+This function uses only Step 1 of the guidelines, as Step 2 information
+is unavailable in CHMS.
+
+## Examples
+
+``` r
+# Male, drinks 3 drinks/week, drank in past year, no history of heavy drinking
+low_drink_score_fun1(CLC_SEX = 1, ALC_11 = 1, ALCDWKY = 3, ALC_17 = NA, ALC_18 = 2)
+#> [1] 2
+# Expected output: 2
+```
