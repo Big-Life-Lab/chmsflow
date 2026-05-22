@@ -3,138 +3,182 @@
 #' @description This function calculates the adjusted total household income based on the respondent's income amount
 #'              and actual household size, taking into account the weighted household size.
 #'
-#' @param THI_01 A numeric representing the respondent's household income amount in dollars.
-#' @param DHHDHSZ An integer representing the respondent's actual household size in persons.
+#' @param thi_01 [numeric] A numeric representing the respondent's household income amount in dollars.
+#' @param dhhdhsz [integer] An integer representing the respondent's actual household size in persons.
 #'
-#' @return The calculated adjusted total household income as a numeric value. If any of the input parameters (THI_01,
-#'         DHHDHSZ) are non-response values (THI_01 >= 996, DHHDHSZ >= 996), the adjusted household income will be
-#'         NA(b) (Not Available).
+#' @return [numeric] The calculated adjusted total household income as a numeric. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
-#' @details The function first calculates the weighted household size (hh_size_wt) based on the respondent's actual
-#'          household size (DHHDHSZ). It uses a loop to iterate from 1 to DHHDHSZ and assigns weights to each household
-#'          member based on their count. If the household size (i) is 1, the weight is 1; if i is 2, the weight is 0.4; if
-#'          i is greater than or equal to 3, the weight is 0.3. The weighted household size is then used to adjust the
-#'          respondent's total household income (THI_01) by dividing it by hh_size_wt. The adjusted household income
-#'          (adj_hh_inc) is returned as the final output.
+#' @details This function applies equivalence scales to adjust household income for household size,
+#'          allowing for meaningful income comparisons across different household compositions.
+#'
+#'          **Equivalence Scale Logic:**
+#'          - First adult: Weight = 1.0 (full weight)
+#'          - Second adult: Weight = 0.4 (economies of scale)
+#'          - Additional members: Weight = 0.3 each (further economies)
+#'
+#'          **Missing Data Codes:**
+#'          - `thi_01`:
+#'            - `99999996`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `99999997-99999999`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
+#'          - `dhhdhsz`:
+#'            - `96`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `97-99`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
-#'
+#' # Scalar usage: Single respondent
 #' # Example 1: Respondent with $50,000 income and a household size of 3.
-#' calculate_hhld_income(THI_01 = 50000, DHHDHSZ = 3)
+#' calculate_household_income(thi_01 = 50000, dhhdhsz = 3)
 #' # Output: 29411.76
 #'
-#' # Example 2: Respondent with $75000 income and a household size of 2.
-#' calculate_hhld_income(THI_01 = 75000, DHHDHSZ = 2)
-#' # Output: 53571.43
+#' # Example 2: Respondent has non-response values for all inputs.
+#' result <- calculate_household_income(thi_01 = 99999998, dhhdhsz = 98)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
-#' # Example 3: Respondent with $90000 income and a household size of 1.
-#' calculate_hhld_income(THI_01 = 90000, DHHDHSZ = 1)
-#' # Output: 90000
+#' # Multiple respondents
+#' calculate_household_income(thi_01 = c(50000, 75000, 90000), dhhdhsz = c(3, 2, 1))
+#' # Returns: c(29411.76, 53571.43, 90000)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(adj_hh_income = calculate_household_income(thi_01, dhhdhsz))
+#'
+#' @seealso [categorize_income_quintile()] for income classification, [is_lowest_income_quintile()] for poverty indicators
 #' @export
-calculate_hhld_income <- function(THI_01, DHHDHSZ) {
-  # Step 1 - derive household adjustment based on household size
-  hh_size_wt <- 0
+calculate_household_income <- function(thi_01, dhhdhsz) {
+  # Calculate the household size weight
+  hh_size_wt <- dplyr::case_when(
+    # Valid skip
+    dhhdhsz == 96 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    dhhdhsz <= 0 | dhhdhsz %in% 97:99 ~ haven::tagged_na("b"),
+    dhhdhsz == 1 ~ 1,
+    dhhdhsz == 2 ~ 1 + 0.4,
+    TRUE ~ 1 + 0.4 + (dhhdhsz - 2) * 0.3
+  )
 
-  if (is.na(DHHDHSZ) || DHHDHSZ <= 0) {
-    return(haven::tagged_na("b"))
-  }
+  # Adjust the household income
+  adj_hh_income <- thi_01 / hh_size_wt
 
-  for (i in 1:DHHDHSZ) {
-    if (i == 1) {
-      hh_size_wt <- hh_size_wt + 1
-    } else if (i == 2) {
-      hh_size_wt <- hh_size_wt + 0.4
-    } else if (i >= 3) {
-      hh_size_wt <- hh_size_wt + 0.3
-    }
-  }
-
-  # Step 2 - Adjust total household income based on household size
-  adj_hh_inc <- THI_01 / hh_size_wt
-  if (is.na(adj_hh_inc) || adj_hh_inc < 0) {
-    adj_hh_inc <- haven::tagged_na("b")
-  }
-  return(adj_hh_inc)
+  # Handle missing data codes and out of range values
+  dplyr::case_when(
+    # Valid skip
+    (thi_01 == 99999996) | (dhhdhsz == 96) ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    (thi_01 >= 99999997 & thi_01 <= 99999999) | (dhhdhsz >= 97 & dhhdhsz <= 99) ~ haven::tagged_na("b"),
+    adj_hh_income < 0 ~ haven::tagged_na("b"),
+    TRUE ~ adj_hh_income
+  )
 }
 
 #' @title Categorical adjusted household income
 #'
 #' @description This function categorizes individuals' adjusted household income based on specified income ranges.
 #'
-#' @param adj_hh_inc Numeric value representing the adjusted household income.
+#' @param adj_hh_income [numeric] A numeric representing the adjusted household income.
 #'
-#' @return A categorical value indicating the income category:
+#' @return [integer] The income category:
 #'   - 1: Below or equal to $21,500
 #'   - 2: Above $21,500 and up to $35,000
 #'   - 3: Above $35,000 and up to $50,000
 #'   - 4: Above $50,000 and up to $70,000
 #'   - 5: Above $70,000
-#'   - NA(b): Missing or invalid input
+#'   - `haven::tagged_na("a")`: Not applicable
+#'   - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function segments adjusted household income into quintiles, providing a standardized measure of socioeconomic status.
+#'
+#'          **Missing Data Codes:**
+#'          - Propagates tagged NAs from the input `adj_hh_income`.
 #'
 #' @examples
+#' # Scalar usage: Single respondent
 #' # Example 1: Categorize a household income of $25,000
-#' categorize_income(25000)
+#' categorize_income_quintile(25000)
 #' # Output: 2
 #'
 #' # Example 2: Categorize a household income of $45,000
-#' categorize_income(45000)
+#' categorize_income_quintile(45000)
 #' # Output: 3
 #'
+#' # Multiple respondents
+#' categorize_income_quintile(c(25000, 45000, 80000))
+#' # Returns: c(2, 3, 5)
+#'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(income_category = categorize_income_quintile(adj_hh_income))
+#'
+#' @seealso [calculate_household_income()], [is_lowest_income_quintile()]
 #' @export
-categorize_income <- function(adj_hh_inc) {
-  incq <- haven::tagged_na("b")
+categorize_income_quintile <- function(adj_hh_income) {
+  dplyr::case_when(
+    # Propagate tagged NAs
+    haven::is_tagged_na(adj_hh_income, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(adj_hh_income, "b") | adj_hh_income < 0 ~ haven::tagged_na("b"),
 
-  if (is.na(adj_hh_inc) || adj_hh_inc < 0) {
-    return(incq)
-  } else {
-    if (adj_hh_inc <= 21500) {
-      incq <- 1
-    } else if (adj_hh_inc > 21500 && adj_hh_inc <= 35000) {
-      incq <- 2
-    } else if (adj_hh_inc > 35000 && adj_hh_inc <= 50000) {
-      incq <- 3
-    } else if (adj_hh_inc > 50000 && adj_hh_inc <= 70000) {
-      incq <- 4
-    } else if (adj_hh_inc > 70000) {
-      incq <- 5
-    }
-  }
-  return(incq)
+    # Categorize income
+    adj_hh_income <= 21500 ~ 1,
+    adj_hh_income > 21500 & adj_hh_income <= 35000 ~ 2,
+    adj_hh_income > 35000 & adj_hh_income <= 50000 ~ 3,
+    adj_hh_income > 50000 & adj_hh_income <= 70000 ~ 4,
+    adj_hh_income > 70000 ~ 5,
+
+    # Handle any other cases
+    .default = haven::tagged_na("b")
+  )
 }
 
 #' @title Lowest income quintile indicator
 #'
 #' @description This function checks if an individual's income category corresponds to the lowest income quintile.
 #'
-#' @param incq Categorical value indicating the income category as defined by the categorize_income function.
+#' @param income_quintile [integer] A categorical vector indicating the income category as defined by the categorize_income_quintile function.
 #'
-#' @return A categorical value indicating whether the individual is in the lowest income quintile:
+#' @return [integer] Whether the individual is in the lowest income quintile:
 #'   - 1: In the lowest income quntile
 #'   - 2: Not in the lowest income quntile
-#'   - NA(b): Missing or invalid input
+#'   - `haven::tagged_na("a")`: Not applicable
+#'   - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function identifies individuals in the lowest income quintile, a common indicator for socioeconomic disadvantage.
+#'
+#'          **Missing Data Codes:**
+#'          - Propagates tagged NAs from the input `income_quintile`.
 #'
 #' @examples
-#' # Example 1: Check if an income category of 3 (between $35,000-50,000) is in the lowest quintile
-#' in_lowest_income_quintile(3)
+#' # Scalar usage: Single respondent
+#' # Example 1: Check if an income category of 3 is in the lowest quintile
+#' is_lowest_income_quintile(3)
 #' # Output: 2
 #'
-#' # Example 2: Check if an income category of 1 (below or equal to $21,500) is in the lowest quintile
-#' in_lowest_income_quintile(1)
+#' # Example 2: Check if an income category of 1 is in the lowest quintile
+#' is_lowest_income_quintile(1)
 #' # Output: 1
 #'
+#' # Multiple respondents
+#' is_lowest_income_quintile(c(3, 1, 5))
+#' # Returns: c(2, 1, 2)
+#'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(in_lowest_quintile = is_lowest_income_quintile(income_category))
+#'
+#' @seealso [categorize_income_quintile()]
 #' @export
-in_lowest_income_quintile <- function(incq) {
-  incq1 <- haven::tagged_na("b")
+is_lowest_income_quintile <- function(income_quintile) {
+  dplyr::case_when(
+    # Propagate tagged NAs
+    haven::is_tagged_na(income_quintile, "a") ~ haven::tagged_na("a"),
+    haven::is_tagged_na(income_quintile, "b") | income_quintile < 1 | income_quintile > 5 ~ haven::tagged_na("b"),
+    is.na(income_quintile) ~ haven::tagged_na("b"),
 
-  if (is.na(incq) || (!is.na(incq) && incq == "NA(b)") || incq < 0) {
-    return(incq1)
-  } else {
-    if (incq == 1) {
-      incq1 <- 1
-    } else {
-      incq1 <- 2
-    }
-  }
-  return(incq1)
+    # Check if in lowest income quintile
+    income_quintile == 1 ~ 1,
+    TRUE ~ 2
+  )
 }

@@ -1,82 +1,93 @@
 #' @title Diabetes derived variable
 #'
-#' @description This function evaluates diabetes status based on three factors: `diab_m`, `CCC_51`, and `diab_drug2`.
+#' @description This function evaluates diabetes status using a comprehensive approach that combines
+#' laboratory measurements, self-reported diagnosis, and medication usage to create an inclusive
+#' diabetes classification.
 #'
-#' @param diab_m An integer indicating whether the respondent has diabetes based on HbA1c level. 1 for "Yes", 2 for "No".
-#' @param CCC_51 An integer indicating whether the respondent self-reported diabetes. 1 for "Yes", 2 for "No".
-#' @param diab_drug2 An integer indicating whether the respondent is on diabetes medication. 1 for "Yes", 0 for "No".
+#' @param diab_a1c [integer] An integer indicating whether the respondent has diabetes based on HbA1c level. 1 for "Yes", 2 for "No".
+#' @param ccc_51 [integer] An integer indicating whether the respondent self-reported diabetes. 1 for "Yes", 2 for "No".
+#' @param diab_med [integer] An integer indicating whether the respondent is on diabetes medication. 1 for "Yes", 0 for "No".
 #'
-#' @return An integer indicating the inclusive diabetes status:
-#'         - 1 ("Yes") if any of `diab_m`, `CCC_51`, or `diab_drug2` is 1.
-#'         - 2 ("No") if all of `diab_m`, `CCC_51`, and `diab_drug2` are 2.
-#'         - `haven::tagged_na("b")` if all three parameters are `NA`.
-#'         - If two parameters are `NA`, the third non-`NA` parameter determines the result.
-#'         - If one parameter is `NA`, the function checks the remaining two for a decision.
+#' @return [integer] The inclusive diabetes status:
+#'         - 1 ("Yes") if any of `diab_a1c`, `ccc_51`, or `diab_med` is 1.
+#'         - 2 ("No") if all of `diab_a1c`, `ccc_51`, and `diab_med` are 2 or 0.
+#'         - `haven::tagged_na("a")`: Not applicable
+#'         - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function classifies diabetes status based that considers:
+#'
+#'          **Data Sources:**
+#'          - Laboratory: HbA1c levels indicating diabetes (diab_a1c)
+#'          - Self-report: Participant-reported diabetes diagnosis (ccc_51)
+#'          - Medication: Current diabetes medication usage (diab_med)
+#'
+#'          **Classification Logic:**
+#'          - ANY positive indicator results in diabetes classification
+#'          - ALL negative indicators required for "no diabetes" classification
+#'          - Sophisticated missing data handling preserves available information
+#'
+#'          **Missing Data Codes:**
+#'          - `diab_a1c`, `diab_med`:
+#'            - Tagged NA "a": Valid skip.
+#'            - Tagged NA "b": Don't know, refusal, or not stated.
+#'          - `ccc_51`:
+#'            - `6`: Valid skip. Handled as `haven::tagged_na("a")`.
+#'            - `7-9`: Don't know, refusal, or not stated. Handled as `haven::tagged_na("b")`.
 #'
 #' @examples
-#'
+#' # Scalar usage: Single respondent
 #' # Example: Determine the inclusive diabetes status for a respondent with diabetes based on HbA1c.
-#' determine_inclusive_diabetes(diab_m = 1, CCC_51 = 2, diab_drug2 = 2)
+#' derive_diabetes_status(diab_a1c = 1, ccc_51 = 2, diab_med = 0)
 #' # Output: 1 (Inclusive diabetes status is "Yes").
 #'
 #' # Example: Determine the inclusive diabetes status for a respondent no diabetes all around.
-#' determine_inclusive_diabetes(diab_m = 2, CCC_51 = 2, diab_drug2 = 2)
+#' derive_diabetes_status(diab_a1c = 2, ccc_51 = 2, diab_med = 0)
 #' # Output: 2 (Inclusive diabetes status is "No").
 #'
 #' # Example: Determine inclusive diabetes status when only one parameter is NA.
-#' determine_inclusive_diabetes(diab_m = 2, CCC_51 = NA, diab_drug2 = 1)
-#' # Output: 1 (Based on `diab_drug2`, inclusive diabetes status is "Yes").
+#' derive_diabetes_status(diab_a1c = 2, ccc_51 = NA, diab_med = 1)
+#' # Output: 1 (Based on `diab_med`, inclusive diabetes status is "Yes").
 #'
+#' # Example: Respondent has non-response values for all inputs.
+#' result <- derive_diabetes_status(haven::tagged_na("b"), 8, haven::tagged_na("b"))
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+#'
+#' # Multiple respondents
+#' derive_diabetes_status(diab_a1c = c(1, 2, 2), ccc_51 = c(2, 1, 2), diab_med = c(0, 0, 1))
+#' # Returns: c(1, 1, 1)
+#'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(diabetes_status = derive_diabetes_status(diab_a1c, ccc_51, diab_med))
+#'
+#' @seealso Related health condition functions: [derive_hypertension()], [calculate_gfr()]
 #' @export
-determine_inclusive_diabetes <- function(diab_m, CCC_51, diab_drug2) {
-  diabX <- haven::tagged_na("b") # Default value as tagged NA
+derive_diabetes_status <- function(diab_a1c, ccc_51, diab_med) {
+  vals <- c(diab_a1c, ccc_51, diab_med)
+  non_missing <- vals[!is.na(vals) & !haven::is_tagged_na(vals, "a") & !haven::is_tagged_na(vals, "b")]
 
-  # Case 1: All are not NA
-  if (!is.na(diab_m) && !is.na(CCC_51) && !is.na(diab_drug2)) {
-    if (diab_m == 1 || CCC_51 == 1 || diab_drug2 == 1) {
-      diabX <- 1 # "Yes" if any of diab_m, CCC_51, or diab_drug2 is 1
-    } else if (diab_m == 2 && CCC_51 == 2 && diab_drug2 == 0) {
-      diabX <- 2 # "No" if all are 2
-    }
-  } else if (is.na(diab_m) && is.na(CCC_51) && is.na(diab_drug2)) { # Case 2: All are NA
-    diabX <- haven::tagged_na("b")
-  } else if (is.na(diab_m) && is.na(CCC_51)) { # Case 3: Two values are NA, check the remaining one
-    if (!is.na(diab_drug2) && diab_drug2 == 1) {
-      diabX <- 1
-    } else if (!is.na(diab_drug2) && diab_drug2 == 0) {
-      diabX <- haven::tagged_na("b")
-    }
-  } else if (is.na(diab_m) && is.na(diab_drug2)) {
-    if (!is.na(CCC_51) && CCC_51 == 1) {
-      diabX <- 1
-    } else if (!is.na(CCC_51) && CCC_51 == 2) {
-      diabX <- 2
-    }
-  } else if (is.na(CCC_51) && is.na(diab_drug2)) {
-    if (!is.na(diab_m) && diab_m == 1) {
-      diabX <- 1
-    } else if (!is.na(diab_m) && diab_m == 2) {
-      diabX <- 2
-    }
-  } else if (is.na(diab_m)) { # Case 4: Only one value is NA, check the other two
-    if (CCC_51 == 1 || diab_drug2 == 1) {
-      diabX <- 1 # "Yes" if any of the non-NA values is 1
-    } else if (CCC_51 == 2 && diab_drug2 == 0) {
-      diabX <- 2 # "No" if both non-NA values are 2
-    }
-  } else if (is.na(CCC_51)) {
-    if (diab_m == 1 || diab_drug2 == 1) {
-      diabX <- 1 # "Yes" if any of the non-NA values is 1
-    } else if (diab_m == 2 && diab_drug2 == 0) {
-      diabX <- 2 # "No" if both non-NA values are 2
-    }
-  } else if (is.na(diab_drug2)) {
-    if (diab_m == 1 || CCC_51 == 1) {
-      diabX <- 1 # "Yes" if any of the non-NA values is 1
-    } else if (diab_m == 2 && CCC_51 == 2) {
-      diabX <- 2 # "No" if both non-NA values are 2
-    }
-  }
+  dplyr::case_when(
+    # Positive evidence always first
+    diab_a1c == 1 | ccc_51 == 1 | diab_med == 1 ~ 1,
 
-  return(diabX)
+    # Explicit negatives if there is at least one observed value and ALL observed are negative
+    length(non_missing) > 0 & all(non_missing %in% c(0, 2)) ~ 2,
+
+    # NA(a) takes precedence over NA(b)
+    haven::is_tagged_na(diab_a1c, "a") |
+      haven::is_tagged_na(ccc_51, "a") | ccc_51 == 6 |
+      haven::is_tagged_na(diab_med, "a") ~ haven::tagged_na("a"),
+
+    # NA(b) next in precedence
+    haven::is_tagged_na(diab_a1c, "b") |
+      haven::is_tagged_na(ccc_51, "b") | ccc_51 %in% 7:9 |
+      haven::is_tagged_na(diab_med, "b") |
+      all(is.na(vals)) ~ haven::tagged_na("b"),
+
+    # Default fallback
+    .default = haven::tagged_na("b")
+  )
 }

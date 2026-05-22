@@ -3,9 +3,12 @@
 \docType{data}
 \name{cycle3}
 \alias{cycle3}
-\title{CHMS Cycle 3}
-\value{
-\item{cycle3}{a data frame}
+\title{Canadian Health Measures Survey (CHMS) Cycle 3}
+\source{
+Statistics Canada
+}
+\usage{
+data(cycle3)
 }
 \description{
 This is dummy data representing the third cycle of the Canadian

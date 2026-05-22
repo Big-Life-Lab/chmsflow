@@ -1,59 +1,74 @@
 # test-exercise.R
-# Test find_week_accelerometer_average
-test_that("find_week_accelerometer_average handles various cases", {
-  # Case 1: All days have valid exercise values
-  expect_equal(find_week_accelerometer_average(30, 40, 25, 35, 20, 45, 50), 35)
 
-  # Case 2: Some days are NA
-  expect_equal(find_week_accelerometer_average(30, NA, 25, 35, NA, 45, 50), haven::tagged_na("b"))
+# Test for calculate_exercise_daily_avg
+test_that("calculate_exercise_daily_avg returns correct weekly accelerometer average", {
+  # General tests
+  expect_equal(calculate_exercise_daily_avg(30, 30, 30, 30, 30, 30, 30), 30)
 
-  # Case 3: All days are 0 (no exercise)
-  expect_equal(find_week_accelerometer_average(0, 0, 0, 0, 0, 0, 0), 0)
+  # Edge case tests - missing data, invalid inputs, and boundary values
+  expect_true(is.na(calculate_exercise_daily_avg(9996, 30, 30, 30, 30, 30, 30)))
+  expect_true(is.na(calculate_exercise_daily_avg(9997, 30, 30, 30, 30, 30, 30)))
+  expect_true(haven::is_tagged_na(calculate_exercise_daily_avg(-1, 30, 30, 30, 30, 30, 30), "b"))
+  expect_true(is.na(calculate_exercise_daily_avg(NA, 30, 30, 30, 30, 30, 30)))
+  expect_equal(calculate_exercise_daily_avg(0, 0, 0, 0, 0, 0, 0), 0) # All zeros
+  expect_equal(calculate_exercise_daily_avg(10, 20, 30, 40, 50, 60, 70), 40) # Variable activity
 
-  # Case 4: All days are NA
-  expect_equal(find_week_accelerometer_average(NA, NA, NA, NA, NA, NA, NA), haven::tagged_na("b"))
+  # Vector tests
+  expect_equal(calculate_exercise_daily_avg(c(30, 0), c(30, 0), c(30, 0), c(30, 0), c(30, 0), c(30, 0), c(30, 0)), c(30, 0))
+
+  # Database tests
+  df <- data.frame(D1 = c(30, 0), D2 = c(30, 0), D3 = c(30, 0), D4 = c(30, 0), D5 = c(30, 0), D6 = c(30, 0), D7 = c(30, 0))
+  expect_equal(df |> dplyr::mutate(avg = calculate_exercise_daily_avg(D1, D2, D3, D4, D5, D6, D7)) |> dplyr::pull(avg), c(30, 0))
 })
 
-# Test minperday_to_minperweek
-test_that("minperday_to_minperweek handles various inputs", {
-  # Case 1: Valid input
-  expect_equal(minperday_to_minperweek(35), 245)
+# Test for calculate_exercise_weekly
+test_that("calculate_exercise_weekly returns correct minutes per week", {
+  # General tests
+  expect_equal(calculate_exercise_weekly(30), 210)
 
-  # Case 2: NA input
-  expect_equal(minperday_to_minperweek(NA), haven::tagged_na("b"))
+  # Edge case tests - missing data, invalid inputs, and boundary values
+  expect_true(haven::is_tagged_na(calculate_exercise_weekly(haven::tagged_na("a")), "a"))
+  expect_true(haven::is_tagged_na(calculate_exercise_weekly(haven::tagged_na("b")), "b"))
+  expect_true(haven::is_tagged_na(calculate_exercise_weekly(-1), "b"))
+  expect_true(is.na(calculate_exercise_weekly(NA)))
+  expect_equal(calculate_exercise_weekly(0), 0) # Zero minutes
+  expect_equal(calculate_exercise_weekly(60), 420) # One hour per day
 
-  # Case 3: Zero input
-  expect_equal(minperday_to_minperweek(0), 0)
+  # Vector tests
+  expect_equal(calculate_exercise_weekly(c(30, 0, haven::tagged_na("a"))), c(210, 0, haven::tagged_na("a")))
+
+  # Database tests
+  df <- data.frame(minday = c(30, 0, 60))
+  expect_equal(df |> dplyr::mutate(minweek = calculate_exercise_weekly(minday)) |> dplyr::pull(minweek), c(210, 0, 420))
 })
 
-# Test categorize_minperweek
-test_that("categorize_minperweek handles various thresholds", {
-  # Case 1: Meets or exceeds the recommendation
-  expect_equal(categorize_minperweek(150), 1)
-  expect_equal(categorize_minperweek(200), 1)
+# Test for categorize_exercise
+test_that("categorize_exercise returns correct physical activity category", {
+  # General tests
+  expect_equal(categorize_exercise(150), 1)
+  expect_equal(categorize_exercise(149), 2)
 
-  # Case 2: Below the recommendation
-  expect_equal(categorize_minperweek(149), 2)
-  expect_equal(categorize_minperweek(0), 2)
+  # Edge case tests - missing data, invalid inputs, and boundary values
+  expect_true(haven::is_tagged_na(categorize_exercise(haven::tagged_na("a")), "a"))
+  expect_true(haven::is_tagged_na(categorize_exercise(haven::tagged_na("b")), "b"))
+  expect_true(haven::is_tagged_na(categorize_exercise(-1), "b"))
+  expect_true(is.na(categorize_exercise(NA)))
+  expect_equal(categorize_exercise(150.0), 1) # Exactly at threshold
+  expect_equal(categorize_exercise(0), 2) # Zero minutes
 
-  # Case 3: NA input
-  expect_equal(categorize_minperweek(NA), haven::tagged_na("b"))
+  # Vector tests
+  expect_equal(categorize_exercise(c(150, 149, haven::tagged_na("a"))), c(1, 2, haven::tagged_na("a")))
+
+  # Database tests
+  df <- data.frame(minweek = c(150, 149, 200))
+  expect_equal(df |> dplyr::mutate(cat = categorize_exercise(minweek)) |> dplyr::pull(cat), c(1, 2, 1))
 })
 
-test_that("find_week_accelerometer_average handles single NA", {
-  expect_equal(find_week_accelerometer_average(30, 40, 25, 35, 20, 45, NA), haven::tagged_na("b"))
-})
-
-test_that("find_week_accelerometer_average handles negative inputs", {
-  expect_equal(find_week_accelerometer_average(30, 40, -25, 35, 20, 45, 50), haven::tagged_na("b"))
-})
-
-test_that("minperday_to_minperweek handles negative inputs", {
-  expect_equal(minperday_to_minperweek(-10), haven::tagged_na("b"))
-})
-
-test_that("categorize_minperweek handles more boundary cases", {
-  expect_equal(categorize_minperweek(150.0001), 1)
-  expect_equal(categorize_minperweek(149.9999), 2)
-  expect_equal(categorize_minperweek(-1), haven::tagged_na("b"))
+# Mixed-length / empty-vector tests
+test_that("calculate_exercise_daily_avg handles empty input", {
+  empty <- numeric(0)
+  expect_length(
+    calculate_exercise_daily_avg(empty, empty, empty, empty, empty, empty, empty),
+    0
+  )
 })

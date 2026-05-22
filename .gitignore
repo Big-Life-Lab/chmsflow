@@ -64,9 +64,12 @@ src/*.o
 src/*.so
 src/*.dll
 
-# If you use renv for package dependency management, ignore these files
-renv.lock
-renv/
+# renv for package dependency management
+# Keep renv.lock and renv/activate.R in git for reproducibility
+# Ignore the local library and cache
+renv/library/
+renv/local/
+renv/staging/
 
 # If you use packrat for package dependency management, ignore these files
 packrat/
@@ -79,7 +82,22 @@ packrat.lock
 # If you use lintr for code linting, ignore these files
 .R/lintr_cache/
 
+/doc/
+/Meta/
+
 # Quarto files
 /.quarto/
 /_freeze/
 *_files/
+
+# Claude use
+.claude/
+
+# Local working notes (also in .Rbuildignore)
+.tmp/
+
+# Built vignettes
+inst/doc
+
+# IDE workspace files
+*.code-workspace

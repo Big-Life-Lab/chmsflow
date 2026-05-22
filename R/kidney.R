@@ -3,99 +3,149 @@
 #' @description This function calculates the estimated glomerular filtration rate (GFR) according to Finlay's formula,
 #'              where serum creatine is in mg/dL. The calculation takes into account the respondent's ethnicity, sex, and age.
 #'
-#' @param LAB_BCRE Blood creatine (µmol/L). It should be a numeric value between 14 and 785.
-#' @param PGDCGT Ethnicity (13 categories). It should be an integer value between 1 and 13.
-#' @param CLC_SEX Sex (Male = 1, Female = 2). It should be an integer value of either 1 or 2.
-#' @param CLC_AGE Age (years). It should be a numeric value between 3 and 79.
+#' @param lab_bcre [numeric] Blood creatine (umol/L). It should be a numeric between 14 and 785.
+#' @param pgdcgt [integer] Ethnicity (13 categories). It should be an integer between 1 and 13.
+#' @param clc_sex [integer] Sex (Male = 1, Female = 2). It should be an integer of either 1 or 2.
+#' @param clc_age [numeric] Age (years). It should be a numeric between 3 and 79.
 #'
-#' @return The calculated GFR as a numeric value. If any of the input parameters (LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE)
-#'         are non-response values (LAB_BCRE >= 996, PGDCGT >= 96, CLC_SEX >= 6, CLC_AGE >= 996) or out of bounds, the GFR will be NA(b).
+#' @return [numeric] The calculated GFR. If inputs are invalid or out of bounds, the function returns a tagged NA.
 #'
-#' @details The function uses the serum creatine level (LAB_BCRE) in µmol/L to calculate the estimated GFR. First, it
-#'          checks if any of the input parameters are non-response values. If any non-response values are found, the GFR
-#'          will be set to NA, and the function will return immediately. Otherwise, it proceeds with the calculation by
-#'          converting the serum creatine to mg/dL (serumcreat = LAB_BCRE / 88.4). Based on the respondent's ethnicity
-#'          (PGDCGT), sex (CLC_SEX), and age (CLC_AGE), the appropriate formula is applied to calculate the GFR. The
-#'          formula used for each combination of ethnicity and sex is as follows:
+#' @details This function implements the Modification of Diet in Renal Disease (MDRD) equation
+#'          to estimate glomerular filtration rate, a key indicator of kidney function.
 #'
-#'          - Female and Black (PGDCGT == 2, CLC_SEX == 2): GFR = 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) *
-#'                                                         (0.742) * (1.210)
-#'          - Female and not Black (PGDCGT != 2, CLC_SEX == 2): GFR = 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) *
-#'                                                             (0.742)
-#'          - Male and Black (PGDCGT == 2, CLC_SEX == 1): GFR = 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) *
-#'                                                       (1.210)
-#'          - Male and not Black (PGDCGT != 2, CLC_SEX == 1): GFR = 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203))
+#'          **Clinical Significance:**
+#'          GFR estimates are essential for:
+#'          - Chronic kidney disease (CKD) classification
+#'          - Medication dosing adjustments
+#'          - Cardiovascular risk assessment
+#'
+#'          **Formula Application:**
+#'          Base: GFR = 175 x (creatinine^-1.154) x (age^-0.203)
+#'          Adjustments:
+#'          - Female: x 0.742
+#'          - Black ethnicity: x 1.210
+#'
+#'          **Unit Conversion:**
+#'          Serum creatinine converted from umol/L to mg/dL (/ 88.4)
+#'
+#'          **Missing Data Codes:**
+#'          - `lab_bcre`: `9996` (Not applicable), `9997-9999` (Missing)
+#'          - `pgdcgt`: `96` (Not applicable), `97-99` (Missing)
+#'          - `clc_sex`: `6` (Not applicable), `7-9` (Missing)
+#'          - `clc_age`: `96` (Not applicable), `97-99` (Missing)
 #'
 #' @examples
+#' # Scalar usage: Single respondent
+#' # Example 1: Calculate gfr for a 45-year-old white female with serum creatine of 80 umol/L.
+#' calculate_gfr(lab_bcre = 80, pgdcgt = 1, clc_sex = 2, clc_age = 45)
+#' # Output: 67.27905
 #'
-#' # Example 1: Calculate GFR for a 45-year-old white female with serum creatine of 80 µmol/L.
-#' calculate_GFR(LAB_BCRE = 80, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 45)
-#' # Output: GFR = 67.27905
+#' # Example 2: Respondent has non-response values for all inputs.
+#' result <- calculate_gfr(lab_bcre = 9998, pgdcgt = 98, clc_sex = 8, clc_age = 98)
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
 #'
-#' # Example 2: Calculate GFR for a 35-year-old black female with serum creatine of 70 µmol/L.
-#' calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35)
-#' # Output: GFR = 99.94114
+#' # Multiple respondents
+#' calculate_gfr(
+#'   lab_bcre = c(80, 70, 90), pgdcgt = c(1, 2, 1),
+#'   clc_sex = c(2, 2, 1), clc_age = c(45, 35, 50)
+#' )
+#' # Returns: c(67.27905, 99.94114, 70.38001)
 #'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(gfr = calculate_gfr(lab_bcre, pgdcgt, clc_sex, clc_age))
+#'
+#' @seealso [categorize_ckd()] for CKD classification based on GFR values
 #' @export
-calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
-  GFR <- 0
-  serumcreat <- 0
+calculate_gfr <- function(lab_bcre, pgdcgt, clc_sex, clc_age) {
+  # Convert serum creatinine from umol/L to mg/dL
+  serumcreat <- lab_bcre / 88.4
 
-  if (any(!LAB_BCRE %in% 14:785) || (any(!CLC_SEX %in% c(1, 2)) || any(!PGDCGT %in% 1:13)) || any(!CLC_AGE %in% 3:79)) {
-    GFR <- haven::tagged_na("b") # GFR is NA if any non-responses found
-  } else {
-    serumcreat <- LAB_BCRE / 88.4 # Proceeds without non-responses
+  # Calculate GFR using the MDRD equation
+  gfr <- dplyr::case_when(
+    # Valid skip
+    lab_bcre == 9996 | clc_sex == 6 | pgdcgt == 96 | clc_age == 996 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    lab_bcre %in% 9997:9999 | clc_sex %in% 7:9 | pgdcgt %in% 97:99 | clc_age %in% 997:999 ~ haven::tagged_na("b"),
 
-    if (!is.na(CLC_SEX) && !is.na(PGDCGT) && serumcreat != 0) {
-      if (CLC_SEX == 2 && PGDCGT == 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (0.742) * (1.210) # female and black
-      } else if (CLC_SEX == 2 && PGDCGT != 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (0.742) # female and not black
-      } else if (CLC_SEX == 1 && PGDCGT == 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (1.210) # male and black
-      } else if (CLC_SEX == 1 && PGDCGT != 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) # male and not black
-      }
-    } else {
-      GFR <- haven::tagged_na("b") # Handle case where CLC_SEX or PGDCGT is NA or serumcreat is 0
-    }
-  }
+    # Handle out of range values
+    !lab_bcre %in% 14:785 | !clc_sex %in% c(1, 2) | !pgdcgt %in% 1:13 | !clc_age %in% 3:79 ~ haven::tagged_na("b"),
 
-  return(GFR)
+    # Apply the MDRD equation with adjustments for sex and ethnicity
+    clc_sex == 2 & pgdcgt == 2 ~ 175 * ((serumcreat)^(-1.154)) * ((clc_age)^(-0.203)) * (0.742) * (1.210),
+    clc_sex == 2 & pgdcgt != 2 ~ 175 * ((serumcreat)^(-1.154)) * ((clc_age)^(-0.203)) * (0.742),
+    clc_sex == 1 & pgdcgt == 2 ~ 175 * ((serumcreat)^(-1.154)) * ((clc_age)^(-0.203)) * (1.210),
+    clc_sex == 1 & pgdcgt != 2 ~ 175 * ((serumcreat)^(-1.154)) * ((clc_age)^(-0.203)),
+
+    # Default to missing if no other condition is met
+    .default = haven::tagged_na("b")
+  )
+
+  return(gfr)
 }
 
 #' @title Chronic kidney disease (CKD) derived variable
 #'
 #' @description This function categorizes individuals' glomerular filtration rate (GFR) into stages of Chronic Kidney Disease (CKD).
 #'
-#' @param GFR Numeric value representing the glomerular filtration rate.
+#' @param gfr [numeric] A numeric representing the glomerular filtration rate.
 #'
-#' @return A categorical value indicating the CKD stage:
+#' @return [integer] The CKD stage:
 #'   - 1: GFR of 60 or below (indicating CKD)
 #'   - 2: GFR above 60 (not indicating CKD)
-#'   - NA(b): Missing or invalid input
+#'   - `haven::tagged_na("a")`: Not applicable
+#'   - `haven::tagged_na("b")`: Missing
+#'
+#' @details This function applies the Kidney Disease: Improving Global Outcomes (KDIGO) guideline to classify Chronic Kidney Disease (CKD) based on GFR.
+#'
+#'          **Missing Data Codes:**
+#'          - Propagates tagged NAs from the input `gfr`.
 #'
 #' @examples
+#' # Scalar usage: Single respondent
 #' # Example 1: Categorize a GFR of 45
-#' categorize_GFR_to_CKD(45)
+#' categorize_ckd(45)
 #' # Output: 1
 #'
 #' # Example 2: Categorize a GFR of 75
-#' categorize_GFR_to_CKD(75)
+#' categorize_ckd(75)
 #' # Output: 2
 #'
+#' # Example 3: Respondent has a non-response value for GFR.
+#' result <- categorize_ckd(haven::tagged_na("b"))
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+#'
+#' # Multiple respondents
+#' categorize_ckd(c(45, 75, 60))
+#' # Returns: c(1, 2, 1)
+#'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(ckd = categorize_ckd(gfr))
+#'
+#' @seealso [calculate_gfr()]
+#' @references Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. (2013). KDIGO 2012 clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney international supplements, 3(1), 1-150.
 #' @export
-categorize_GFR_to_CKD <- function(GFR) {
-  CKD <- 0
+categorize_ckd <- function(gfr) {
+  # Categorize GFR into CKD stages
+  ckd <- dplyr::case_when(
+    # Valid skip
+    haven::is_tagged_na(gfr, "a") ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    haven::is_tagged_na(gfr, "b") | gfr < 0 ~ haven::tagged_na("b"),
 
-  if (is.na(GFR) || GFR < 0) {
-    CKD <- haven::tagged_na("b")
-  } else {
-    if (GFR <= 60) {
-      CKD <- 1
-    } else {
-      CKD <- 2
-    }
-  }
-  return(CKD)
+    # Categorize CKD based on GFR
+    gfr <= 60 ~ 1,
+    gfr > 60 ~ 2,
+
+    # Handle any other cases
+    .default = haven::tagged_na("b")
+  )
+  return(ckd)
 }

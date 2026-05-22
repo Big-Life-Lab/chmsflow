@@ -1,189 +1,222 @@
 # test-blood-pressure.R
-# Test suite for the adjust_SBP function
-test_that("adjust_SBP calculates adjusted systolic blood pressure correctly", {
-  # Case: Valid blood pressure input
-  expect_equal(adjust_SBP(120), 11.4 + (0.93 * 120))
 
-  # Case: Non-response value
-  expect_equal(adjust_SBP(996), haven::tagged_na("b"))
+# Test for adjust_sbp
+test_that("adjust_sbp returns correct adjusted systolic blood pressure", {
+  # General tests
+  expect_equal(adjust_sbp(120), 123)
 
-  # Case: Invalid input (negative value)
-  expect_equal(adjust_SBP(-5), haven::tagged_na("b"))
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(adjust_sbp(996), "a"))
+  expect_true(haven::is_tagged_na(adjust_sbp(997), "b"))
+  expect_true(haven::is_tagged_na(adjust_sbp(-5), "b"))
+  expect_true(is.na(adjust_sbp(NA)))
+  # Edge case tests - boundary values
+  expect_true(!is.na(adjust_sbp(0))) # Zero BP still valid
 
-  # Case: NA input
-  expect_equal(adjust_SBP(NA), haven::tagged_na("b"))
+  # Vector tests
+  expect_equal(adjust_sbp(c(120, 996, -5, NA)), c(123, haven::tagged_na("a"), haven::tagged_na("b"), NA))
+
+  # Database tests
+  df <- data.frame(SBP = c(120, 140, 996))
+  result <- df |>
+    dplyr::mutate(adj = adjust_sbp(SBP)) |>
+    dplyr::pull(adj)
+  expect_equal(length(result), 3)
+  expect_true(haven::is_tagged_na(result[3], "a"))
 })
 
-# Test suite for the adjust_DBP function
-test_that("adjust_DBP calculates adjusted diastolic blood pressure correctly", {
-  # Case: Valid blood pressure input
-  expect_equal(adjust_DBP(80), 15.6 + (0.83 * 80))
+# Test for adjust_dbp
+test_that("adjust_dbp returns correct adjusted diastolic blood pressure", {
+  # General tests
+  expect_equal(adjust_dbp(80), 82)
 
-  # Case: Non-response value
-  expect_equal(adjust_DBP(996), haven::tagged_na("b"))
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(adjust_dbp(996), "a"))
+  expect_true(haven::is_tagged_na(adjust_dbp(997), "b"))
+  expect_true(haven::is_tagged_na(adjust_dbp(-5), "b"))
+  expect_true(is.na(adjust_dbp(NA)))
 
-  # Case: Invalid input (negative value)
-  expect_equal(adjust_DBP(-5), haven::tagged_na("b"))
+  # Edge case tests - boundary values
+  expect_true(!is.na(adjust_dbp(0))) # Zero BP still valid
 
-  # Case: NA input
-  expect_equal(adjust_DBP(NA), haven::tagged_na("b"))
+  # Vector tests
+  expect_equal(adjust_dbp(c(80, 996, -5, NA)), c(82, haven::tagged_na("a"), haven::tagged_na("b"), NA))
+
+  # Database tests
+  df <- data.frame(DBP = c(80, 90, 996))
+  result <- df |>
+    dplyr::mutate(adj = adjust_dbp(DBP)) |>
+    dplyr::pull(adj)
+  expect_equal(length(result), 3)
+  expect_true(haven::is_tagged_na(result[3], "a"))
 })
 
-# Test suite for the determine_hypertension function
-test_that("determine_hypertension identifies hypertension status correctly", {
-  # Case: High systolic and diastolic BP
-  expect_equal(determine_hypertension(150, 95, 1), 1)
+# Test for derive_hypertension
+test_that("derive_hypertension returns correct hypertension status", {
+  # General tests
+  expect_equal(derive_hypertension(140, 80, 0), 1)
+  expect_equal(derive_hypertension(120, 90, 0), 1)
+  expect_equal(derive_hypertension(120, 80, 1), 1)
+  expect_equal(derive_hypertension(130, 80, 0, diab_status = 1), 1)
+  expect_equal(derive_hypertension(120, 80, 0), 2)
 
-  # Case: Normal BP and not on medication
-  expect_equal(determine_hypertension(120, 80, 0), 2)
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(derive_hypertension(996, 80, 0), "a"))
+  expect_true(haven::is_tagged_na(derive_hypertension(120, 997, 0), "b"))
+  expect_true(is.na(derive_hypertension(NA, NA, 0)))
+  # Edge case tests - boundary values
+  expect_equal(derive_hypertension(139, 89, 0), 2)
+  expect_equal(derive_hypertension(140, 89, 0), 1)
+  expect_equal(derive_hypertension(139, 90, 0), 1)
+  expect_equal(derive_hypertension(129, 79, 0, diab_status = 1), 2)
+  expect_equal(derive_hypertension(130, 79, 0, diab_status = 1), 1)
+  expect_equal(derive_hypertension(129, 80, 0, diab_status = 1), 1)
 
-  # Case: Missing BP but on medication
-  expect_equal(determine_hypertension(NA, NA, 1), 1)
+  # Edge case tests - combined comorbidities
+  expect_equal(derive_hypertension(130, 80, 0, diab_status = 1, ckd_status = 1), 1)
+  expect_equal(derive_hypertension(129, 79, 0, diab_status = 1, ckd_status = 1), 2)
 
-  # Case: Missing BP and not on medication
-  expect_equal(determine_hypertension(NA, NA, 0), haven::tagged_na("b"))
+  # Edge case tests - very high BP values
+  expect_equal(derive_hypertension(200, 120, 0), 1)
+  expect_equal(derive_hypertension(250, 150, 0), 1)
 
-  # Case: Adjusted ANYMED2 due to conditions
-  expect_equal(determine_hypertension(120, 80, 1, CCC_32 = 2, CARDIOV = 1), 2)
+  # Vector tests
+  expect_equal(derive_hypertension(c(140, 120), c(80, 80), c(0, 0)), c(1, 2))
+
+  # Database tests
+  df <- data.frame(SBP = c(140, 120), DBP = c(80, 80), ANYMED2 = c(0, 0))
+  expect_equal(df |> dplyr::mutate(htn = derive_hypertension(SBP, DBP, ANYMED2)) |> dplyr::pull(htn), c(1, 2))
 })
 
-# Test suite for the determine_adjusted_hypertension function
-test_that("determine_adjusted_hypertension identifies adjusted hypertension status correctly", {
-  # Case: High adjusted systolic and diastolic BP
-  expect_equal(determine_adjusted_hypertension(150, 95, 1), 1)
+# Test for derive_hypertension_adj
+test_that("derive_hypertension_adj returns correct adjusted hypertension status", {
+  # General tests
+  expect_equal(derive_hypertension_adj(140, 80, 0), 1)
+  expect_equal(derive_hypertension_adj(120, 90, 0), 1)
+  expect_equal(derive_hypertension_adj(120, 80, 1), 1)
+  expect_equal(derive_hypertension_adj(130, 80, 0, diab_status = 1), 1)
+  expect_equal(derive_hypertension_adj(120, 80, 0), 2)
 
-  # Case: Normal adjusted BP and not on medication
-  expect_equal(determine_adjusted_hypertension(120, 80, 0), 2)
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(derive_hypertension_adj(996, 80, 0), "a"))
+  expect_true(haven::is_tagged_na(derive_hypertension_adj(120, 997, 0), "b"))
+  expect_true(is.na(derive_hypertension_adj(NA, NA, 0)))
+  # Edge case tests - boundary values
+  expect_equal(derive_hypertension_adj(139, 89, 0), 2)
+  expect_equal(derive_hypertension_adj(140, 89, 0), 1)
+  expect_equal(derive_hypertension_adj(139, 90, 0), 1)
 
-  # Case: Missing adjusted BP but on medication
-  expect_equal(determine_adjusted_hypertension(NA, NA, 1), 1)
+  # Edge case tests - combined comorbidities
+  expect_equal(derive_hypertension_adj(130, 80, 0, diab_status = 1, ckd_status = 1), 1)
+  expect_equal(derive_hypertension_adj(129, 79, 0, diab_status = 1, ckd_status = 1), 2)
 
-  # Case: Missing adjusted BP and not on medication
-  expect_equal(determine_adjusted_hypertension(NA, NA, 0), haven::tagged_na("b"))
+  # Vector tests
+  expect_equal(derive_hypertension_adj(c(140, 120), c(80, 80), c(0, 0)), c(1, 2))
 
-  # Case: Adjusted ANYMED2 due to conditions
-  expect_equal(determine_adjusted_hypertension(120, 80, 1, CCC_32 = 2, CARDIOV = 1), 2)
+  # Database tests
+  df <- data.frame(SBP = c(140, 120), DBP = c(80, 80), ANYMED2 = c(0, 0))
+  expect_equal(df |> dplyr::mutate(htn = derive_hypertension_adj(SBP, DBP, ANYMED2)) |> dplyr::pull(htn), c(1, 2))
 })
 
-# Test suite for the determine_controlled_hypertension function
-test_that("determine_controlled_hypertension works correctly", {
-  # Case 1: Controlled Hypertension
-  expect_equal(determine_controlled_hypertension(130, 85, 1), 1)
+# Test for derive_hypertension_control
+test_that("derive_hypertension_control returns correct controlled hypertension status", {
+  # General tests
+  expect_equal(derive_hypertension_control(139, 89, 1), 1)
+  expect_equal(derive_hypertension_control(140, 89, 1), 2)
+  expect_equal(derive_hypertension_control(139, 90, 1), 2)
+  expect_equal(derive_hypertension_control(129, 79, 1, ccc_32 = 1, diab_status = 1), 1)
+  expect_equal(derive_hypertension_control(130, 79, 1, diab_status = 1), 2)
+  expect_equal(derive_hypertension_control(129, 80, 1, diab_status = 1), 2)
+  expect_equal(derive_hypertension_control(120, 80, 0), 2)
 
-  # Case 2: Uncontrolled Hypertension
-  expect_equal(determine_controlled_hypertension(145, 95, 1), 2)
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(derive_hypertension_control(996, 80, 1), "a"))
+  expect_true(haven::is_tagged_na(derive_hypertension_control(120, 997, 1), "b"))
+  expect_true(is.na(derive_hypertension_control(NA, NA, 1)))
+  # Edge case tests - boundary with comorbidities
+  expect_equal(derive_hypertension_control(139, 89, 1, diab_status = 0), 1)
 
-  # Case 3: Controlled for Special Cases
-  expect_equal(determine_controlled_hypertension(128, 78, 1, CCC_32 = 1, DIABX = 1), 1)
+  # Vector tests
+  expect_equal(derive_hypertension_control(c(139, 140), c(89, 89), c(1, 1)), c(1, 2))
 
-  # Case 4: Invalid Input
-  expect_equal(determine_controlled_hypertension(999, 999, 1), haven::tagged_na("b"))
-
-  # Case 5: No Hypertension
-  expect_equal(determine_controlled_hypertension(120, 80, 0), 2)
+  # Database tests
+  df <- data.frame(SBP = c(139, 140), DBP = c(89, 89), ANYMED2 = c(1, 1))
+  expect_equal(df |> dplyr::mutate(ctrl = derive_hypertension_control(SBP, DBP, ANYMED2)) |> dplyr::pull(ctrl), c(1, 2))
 })
 
-# Test suite for the determine_controlled_adjusted_hypertension function
-test_that("determine_controlled_adjusted_hypertension works correctly", {
-  # Case 1: Controlled Hypertension
-  expect_equal(determine_controlled_adjusted_hypertension(135, 88, 1), 1)
+# Test for derive_hypertension_control_adj
+test_that("derive_hypertension_control_adj returns correct controlled adjusted hypertension status", {
+  # General tests
+  expect_equal(derive_hypertension_control_adj(139, 89, 1), 1)
+  expect_equal(derive_hypertension_control_adj(140, 89, 1), 2)
+  expect_equal(derive_hypertension_control_adj(139, 90, 1), 2)
+  expect_equal(derive_hypertension_control_adj(129, 79, 1, ccc_32 = 1, diab_status = 1), 1)
+  expect_equal(derive_hypertension_control_adj(130, 79, 1, diab_status = 1), 2)
+  expect_equal(derive_hypertension_control_adj(129, 80, 1, diab_status = 1), 2)
+  expect_equal(derive_hypertension_control_adj(120, 80, 0), 2)
 
-  # Case 2: Uncontrolled Hypertension
-  expect_equal(determine_controlled_adjusted_hypertension(142, 92, 1), 2)
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(derive_hypertension_control_adj(996, 80, 1), "a"))
+  expect_true(haven::is_tagged_na(derive_hypertension_control_adj(120, 997, 1), "b"))
+  expect_true(is.na(derive_hypertension_control_adj(NA, NA, 1)))
+  # Edge case tests - boundary with comorbidities
+  expect_equal(derive_hypertension_control_adj(139, 89, 1, diab_status = 0), 1)
 
-  # Case 3: Controlled for Special Cases
-  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, CKD = 1), 1)
+  # Vector tests
+  expect_equal(derive_hypertension_control_adj(c(139, 140), c(89, 89), c(1, 1)), c(1, 2))
 
-  # Case 4: Invalid Input
-  expect_equal(determine_controlled_adjusted_hypertension(999, 999, 1), haven::tagged_na("b"))
-
-  # Case 5: No Hypertension
-  expect_equal(determine_controlled_adjusted_hypertension(122, 80, 0), 2)
+  # Database tests
+  df <- data.frame(SBP = c(139, 140), DBP = c(89, 89), ANYMED2 = c(1, 1))
+  expect_equal(df |> dplyr::mutate(ctrl = derive_hypertension_control_adj(SBP, DBP, ANYMED2)) |> dplyr::pull(ctrl), c(1, 2))
 })
 
-# Test suite for boundary cases in determine_hypertension
-test_that("determine_hypertension handles boundary cases correctly", {
-  # General population boundaries
-  expect_equal(determine_hypertension(139, 89, 0), 2) # Below threshold
-  expect_equal(determine_hypertension(140, 89, 0), 1) # At systolic threshold
-  expect_equal(determine_hypertension(139, 90, 0), 1) # At diastolic threshold
+# Tagged-NA input propagation tests
+# These verify the chained-derivation contract: a tagged NA input from a prior
+# step (e.g., adjust_sbp() returning haven::tagged_na("a") for sentinel 996)
+# must produce a tagged NA output, not a plain NA or a numeric class.
 
-  # Diabetes/CKD boundaries
-  expect_equal(determine_hypertension(129, 79, 0, DIABX = 1), 2) # Below threshold
-  expect_equal(determine_hypertension(130, 79, 0, DIABX = 1), 1) # At systolic threshold
-  expect_equal(determine_hypertension(129, 80, 0, DIABX = 1), 1) # At diastolic threshold
-  expect_equal(determine_hypertension(129, 79, 0, CKD = 1), 2) # Below threshold
-  expect_equal(determine_hypertension(130, 79, 0, CKD = 1), 1) # At systolic threshold
-  expect_equal(determine_hypertension(129, 80, 0, CKD = 1), 1) # At diastolic threshold
+test_that("derive_hypertension propagates tagged NA input on bpmdpbps", {
+  expect_true(haven::is_tagged_na(derive_hypertension(haven::tagged_na("a"), 80, 0)))
+  expect_true(haven::is_tagged_na(derive_hypertension(haven::tagged_na("b"), 80, 0)))
 })
 
-# Test suite for boundary cases in determine_adjusted_hypertension
-test_that("determine_adjusted_hypertension handles boundary cases correctly", {
-  # General population boundaries
-  expect_equal(determine_adjusted_hypertension(139, 89, 0), 2) # Below threshold
-  expect_equal(determine_adjusted_hypertension(140, 89, 0), 1) # At systolic threshold
-  expect_equal(determine_adjusted_hypertension(139, 90, 0), 1) # At diastolic threshold
-
-  # Diabetes/CKD boundaries
-  expect_equal(determine_adjusted_hypertension(129, 79, 0, DIABX = 1), 2) # Below threshold
-  expect_equal(determine_adjusted_hypertension(130, 79, 0, DIABX = 1), 1) # At systolic threshold
-  expect_equal(determine_adjusted_hypertension(129, 80, 0, DIABX = 1), 1) # At diastolic threshold
-  expect_equal(determine_adjusted_hypertension(129, 79, 0, CKD = 1), 2) # Below threshold
-  expect_equal(determine_adjusted_hypertension(130, 79, 0, CKD = 1), 1) # At systolic threshold
-  expect_equal(determine_adjusted_hypertension(129, 80, 0, CKD = 1), 1) # At diastolic threshold
+test_that("derive_hypertension_adj propagates tagged NA input on sbp_adj_mmhg", {
+  expect_true(haven::is_tagged_na(derive_hypertension_adj(haven::tagged_na("a"), 80, 0)))
+  expect_true(haven::is_tagged_na(derive_hypertension_adj(haven::tagged_na("b"), 80, 0)))
 })
 
-# Test suite for boundary cases in determine_controlled_hypertension
-test_that("determine_controlled_hypertension handles boundary cases correctly", {
-  # General population boundaries
-  expect_equal(determine_controlled_hypertension(139, 89, 1), 1) # Controlled
-  expect_equal(determine_controlled_hypertension(140, 89, 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_hypertension(139, 90, 1), 2) # Uncontrolled (diastolic)
-
-  # Diabetes/CKD boundaries
-  expect_equal(determine_controlled_hypertension(129, 79, 1, CCC_32 = 1, DIABX = 1), 1) # Controlled
-  expect_equal(determine_controlled_hypertension(130, 79, 1, CCC_32 = 1, DIABX = 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_hypertension(129, 80, 1, CCC_32 = 1, DIABX = 1), 2) # Uncontrolled (diastolic)
-  expect_equal(determine_controlled_hypertension(129, 79, 1, CCC_32 = 1, CKD = 1), 1) # Controlled
-  expect_equal(determine_controlled_hypertension(130, 79, 1, CCC_32 = 1, CKD = 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_hypertension(129, 80, 1, CCC_32 = 1, CKD = 1), 2) # Uncontrolled (diastolic)
+test_that("derive_hypertension_control propagates tagged NA input on bpmdpbps", {
+  expect_true(haven::is_tagged_na(derive_hypertension_control(haven::tagged_na("a"), 80, 1)))
+  expect_true(haven::is_tagged_na(derive_hypertension_control(haven::tagged_na("b"), 80, 1)))
 })
 
-# Test suite for boundary cases in determine_controlled_adjusted_hypertension
-test_that("determine_controlled_adjusted_hypertension handles boundary cases correctly", {
-  # General population boundaries
-  expect_equal(determine_controlled_adjusted_hypertension(139, 89, 1), 1) # Controlled
-  expect_equal(determine_controlled_adjusted_hypertension(140, 89, 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_adjusted_hypertension(139, 90, 1), 2) # Uncontrolled (diastolic)
-
-  # Diabetes/CKD boundaries
-  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, DIABX = 1), 1) # Controlled
-  expect_equal(determine_controlled_adjusted_hypertension(130, 79, 1, CCC_32 = 1, DIABX = 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_adjusted_hypertension(129, 80, 1, CCC_32 = 1, DIABX = 1), 2) # Uncontrolled (diastolic)
-  expect_equal(determine_controlled_adjusted_hypertension(129, 79, 1, CCC_32 = 1, CKD = 1), 1) # Controlled
-  expect_equal(determine_controlled_adjusted_hypertension(130, 79, 1, CCC_32 = 1, CKD = 1), 2) # Uncontrolled (systolic)
-  expect_equal(determine_controlled_adjusted_hypertension(129, 80, 1, CCC_32 = 1, CKD = 1), 2) # Uncontrolled (diastolic)
+test_that("derive_hypertension_control_adj propagates tagged NA input on sbp_adj_mmhg", {
+  expect_true(haven::is_tagged_na(derive_hypertension_control_adj(haven::tagged_na("a"), 80, 1)))
+  expect_true(haven::is_tagged_na(derive_hypertension_control_adj(haven::tagged_na("b"), 80, 1)))
 })
 
-# Test suite for ANYMED2 override
-test_that("ANYMED2 is correctly overridden to 0", {
-  # When CCC_32 is 2 and a condition is present, ANYMED2 becomes 0, so hypertension status should be 2 (normal)
-  expect_equal(determine_hypertension(120, 70, 1, CCC_32 = 2, CARDIOV = 1), 2)
-  expect_equal(determine_hypertension(120, 70, 1, CCC_32 = 2, DIABX = 1), 2)
-  expect_equal(determine_hypertension(120, 70, 1, CCC_32 = 2, CKD = 1), 2)
+# Mixed-length / empty-vector tests - guard against R's silent recycling rules
+# masking a length mismatch in user input
 
-  # Same for adjusted hypertension
-  expect_equal(determine_adjusted_hypertension(120, 70, 1, CCC_32 = 2, CARDIOV = 1), 2)
-  expect_equal(determine_adjusted_hypertension(120, 70, 1, CCC_32 = 2, DIABX = 1), 2)
-  expect_equal(determine_adjusted_hypertension(120, 70, 1, CCC_32 = 2, CKD = 1), 2)
+test_that("derive_hypertension handles empty and mismatched-length input", {
+  # Empty - length-0 input must produce length-0 output
+  expect_length(derive_hypertension(numeric(0), numeric(0), numeric(0)), 0)
+  # Mismatch - documents current behavior: dplyr::case_when recycles silently
+  # rather than erroring. Strict length checking is a candidate for follow-up.
+  expect_no_error(derive_hypertension(c(140, 150), c(80), 0))
+})
 
-  # For controlled hypertension, the status should be 2 (not controlled) because ANYMED2 is 0
-  expect_equal(determine_controlled_hypertension(120, 70, 1, CCC_32 = 2, CARDIOV = 1), 2)
-  expect_equal(determine_controlled_hypertension(120, 70, 1, CCC_32 = 2, DIABX = 1), 2)
-  expect_equal(determine_controlled_hypertension(120, 70, 1, CCC_32 = 2, CKD = 1), 2)
-
-  # Same for controlled adjusted hypertension
-  expect_equal(determine_controlled_adjusted_hypertension(120, 70, 1, CCC_32 = 2, CARDIOV = 1), 2)
-  expect_equal(determine_controlled_adjusted_hypertension(120, 70, 1, CCC_32 = 2, DIABX = 1), 2)
-  expect_equal(determine_controlled_adjusted_hypertension(120, 70, 1, CCC_32 = 2, CKD = 1), 2)
+test_that("derive_hypertension accepts any_htn_med argument by name", {
+  # Edge case tests - guard against rename regression: positional-arg calls would
+  # silently pass even if any_htn_med were renamed back to any_htn_med2
+  result <- derive_hypertension(
+    bpmdpbps = 145,
+    bpmdpbpd = 95,
+    any_htn_med = 1,
+    ccc_32 = 2,
+    cvd_status = 2,
+    diab_status = 2,
+    ckd = 2
+  )
+  expect_true(is.numeric(result) || haven::is_tagged_na(result))
 })

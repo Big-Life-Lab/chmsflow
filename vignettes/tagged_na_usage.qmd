@@ -1,8 +1,8 @@
 ---
-title: "missing data (tagged_na)"
+title: "Missing data (tagged_na)"
 format: html
 vignette: >
-  %\VignetteIndexEntry{missing data (tagged_na)}
+  %\VignetteIndexEntry{Missing data (tagged_na)}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -79,7 +79,7 @@ variables and how to add them.
 When creating derived variables from CHMS variables, it is important to
 distinguish the different NA values. Certain derived variables include the use
 of variables that may not be applicable to respondents. For example,
-[smoking pack-years](https://big-life-lab.github.io/chmsflow/reference/pack_years_fun.html)
+[smoking pack-years](../reference/calculate_pack_years.html)
 involves the use of smoking variables that may not be applicable to all CHMS
 respondents (i.e. non-smokers who have never smoked). In this scenario,
 respondents who had values of `NA(a)` for the various base smoking variables
@@ -89,7 +89,7 @@ identified as having smoked at one point in their lives, but had values of
 pack-years as pack-years cannot be calculated due to missing values.
 
 On the other hand, there are certain derived variables that use variables that
-are applicable to all respondents. For example, [WHR](https://big-life-lab.github.io/chmsflow/reference/calculate_WHR.html) uses CHMS
+are applicable to all respondents. For example, [WHR](../reference/calculate_waist_height_ratio.html) uses CHMS
 height and waist circumference variables which are asked to all CHMS respondents. In this
 scenario, all NA variables would be tagged as `NA(b)` as these variables are
 applicable to everyone, and respondents with NA values would be classified as
@@ -98,3 +98,9 @@ missing.
 When creating deriving variables, it is important to examine the base CHMS
 variables to check for the presence of `NA(a)` and `NA(b)`. This can be done
 by reviewing CHMS documentation.
+
+## Next steps
+
+- **See tagged NAs in practice** -- The [Analysis walkthrough](analysis_walkthrough.html) shows how tagged NAs appear in hypertension derivation results.
+- **Understand derived variables** -- Learn how `Func::` and `DerivedVar::` entries work in [Derived variables](derived_variables.html).
+- **Inspect the recoding rules** -- See how missing data codes are mapped in [Variable schema reference](variables_and_variable_details.html).

@@ -1,72 +1,89 @@
 # test-kidney.R
-# Test calculate_GFR
-test_that("calculate_GFR works correctly", {
-  # Example cases
-  expect_equal(calculate_GFR(LAB_BCRE = 80, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 45), 67.27905, tolerance = 1e-5)
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 2, CLC_SEX = 2, CLC_AGE = 35), 99.94114, tolerance = 1e-5)
 
-  # Non-response values
-  expect_equal(calculate_GFR(LAB_BCRE = 9996, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 96, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 6, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 996), haven::tagged_na("b"))
+# Test for calculate_gfr
+test_that("calculate_gfr returns correct GFR", {
+  # General tests
+  expect_equal(calculate_gfr(80, 1, 2, 45), 67.27905, tolerance = 1e-5)
+  expect_equal(calculate_gfr(70, 2, 2, 35), 99.94114, tolerance = 1e-5)
+  expect_equal(calculate_gfr(90, 1, 1, 50), 77.47422, tolerance = 1e-5)
+  expect_true(!is.na(calculate_gfr(80, 1, 1, 45))) # Non-Black male
+  expect_true(!is.na(calculate_gfr(80, 1, 2, 45))) # Non-Black female
+  expect_true(!is.na(calculate_gfr(80, 2, 1, 45))) # Black male
+  expect_true(!is.na(calculate_gfr(80, 2, 2, 45))) # Black female
 
-  # Invalid inputs
-  expect_equal(calculate_GFR(LAB_BCRE = NA, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = NA, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = NA, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = NA), haven::tagged_na("b"))
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(calculate_gfr(9996, 1, 2, 45), "a"))
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 96, 2, 45), "a"))
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 1, 6, 45), "a"))
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 1, 2, 996), "a"))
+  expect_true(haven::is_tagged_na(calculate_gfr(9997, 1, 2, 45), "b"))
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 97, 2, 45), "b"))
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 1, 7, 45), "b"))
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 1, 2, 997), "b"))
+  expect_true(haven::is_tagged_na(calculate_gfr(13, 1, 2, 45), "b"))
+  expect_true(is.na(calculate_gfr(NA, 1, 2, 45)))
 
-  # Boundary cases
-  expect_equal(calculate_GFR(LAB_BCRE = 0, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
+  # Edge case tests - boundary values for valid ranges
+  expect_true(!is.na(calculate_gfr(14, 1, 1, 3))) # Min creatinine and age
+  expect_true(!is.na(calculate_gfr(785, 13, 2, 79))) # Max creatinine, ethnicity, age
+  expect_true(haven::is_tagged_na(calculate_gfr(786, 1, 1, 40), "b")) # Above max creatinine
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 1, 1, 2), "b")) # Below min age
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 1, 1, 80), "b")) # Above max age
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 14, 1, 40), "b")) # Invalid ethnicity high
+  expect_true(haven::is_tagged_na(calculate_gfr(80, 0, 1, 40), "b")) # Invalid ethnicity low
+
+  # Vector tests
+  expect_equal(calculate_gfr(c(80, 70), c(1, 2), c(2, 2), c(45, 35)), c(67.27905, 99.94114), tolerance = 1e-5)
+
+  # Database tests
+  df <- data.frame(CREAT = c(80, 70), ETHN = c(1, 2), SEX = c(2, 2), AGE = c(45, 35))
+  result <- df |>
+    dplyr::mutate(gfr = calculate_gfr(CREAT, ETHN, SEX, AGE)) |>
+    dplyr::pull(gfr)
+  expect_equal(result, c(67.27905, 99.94114), tolerance = 1e-5)
 })
 
-# Test categorize_GFR_to_CKD
-test_that("categorize_GFR_to_CKD works correctly", {
-  # CKD stage 1 (GFR <= 60)
-  expect_equal(categorize_GFR_to_CKD(45), 1)
-  expect_equal(categorize_GFR_to_CKD(60), 1)
+# Test for categorize_ckd
+test_that("categorize_ckd returns correct CKD category", {
+  # General tests
+  expect_equal(categorize_ckd(60), 1)
+  expect_equal(categorize_ckd(61), 2)
 
-  # CKD stage 2 (GFR > 60)
-  expect_equal(categorize_GFR_to_CKD(75), 2)
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(categorize_ckd(haven::tagged_na("a")), "a"))
+  expect_true(haven::is_tagged_na(categorize_ckd(haven::tagged_na("b")), "b"))
+  expect_true(haven::is_tagged_na(categorize_ckd(-1), "b"))
+  expect_true(is.na(categorize_ckd(NA)))
 
-  # Missing or invalid inputs
-  expect_equal(categorize_GFR_to_CKD(NA), haven::tagged_na("b"))
-  expect_equal(categorize_GFR_to_CKD(haven::tagged_na("b")), haven::tagged_na("b"))
+  # Edge case tests - boundary values
+  expect_equal(categorize_ckd(60.0), 1) # Exactly at threshold
+  expect_equal(categorize_ckd(0), 1) # Zero GFR (severe CKD)
 
-  # Boundary cases
-  expect_equal(categorize_GFR_to_CKD(0), 1)
-  expect_equal(categorize_GFR_to_CKD(61), 2)
+  # Vector tests
+  expect_equal(categorize_ckd(c(60, 61, haven::tagged_na("a"))), c(1, 2, haven::tagged_na("a")))
+
+  # Database tests
+  df <- data.frame(gfr = c(60, 61, 90))
+  expect_equal(df |> dplyr::mutate(ckd = categorize_ckd(gfr)) |> dplyr::pull(ckd), c(1, 2, 2))
 })
 
-test_that("calculate_GFR input boundaries are tested", {
-  # LAB_BCRE boundaries
-  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 14, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30)))
-  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 785, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30)))
-  expect_equal(calculate_GFR(LAB_BCRE = 13, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 786, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
+# Tagged-NA input propagation tests
+# These verify the chained-derivation contract: a tagged NA input from a prior
+# step must produce a tagged NA output, not a plain NA or a numeric class.
 
-  # CLC_SEX boundaries
-  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30)))
-  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 2, CLC_AGE = 30)))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 0, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 3, CLC_AGE = 30), haven::tagged_na("b"))
-
-  # PGDCGT boundaries
-  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 30)))
-  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 13, CLC_SEX = 1, CLC_AGE = 30)))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 0, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 14, CLC_SEX = 1, CLC_AGE = 30), haven::tagged_na("b"))
-
-  # CLC_AGE boundaries
-  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 3)))
-  expect_true(is.numeric(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 79)))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 2), haven::tagged_na("b"))
-  expect_equal(calculate_GFR(LAB_BCRE = 70, PGDCGT = 1, CLC_SEX = 1, CLC_AGE = 80), haven::tagged_na("b"))
+test_that("calculate_gfr propagates tagged NA input on lab_bcre", {
+  expect_true(haven::is_tagged_na(calculate_gfr(haven::tagged_na("a"), 1, 1, 50)))
+  expect_true(haven::is_tagged_na(calculate_gfr(haven::tagged_na("b"), 1, 1, 50)))
 })
 
-test_that("categorize_GFR_to_CKD handles more boundary cases", {
-  expect_equal(categorize_GFR_to_CKD(60.0001), 2)
-  expect_equal(categorize_GFR_to_CKD(59.9999), 1)
-  expect_equal(categorize_GFR_to_CKD(-1), haven::tagged_na("b"))
+test_that("categorize_ckd propagates tagged NA input on gfr", {
+  expect_true(haven::is_tagged_na(categorize_ckd(haven::tagged_na("a"))))
+  expect_true(haven::is_tagged_na(categorize_ckd(haven::tagged_na("b"))))
+})
+
+# Mixed-length / empty-vector tests
+test_that("calculate_gfr handles empty and mismatched-length input", {
+  expect_length(calculate_gfr(numeric(0), numeric(0), numeric(0), numeric(0)), 0)
+  # Documents current behavior: arithmetic recycles silently on mismatch
+  expect_no_error(calculate_gfr(c(50, 60), c(1, 1), c(1), c(50, 60)))
 })

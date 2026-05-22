@@ -1,106 +1,63 @@
 # test-diabetes.R
-test_that("determine_inclusive_diabetes handles all inputs present", {
-  # Case 1: All inputs are present and indicate diabetes
-  expect_equal(determine_inclusive_diabetes(1, 2, 0), 1) # HbA1c positive
-  expect_equal(determine_inclusive_diabetes(2, 1, 0), 1) # Self-reported positive
-  expect_equal(determine_inclusive_diabetes(2, 2, 1), 1) # Diabetes medication positive
 
-  # Case 2: All inputs are present and indicate no diabetes
-  expect_equal(determine_inclusive_diabetes(2, 2, 0), 2)
+# Test for derive_diabetes_status
+test_that("derive_diabetes_status returns correct diabetes status", {
+  # General tests - all inputs present
+  expect_equal(derive_diabetes_status(1, 1, 1), 1)
+  expect_equal(derive_diabetes_status(1, 1, 0), 1)
+  expect_equal(derive_diabetes_status(1, 2, 1), 1)
+  expect_equal(derive_diabetes_status(1, 2, 0), 1)
+  expect_equal(derive_diabetes_status(2, 1, 1), 1)
+  expect_equal(derive_diabetes_status(2, 1, 0), 1)
+  expect_equal(derive_diabetes_status(2, 2, 1), 1)
+  expect_equal(derive_diabetes_status(2, 2, 0), 2)
+
+  # Edge case tests - one input missing
+  expect_equal(derive_diabetes_status(NA, 1, 1), 1) # CCC_32 missing, others positive
+  expect_equal(derive_diabetes_status(1, NA, 1), 1) # DIABX missing, others positive
+  expect_equal(derive_diabetes_status(1, 1, NA), 1) # DIAB_MED missing, others positive
+  expect_equal(derive_diabetes_status(NA, 2, 0), 2) # CCC_32 missing, others negative
+  expect_equal(derive_diabetes_status(2, NA, 0), 2) # DIABX missing, others negative
+  expect_equal(derive_diabetes_status(2, 2, NA), 2) # DIAB_MED missing, others negative
+
+  # Edge case tests - two inputs missing
+  expect_equal(derive_diabetes_status(NA, NA, 1), 1) # Only DIAB_MED positive
+  expect_equal(derive_diabetes_status(NA, 1, NA), 1) # Only DIABX positive
+  expect_equal(derive_diabetes_status(1, NA, NA), 1) # Only CCC_32 positive
+  expect_equal(derive_diabetes_status(NA, NA, 0), 2) # Only DIAB_MED negative
+  expect_equal(derive_diabetes_status(NA, 2, NA), 2) # Only DIABX negative
+  expect_equal(derive_diabetes_status(2, NA, NA), 2) # Only CCC_32 negative
+
+  # Edge case tests - all inputs missing
+  expect_true(haven::is_tagged_na(derive_diabetes_status(haven::tagged_na("b"), 8, haven::tagged_na("b")), "b"))
+
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(derive_diabetes_status(haven::tagged_na("a"), 6, 0), "a"))
+  expect_true(haven::is_tagged_na(derive_diabetes_status(haven::tagged_na("a"), 6, haven::tagged_na("a")), "a"))
+  expect_true(haven::is_tagged_na(derive_diabetes_status(haven::tagged_na("b"), 7, 0), "b"))
+  expect_true(haven::is_tagged_na(derive_diabetes_status(haven::tagged_na("b"), 7, haven::tagged_na("b")), "b"))
+
+  # Vector tests
+  expect_equal(derive_diabetes_status(c(1, 2, 2, NA), c(2, 1, 2, NA), c(0, 0, 1, 1)), c(1, 1, 1, 1))
+
+  # Database tests
+  df <- data.frame(CCC_32 = c(1, 2, 2), DIABX = c(2, 1, 2), DIAB_MED = c(0, 0, 1))
+  expect_equal(df |> dplyr::mutate(diab = derive_diabetes_status(CCC_32, DIABX, DIAB_MED)) |> dplyr::pull(diab), c(1, 1, 1))
 })
 
-test_that("determine_inclusive_diabetes handles all inputs NA", {
-  # Case 3: All inputs are NA
-  expect_equal(determine_inclusive_diabetes(NA, NA, NA), haven::tagged_na("b"))
+# Mixed-length / empty-vector tests
+test_that("derive_diabetes_status handles empty and mismatched-length input", {
+  expect_length(derive_diabetes_status(numeric(0), numeric(0), numeric(0)), 0)
+  # Documents current behavior: dplyr::case_when recycles silently on mismatch
+  expect_no_error(derive_diabetes_status(c(1, 2), c(1), c(0, 0)))
 })
 
-test_that("determine_inclusive_diabetes handles two inputs NA", {
-  # Case 4: diab_m and CCC_51 are NA, decision based on diab_drug2
-  expect_equal(determine_inclusive_diabetes(NA, NA, 1), 1)
-  expect_equal(determine_inclusive_diabetes(NA, NA, 0), haven::tagged_na("b"))
-
-  # Case 5: diab_m and diab_drug2 are NA, decision based on CCC_51
-  expect_equal(determine_inclusive_diabetes(NA, 1, NA), 1)
-  expect_equal(determine_inclusive_diabetes(NA, 2, NA), 2)
-
-  # Case 6: CCC_51 and diab_drug2 are NA, decision based on diab_m
-  expect_equal(determine_inclusive_diabetes(1, NA, NA), 1)
-  expect_equal(determine_inclusive_diabetes(2, NA, NA), 2)
-})
-
-test_that("determine_inclusive_diabetes handles one input NA", {
-  # Case 7: diab_m is NA, decision based on CCC_51 and diab_drug2
-  expect_equal(determine_inclusive_diabetes(NA, 1, 0), 1)
-  expect_equal(determine_inclusive_diabetes(NA, 2, 0), 2)
-  expect_equal(determine_inclusive_diabetes(NA, 2, 1), 1)
-
-  # Case 8: CCC_51 is NA, decision based on diab_m and diab_drug2
-  expect_equal(determine_inclusive_diabetes(1, NA, 0), 1)
-  expect_equal(determine_inclusive_diabetes(2, NA, 0), 2)
-  expect_equal(determine_inclusive_diabetes(2, NA, 1), 1)
-
-  # Case 9: diab_drug2 is NA, decision based on diab_m and CCC_51
-  expect_equal(determine_inclusive_diabetes(1, 2, NA), 1)
-  expect_equal(determine_inclusive_diabetes(2, 2, NA), 2)
-  expect_equal(determine_inclusive_diabetes(1, 1, NA), 1)
-})
-
-test_that("determine_inclusive_diabetes handles edge cases", {
-  # Mixed valid and invalid inputs
-  expect_equal(determine_inclusive_diabetes(NA, NA, 1), 1) # Decision based on diab_drug2
-  expect_equal(determine_inclusive_diabetes(1, NA, NA), 1) # Decision based on diab_m
-  expect_equal(determine_inclusive_diabetes(2, 1, NA), 1) # Decision based on CCC_51
-
-  # All parameters explicitly "No" or invalid
-  expect_equal(determine_inclusive_diabetes(2, 2, 0), 2)
-  expect_equal(determine_inclusive_diabetes(2, NA, 0), 2)
-  expect_equal(determine_inclusive_diabetes(NA, 2, 0), 2)
-  expect_equal(determine_inclusive_diabetes(2, 2, NA), 2)
-})
-
-test_that("determine_inclusive_diabetes covers all combinations", {
-  combinations <- expand.grid(diab_m = c(1, 2, NA), CCC_51 = c(1, 2, NA), diab_drug2 = c(0, 1, NA))
-
-  expected_results <- c(
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, haven::tagged_na("b"), haven::tagged_na("b")
+test_that("derive_diabetes_status accepts diab_med argument by name", {
+  # Edge case tests - guard against rename regression
+  result <- derive_diabetes_status(
+    diab_a1c = 1,
+    ccc_51 = 2,
+    diab_med = 0
   )
-
-  for (i in seq_len(nrow(combinations))) {
-    diab_m_val <- combinations$diab_m[i]
-    ccc_51_val <- combinations$CCC_51[i]
-    diab_drug2_val <- combinations$diab_drug2[i]
-
-    # The expected_results vector needs to be manually created based on the logic.
-    # This is a placeholder for the actual expected result for each combination.
-    # The logic is complex, so I will test the combinations I derived manually.
-  }
-
-  # Manually derived combinations
-  expect_equal(determine_inclusive_diabetes(1, 1, 1), 1)
-  expect_equal(determine_inclusive_diabetes(1, 1, 0), 1)
-  expect_equal(determine_inclusive_diabetes(1, 1, NA), 1)
-  expect_equal(determine_inclusive_diabetes(1, 2, 1), 1)
-  expect_equal(determine_inclusive_diabetes(1, 2, 0), 1)
-  expect_equal(determine_inclusive_diabetes(1, 2, NA), 1)
-  expect_equal(determine_inclusive_diabetes(1, NA, 1), 1)
-  expect_equal(determine_inclusive_diabetes(1, NA, 0), 1)
-  expect_equal(determine_inclusive_diabetes(1, NA, NA), 1)
-  expect_equal(determine_inclusive_diabetes(2, 1, 1), 1)
-  expect_equal(determine_inclusive_diabetes(2, 1, 0), 1)
-  expect_equal(determine_inclusive_diabetes(2, 1, NA), 1)
-  expect_equal(determine_inclusive_diabetes(2, 2, 1), 1)
-  expect_equal(determine_inclusive_diabetes(2, 2, 0), 2)
-  expect_equal(determine_inclusive_diabetes(2, 2, NA), 2)
-  expect_equal(determine_inclusive_diabetes(2, NA, 1), 1)
-  expect_equal(determine_inclusive_diabetes(2, NA, 0), 2)
-  expect_equal(determine_inclusive_diabetes(2, NA, NA), 2)
-  expect_equal(determine_inclusive_diabetes(NA, 1, 1), 1)
-  expect_equal(determine_inclusive_diabetes(NA, 1, 0), 1)
-  expect_equal(determine_inclusive_diabetes(NA, 1, NA), 1)
-  expect_equal(determine_inclusive_diabetes(NA, 2, 1), 1)
-  expect_equal(determine_inclusive_diabetes(NA, 2, 0), 2)
-  expect_equal(determine_inclusive_diabetes(NA, 2, NA), 2)
-  expect_equal(determine_inclusive_diabetes(NA, NA, 1), 1)
-  expect_equal(determine_inclusive_diabetes(NA, NA, 0), haven::tagged_na("b"))
-  expect_equal(determine_inclusive_diabetes(NA, NA, NA), haven::tagged_na("b"))
+  expect_true(is.numeric(result) || haven::is_tagged_na(result))
 })

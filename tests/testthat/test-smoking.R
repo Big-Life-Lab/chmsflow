@@ -1,81 +1,73 @@
 # test-smoking.R
-test_that("SMKDSTY = 1: Daily smoker", {
-  # Should equal 0.05
-  expect_equal(pack_years_fun(SMKDSTY = 1, CLC_AGE = 21, SMK_52 = 20, SMK_31 = 1), 0.05)
-})
 
-test_that("SMKDSTY = 2: Occasional smoker (former daily)", {
-  # daily 1 pack/day for 10 years, then occasional 5 cigs/day, 4 days/month for 5 years
-  result <- pack_years_fun(
-    SMKDSTY = 2, CLC_AGE = 50, SMK_52 = 30, SMK_54 = 45, SMK_53 = 20,
-    SMK_41 = 5, SMK_42 = 4, SMK_21 = NA, SMK_11 = 1
-  )
+# Test for calculate_pack_years
+test_that("calculate_pack_years returns correct pack years", {
+  # General tests - Daily smoker
+  expect_equal(calculate_pack_years(1, 40, NA, 20, 20, NA, NA, NA, NA, NA), 20)
 
-  expected <- 15.25
-  expect_equal(result, expected)
-})
+  # General tests - Occasional smoker (former daily)
+  expect_equal(calculate_pack_years(2, 50, 45, 30, NA, 5, 20, 4, NA, 1), 15.25)
 
-test_that("SMKDSTY = 3: Occasional smoker (never daily)", {
-  result <- pack_years_fun(
-    SMKDSTY = 3, CLC_AGE = 40, SMK_41 = 10, SMK_42 = 6, SMK_21 = 30,
-    SMK_52 = NA, SMK_53 = NA, SMK_31 = NA, SMK_54 = NA, SMK_11 = NA
-  )
-  expected <- (pmax((10 * 6 / 30), 1) / 20) * (40 - 30)
-  expect_equal(result, expected)
-})
+  # General tests - Occasional smoker (never daily)
+  expect_equal(calculate_pack_years(3, 40, NA, NA, NA, 10, NA, 6, 30, NA), 1)
 
-test_that("SMKDSTY = 4: Former daily smoker", {
-  result <- pack_years_fun(
-    SMKDSTY = 4, CLC_AGE = 60, SMK_52 = 20, SMK_54 = 50, SMK_53 = 30,
-    SMK_31 = NA, SMK_41 = NA, SMK_42 = NA, SMK_21 = NA, SMK_11 = NA
-  )
-  expected <- pmax(((50 - 20) * (30 / 20)), 0.0137)
-  expect_equal(result, expected)
-})
+  # General tests - Former daily smoker
+  expect_equal(calculate_pack_years(4, 60, 50, 20, NA, NA, 30, NA, NA, NA), 45)
 
-test_that("SMKDSTY = 5: Former occasional smoker, smoked ≥100 cigarettes", {
+  # General tests - Former occasional smoker
+  expect_equal(calculate_pack_years(5, 50, NA, NA, NA, NA, NA, NA, NA, 1), 0.0137)
+  expect_equal(calculate_pack_years(5, 50, NA, NA, NA, NA, NA, NA, NA, 2), 0.007)
+
+  # General tests - Non-smoker
+  expect_equal(calculate_pack_years(6, 40, NA, NA, NA, NA, NA, NA, NA, 2), 0)
+
+  # Edge case tests - missing data codes
+  expect_true(haven::is_tagged_na(calculate_pack_years(96, 40, NA, 20, 20, NA, NA, NA, NA, NA), "a"))
+  expect_true(haven::is_tagged_na(calculate_pack_years(1, 96, NA, 20, 20, NA, NA, NA, NA, NA), "a"))
+  expect_true(haven::is_tagged_na(calculate_pack_years(97, 40, NA, 20, 20, NA, NA, NA, NA, NA), "b"))
+  expect_true(haven::is_tagged_na(calculate_pack_years(1, 97, NA, 20, 20, NA, NA, NA, NA, NA), "b"))
+
+  # Vector tests
   expect_equal(
-    pack_years_fun(
-      SMKDSTY = 5, CLC_AGE = 50, SMK_11 = 1,
-      SMK_54 = NA, SMK_52 = NA, SMK_31 = NA,
-      SMK_41 = NA, SMK_42 = NA, SMK_21 = NA, SMK_53 = NA
+    calculate_pack_years(
+      smkdsty = c(1, 2, 3, 4, 5, 5, 6),
+      clc_age = c(40, 50, 40, 60, 50, 50, 40),
+      smk_54 = c(NA, 45, NA, 50, NA, NA, NA),
+      smk_52 = c(20, 30, NA, 20, NA, NA, NA),
+      smk_31 = c(20, NA, NA, NA, NA, NA, NA),
+      smk_41 = c(NA, 5, 10, NA, NA, NA, NA),
+      smk_53 = c(NA, 20, NA, 30, NA, NA, NA),
+      smk_42 = c(NA, 4, 6, NA, NA, NA, NA),
+      smk_21 = c(NA, NA, 30, NA, NA, NA, NA),
+      smk_11 = c(NA, 1, NA, NA, 1, 2, 2)
     ),
-    0.0137
+    c(20, 15.25, 1, 45, 0.0137, 0.007, 0)
+  )
+
+  # Database tests
+  df <- data.frame(
+    SMKDSTY = c(1, 6),
+    CLC_AGE = c(40, 40),
+    SMK_54 = c(NA, NA),
+    SMK_52 = c(20, NA),
+    SMK_31 = c(20, NA),
+    SMK_41 = c(NA, NA),
+    SMK_53 = c(NA, NA),
+    SMK_42 = c(NA, NA),
+    SMK_21 = c(NA, NA),
+    SMK_11 = c(NA, 2)
+  )
+  expect_equal(
+    df |> dplyr::mutate(py = calculate_pack_years(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11)) |> dplyr::pull(py),
+    c(20, 0)
   )
 })
 
-test_that("SMKDSTY = 5: Former occasional smoker, smoked <100 cigarettes", {
-  expect_equal(
-    pack_years_fun(
-      SMKDSTY = 5, CLC_AGE = 50, SMK_11 = 2,
-      SMK_54 = NA, SMK_52 = NA, SMK_31 = NA,
-      SMK_41 = NA, SMK_42 = NA, SMK_21 = NA, SMK_53 = NA
-    ),
-    0.007
-  )
-})
-
-test_that("SMKDSTY = 6: Non-smoker", {
-  expect_equal(
-    pack_years_fun(
-      SMKDSTY = 6, CLC_AGE = 40, SMK_11 = 2,
-      SMK_54 = NA, SMK_52 = NA, SMK_31 = NA,
-      SMK_41 = NA, SMK_42 = NA, SMK_21 = NA, SMK_53 = NA
-    ),
+# Mixed-length / empty-vector tests
+test_that("calculate_pack_years handles empty input", {
+  empty <- numeric(0)
+  expect_length(
+    calculate_pack_years(empty, empty, empty, empty, empty, empty, empty, empty, empty, empty),
     0
   )
-})
-
-
-test_that("Returns tagged NA when CLC_AGE is NA or invalid", {
-  expect_equal(pack_years_fun(SMKDSTY = 1, CLC_AGE = NA, SMK_52 = 20, SMK_31 = 20), haven::tagged_na("b"))
-  expect_equal(pack_years_fun(SMKDSTY = 1, CLC_AGE = -5, SMK_52 = 20, SMK_31 = 20), haven::tagged_na("b"))
-})
-
-test_that("pack_years_fun handles NA inputs for smoking variables", {
-  # Daily smoker with NA for SMK_52
-  expect_true(is.na(pack_years_fun(SMKDSTY = 1, CLC_AGE = 40, SMK_52 = NA, SMK_31 = 10, SMK_54 = NA, SMK_41 = NA, SMK_53 = NA, SMK_42 = NA, SMK_21 = NA, SMK_11 = NA)))
-
-  # Occasional smoker (former daily) with NA for SMK_54
-  expect_true(is.na(pack_years_fun(SMKDSTY = 2, CLC_AGE = 50, SMK_52 = 30, SMK_54 = NA, SMK_53 = 20, SMK_41 = 5, SMK_42 = 4, SMK_21 = NA, SMK_11 = 1)))
 })

@@ -2,110 +2,104 @@
 #'
 #' @description This function calculates an individual's smoking pack-years based on various CHMS smoking variables. Pack years is a measure used by researchers to quantify lifetime exposure to cigarette use.
 #'
-#' @param SMKDSTY An integer representing the smoking status of the respondent:
-#'   - 1: Daily smoker
-#'   - 2: Occasional smoker (former daily)
-#'   - 3: Occasional smoker (never daily)
-#'   - 4: Former daily smoker (non-smoker now)
-#'   - 5: Former occasional smoker (non-smoker now) who smoked at least 100 cigarettes in their lifetime
-#'   - 6: Non-smoker (never smoked more than 100 cigarettes)
-#' @param CLC_AGE A numeric value representing the respondent's age.
-#' @param SMK_54 A numeric value representing the respondent's age when they stopped smoking daily.
-#' @param SMK_52 A numeric value representing the respondent's age when they first started smoking daily.
-#' @param SMK_31 An numeric representing the number of cigarettes smoked per day for daily smokers.
-#' @param SMK_41 A numeric value representing the number of cigarettes smoked per day for occasional smokers.
-#' @param SMK_53 A numeric value representing the number of cigarettes smoked per day for former daily smokers.
-#' @param SMK_42 A numeric value representing the number of days in past month the respondent smoked at least 1 cigarette (for occasional smokers).
-#' @param SMK_21 A numeric value representing the respondent's age when they first started smoking occasionally.
-#' @param SMK_11 An integer representing whether the respondent has smoked at least 100 cigarettes in their lifetime:
-#'   - 1: Yes
-#'   - 2: No
+#' @param smkdsty [integer] An integer representing the smoking status of the respondent.
+#' @param clc_age [numeric] A numeric representing the respondent's age.
+#' @param smk_54 [numeric] A numeric representing the respondent's age when they stopped smoking daily.
+#' @param smk_52 [numeric] A numeric representing the respondent's age when they first started smoking daily.
+#' @param smk_31 [integer] An integer representing the number of cigarettes smoked per day for daily smokers.
+#' @param smk_41 [numeric] A numeric representing the number of cigarettes smoked per day for occasional smokers.
+#' @param smk_53 [numeric] A numeric representing the number of cigarettes smoked per day for former daily smokers.
+#' @param smk_42 [numeric] A numeric representing the number of days in past month the respondent smoked at least 1 cigarette (for occasional smokers).
+#' @param smk_21 [numeric] A numeric representing the respondent's age when they first started smoking occasionally.
+#' @param smk_11 [integer] An integer representing whether the respondent has smoked at least 100 cigarettes in their lifetime.
 #'
-#' @return A numeric value representing the pack years for the respondent's smoking history.
-#'   - If `CLC_AGE` is missing or negative, returns `tagged_na("b")`.
-#'   - For different smoking statuses (`SMKDSTY`), the function calculates pack years as follows:
-#'       - **Daily smoker (1):** \code{pmax(((CLC_AGE - SMK_52) * (SMK_31 / 20)), 0.0137)}
-#'       - **Occasional smoker (former daily) (2):**
-#'         \code{pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137) + ((pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_54))}
-#'       - **Occasional smoker (never daily) (3):**
-#'         \code{(pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_21)}
-#'       - **Former daily smoker (4):**
-#'         \code{pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137)}
-#'       - **Former occasional smoker (5)**:
-#'           - If `SMK_11 == 1` (≥100 cigarettes): \code{0.0137}
-#'           - If `SMK_11 == 2` (<100 cigarettes): \code{0.007}
-#'       - **Non-smoker (6):** \code{0}
-#'       - If `SMKDSTY` is `NA(a)`, returns \code{tagged_na("a")}.
-#'       - For all other unexpected inputs, returns \code{tagged_na("b")}.
+#' @return [numeric] A numeric representing the pack years for the respondent's smoking history. If inputs are invalid or out of bounds, the function returns a tagged NA.
+#'
+#' @details Pack-years is a standardized measure of lifetime cigarette exposure used in epidemiological
+#'          research and clinical practice. The calculation varies by smoking pattern:
+#'
+#'          **Smoking Patterns:**
+#'          - Daily smokers: Consistent daily consumption over time period
+#'          - Occasional smokers: Variable consumption adjusted for frequency
+#'          - Former smokers: Historical consumption during smoking periods
+#'
+#'          **Minimum Values:**
+#'          The function applies minimum pack-year values (0.0137 or 0.007) to prevent
+#'          underestimation of health risks for light smokers.
+#'
+#'          **Missing Data Codes:**
+#'          - `smkdsty`: `96` (Not applicable), `97-99` (Missing)
+#'          - `clc_age`: `96` (Not applicable), `97-99` (Missing)
+#'          - Other variables: Handled within the formula logic.
 #'
 #' @examples
-#'
-#' # Example 1: Age = 40, daily smoker, started smoking at 20, and smokes 30 cigs/day (1.5 packs/day).
-#' pack_years_fun(SMKDSTY = 1, CLC_AGE = 40, SMK_52 = 20, SMK_31 = 30)
-#' # Output: 30 (pack years)
-#'
-#' # Example 2: A former occasional smoker who smoked at least 100 cigarettes in their lifetime.
-#' pack_years_fun(
-#'   SMKDSTY = 5, CLC_AGE = 50, SMK_54 = 40, SMK_52 = 18, SMK_31 = NA,
-#'   SMK_41 = 15, SMK_53 = NA, SMK_42 = 3, SMK_21 = 25, SMK_11 = 1
+#' # Scalar usage: Single respondent
+#' # A former occasional smoker who smoked at least 100 cigarettes in their lifetime.
+#' calculate_pack_years(
+#'   smkdsty = 5, clc_age = 50, smk_54 = 40, smk_52 = 18, smk_31 = NA,
+#'   smk_41 = 15, smk_53 = NA, smk_42 = 3, smk_21 = 25, smk_11 = 1
 #' )
-#' # Output: 0.0137 (pack years)
+#' # Output: 0.0137
 #'
+#' # Example: Respondent has non-response values for all inputs.
+#' result <- calculate_pack_years(
+#'   smkdsty = 98, clc_age = 998, smk_54 = 98, smk_52 = 98, smk_31 = 98,
+#'   smk_41 = 98, smk_53 = 98, smk_42 = 98, smk_21 = 98, smk_11 = 8
+#' )
+#' result # Shows: NA
+#' haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#' format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+#'
+#' # Multiple respondents
+#' calculate_pack_years(
+#'   smkdsty = c(1, 5, 6),
+#'   clc_age = c(40, 50, 60),
+#'   smk_52 = c(20, 18, NA),
+#'   smk_31 = c(30, NA, NA),
+#'   smk_54 = c(NA, 40, NA),
+#'   smk_41 = c(NA, 15, NA),
+#'   smk_53 = c(NA, NA, NA),
+#'   smk_42 = c(NA, 3, NA),
+#'   smk_21 = c(NA, 25, NA),
+#'   smk_11 = c(NA, 1, NA)
+#' )
+#' # Returns: c(30, 0.0137, 0)
+#'
+#' # Database usage: Applied to survey datasets
+#' # library(dplyr)
+#' # dataset |>
+#' #   mutate(pack_years = calculate_pack_years(smkdsty, clc_age, smk_54, smk_52,
+#' #     smk_31, smk_41, smk_53, smk_42, smk_21, smk_11))
+#'
+#' @seealso https://big-life-lab.github.io/cchsflow/reference/calculate_pack_years.html
 #' @export
-#'
-#' @seealso https://big-life-lab.github.io/cchsflow/reference/pack_years_fun.html
-pack_years_fun <- function(SMKDSTY, CLC_AGE, SMK_54, SMK_52, SMK_31, SMK_41, SMK_53, SMK_42, SMK_21, SMK_11) {
-  # Age verification
-  if (is.na(CLC_AGE)) {
-    return(haven::tagged_na("b"))
-  } else if (CLC_AGE < 0) {
-    return(haven::tagged_na("b"))
-  }
+calculate_pack_years <- function(smkdsty, clc_age, smk_54, smk_52, smk_31, smk_41, smk_53, smk_42, smk_21, smk_11) {
+  # Calculate pack years based on smoking status
+  pack_years <- dplyr::case_when(
+    # Age
+    # Valid skip
+    clc_age == 96 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    clc_age < 0 | clc_age %in% 97:99 ~ haven::tagged_na("b"),
 
-  # PackYears for Daily Smoker
-  pack_years <-
-    ifelse(
-      SMKDSTY == 1,
-      pmax(((CLC_AGE - SMK_52) * (SMK_31 / 20)), 0.0137),
-      # PackYears for Occasional Smoker (former daily)
-      ifelse(
-        SMKDSTY == 2,
-        pmax(((CLC_AGE - SMK_52 - (CLC_AGE - SMK_54)) * (SMK_53 / 20)), 0.0137) +
-          ((pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_54)),
-        # PackYears for Occasional Smoker (never daily)
-        ifelse(
-          SMKDSTY == 3,
-          (pmax((SMK_41 * SMK_42 / 30), 1) / 20) * (CLC_AGE - SMK_21),
-          # PackYears for former daily smoker (non-smoker now)
-          ifelse(
-            SMKDSTY == 4,
-            pmax(((SMK_54 - SMK_52) * (SMK_53 / 20)), 0.0137),
-            # PackYears for former occasional smoker (non-smoker now) who
-            # smoked at least 100 cigarettes lifetime
-            ifelse(
-              SMKDSTY == 5 & SMK_11 == 1,
-              0.0137,
-              # PackYears for former occasional smoker (non-smoker now) who
-              # have not smoked at least 100 cigarettes lifetime
-              ifelse(
-                SMKDSTY == 5 & SMK_11 == 2,
-                0.007,
-                # Non-smoker
-                ifelse(
-                  SMKDSTY == 6,
-                  0,
-                  # Account for NA(a)
-                  ifelse(
-                    SMKDSTY == "NA(a)",
-                    haven::tagged_na("a"),
-                    haven::tagged_na("b")
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    )
+    # Calculate pack years for each smoking status
+    smkdsty == 1 ~ pmax(((clc_age - smk_52) * (smk_31 / 20)), 0.0137),
+    smkdsty == 2 ~ pmax(((clc_age - smk_52 - (clc_age - smk_54)) * (smk_53 / 20)), 0.0137) +
+      ((pmax((smk_41 * smk_42 / 30), 1) / 20) * (clc_age - smk_54)),
+    smkdsty == 3 ~ (pmax((smk_41 * smk_42 / 30), 1) / 20) * (clc_age - smk_21),
+    smkdsty == 4 ~ pmax(((smk_54 - smk_52) * (smk_53 / 20)), 0.0137),
+    smkdsty == 5 & smk_11 == 1 ~ 0.0137,
+    smkdsty == 5 & smk_11 == 2 ~ 0.007,
+    smkdsty == 6 ~ 0,
+
+    # Smoking status
+    # Valid skip
+    smkdsty == 96 ~ haven::tagged_na("a"),
+    # Don't know, refusal, not stated
+    smkdsty %in% 97:99 ~ haven::tagged_na("b"),
+
+    # Default to missing if no other condition is met
+    .default = haven::tagged_na("b")
+  )
   return(pack_years)
 }
