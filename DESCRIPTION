@@ -14,7 +14,7 @@ Description: Harmonizes variables from the Canadian Health Measures Survey (CHMS
     package. The recoding approach builds on sjmisc::rec() from the 'sjmisc'
     package (Ludecke 2018) <doi:10.21105/joss.00754>.
 Depends:
-    R (>= 4.0)
+    R (>= 4.1.0)
 Imports: dplyr, haven, purrr, recodeflow
 License: MIT + file LICENSE
 URL: https://github.com/Big-Life-Lab/chmsflow, https://big-life-lab.github.io/chmsflow/
