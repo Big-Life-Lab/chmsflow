@@ -17,7 +17,7 @@
 ^\.quarto$
 ^_freeze$
 ^\.claude$
-^CLAUDE\.md$
+^AGENTS\.md$
 ^\.tmp$
 .*\.log$
 ^\.RData$

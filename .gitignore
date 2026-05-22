@@ -93,6 +93,9 @@ packrat.lock
 # Claude use
 .claude/
 
+# Local working notes (also in .Rbuildignore)
+.tmp/
+
 # Built vignettes
 inst/doc
 
