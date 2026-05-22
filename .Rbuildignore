@@ -30,6 +30,7 @@
 ^test_vignettes_with_timeout\.sh$
 ^vignette_.*\.txt$
 ^vignette_.*\.log$
+^scripts$
 ^vignettes/.*_files$
 ^vignettes/\.quarto$
 ^vignettes/_freeze$
