@@ -1,134 +1,66 @@
 # chmsflow
 
-# WARNING: NOT RELEASED TO THE PUBLIC AND NOT FOR USE YET
+`chmsflow` harmonizes variables from the Canadian Health Measures Survey
+(CHMS) across cycles 1–6 (2007–2019), producing consistent,
+analysis-ready datasets.
 
-*chmsflow* supports the use of the Canadian Health Measures Survey
-(CHMS) by transforming variables from each cycle into harmonized,
-consistent versions that span survey cycles 1-6 (2007 to 2019).
+``` r
 
-The CHMS is a cross-sectional survey administered by Statistics Canada
-that collects questionnaire and directly measured health information
-from community-dwelling individuals aged 3 to 79 living in the 10
-provinces. There are approximately 5,700 respondents per cycle. Studies
-use multiple CHMS cycles to examine trends overtime and increase sample
-size to examine sub-groups that are too small to examine in a single
-cycle. CHMS data is not available to the public, but at Research Data
-Centres (RDCs) managed by Statistics Canada. Information about the
-survey is found
-[here](https://www.statcan.gc.ca/en/survey/household/5071), while
-information about accessing data at the RDC is found
-[here](https://crdcn.ca/publications-data/access-crdcn-data/).
+library(chmsflow)
 
-## Concept
-
-Each cycle of the CHMS contains over 1000 variables that cover the four
-main topics: sociodemographic measures, socioeconomic measures, health
-behaviours, and health status. The *seemingly* consistent questions
-across CHMS cycles entice you to combine them together to increase
-sample size; however, you soon realize a challenge…
-
-Imagine you want to use ethnicity for a study that spans all six cycles
-of the CHMS. Ethnicity *seems* like a straightforward measure that is
-routinely-collected worldwide. Indeed, ethnicity is included in all CHMS
-cycles. You examine the documentation and find the variable `sdcdcgt` in
-the first two cycles corresponds to ethnicity, but that for the last
-four cycles, the variable name changes to `pgdcgt`. These types of
-changes occur for many CHMS variables. Sometimes the changes are subtle
-and difficult to find in the documentation, even for seemingly
-straightforward variables such as ethnicity. `chmsflow` harmonizes the
-ethnicity variable across different cycles.
-
-## Usage
-
-`chmsflow` creates harmonized variables (where possible) between CHMS
-cycles. Searching ethnicity in `variables.csv` shows `pgdcgt` collects
-ethnicity across all cycles for all respondents.
-
-*Calculate a harmonized ethnicity variable for CHMS cycle 3*
-
-        # Load CHMS dummy data - included in chmsflow
-
-        cycle3_ethnicity <- recodeflow::rec_with_table(cycle3, "pgdcgt", variable_details = variable_details)
-        
-
-Notes printed to console indicate issues that may affect ethnicity
-classification for your study.
-
-    Using the passed data variable name as database_name
-    NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.
-
-## Important notes
-
-Care must be taken to understand how specific variable transformation
-and harmonization with `chmsflow` affect your study or use of CHMS data.
-Across survey cycles, many CHMS variables have had at least some change
-in wording and category responses. Furthermore, there have been changes
-in survey sampling, response rates, weighting methods and other survey
-design changes that affect responses.
+# Harmonize ethnicity from cycle 3 in one call
+cycle3_ethnicity <- recodeflow::rec_with_table(
+  cycle3, "pgdcgt",
+  variable_details = variable_details
+)
+```
 
 ## Installation
 
-        # Install release version from CRAN
-        install.packages("chmsflow")
+``` r
 
-        # Install the most recent version from GitHub
-        devtools::install_github("Big-Life-Lab/chmsflow")
+# Install from CRAN
+install.packages("chmsflow")
 
-See below for guide on how to load R packages at RDC:
+# Install from GitHub
+devtools::install_github("Big-Life-Lab/chmsflow")
+```
 
-        # Within quotations, define path to the directory where your package folders are located at RDC (ensure all dependencies are also in directory as well)
-        .libPaths("")
+For use at a Research Data Centre (RDC), see
+[`vignette("using_chmsflow_at_an_rdc")`](https://big-life-lab.github.io/chmsflow/articles/using_chmsflow_at_an_rdc.md).
 
-        # Load chmsflow package
-        library(chmsflow)
+## Documentation
 
-## What is in the `chmsflow` package?
-
-*chmsflow* package includes:
-
-1.  `variables.csv` - a list of variables that can be transformed across
-    CHMS surveys.
-2.  `variable_details.csv` - information that describes how the
-    variables are recoded.
-3.  Vignettes - that describe how to use R to transform or generate new
-    derived variables that are listed in `variables.csv`.
-    Transformations are performed using `rec_with_table()`.
-    `variables.csv` and `variable_details.csv`.
-4.  CHMS dummy data - `chmsflow` includes dummy data used for the
-    vignettes and to imitate actual CHMS data housed at the RDC. The
-    CHMS dummy data is stored in /data as .RData files. They can be read
-    as a package database.
-
-&nbsp;
-
-    # Read cycle 2 dummy data
-
-    cycle2_dummy_data <- cycle2
-
-### Roadmap
-
-Project on the roadmap can be found on
-[here](https://github.com/Big-Life-Lab/chmsflow/projects).
+- **Tutorial** – [Analysis
+  walkthrough](https://big-life-lab.github.io/chmsflow/articles/analysis_walkthrough.md):
+  end-to-end hypertension prevalence using cycles 3–6
+- **How-to guides** – [Recoding
+  medications](https://big-life-lab.github.io/chmsflow/articles/recoding_medications.md),
+  [Using chmsflow at an
+  RDC](https://big-life-lab.github.io/chmsflow/articles/using_chmsflow_at_an_rdc.md),
+  [Adding
+  variables](https://big-life-lab.github.io/chmsflow/articles/how_to_add_variables.md)
+- **Explanation** –
+  [Methodology](https://big-life-lab.github.io/chmsflow/articles/methodology.md),
+  [Missing data (tagged
+  NA)](https://big-life-lab.github.io/chmsflow/articles/tagged_na_usage.md),
+  [Derived
+  variables](https://big-life-lab.github.io/chmsflow/articles/derived_variables.md)
+- **Reference** – [Variable
+  schema](https://big-life-lab.github.io/chmsflow/articles/variables_and_variable_details.md),
+  [Function
+  reference](https://big-life-lab.github.io/chmsflow/reference/index.md)
 
 ## Contributing
 
-Please follow [this
-guide](https://github.com/Big-Life-Lab/chmsflow/blob/dev/CONTRIBUTING.md)
-if you would like to contribute to the *chmsflow* package.
+Contributions are welcome – see the [contributing
+guide](https://github.com/Big-Life-Lab/chmsflow/blob/dev/CONTRIBUTING.md).
 
-We encourage PRs for additional variable transformations and derived
-variables that you believe may be helpful to the broad CHMS community.
+## Statistics Canada attribution
 
-Currently, *chmsflow* supports R through and wraps around the
-`rec_with_table()` function of *recodeflow*. The CHMS community commonly
-uses SAS, Stata and other statistical packages. Please feel free to
-contribute to `chmsflow` by making a PR that creates versions of
-`rec_with_table()` for other statistical and programming languages.
+The dummy data included in this package is for illustrative purposes
+only and does not contain any real data from Statistics Canada.
 
-## Statistics Canada Attribution
-
-CHMS dummy data used in this library consists of no actual data.
-
-Adapted from Statistics Canada, Canadian Health Measures Survey Cycles
-1-6 (2007 to 2019), accessed June 2023. This does not constitute an
-endorsement by Statistics Canada of this product.
+This package is adapted from Statistics Canada, Canadian Health Measures
+Survey Cycles 1–6 (2007 to 2019), accessed June 2023. This does not
+constitute an endorsement by Statistics Canada of this product.

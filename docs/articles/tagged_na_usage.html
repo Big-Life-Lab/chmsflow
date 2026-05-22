@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>missing data (tagged_na) • chmsflow</title>
+<title>Missing data (tagged_na) • chmsflow</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="tagged_na_usage_files/libs/quarto-html/popper.min.js"></script><script src="tagged_na_usage_files/libs/quarto-html/tippy.umd.min.js"></script><link href="tagged_na_usage_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="tagged_na_usage_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="missing data (tagged_na)">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Missing data (tagged_na)">
 <meta property="og:image" content="https://big-life-lab.github.io/chmsflow/logo.svg">
 </head>
 <body>
@@ -37,8 +37,23 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/get_started.html">Get started</a></li>
-<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/analysis_walkthrough.html">Tutorial</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides">
+<li><a class="dropdown-item" href="../articles/recoding_medications.html">Recoding medications</a></li>
+    <li><a class="dropdown-item" href="../articles/using_chmsflow_at_an_rdc.html">Using chmsflow at an RDC</a></li>
+    <li><a class="dropdown-item" href="../articles/how_to_add_variables.html">Adding variables</a></li>
+  </ul>
+</li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-explanation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Explanation</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-explanation">
+<li><a class="dropdown-item" href="../articles/methodology.html">Methodology</a></li>
+    <li><a class="dropdown-item" href="../articles/tagged_na_usage.html">Missing data (tagged NA)</a></li>
+    <li><a class="dropdown-item" href="../articles/derived_variables.html">Derived variables</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
@@ -52,7 +67,7 @@
 </nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.svg" class="logo" alt=""><h1>missing data (tagged_na)</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Missing data (tagged_na)</h1>
 
 
 
@@ -172,10 +187,19 @@
 </section><section class="level2"><h2 id="using-tagged_na-for-creating-derived-variables">Using tagged_na for creating derived variables<a class="anchor" aria-label="anchor" href="#using-tagged_na-for-creating-derived-variables"></a>
 </h2>
 <p>See the <a href="derived_variables.html">derived variables</a> and <a href="how_to_add_variables.html">how to add variables</a> for details on derived variables and how to add them.</p>
-<p>When creating derived variables from CHMS variables, it is important to distinguish the different NA values. Certain derived variables include the use of variables that may not be applicable to respondents. For example, <a href="https://big-life-lab.github.io/chmsflow/reference/pack_years_fun.html">smoking pack-years</a> involves the use of smoking variables that may not be applicable to all CHMS respondents (i.e. non-smokers who have never smoked). In this scenario, respondents who had values of <code>NA(a)</code> for the various base smoking variables would have a value of <code>NA(a)</code> for smoking pack-years. Respondents who had identified as having smoked at one point in their lives, but had values of <code>NA(b)</code> in the base smoking variables would have a value of <code>NA(b)</code> for smoking pack-years as pack-years cannot be calculated due to missing values.</p>
-<p>On the other hand, there are certain derived variables that use variables that are applicable to all respondents. For example, <a href="https://big-life-lab.github.io/chmsflow/reference/calculate_WHR.html">WHR</a> uses CHMS height and waist circumference variables which are asked to all CHMS respondents. In this scenario, all NA variables would be tagged as <code>NA(b)</code> as these variables are applicable to everyone, and respondents with NA values would be classified as missing.</p>
+<p>When creating derived variables from CHMS variables, it is important to distinguish the different NA values. Certain derived variables include the use of variables that may not be applicable to respondents. For example, <a href="../reference/calculate_pack_years.html">smoking pack-years</a> involves the use of smoking variables that may not be applicable to all CHMS respondents (i.e. non-smokers who have never smoked). In this scenario, respondents who had values of <code>NA(a)</code> for the various base smoking variables would have a value of <code>NA(a)</code> for smoking pack-years. Respondents who had identified as having smoked at one point in their lives, but had values of <code>NA(b)</code> in the base smoking variables would have a value of <code>NA(b)</code> for smoking pack-years as pack-years cannot be calculated due to missing values.</p>
+<p>On the other hand, there are certain derived variables that use variables that are applicable to all respondents. For example, <a href="../reference/calculate_waist_height_ratio.html">WHR</a> uses CHMS height and waist circumference variables which are asked to all CHMS respondents. In this scenario, all NA variables would be tagged as <code>NA(b)</code> as these variables are applicable to everyone, and respondents with NA values would be classified as missing.</p>
 <p>When creating deriving variables, it is important to examine the base CHMS variables to check for the presence of <code>NA(a)</code> and <code>NA(b)</code>. This can be done by reviewing CHMS documentation.</p>
-</section><script id="quarto-html-after-body" type="application/javascript">
+</section><section class="level2"><h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+</h2>
+<ul>
+<li>
+<strong>See tagged NAs in practice</strong> – The <a href="analysis_walkthrough.html">Analysis walkthrough</a> shows how tagged NAs appear in hypertension derivation results.</li>
+<li>
+<strong>Understand derived variables</strong> – Learn how <code>Func::</code> and <code>DerivedVar::</code> entries work in <a href="derived_variables.html">Derived variables</a>.</li>
+<li>
+<strong>Inspect the recoding rules</strong> – See how missing data codes are mapped in <a href="variables_and_variable_details.html">Variable schema reference</a>.</li>
+</ul></section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -264,7 +288,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafidul Islam, Douglas Manuel, Therese Chan.</p>
+  <p>Developed by Rafidul Islam, Douglas Manuel.</p>
 </div>
 
 <div class="pkgdown-footer-right">

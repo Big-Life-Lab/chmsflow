@@ -13,108 +13,133 @@ variable and variable_details worksheets
 
 Functions for deriving custom CHMS variables
 
-- [`adjust_DBP()`](https://big-life-lab.github.io/chmsflow/reference/adjust_DBP.md)
+- [`adjust_dbp()`](https://big-life-lab.github.io/chmsflow/reference/adjust_dbp.md)
   : Adjusted diastolic blood pressure
-- [`adjust_SBP()`](https://big-life-lab.github.io/chmsflow/reference/adjust_SBP.md)
+- [`adjust_sbp()`](https://big-life-lab.github.io/chmsflow/reference/adjust_sbp.md)
   : Adjusted systolic blood pressure
-- [`calculate_GFR()`](https://big-life-lab.github.io/chmsflow/reference/calculate_GFR.md)
+- [`calculate_exercise_daily_avg()`](https://big-life-lab.github.io/chmsflow/reference/calculate_exercise_daily_avg.md)
+  : Average daily minutes of moderate-to-vigorous physical activity
+  (MVPA) from accelerometer data
+- [`calculate_exercise_weekly()`](https://big-life-lab.github.io/chmsflow/reference/calculate_exercise_weekly.md)
+  : Weekly minutes of moderate-to-vigorous physical activity (MVPA) from
+  daily average
+- [`calculate_fv_daily_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/calculate_fv_daily_cycles1to2.md)
+  : Daily fruit and vegetable consumption in a year - cycles 1-2
+- [`calculate_fv_daily_cycles3to6()`](https://big-life-lab.github.io/chmsflow/reference/calculate_fv_daily_cycles3to6.md)
+  : Daily fruit and vegetable consumption in a year - cycles 3-6
+- [`calculate_gfr()`](https://big-life-lab.github.io/chmsflow/reference/calculate_gfr.md)
   : Estimated glomerular filtration rate (GFR)
-- [`calculate_hhld_income()`](https://big-life-lab.github.io/chmsflow/reference/calculate_Hhld_Income.md)
+- [`calculate_household_income()`](https://big-life-lab.github.io/chmsflow/reference/calculate_household_income.md)
   : Adjusted total household income
-- [`calculate_WHR()`](https://big-life-lab.github.io/chmsflow/reference/calculate_WHR.md)
-  : Waist-to-height ratio (WHR)
-- [`calculate_nonHDL()`](https://big-life-lab.github.io/chmsflow/reference/calculate_nonHDL.md)
+- [`calculate_nonhdl()`](https://big-life-lab.github.io/chmsflow/reference/calculate_nonhdl.md)
   : Non-HDL cholesterol level
-- [`categorize_GFR_to_CKD()`](https://big-life-lab.github.io/chmsflow/reference/categorize_GFR_to_CKD.md)
+- [`calculate_pack_years()`](https://big-life-lab.github.io/chmsflow/reference/calculate_pack_years.md)
+  : Smoking pack-years
+- [`calculate_waist_height_ratio()`](https://big-life-lab.github.io/chmsflow/reference/calculate_waist_height_ratio.md)
+  : Waist-to-height ratio (WHtR)
+- [`categorize_ckd()`](https://big-life-lab.github.io/chmsflow/reference/categorize_ckd.md)
   : Chronic kidney disease (CKD) derived variable
-- [`categorize_income()`](https://big-life-lab.github.io/chmsflow/reference/categorize_income.md)
+- [`categorize_diet_quality()`](https://big-life-lab.github.io/chmsflow/reference/categorize_diet_quality.md)
+  : Categorical diet indicator
+- [`categorize_exercise()`](https://big-life-lab.github.io/chmsflow/reference/categorize_exercise.md)
+  : Categorical weekly moderate-to-vigorous physical activity (MVPA)
+  indicator
+- [`categorize_income_quintile()`](https://big-life-lab.github.io/chmsflow/reference/categorize_income_quintile.md)
   : Categorical adjusted household income
-- [`categorize_minperweek()`](https://big-life-lab.github.io/chmsflow/reference/categorize_minperweek.md)
-  : Categorical weekly physical activity indicator
-- [`categorize_nonHDL()`](https://big-life-lab.github.io/chmsflow/reference/categorize_nonHDL.md)
+- [`categorize_nonhdl()`](https://big-life-lab.github.io/chmsflow/reference/categorize_nonhdl.md)
   : Categorical non-HDL cholesterol level
-- [`cycles1to2_ace_inhibitors()`](https://big-life-lab.github.io/chmsflow/reference/cycles1to2_ace_inhibitors.md)
-  : ACE inhibitors - cycles 1-2
-- [`cycles1to2_any_antiHTN_meds()`](https://big-life-lab.github.io/chmsflow/reference/cycles1to2_any_antiHTN_meds.md)
-  : Any anti-hypertensive medications - cycles 1-2
-- [`cycles1to2_beta_blockers()`](https://big-life-lab.github.io/chmsflow/reference/cycles1to2_beta_blockers.md)
-  : Beta blockers - cycles 1-2
-- [`cycles1to2_calcium_channel_blockers()`](https://big-life-lab.github.io/chmsflow/reference/cycles1to2_calcium_channel_blockers.md)
-  : Calcium channel blockers - cycles 1-2
-- [`cycles1to2_diabetes_drugs()`](https://big-life-lab.github.io/chmsflow/reference/cycles1to2_diabetes_drugs.md)
-  : Diabetes medications - cycles 1-2
-- [`cycles1to2_diuretics()`](https://big-life-lab.github.io/chmsflow/reference/cycles1to2_diuretics.md)
-  : Diuretics - cycles 1-2
-- [`cycles1to2_nsaid()`](https://big-life-lab.github.io/chmsflow/reference/cycles1to2_nsaid.md)
-  : Non-steroidal anti-inflammatory drugs (NSAIDs) - cycles 1-2
-- [`cycles1to2_other_antiHTN_meds()`](https://big-life-lab.github.io/chmsflow/reference/cycles1to2_other_antiHTN_meds.md)
-  : Other anti-hypertensive medications - cycles 1-2
-- [`determine_CVD_family_history()`](https://big-life-lab.github.io/chmsflow/reference/determine_CVD_Family_History.md)
+- [`derive_alcohol_risk()`](https://big-life-lab.github.io/chmsflow/reference/derive_alcohol_risk.md)
+  : Low risk drinking score
+- [`derive_alcohol_risk_detailed()`](https://big-life-lab.github.io/chmsflow/reference/derive_alcohol_risk_detailed.md)
+  : Low risk drinking score - former/never categories
+- [`derive_cvd_family_history()`](https://big-life-lab.github.io/chmsflow/reference/derive_cvd_family_history.md)
   : Cardiovascular Disease (CVD) family history
-- [`determine_CVD_personal_history()`](https://big-life-lab.github.io/chmsflow/reference/determine_CVD_Personal_History.md)
+- [`derive_cvd_personal_history()`](https://big-life-lab.github.io/chmsflow/reference/derive_cvd_personal_history.md)
   : Cardiovascular disease (CVD) personal history
-- [`determine_adjusted_hypertension()`](https://big-life-lab.github.io/chmsflow/reference/determine_adjusted_hypertension.md)
+- [`derive_diabetes_status()`](https://big-life-lab.github.io/chmsflow/reference/derive_diabetes_status.md)
+  : Diabetes derived variable
+- [`derive_hypertension()`](https://big-life-lab.github.io/chmsflow/reference/derive_hypertension.md)
+  : Hypertension derived variable
+- [`derive_hypertension_adj()`](https://big-life-lab.github.io/chmsflow/reference/derive_hypertension_adj.md)
   : Hypertension derived variable with adjusted blood pressures
-- [`determine_controlled_adjusted_hypertension()`](https://big-life-lab.github.io/chmsflow/reference/determine_controlled_adjusted_hypertension.md)
+- [`derive_hypertension_control()`](https://big-life-lab.github.io/chmsflow/reference/derive_hypertension_control.md)
+  : Controlled hypertension derived variable
+- [`derive_hypertension_control_adj()`](https://big-life-lab.github.io/chmsflow/reference/derive_hypertension_control_adj.md)
   : Controlled hypertension derived variable with adjusted blood
   pressures
-- [`determine_controlled_hypertension()`](https://big-life-lab.github.io/chmsflow/reference/determine_controlled_hypertension.md)
-  : Controlled hypertension derived variable
-- [`determine_gooddiet()`](https://big-life-lab.github.io/chmsflow/reference/determine_gooddiet.md)
-  : Categorical diet indicator
-- [`determine_hypertension()`](https://big-life-lab.github.io/chmsflow/reference/determine_hypertension.md)
-  : Hypertension derived variable
-- [`determine_inclusive_diabetes()`](https://big-life-lab.github.io/chmsflow/reference/determine_inclusive_diabetes.md)
-  : Diabetes derived variable
-- [`find_totalFV_cycles1and2()`](https://big-life-lab.github.io/chmsflow/reference/find_totalFV_cycles1and2.md)
-  : Daily fruit and vegetable consumption in a year - cycles 1-2
-- [`find_totalFV_cycles3to6()`](https://big-life-lab.github.io/chmsflow/reference/find_totalFV_cycles3to6.md)
-  : Daily fruit and vegetable consumption in a year - cycles 3-6
-- [`find_week_accelerometer_average()`](https://big-life-lab.github.io/chmsflow/reference/find_week_accelerometer_average.md)
-  : Average minutes of exercise per day for week-long accelerometer data
-- [`in_lowest_income_quintile()`](https://big-life-lab.github.io/chmsflow/reference/in_lowest_income_quintile.md)
-  : Lowest income quintile indicator
-- [`is_NSAID()`](https://big-life-lab.github.io/chmsflow/reference/is_NSAID.md)
-  : Non-steroidal anti-inflammatory drugs (NSAIDs)
 - [`is_ace_inhibitor()`](https://big-life-lab.github.io/chmsflow/reference/is_ace_inhibitor.md)
   : ACE inhibitors
-- [`is_any_antiHTN_med()`](https://big-life-lab.github.io/chmsflow/reference/is_any_antiHTN_med.md)
+- [`is_ace_med_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/is_ace_med_cycles1to2.md)
+  : ACE inhibitors - cycles 1-2
+- [`is_any_antihtn_med()`](https://big-life-lab.github.io/chmsflow/reference/is_any_antihtn_med.md)
   : Any anti-hypertensive medications
+- [`is_any_htn_med_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/is_any_htn_med_cycles1to2.md)
+  : Any anti-hypertensive medications - cycles 1-2
+- [`is_bb_med_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/is_bb_med_cycles1to2.md)
+  : Beta blockers - cycles 1-2
 - [`is_beta_blocker()`](https://big-life-lab.github.io/chmsflow/reference/is_beta_blocker.md)
   : Beta blockers
 - [`is_calcium_channel_blocker()`](https://big-life-lab.github.io/chmsflow/reference/is_calcium_channel_blocker.md)
   : Calcium channel blockers
-- [`is_diabetes_drug()`](https://big-life-lab.github.io/chmsflow/reference/is_diabetes_drug.md)
+- [`is_ccb_med_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/is_ccb_med_cycles1to2.md)
+  : Calcium channel blockers - cycles 1-2
+- [`is_diabetes_med()`](https://big-life-lab.github.io/chmsflow/reference/is_diabetes_med.md)
   : Diabetes medications
+- [`is_diab_med_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/is_diab_med_cycles1to2.md)
+  : Diabetes medications - cycles 1-2
 - [`is_diuretic()`](https://big-life-lab.github.io/chmsflow/reference/is_diuretic.md)
   : Diuretics
-- [`is_other_antiHTN_med()`](https://big-life-lab.github.io/chmsflow/reference/is_other_antiHTN_med.md)
+- [`is_diur_med_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/is_diur_med_cycles1to2.md)
+  : Diuretics - cycles 1-2
+- [`is_lowest_income_quintile()`](https://big-life-lab.github.io/chmsflow/reference/is_lowest_income_quintile.md)
+  : Lowest income quintile indicator
+- [`is_misc_htn_med_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/is_misc_htn_med_cycles1to2.md)
+  : Other anti-hypertensive medications - cycles 1-2
+- [`is_nsaid()`](https://big-life-lab.github.io/chmsflow/reference/is_nsaid.md)
+  : Non-steroidal anti-inflammatory drugs (NSAIDs)
+- [`is_nsaid_med_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/is_nsaid_med_cycles1to2.md)
+  : Non-steroidal anti-inflammatory drugs (NSAIDs) - cycles 1-2
+- [`is_other_antihtn_med()`](https://big-life-lab.github.io/chmsflow/reference/is_other_antihtn_med.md)
   : Other anti-hypertensive medications
-- [`is_taking_drug_class()`](https://big-life-lab.github.io/chmsflow/reference/is_taking_drug_class.md)
-  : Number of occurrences of a specific drug class based on given
-  conditions
-- [`low_drink_score_fun()`](https://big-life-lab.github.io/chmsflow/reference/low_drink_score_fun.md)
-  : Low risk drinking score
-- [`low_drink_score_fun1()`](https://big-life-lab.github.io/chmsflow/reference/low_drink_score_fun1.md)
-  : Low risk drinking score - former/never categories
-- [`minperday_to_minperweek()`](https://big-life-lab.github.io/chmsflow/reference/minperday_to_minperweek.md)
-  : Minutes per week from minutes per day
-- [`pack_years_fun()`](https://big-life-lab.github.io/chmsflow/reference/pack_years_fun.md)
-  : Smoking pack-years
+
+## Medication recoding functions
+
+Functions for recoding and aggregating CHMS medication variables
+
+- [`recode_meds_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/recode_meds_cycles1to2.md)
+  : Recode medication variables for cycles 1-2 (wide format)
+- [`recode_meds_cycles3to6()`](https://big-life-lab.github.io/chmsflow/reference/recode_meds_cycles3to6.md)
+  : Recode medication variables for cycles 3-6 (long format)
+- [`aggregate_meds_by_person()`](https://big-life-lab.github.io/chmsflow/reference/aggregate_meds_by_person.md)
+  : Aggregate medication variables to one row per person
+- [`recode_after_meds()`](https://big-life-lab.github.io/chmsflow/reference/recode_after_meds.md)
+  : Recode variables that depend on derived medication variable inputs
 
 ## CHMS dummy data
 
 Cycle and medication dummy data for select CHMS cycles
 
+- [`cycle1`](https://big-life-lab.github.io/chmsflow/reference/cycle1.md)
+  : Canadian Health Measures Survey (CHMS) Cycle 1
+- [`cycle1_meds`](https://big-life-lab.github.io/chmsflow/reference/cycle1_meds.md)
+  : Canadian Health Measures Survey (CHMS) Cycle 1 Medications
 - [`cycle2`](https://big-life-lab.github.io/chmsflow/reference/cycle2.md)
-  : CHMS Cycle 2
+  : Canadian Health Measures Survey (CHMS) Cycle 2
 - [`cycle2_meds`](https://big-life-lab.github.io/chmsflow/reference/cycle2_meds.md)
-  : CHMS Cycle 2 Medications
+  : Canadian Health Measures Survey (CHMS) Cycle 2 Medications
 - [`cycle3`](https://big-life-lab.github.io/chmsflow/reference/cycle3.md)
-  : CHMS Cycle 3
+  : Canadian Health Measures Survey (CHMS) Cycle 3
 - [`cycle3_meds`](https://big-life-lab.github.io/chmsflow/reference/cycle3_meds.md)
-  : CHMS Cycle 3 Medications
+  : Canadian Health Measures Survey (CHMS) Cycle 3 Medications
 - [`cycle4`](https://big-life-lab.github.io/chmsflow/reference/cycle4.md)
-  : CHMS Cycle 4
+  : Canadian Health Measures Survey (CHMS) Cycle 4
+- [`cycle4_meds`](https://big-life-lab.github.io/chmsflow/reference/cycle4_meds.md)
+  : Canadian Health Measures Survey (CHMS) Cycle 4 Medications
 - [`cycle5`](https://big-life-lab.github.io/chmsflow/reference/cycle5.md)
-  : CHMS Cycle 5
+  : Canadian Health Measures Survey (CHMS) Cycle 5
+- [`cycle5_meds`](https://big-life-lab.github.io/chmsflow/reference/cycle5_meds.md)
+  : Canadian Health Measures Survey (CHMS) Cycle 5 Medications
+- [`cycle6`](https://big-life-lab.github.io/chmsflow/reference/cycle6.md)
+  : Canadian Health Measures Survey (CHMS) Cycle 6
+- [`cycle6_meds`](https://big-life-lab.github.io/chmsflow/reference/cycle6_meds.md)
+  : Canadian Health Measures Survey (CHMS) Cycle 6 Medications

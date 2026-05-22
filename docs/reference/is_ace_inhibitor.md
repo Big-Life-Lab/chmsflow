@@ -1,49 +1,64 @@
 # ACE inhibitors
 
-This function checks if a given medication for a CHMS respondent belongs
-to the ACE inhibitor drug class. The identification is based on the
-Anatomical Therapeutic Chemical (ATC) code of the medication and the
-time when the medication was last taken.
+This function checks if a given medication is an ACE inhibitor. This
+function processes multiple inputs efficiently.
 
 ## Usage
 
 ``` r
-is_ace_inhibitor(MEUCATC, NPI_25B)
+is_ace_inhibitor(meucatc, npi_25b)
 ```
 
 ## Arguments
 
-- MEUCATC:
+- meucatc:
 
-  A character vector representing the Anatomical Therapeutic Chemical
-  (ATC) code of the medication.
+  [character](https://rdrr.io/r/base/character.html) ATC code of the
+  medication.
 
-- NPI_25B:
+- npi_25b:
 
-  An integer representing the CHMS response for the time when the
-  medication was last taken. 1 = Today, 2 = Yesterday, 3 = Within the
-  last week, 4 = Within the last month, 5 = More than a month ago, 6 =
-  Never taken
+  [integer](https://rdrr.io/r/base/integer.html) Time when the
+  medication was last taken.
 
 ## Value
 
-A numeric, 1 if medication is in the ACE inhibitor class and 0 if it is
-not.
+[numeric](https://rdrr.io/r/base/numeric.html) 1 if medication is an ACE
+inhibitor, 0 otherwise. If inputs are invalid or out of bounds, the
+function returns a tagged NA.
 
 ## Details
 
-This function uses the `startsWith` function to identify ACE inhibitors
-based on their ATC codes, which typically start with "C09". If the ATC
-code matches the pattern and the medication was taken within the last
-month (NPI_25B \<= 4), the medication is considered an ACE inhibitor and
-the function returns TRUE. Otherwise, it returns FALSE.
+Identifies ACE inhibitors based on ATC codes starting with "C09".
+
+         **Missing Data Codes:**
+         - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+         - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 
 ## Examples
 
 ``` r
-
-# Let's say the ATC code is "C09AB03" and the time last taken was yesterday (2).
-
-is_ace_inhibitor("C09AB03", 2) # Should return 1 (TRUE)
+# Scalar usage: Single respondent
+is_ace_inhibitor("C09AB03", 2)
 #> [1] 1
+# Returns: 1
+
+# Example: Respondent has non-response values for all inputs.
+result <- is_ace_inhibitor("9999998", 8)
+result # Shows: NA
+#> [1] NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#> [1] TRUE
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+#> [1] "NA"
+
+# Multiple respondents
+is_ace_inhibitor(c("C09AB03", "C01AA05"), c(2, 1))
+#> [1] 1 0
+# Returns: c(1, 0)
+
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset |>
+#   mutate(ace_inhibitor = is_ace_inhibitor(meucatc, npi_25b))
 ```

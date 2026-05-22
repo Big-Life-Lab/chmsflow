@@ -37,8 +37,23 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/get_started.html">Get started</a></li>
-<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/analysis_walkthrough.html">Tutorial</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides">
+<li><a class="dropdown-item" href="../articles/recoding_medications.html">Recoding medications</a></li>
+    <li><a class="dropdown-item" href="../articles/using_chmsflow_at_an_rdc.html">Using chmsflow at an RDC</a></li>
+    <li><a class="dropdown-item" href="../articles/how_to_add_variables.html">Adding variables</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-explanation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Explanation</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-explanation">
+<li><a class="dropdown-item" href="../articles/methodology.html">Methodology</a></li>
+    <li><a class="dropdown-item" href="../articles/tagged_na_usage.html">Missing data (tagged NA)</a></li>
+    <li><a class="dropdown-item" href="../articles/derived_variables.html">Derived variables</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
@@ -109,16 +124,16 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">clc_age</td>
+<td style="text-align: left;">ccc_61</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">clc_age</td>
+<td style="text-align: left;">ccc_61</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">clc_age</td>
+<td style="text-align: left;">ccc_61</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">clc_age</td>
+<td style="text-align: left;">ccc_63</td>
 </tr>
 </tbody>
 </table>
@@ -139,23 +154,23 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
 </tr>
 </tbody>
 </table>
@@ -177,27 +192,27 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 </tr>
 </tbody>
 </table>
@@ -205,7 +220,7 @@
 </div>
 <ol start="4" type="1">
 <li>
-<strong>databaseStart:</strong> age was captured in all CHMS surveys between cycles 1-6, so in the first row with the continuous “category” and the else row, the CHMS identifiers will be listed this column:</li>
+<strong>databaseStart:</strong> age was captured in all CHMS surveys between cycles 1–6, so in the first row with the continuous “category” and the else row, the CHMS identifiers will be listed this column:</li>
 </ol>
 <div class="cell">
 <div class="cell-output-display">
@@ -213,9 +228,9 @@
 <colgroup>
 <col style="width: 4%">
 <col style="width: 10%">
-<col style="width: 17%">
+<col style="width: 19%">
 <col style="width: 9%">
-<col style="width: 57%">
+<col style="width: 55%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -226,9 +241,9 @@
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
 </tr></tbody>
 </table>
@@ -236,7 +251,7 @@
 </div>
 <ol start="5" type="1">
 <li>
-<strong>variableStart:</strong> From cycles 1-6, the age variable is the same as the common name. Therefore for all the rows, the variableStart column will look like this:</li>
+<strong>variableStart:</strong> From cycles 1–6, the age variable is the same as the common name. Therefore for all the rows, the variableStart column will look like this:</li>
 </ol>
 <div class="cell">
 <div class="cell-output-display">
@@ -260,7 +275,7 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: left;">acemed</td>
+<td style="text-align: left;">ace_med</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1_meds, cycle2_meds</td>
@@ -268,8 +283,8 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">6</td>
-<td style="text-align: left;">acemed</td>
-<td style="text-align: left;">acemed_cat2_1</td>
+<td style="text-align: left;">ace_med</td>
+<td style="text-align: left;">N/A</td>
 <td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle3_meds, cycle4_meds, cycle5_meds, cycle6_meds</td>
 <td style="text-align: left;">DerivedVar::[meucatc, npi_25b]</td>
@@ -284,14 +299,14 @@
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top">
+<table class="table caption-top" style="width:100%;">
 <colgroup>
 <col style="width: 3%">
 <col style="width: 8%">
-<col style="width: 13%">
+<col style="width: 14%">
 <col style="width: 7%">
-<col style="width: 44%">
-<col style="width: 13%">
+<col style="width: 43%">
+<col style="width: 12%">
 <col style="width: 9%">
 </colgroup>
 <thead><tr class="header">
@@ -306,39 +321,39 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
 </tr>
 </tbody>
 </table>
@@ -350,13 +365,13 @@
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top">
+<table class="table caption-top" style="width:100%;">
 <colgroup>
 <col style="width: 3%">
 <col style="width: 7%">
-<col style="width: 12%">
-<col style="width: 7%">
-<col style="width: 41%">
+<col style="width: 13%">
+<col style="width: 6%">
+<col style="width: 40%">
 <col style="width: 12%">
 <col style="width: 8%">
 <col style="width: 6%">
@@ -374,43 +389,43 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
 </tr>
 </tbody>
 </table>
@@ -426,11 +441,11 @@
 <colgroup>
 <col style="width: 3%">
 <col style="width: 7%">
-<col style="width: 11%">
+<col style="width: 12%">
 <col style="width: 6%">
 <col style="width: 37%">
 <col style="width: 11%">
-<col style="width: 8%">
+<col style="width: 7%">
 <col style="width: 5%">
 <col style="width: 9%">
 </colgroup>
@@ -448,47 +463,47 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
 </tr>
 </tbody>
 </table>
@@ -501,16 +516,16 @@
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top" style="width:100%;">
+<table class="table caption-top">
 <colgroup>
 <col style="width: 2%">
 <col style="width: 6%">
-<col style="width: 10%">
+<col style="width: 11%">
 <col style="width: 5%">
 <col style="width: 33%">
-<col style="width: 10%">
+<col style="width: 9%">
 <col style="width: 7%">
-<col style="width: 5%">
+<col style="width: 4%">
 <col style="width: 8%">
 <col style="width: 10%">
 </colgroup>
@@ -529,51 +544,51 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Years</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">not applicable</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">2</td>
 <td style="text-align: left;">missing</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
 </tr>
 </tbody>
 </table>
@@ -585,14 +600,14 @@
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top">
+<table class="table caption-top" style="width:100%;">
 <colgroup>
 <col style="width: 2%">
 <col style="width: 5%">
-<col style="width: 9%">
+<col style="width: 10%">
 <col style="width: 5%">
-<col style="width: 30%">
-<col style="width: 9%">
+<col style="width: 29%">
+<col style="width: 8%">
 <col style="width: 6%">
 <col style="width: 4%">
 <col style="width: 7%">
@@ -615,55 +630,55 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Years</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">2</td>
 <td style="text-align: left;">missing</td>
 <td style="text-align: left;">missing</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
 </tr>
 </tbody>
 </table>
@@ -675,13 +690,13 @@
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top" style="width:100%;">
+<table class="table caption-top">
 <colgroup>
 <col style="width: 2%">
 <col style="width: 5%">
-<col style="width: 8%">
+<col style="width: 9%">
 <col style="width: 4%">
-<col style="width: 29%">
+<col style="width: 28%">
 <col style="width: 8%">
 <col style="width: 6%">
 <col style="width: 4%">
@@ -707,59 +722,59 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">years</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">years</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
 </tr>
 </tbody>
 </table>
@@ -767,7 +782,7 @@
 </div>
 <ol start="12" type="1">
 <li>
-<strong>recStart:</strong> Going through the CHMS data documentation from cycles 1-6, it was found that the lowest age value was 3 and the highest age value was 80. Therefore the recFrom for the first row is written as <code>[3,80]</code>. Not applicable was coded as 996 so the recFrom for this row would be <code>[996]</code>. Similarly, don’t know was coded as 997, refusal was coded as 998, and not stated was coded as 999. Therefore the recFrom for the missing row would be <code>[997,999]</code>. For the else row, just write <code>else</code>.</li>
+<strong>recStart:</strong> Going through the CHMS data documentation from cycles 1–6, it was found that the lowest age value was 3 and the highest age value was 80. Therefore the recFrom for the first row is written as <code>[3,80]</code>. Not applicable was coded as 996 so the recFrom for this row would be <code>[996]</code>. Similarly, don’t know was coded as 997, refusal was coded as 998, and not stated was coded as 999. Therefore the recFrom for the missing row would be <code>[997,999]</code>. For the else row, just write <code>else</code>.</li>
 </ol>
 <div class="cell">
 <div class="cell-output-display">
@@ -775,7 +790,7 @@
 <colgroup>
 <col style="width: 2%">
 <col style="width: 5%">
-<col style="width: 8%">
+<col style="width: 9%">
 <col style="width: 4%">
 <col style="width: 27%">
 <col style="width: 8%">
@@ -785,7 +800,7 @@
 <col style="width: 8%">
 <col style="width: 8%">
 <col style="width: 3%">
-<col style="width: 6%">
+<col style="width: 5%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -805,63 +820,63 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[3, 80]</td>
+<td style="text-align: left;">6</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">996</td>
+<td style="text-align: left;">[7, 9]</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[997, 999]</td>
+<td style="text-align: left;">else</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">else</td>
+<td style="text-align: left;">1</td>
 </tr>
 </tbody>
 </table>
@@ -873,11 +888,11 @@
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top">
+<table class="table caption-top" style="width:100%;">
 <colgroup>
 <col style="width: 1%">
 <col style="width: 4%">
-<col style="width: 6%">
+<col style="width: 7%">
 <col style="width: 3%">
 <col style="width: 21%">
 <col style="width: 6%">
@@ -888,7 +903,7 @@
 <col style="width: 6%">
 <col style="width: 2%">
 <col style="width: 4%">
-<col style="width: 22%">
+<col style="width: 20%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -909,67 +924,67 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[3, 80]</td>
-<td style="text-align: left;">Years</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Valid skip</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">996</td>
-<td style="text-align: left;">Valid skip</td>
+<td style="text-align: left;">[7, 9]</td>
+<td style="text-align: left;">Don’t know (7); Refusal (8); Not stated (9)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[997, 999]</td>
-<td style="text-align: left;">Don’t know (997); Refusal (998); Not stated (999)</td>
+<td style="text-align: left;">else</td>
+<td style="text-align: left;">else</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">else</td>
-<td style="text-align: left;">else</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Yes</td>
 </tr>
 </tbody>
 </table>
@@ -985,19 +1000,19 @@
 <colgroup>
 <col style="width: 1%">
 <col style="width: 3%">
-<col style="width: 5%">
+<col style="width: 6%">
 <col style="width: 3%">
 <col style="width: 19%">
 <col style="width: 5%">
 <col style="width: 4%">
 <col style="width: 2%">
-<col style="width: 4%">
+<col style="width: 5%">
 <col style="width: 6%">
 <col style="width: 6%">
 <col style="width: 2%">
-<col style="width: 4%">
-<col style="width: 20%">
-<col style="width: 9%">
+<col style="width: 3%">
+<col style="width: 18%">
+<col style="width: 10%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -1019,71 +1034,71 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[3, 80]</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Age</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Valid skip</td>
+<td style="text-align: left;">Heart disease</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">996</td>
-<td style="text-align: left;">Valid skip</td>
-<td style="text-align: left;">Age</td>
+<td style="text-align: left;">[7, 9]</td>
+<td style="text-align: left;">Don’t know (7); Refusal (8); Not stated (9)</td>
+<td style="text-align: left;">Heart disease</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[997, 999]</td>
-<td style="text-align: left;">Don’t know (997); Refusal (998); Not stated (999)</td>
-<td style="text-align: left;">Age</td>
+<td style="text-align: left;">else</td>
+<td style="text-align: left;">else</td>
+<td style="text-align: left;">Heart disease</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">else</td>
-<td style="text-align: left;">else</td>
-<td style="text-align: left;">Age</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Heart attack</td>
 </tr>
 </tbody>
 </table>
@@ -1099,7 +1114,7 @@
 <colgroup>
 <col style="width: 1%">
 <col style="width: 3%">
-<col style="width: 5%">
+<col style="width: 6%">
 <col style="width: 3%">
 <col style="width: 17%">
 <col style="width: 5%">
@@ -1109,10 +1124,10 @@
 <col style="width: 5%">
 <col style="width: 5%">
 <col style="width: 2%">
-<col style="width: 4%">
-<col style="width: 18%">
+<col style="width: 3%">
+<col style="width: 16%">
 <col style="width: 9%">
-<col style="width: 7%">
+<col style="width: 9%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -1135,75 +1150,75 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[3, 80]</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Age at clinic visit</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Valid skip</td>
+<td style="text-align: left;">Heart disease</td>
+<td style="text-align: left;">Has heart disease</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">996</td>
-<td style="text-align: left;">Valid skip</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Age at clinic visit</td>
+<td style="text-align: left;">[7, 9]</td>
+<td style="text-align: left;">Don’t know (7); Refusal (8); Not stated (9)</td>
+<td style="text-align: left;">Heart disease</td>
+<td style="text-align: left;">Has heart disease</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[997, 999]</td>
-<td style="text-align: left;">Don’t know (997); Refusal (998); Not stated (999)</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Age at clinic visit</td>
+<td style="text-align: left;">else</td>
+<td style="text-align: left;">else</td>
+<td style="text-align: left;">Heart disease</td>
+<td style="text-align: left;">Has heart disease</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">else</td>
-<td style="text-align: left;">else</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Age at clinic visit</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Heart attack</td>
+<td style="text-align: left;">Ever had a heart attack</td>
 </tr>
 </tbody>
 </table>
@@ -1215,7 +1230,7 @@
 </ol>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top">
+<table class="table caption-top" style="width:100%;">
 <colgroup>
 <col style="width: 1%">
 <col style="width: 3%">
@@ -1229,11 +1244,12 @@
 <col style="width: 5%">
 <col style="width: 5%">
 <col style="width: 2%">
-<col style="width: 4%">
-<col style="width: 18%">
+<col style="width: 3%">
+<col style="width: 16%">
 <col style="width: 8%">
-<col style="width: 7%">
+<col style="width: 8%">
 <col style="width: 2%">
+<col style="width: 1%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -1253,82 +1269,87 @@
 <th style="text-align: left;">variableStartShortLabel</th>
 <th style="text-align: left;">variableStartLabel</th>
 <th style="text-align: left;">notes</th>
+<th style="text-align: left;">X</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">275</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAa</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">copy</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[3, 80]</td>
-<td style="text-align: left;">Years</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Age at clinic visit</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Valid skip</td>
+<td style="text-align: left;">Heart disease</td>
+<td style="text-align: left;">Has heart disease</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">276</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::a</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">not applicable</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">996</td>
-<td style="text-align: left;">Valid skip</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Age at clinic visit</td>
+<td style="text-align: left;">[7, 9]</td>
+<td style="text-align: left;">Don’t know (7); Refusal (8); Not stated (9)</td>
+<td style="text-align: left;">Heart disease</td>
+<td style="text-align: left;">Has heart disease</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">277</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_61</td>
+<td style="text-align: left;">ccc_61_cat2_NAb</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">[ccc_61]</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">[997, 999]</td>
-<td style="text-align: left;">Don’t know (997); Refusal (998); Not stated (999)</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Age at clinic visit</td>
+<td style="text-align: left;">else</td>
+<td style="text-align: left;">else</td>
+<td style="text-align: left;">Heart disease</td>
+<td style="text-align: left;">Has heart disease</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">278</td>
-<td style="text-align: left;">clc_age</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
+<td style="text-align: left;">ccc_63</td>
+<td style="text-align: left;">ccc_63_cat2_1</td>
+<td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">[clc_age]</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">[ccc_63]</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">years</td>
-<td style="text-align: left;">else</td>
-<td style="text-align: left;">else</td>
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">Age at clinic visit</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Heart attack</td>
+<td style="text-align: left;">Ever had a heart attack</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
@@ -1341,9 +1362,8 @@
 <p>Once mapped and specified on <code>variable_details.csv</code>, the age variable can now be specified on <code>variables.csv</code></p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top" style="width:100%;">
+<table class="table caption-top">
 <colgroup>
-<col style="width: 0%">
 <col style="width: 0%">
 <col style="width: 1%">
 <col style="width: 2%">
@@ -1352,12 +1372,10 @@
 <col style="width: 1%">
 <col style="width: 0%">
 <col style="width: 7%">
-<col style="width: 82%">
-<col style="width: 1%">
+<col style="width: 83%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">variable</th>
-<th style="text-align: left;">role</th>
 <th style="text-align: left;">label</th>
 <th style="text-align: left;">labelLong</th>
 <th style="text-align: left;">section</th>
@@ -1366,11 +1384,9 @@
 <th style="text-align: left;">units</th>
 <th style="text-align: left;">databaseStart</th>
 <th style="text-align: left;">variableStart</th>
-<th style="text-align: left;">description</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">acemed</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">ace_med</td>
 <td style="text-align: left;">ACE inhibitors</td>
 <td style="text-align: left;">Taking ACE inhibitors</td>
 <td style="text-align: left;">Health status</td>
@@ -1379,7 +1395,6 @@
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">cycle1_meds, cycle2_meds, cycle3_meds, cycle4_meds, cycle5_meds, cycle6_meds</td>
 <td style="text-align: left;">DerivedVar::[atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a, atc_111a, atc_112a, atc_113a, atc_114a, atc_115a, atc_201a, atc_202a, atc_203a, atc_204a, atc_205a, atc_206a, atc_207a, atc_208a, atc_209a, atc_210a, atc_211a, atc_212a, atc_213a, atc_214a, atc_215a, atc_131a, atc_132a, atc_133a, atc_134a, atc_135a, atc_231a, atc_232a, atc_233a, atc_234a, atc_235a, mhr_101b, mhr_102b, mhr_103b, mhr_104b, mhr_105b, mhr_106b, mhr_107b, mhr_108b, mhr_109b, mhr_110b, mhr_111b, mhr_112b, mhr_113b, mhr_114b, mhr_115b, mhr_201b, mhr_202b, mhr_203b, mhr_204b, mhr_205b, mhr_206b, mhr_207b, mhr_208b, mhr_209b, mhr_210b, mhr_211b, mhr_212b, mhr_213b, mhr_214b, mhr_215b, mhr_131b, mhr_132b, mhr_133b, mhr_134b, mhr_135b, mhr_231b, mhr_232b, mhr_233b, mhr_234b, mhr_235b]; DerivedVar::[meucatc, npi_25b]</td>
-<td style="text-align: left;"></td>
 </tr></tbody>
 </table>
 </div>
@@ -1397,90 +1412,62 @@
 <p>Pack-years is a complex derived variable often used by researchers to quantify the amount of cigarette use over a period of time. Even given its complex nature, pack-years can still be calculated. This derived variable incorporates numerous CHMS smoking variables, along with age.</p>
 </section><section class="level3"><h3 id="step-1--creating-a-derived-function">Step 1. Creating a derived function<a class="anchor" aria-label="anchor" href="#step-1--creating-a-derived-function"></a>
 </h3>
-<p>With complex derived variables, sometimes it is necessary to create functions within the custom function. For pack-years, a nested function was used to create an intermediate smoking variable that was used in the main function.</p>
+<p>With complex derived variables, the function computes the output from multiple input variables using clinical or epidemiological logic. For pack-years, the function uses smoking status (<code>smkdsty</code>), age, and several smoking history variables to calculate cumulative cigarette exposure.</p>
+<p>The current implementation in chmsflow uses <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">dplyr::case_when()</a></code> for clarity:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pack_years_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">SMKDSTY</span>, <span class="va">CLC_AGE</span>, <span class="va">SMK_54</span>, <span class="va">SMK_52</span>, <span class="va">SMK_31</span>, <span class="va">SMK_41</span>, <span class="va">SMK_53</span>, <span class="va">SMK_42</span>, <span class="va">SMK_21</span>, <span class="va">SMK_11</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># Age verification</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">CLC_AGE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">CLC_AGE</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
+<code class="sourceCode R"><span><span class="va">calculate_pack_years</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">smkdsty</span>, <span class="va">clc_age</span>, <span class="va">smk_54</span>, <span class="va">smk_52</span>, <span class="va">smk_31</span>, <span class="va">smk_41</span>, <span class="va">smk_53</span>, <span class="va">smk_42</span>, <span class="va">smk_21</span>, <span class="va">smk_11</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">pack_years</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="co"># Age: valid skip</span></span>
+<span>    <span class="va">clc_age</span> <span class="op">==</span> <span class="fl">96</span> <span class="op">~</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>,</span>
+<span>    <span class="co"># Age: don't know, refusal, not stated</span></span>
+<span>    <span class="va">clc_age</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">|</span> <span class="va">clc_age</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">97</span><span class="op">:</span><span class="fl">99</span> <span class="op">~</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span>,</span>
 <span></span>
-<span>  <span class="co"># PackYears for Daily Smoker</span></span>
-<span>  <span class="va">pack_years</span> <span class="op">&lt;-</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>      <span class="va">SMKDSTY</span> <span class="op">==</span> <span class="fl">1</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">CLC_AGE</span> <span class="op">-</span> <span class="va">SMK_52</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">SMK_31</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="fl">0.0137</span><span class="op">)</span>,</span>
-<span>      <span class="co"># PackYears for Occasional Smoker (former daily)</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>        <span class="va">SMKDSTY</span> <span class="op">==</span> <span class="fl">2</span>,</span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">CLC_AGE</span> <span class="op">-</span> <span class="va">SMK_52</span> <span class="op">-</span> <span class="op">(</span><span class="va">CLC_AGE</span> <span class="op">-</span> <span class="va">SMK_54</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">SMK_53</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="fl">0.0137</span><span class="op">)</span> <span class="op">+</span></span>
-<span>          <span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="va">SMK_41</span> <span class="op">*</span> <span class="va">SMK_42</span> <span class="op">/</span> <span class="fl">30</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">CLC_AGE</span> <span class="op">-</span> <span class="va">SMK_54</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>        <span class="co"># PackYears for Occasional Smoker (never daily)</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>          <span class="va">SMKDSTY</span> <span class="op">==</span> <span class="fl">3</span>,</span>
-<span>          <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="va">SMK_41</span> <span class="op">*</span> <span class="va">SMK_42</span> <span class="op">/</span> <span class="fl">30</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">CLC_AGE</span> <span class="op">-</span> <span class="va">SMK_21</span><span class="op">)</span>,</span>
-<span>          <span class="co"># PackYears for former daily smoker (non-smoker now)</span></span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>            <span class="va">SMKDSTY</span> <span class="op">==</span> <span class="fl">4</span>,</span>
-<span>            <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">SMK_54</span> <span class="op">-</span> <span class="va">SMK_52</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">SMK_53</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="fl">0.0137</span><span class="op">)</span>,</span>
-<span>            <span class="co"># PackYears for former occasional smoker (non-smoker now) who</span></span>
-<span>            <span class="co"># smoked at least 100 cigarettes lifetime</span></span>
-<span>            <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>              <span class="va">SMKDSTY</span> <span class="op">==</span> <span class="fl">5</span> <span class="op">&amp;</span> <span class="va">SMK_11</span> <span class="op">==</span> <span class="fl">1</span>,</span>
-<span>              <span class="fl">0.0137</span>,</span>
-<span>              <span class="co"># PackYears for former occasional smoker (non-smoker now) who</span></span>
-<span>              <span class="co"># have not smoked at least 100 cigarettes lifetime</span></span>
-<span>              <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>                <span class="va">SMKDSTY</span> <span class="op">==</span> <span class="fl">5</span> <span class="op">&amp;</span> <span class="va">SMK_11</span> <span class="op">==</span> <span class="fl">2</span>,</span>
-<span>                <span class="fl">0.007</span>,</span>
-<span>                <span class="co"># Non-smoker</span></span>
-<span>                <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>                  <span class="va">SMKDSTY</span> <span class="op">==</span> <span class="fl">6</span>,</span>
-<span>                  <span class="fl">0</span>,</span>
-<span>                  <span class="co"># Account for NA(a)</span></span>
-<span>                  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>                    <span class="va">SMKDSTY</span> <span class="op">==</span> <span class="st">"NA(a)"</span>,</span>
-<span>                    <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>,</span>
-<span>                    <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span></span>
-<span>                  <span class="op">)</span></span>
-<span>                <span class="op">)</span></span>
-<span>              <span class="op">)</span></span>
-<span>            <span class="op">)</span></span>
-<span>          <span class="op">)</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
+<span>    <span class="co"># Pack-years by smoking status</span></span>
+<span>    <span class="va">smkdsty</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">clc_age</span> <span class="op">-</span> <span class="va">smk_52</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">smk_31</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="fl">0.0137</span><span class="op">)</span>,</span>
+<span>    <span class="va">smkdsty</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">clc_age</span> <span class="op">-</span> <span class="va">smk_52</span> <span class="op">-</span> <span class="op">(</span><span class="va">clc_age</span> <span class="op">-</span> <span class="va">smk_54</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">smk_53</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="fl">0.0137</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="va">smk_41</span> <span class="op">*</span> <span class="va">smk_42</span> <span class="op">/</span> <span class="fl">30</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">clc_age</span> <span class="op">-</span> <span class="va">smk_54</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="va">smkdsty</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">~</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="va">smk_41</span> <span class="op">*</span> <span class="va">smk_42</span> <span class="op">/</span> <span class="fl">30</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">clc_age</span> <span class="op">-</span> <span class="va">smk_21</span><span class="op">)</span>,</span>
+<span>    <span class="va">smkdsty</span> <span class="op">==</span> <span class="fl">4</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="va">smk_54</span> <span class="op">-</span> <span class="va">smk_52</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">smk_53</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="fl">0.0137</span><span class="op">)</span>,</span>
+<span>    <span class="va">smkdsty</span> <span class="op">==</span> <span class="fl">5</span> <span class="op">&amp;</span> <span class="va">smk_11</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="fl">0.0137</span>,</span>
+<span>    <span class="va">smkdsty</span> <span class="op">==</span> <span class="fl">5</span> <span class="op">&amp;</span> <span class="va">smk_11</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">~</span> <span class="fl">0.007</span>,</span>
+<span>    <span class="va">smkdsty</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">~</span> <span class="fl">0</span>,</span>
+<span></span>
+<span>    <span class="co"># Smoking status: valid skip</span></span>
+<span>    <span class="va">smkdsty</span> <span class="op">==</span> <span class="fl">96</span> <span class="op">~</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>,</span>
+<span>    <span class="co"># Smoking status: don't know, refusal, not stated</span></span>
+<span>    <span class="va">smkdsty</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">97</span><span class="op">:</span><span class="fl">99</span> <span class="op">~</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span>,</span>
+<span>    .default <span class="op">=</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">pack_years</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
-<p>More information on what each smoking variable means can be found in the <a href="../reference/pack_years_fun.html">Reference</a> section.</p>
+<p>More information on what each smoking variable means can be found in the <a href="../reference/calculate_pack_years.html">Reference</a> section.</p>
 </section><section class="level3"><h3 id="steps-2-and-3--specifying-pack-years-in-variable_details-csv-and-variables-csv">Steps 2 and 3. Specifying pack-years in <code>variable_details.csv</code> and <code>variables.csv</code>
 <a class="anchor" aria-label="anchor" href="#steps-2-and-3--specifying-pack-years-in-variable_details-csv-and-variables-csv"></a>
 </h3>
 <p>This is how the <code>variable_details.csv</code> sheet would look for the derived pack-years row</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top" style="width:100%;">
+<table class="table caption-top">
 <colgroup>
 <col style="width: 1%">
 <col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 2%">
-<col style="width: 14%">
-<col style="width: 29%">
-<col style="width: 3%">
-<col style="width: 6%">
-<col style="width: 3%">
-<col style="width: 2%">
-<col style="width: 3%">
-<col style="width: 1%">
-<col style="width: 2%">
-<col style="width: 4%">
 <col style="width: 7%">
-<col style="width: 5%">
+<col style="width: 2%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 2%">
 <col style="width: 1%">
 </colgroup>
 <thead><tr class="header">
@@ -1501,24 +1488,26 @@
 <th style="text-align: left;">variableStartShortLabel</th>
 <th style="text-align: left;">variableStartLabel</th>
 <th style="text-align: left;">notes</th>
+<th style="text-align: left;">X</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">953</td>
-<td style="text-align: left;">pack_years_der</td>
+<td style="text-align: left;">misc_htn_med</td>
+<td style="text-align: left;">misc_htn_med_cat2_1</td>
+<td style="text-align: left;">cat</td>
+<td style="text-align: left;">cycle3_meds, cycle4_meds, cycle5_meds, cycle6_meds</td>
+<td style="text-align: left;">DerivedVar::[exercise_avg_min_day]</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">cont</td>
-<td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[smkdsty, clc_age, smk_54, smk_52, smk_31, smk_41, smk_53, smk_42, smk_21, smk_11]</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Func::pack_years_fun</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">years</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Pack-years</td>
-<td style="text-align: left;">Smoking pack-years</td>
+<td style="text-align: left;">Other antihypertension drugs</td>
+<td style="text-align: left;">Taking other antihypertension drugs</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr></tbody>
 </table>
@@ -1530,22 +1519,19 @@
 <table class="table caption-top">
 <colgroup>
 <col style="width: 1%">
-<col style="width: 5%">
-<col style="width: 1%">
 <col style="width: 4%">
-<col style="width: 7%">
+<col style="width: 4%">
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 4%">
 <col style="width: 6%">
-<col style="width: 3%">
-<col style="width: 5%">
 <col style="width: 2%">
-<col style="width: 18%">
-<col style="width: 37%">
-<col style="width: 4%">
+<col style="width: 22%">
+<col style="width: 28%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
 <th style="text-align: left;">variable</th>
-<th style="text-align: left;">role</th>
 <th style="text-align: left;">label</th>
 <th style="text-align: left;">labelLong</th>
 <th style="text-align: left;">section</th>
@@ -1554,49 +1540,47 @@
 <th style="text-align: left;">units</th>
 <th style="text-align: left;">databaseStart</th>
 <th style="text-align: left;">variableStart</th>
-<th style="text-align: left;">description</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">189</td>
-<td style="text-align: left;">pack_years_der</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Pack-years</td>
-<td style="text-align: left;">Smoking pack-years</td>
-<td style="text-align: left;">Health behaviour</td>
-<td style="text-align: left;">Smoking</td>
-<td style="text-align: left;">Continuous</td>
-<td style="text-align: left;">years</td>
+<td style="text-align: left;">pgdcgt</td>
+<td style="text-align: left;">Ethnicity</td>
+<td style="text-align: left;">Cultural or racial group - (D)</td>
+<td style="text-align: left;">Sociodemographics</td>
+<td style="text-align: left;">Ethnicity</td>
+<td style="text-align: left;">Categorical</td>
+<td style="text-align: left;">N/A</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[smkdsty, clc_age, smk_54, smk_52, smk_31, smk_41, smk_53, smk_42, smk_21, smk_11]</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">cycle1::sdcdcgt, cycle2::sdcdcgt, cycle6::PGDCGT, [pgdcgt]</td>
 </tr></tbody>
 </table>
 </div>
 </div>
 </section><section class="level3"><h3 id="adding-labels-to-a-derived-variable">Adding labels to a derived variable<a class="anchor" aria-label="anchor" href="#adding-labels-to-a-derived-variable"></a>
 </h3>
-<p>For a continuous derived variable like pack-years, the labels specified in <code>variables.csv</code> are sufficient for the variable to be properly labelled. For categorical derived variables, extra rows will need to be added on <code>variable_details.csv</code> so that labels are generated for each category. The example below shows how diabx, a derived categorical variable flagging respondents who have diabetes based on more inclusive factors, is specified in <code>variable_details.csv</code>.</p>
+<p>For a continuous derived variable like pack-years, the labels specified in <code>variables.csv</code> are sufficient for the variable to be properly labelled. For categorical derived variables, extra rows will need to be added on <code>variable_details.csv</code> so that labels are generated for each category. The example below shows how diab_status, a derived categorical variable flagging respondents who have diabetes based on more inclusive factors, is specified in <code>variable_details.csv</code>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top" style="width:100%;">
+<table class="table caption-top">
 <colgroup>
 <col style="width: 1%">
-<col style="width: 2%">
-<col style="width: 5%">
+<col style="width: 3%">
+<col style="width: 6%">
 <col style="width: 2%">
 <col style="width: 14%">
-<col style="width: 12%">
+<col style="width: 11%">
 <col style="width: 3%">
 <col style="width: 10%">
 <col style="width: 3%">
-<col style="width: 2%">
+<col style="width: 4%">
 <col style="width: 4%">
 <col style="width: 1%">
 <col style="width: 2%">
 <col style="width: 4%">
 <col style="width: 7%">
-<col style="width: 18%">
+<col style="width: 15%">
 <col style="width: 1%">
+<col style="width: 0%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -1616,34 +1600,36 @@
 <th style="text-align: left;">variableStartShortLabel</th>
 <th style="text-align: left;">variableStartLabel</th>
 <th style="text-align: left;">notes</th>
+<th style="text-align: left;">X</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">308</td>
-<td style="text-align: left;">diabx</td>
+<td style="text-align: left;">cvd_status</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
+<td style="text-align: left;">DerivedVar::[ccc_61, ccc_63, ccc_81]</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Func::determine_inclusive_diabetes</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">Func::derive_cvd_personal_history</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">Cardiovascular disease</td>
+<td style="text-align: left;">Cardiovascular disease - heart disease OR stroke</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">309</td>
-<td style="text-align: left;">diabx</td>
-<td style="text-align: left;">diabx_cat2_1</td>
+<td style="text-align: left;">cvd_status</td>
+<td style="text-align: left;">cvd_status_cat2_1</td>
 <td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
+<td style="text-align: left;">DerivedVar::[ccc_61, ccc_63, ccc_81]</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">1</td>
 <td style="text-align: left;">2</td>
@@ -1652,17 +1638,18 @@
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">Cardiovascular disease</td>
+<td style="text-align: left;">Cardiovascular disease - heart disease OR stroke</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">310</td>
-<td style="text-align: left;">diabx</td>
-<td style="text-align: left;">diabx_cat2_2</td>
+<td style="text-align: left;">cvd_status</td>
+<td style="text-align: left;">cvd_status_cat2_2</td>
 <td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
+<td style="text-align: left;">DerivedVar::[ccc_61, ccc_63, ccc_81]</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">2</td>
 <td style="text-align: left;">2</td>
@@ -1671,58 +1658,61 @@
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">Cardiovascular disease</td>
+<td style="text-align: left;">Cardiovascular disease - heart disease OR stroke</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">311</td>
-<td style="text-align: left;">diabx</td>
-<td style="text-align: left;">diabx_cat2_NA::b</td>
+<td style="text-align: left;">cvd_status</td>
+<td style="text-align: left;">cvd_status_cat2_NAa</td>
 <td style="text-align: left;">cat</td>
-<td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
+<td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle5</td>
+<td style="text-align: left;">DerivedVar::[ccc_61, ccc_63, ccc_81]</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">NA::a</td>
 <td style="text-align: left;">2</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">Cardiovascular disease</td>
+<td style="text-align: left;">Cardiovascular disease - heart disease OR stroke</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>As you can see, the first row for diabx specifies the function for the derived variable and the base variables included. The second and third rows specify the categories of the variables, which are then labelled.</p>
+<p>As you can see, the first row for diab_status specifies the function for the derived variable and the base variables included. The second and third rows specify the categories of the variables, which are then labelled.</p>
 </section><section class="level3"><h3 id="creating-a-derived-variable-using-derived-variables">Creating a derived variable using derived variables<a class="anchor" aria-label="anchor" href="#creating-a-derived-variable-using-derived-variables"></a>
 </h3>
-<p>It is possible to create a derived variable that involves derived variables. When creating the custom function for it, use the derived variable name inside the function. Similarly, when specifying the variable in <code>variable_details.csv</code> and <code>variables.csv</code>, use the derived variable in the <strong>variableStart</strong> column. The example below shows how diabx uses the derived diabetes drug variable, is specified in <code>variable_details.csv</code> and <code>variables.csv</code>.</p>
+<p>It is possible to create a derived variable that involves derived variables. When creating the custom function for it, use the derived variable name inside the function. Similarly, when specifying the variable in <code>variable_details.csv</code> and <code>variables.csv</code>, use the derived variable in the <strong>variableStart</strong> column. The example below shows how diab_status uses the derived diabetes drug variable, is specified in <code>variable_details.csv</code> and <code>variables.csv</code>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table caption-top" style="width:100%;">
+<table class="table caption-top">
 <colgroup>
 <col style="width: 1%">
-<col style="width: 2%">
-<col style="width: 5%">
+<col style="width: 3%">
+<col style="width: 6%">
 <col style="width: 2%">
 <col style="width: 14%">
-<col style="width: 12%">
+<col style="width: 11%">
 <col style="width: 3%">
 <col style="width: 10%">
 <col style="width: 3%">
-<col style="width: 2%">
+<col style="width: 4%">
 <col style="width: 4%">
 <col style="width: 1%">
 <col style="width: 2%">
 <col style="width: 4%">
 <col style="width: 7%">
-<col style="width: 18%">
+<col style="width: 15%">
 <col style="width: 1%">
+<col style="width: 0%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -1742,34 +1732,36 @@
 <th style="text-align: left;">variableStartShortLabel</th>
 <th style="text-align: left;">variableStartLabel</th>
 <th style="text-align: left;">notes</th>
+<th style="text-align: left;">X</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">308</td>
-<td style="text-align: left;">diabx</td>
+<td style="text-align: left;">cvd_status</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
+<td style="text-align: left;">DerivedVar::[ccc_61, ccc_63, ccc_81]</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Func::determine_inclusive_diabetes</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">Func::derive_cvd_personal_history</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">Cardiovascular disease</td>
+<td style="text-align: left;">Cardiovascular disease - heart disease OR stroke</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">309</td>
-<td style="text-align: left;">diabx</td>
-<td style="text-align: left;">diabx_cat2_1</td>
+<td style="text-align: left;">cvd_status</td>
+<td style="text-align: left;">cvd_status_cat2_1</td>
 <td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
+<td style="text-align: left;">DerivedVar::[ccc_61, ccc_63, ccc_81]</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">1</td>
 <td style="text-align: left;">2</td>
@@ -1778,17 +1770,18 @@
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">Cardiovascular disease</td>
+<td style="text-align: left;">Cardiovascular disease - heart disease OR stroke</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">310</td>
-<td style="text-align: left;">diabx</td>
-<td style="text-align: left;">diabx_cat2_2</td>
+<td style="text-align: left;">cvd_status</td>
+<td style="text-align: left;">cvd_status_cat2_2</td>
 <td style="text-align: left;">cat</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
+<td style="text-align: left;">DerivedVar::[ccc_61, ccc_63, ccc_81]</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">2</td>
 <td style="text-align: left;">2</td>
@@ -1797,52 +1790,51 @@
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">Cardiovascular disease</td>
+<td style="text-align: left;">Cardiovascular disease - heart disease OR stroke</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">311</td>
-<td style="text-align: left;">diabx</td>
-<td style="text-align: left;">diabx_cat2_NA::b</td>
+<td style="text-align: left;">cvd_status</td>
+<td style="text-align: left;">cvd_status_cat2_NAa</td>
 <td style="text-align: left;">cat</td>
-<td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
+<td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle5</td>
+<td style="text-align: left;">DerivedVar::[ccc_61, ccc_63, ccc_81]</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">NA::b</td>
+<td style="text-align: left;">NA::a</td>
 <td style="text-align: left;">2</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">missing</td>
+<td style="text-align: left;">not applicable</td>
+<td style="text-align: left;">not applicable</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">N/A</td>
-<td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">Cardiovascular disease</td>
+<td style="text-align: left;">Cardiovascular disease - heart disease OR stroke</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="cell-output-display">
-<table class="table caption-top" style="width:100%;">
+<table class="table caption-top">
 <colgroup>
 <col style="width: 1%">
-<col style="width: 3%">
-<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 21%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 6%">
 <col style="width: 3%">
 <col style="width: 25%">
-<col style="width: 5%">
-<col style="width: 6%">
-<col style="width: 5%">
-<col style="width: 2%">
-<col style="width: 20%">
-<col style="width: 17%">
-<col style="width: 5%">
+<col style="width: 15%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
 <th style="text-align: left;">variable</th>
-<th style="text-align: left;">role</th>
 <th style="text-align: left;">label</th>
 <th style="text-align: left;">labelLong</th>
 <th style="text-align: left;">section</th>
@@ -1851,26 +1843,32 @@
 <th style="text-align: left;">units</th>
 <th style="text-align: left;">databaseStart</th>
 <th style="text-align: left;">variableStart</th>
-<th style="text-align: left;">description</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">80</td>
-<td style="text-align: left;">diabx</td>
-<td style="text-align: left;">Test</td>
+<td style="text-align: left;">diab_a1c</td>
 <td style="text-align: left;">Diabetes</td>
-<td style="text-align: left;">Diabetes prevalence based on more inclusive classification</td>
+<td style="text-align: left;">Diabetes prevalence based on HbA1C level</td>
 <td style="text-align: left;">Health status</td>
 <td style="text-align: left;">Chronic disease</td>
 <td style="text-align: left;">Categorical</td>
 <td style="text-align: left;">N/A</td>
 <td style="text-align: left;">cycle1, cycle2, cycle3, cycle4, cycle5, cycle6</td>
-<td style="text-align: left;">DerivedVar::[diab_m, ccc_51, diab_drug2]</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">cycle6::LAB_HBA1, [lab_hba1]</td>
 </tr></tbody>
 </table>
 </div>
 </div>
-</section></section><script id="quarto-html-after-body" type="application/javascript">
+</section></section><section class="level2"><h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+</h2>
+<ul>
+<li>
+<strong>Understand the schema</strong> – For a column-by-column reference of <code>variables.csv</code> and <code>variable-details.csv</code>, see <a href="variables_and_variable_details.html">Variable schema reference</a>.</li>
+<li>
+<strong>See derived variables in context</strong> – Learn how <code>Func::</code> and <code>DerivedVar::</code> entries are used in <a href="derived_variables.html">Derived variables</a>.</li>
+<li>
+<strong>Contribute to chmsflow</strong> – See the <a href="https://github.com/Big-Life-Lab/chmsflow/blob/dev/CONTRIBUTING.md" class="external-link">contributing guide</a> for how to submit your additions.</li>
+</ul></section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -1959,7 +1957,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafidul Islam, Douglas Manuel, Therese Chan.</p>
+  <p>Developed by Rafidul Islam, Douglas Manuel.</p>
 </div>
 
 <div class="pkgdown-footer-right">

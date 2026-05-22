@@ -37,8 +37,23 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/get_started.html">Get started</a></li>
-<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/analysis_walkthrough.html">Tutorial</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides">
+<li><a class="dropdown-item" href="../articles/recoding_medications.html">Recoding medications</a></li>
+    <li><a class="dropdown-item" href="../articles/using_chmsflow_at_an_rdc.html">Using chmsflow at an RDC</a></li>
+    <li><a class="dropdown-item" href="../articles/how_to_add_variables.html">Adding variables</a></li>
+  </ul>
+</li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-explanation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Explanation</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-explanation">
+<li><a class="dropdown-item" href="../articles/methodology.html">Methodology</a></li>
+    <li><a class="dropdown-item" href="../articles/tagged_na_usage.html">Missing data (tagged NA)</a></li>
+    <li><a class="dropdown-item" href="../articles/derived_variables.html">Derived variables</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
@@ -66,121 +81,57 @@
 
 
 
-    <section class="level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
-<p>There are two types derived variables in the CHMS surveys. Both types of derived variables are supported in <code>chmsflow</code>.</p>
-<ul>
-<li>Variable mapping - mapping two or more variables into a single variable.</li>
-<li>Variables that derived using math equations.</li>
-</ul>
-<p><code>chmsflow</code> calculates these more complex derived variables using functions that are referenced in <code>variable_details.csv</code> within <code>RecTo</code> section with the prefix ‘Func::’. The variables used in the function are referenced in the <code>variableStart</code> section with the prefix ‘DerivedVar::’. For example, GFR (<code>gfr</code>) includes <code>Func::calculate_GFR</code> in the <code>RecTo</code> section; and <code>DerivedVar::[lab_bcre, pgdcgt, clc_sex, clc_age]</code> in the <code>variableStart</code> section, which indicates the four starting variables (<code>lab_bcre, pgdcgt, clc_sex, clc_age</code>).</p>
-</section><section class="level2"><h2 id="example---glomerular-filtration-rate-gfr">Example - Glomerular filtration rate (GFR)<a class="anchor" aria-label="anchor" href="#example---glomerular-filtration-rate-gfr"></a>
-</h2>
-<p>A derived variable for GFR has been created in <code>chmsflow</code> that uses harmonized blood creatine (lab_bcre - in µmol/L), ethnicity (pgdcgt - 13 categories), sex (clc_sex - 2 categories), and age (clc_age - in years) variables across all CHMS cycles.</p>
-<p>Using <code>rec_with_table()</code> you can transform the derived WHR variable across multiple CHMS cycles and create a transformed dataset.</p>
-<p>In order derive variables, you must load the existing custom function associated with the derived variable</p>
-<div class="cell">
+    <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Function for derived GFR variable</span></span>
-<span><span class="va">calculate_GFR</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">LAB_BCRE</span>, <span class="va">PGDCGT</span>, <span class="va">CLC_SEX</span>, <span class="va">CLC_AGE</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">GFR</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span>  <span class="va">serumcreat</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">LAB_BCRE</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">14</span><span class="op">:</span><span class="fl">785</span><span class="op">)</span> <span class="op">||</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">CLC_SEX</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">PGDCGT</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span><span class="op">:</span><span class="fl">13</span><span class="op">)</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="op">!</span><span class="va">CLC_AGE</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">3</span><span class="op">:</span><span class="fl">79</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">GFR</span> <span class="op">&lt;-</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span> <span class="co"># GFR is NA if any non-responses found</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="va">serumcreat</span> <span class="op">&lt;-</span> <span class="va">LAB_BCRE</span> <span class="op">/</span> <span class="fl">88.4</span> <span class="co"># Proceeds without non-responses</span></span>
-<span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">CLC_SEX</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">PGDCGT</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="va">serumcreat</span> <span class="op">!=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="kw">if</span> <span class="op">(</span><span class="va">CLC_SEX</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">&amp;&amp;</span> <span class="va">PGDCGT</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="va">GFR</span> <span class="op">&lt;-</span> <span class="fl">175</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">serumcreat</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1.154</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">CLC_AGE</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">0.203</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0.742</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1.210</span><span class="op">)</span> <span class="co"># female and black</span></span>
-<span>      <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">CLC_SEX</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">&amp;&amp;</span> <span class="va">PGDCGT</span> <span class="op">!=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="va">GFR</span> <span class="op">&lt;-</span> <span class="fl">175</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">serumcreat</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1.154</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">CLC_AGE</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">0.203</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0.742</span><span class="op">)</span> <span class="co"># female and not black</span></span>
-<span>      <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">CLC_SEX</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;&amp;</span> <span class="va">PGDCGT</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="va">GFR</span> <span class="op">&lt;-</span> <span class="fl">175</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">serumcreat</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1.154</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">CLC_AGE</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">0.203</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1.210</span><span class="op">)</span> <span class="co"># male and black</span></span>
-<span>      <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">CLC_SEX</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;&amp;</span> <span class="va">PGDCGT</span> <span class="op">!=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="va">GFR</span> <span class="op">&lt;-</span> <span class="fl">175</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">serumcreat</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1.154</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">CLC_AGE</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">0.203</span><span class="op">)</span><span class="op">)</span> <span class="co"># male and not black</span></span>
-<span>      <span class="op">}</span></span>
-<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>      <span class="va">GFR</span> <span class="op">&lt;-</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">tagged_na</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span> <span class="co"># Handle case where CLC_SEX or PGDCGT is NA or serumcreat is 0</span></span>
-<span>    <span class="op">}</span></span>
-<span>  <span class="op">}</span></span>
-<span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">GFR</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/chmsflow" class="external-link">chmsflow</a></span><span class="op">)</span></span></code></pre></div>
 </div>
+<section class="level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>There are two types of derived variables in the CHMS surveys. Both are supported in chmsflow.</p>
+<ul>
+<li>
+<strong>Variable mapping</strong> – mapping two or more variables into a single variable.</li>
+<li>
+<strong>Computed variables</strong> – variables derived using mathematical equations or clinical logic.</li>
+</ul>
+<p>chmsflow computes derived variables using functions referenced in <code>variable-details.csv</code>. The <code>recEnd</code> column uses the prefix <code>Func::</code> to name the R function, and the <code>variableStart</code> column uses the prefix <code>DerivedVar::</code> to list the input variables.</p>
+<p>For example, GFR (<code>gfr_ml_min</code>) has:</p>
+<ul>
+<li>
+<code>recEnd</code>: <code>Func::calculate_gfr</code>
+</li>
+<li>
+<code>variableStart</code>: <code>DerivedVar::[lab_bcre, pgdcgt, clc_sex, clc_age]</code>
+</li>
+</ul>
+<p>This tells <code><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table()</a></code> to call <code><a href="../reference/calculate_gfr.html">calculate_gfr()</a></code> with the four input variables.</p>
+</section><section class="level2"><h2 id="how-to-use-derived-variables">How to use derived variables<a class="anchor" aria-label="anchor" href="#how-to-use-derived-variables"></a>
+</h2>
+<p>Since derived variables depend on their input variables, you must list both the derived variable and its inputs when calling <code><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table()</a></code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cycle2_gfr</span> <span class="op">&lt;-</span> <span class="fu">recodeflow</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle2</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gfr"</span>, <span class="st">"lab_bcre"</span>, <span class="st">"pgdcgt"</span>, <span class="st">"clc_sex"</span>, <span class="st">"clc_age"</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Using the passed data variable name as database_name</code></pre>
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cycle2_gfr</span> <span class="op">&lt;-</span> <span class="fu">recodeflow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span></span>
+<span>  <span class="va">cycle2</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lab_bcre"</span>, <span class="st">"pgdcgt"</span>, <span class="st">"clc_sex"</span>, <span class="st">"clc_age"</span>, <span class="st">"gfr_ml_min"</span><span class="op">)</span>,</span>
+<span>  variable_details <span class="op">=</span> <span class="va">variable_details</span>,</span>
+<span>  log <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The variable clc_age was recoded into clc_age for the database cycle2 the following recodes were made: </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  value_to       From rows_recoded
-1     copy    [3, 80]            4
-2    NA::a        996            0
-3    NA::b [997, 999]            0
-4     &lt;NA&gt;       else            0</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The variable clc_sex was recoded into clc_sex for the database cycle2 the following recodes were made: </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  value_to   From rows_recoded
-1        1      1            2
-2        2      2            2
-3    NA::a      6            0
-4    NA::b [7, 9]            0
-5    NA(b)   else            0</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The variable lab_bcre was recoded into lab_bcre for the database cycle2 the following recodes were made: </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  value_to         From rows_recoded
-1     copy    [14, 785]            4
-2    NA::a [9994, 9996]            0
-3    NA::b [9997, 9999]            0
-4     &lt;NA&gt;         else            0</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The variable sdcdcgt was recoded into pgdcgt for the database cycle2 the following recodes were made: </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   value_to     From rows_recoded
-1         1        1            3
-2         2        2            1
-3         3        3            0
-4         4        4            0
-5         5        5            0
-6         6        6            0
-7         7        7            0
-8         8        8            0
-9         9        9            0
-10       10       10            0
-11       11       11            0
-12       12       12            0
-13       13       13            0
-14       12       96            0
-15    NA::b [97, 99]            0
-16    NA(b)     else            0</code></pre>
-</div>
-</div>
-<p>Since derived variables are based on previously transformed variables, if you want to only transform your derived variable, you must also specify its base CHMS variables in <code>rec_with_table()</code> as shown above. So for the derived GFR variable, you will have to also specify the blood creatine (lab_bcre), ethnicity (pgdcgt), sex (clc_sex), and age (clc_age) variables.</p>
+<p>For variables that depend on medication status (e.g., hypertension, diabetes), use <code><a href="../reference/recode_after_meds.html">recode_after_meds()</a></code> instead of <code><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table()</a></code>. See <a href="recoding_medications.html">Recoding medications</a> and <a href="analysis_walkthrough.html">Analysis walkthrough</a> for the full workflow.</p>
 </section><section class="level2"><h2 id="creating-a-derived-variable">Creating a derived variable<a class="anchor" aria-label="anchor" href="#creating-a-derived-variable"></a>
 </h2>
-<p>Creating a derived variable requires the harmonization of existing CHMS variables, and a custom function that uses those harmonized variables. For more information on how to create a derived variable <a href="how_to_add_variables.html">see here</a></p>
-</section><script id="quarto-html-after-body" type="application/javascript">
+<p>To add a new derived variable to chmsflow, you need to create a harmonized set of input variables and an R function that computes the derived value. See <a href="how_to_add_variables.html">How to add variables</a> for step-by-step instructions.</p>
+<p>For details on the metadata schema, see <a href="variables_and_variable_details.html">Variable schema reference</a>.</p>
+</section><section class="level2"><h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+</h2>
+<ul>
+<li>
+<strong>See derived variables in a full analysis</strong> – The <a href="analysis_walkthrough.html">Analysis walkthrough</a> demonstrates deriving hypertension status from CHMS cycle 3 data.</li>
+<li>
+<strong>Handle missing data</strong> – Learn how <code>tagged_na()</code> codes propagate through derived variable functions in <a href="tagged_na_usage.html">Missing data (tagged_na)</a>.</li>
+<li>
+<strong>Understand the methodology</strong> – For the design rationale behind the rules-as-data approach, see <a href="methodology.html">Methodology</a>.</li>
+</ul></section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -269,7 +220,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafidul Islam, Douglas Manuel, Therese Chan.</p>
+  <p>Developed by Rafidul Islam, Douglas Manuel.</p>
 </div>
 
 <div class="pkgdown-footer-right">

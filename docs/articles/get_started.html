@@ -37,8 +37,23 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item"><a class="nav-link" href="../articles/get_started.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/analysis_walkthrough.html">Tutorial</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides">
+<li><a class="dropdown-item" href="../articles/recoding_medications.html">Recoding medications</a></li>
+    <li><a class="dropdown-item" href="../articles/using_chmsflow_at_an_rdc.html">Using chmsflow at an RDC</a></li>
+    <li><a class="dropdown-item" href="../articles/how_to_add_variables.html">Adding variables</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-explanation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Explanation</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-explanation">
+<li><a class="dropdown-item" href="../articles/methodology.html">Methodology</a></li>
+    <li><a class="dropdown-item" href="../articles/tagged_na_usage.html">Missing data (tagged NA)</a></li>
+    <li><a class="dropdown-item" href="../articles/derived_variables.html">Derived variables</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
@@ -66,157 +81,290 @@
 
 
 
-    <section class="level2"><h2 id="load-packages">1. Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+    <div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/chmsflow" class="external-link">chmsflow</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<section class="level2"><h2 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>chmsflow harmonizes variables from the Canadian Health Measures Survey (CHMS) across cycles 1–6 and derives health indicators used in health research. It works with the <a href="https://big-life-lab.github.io/recodeflow/" class="external-link">recodeflow</a> package to transform raw CHMS variables into analysis-ready versions using recoding rules defined in CSV metadata files.</p>
+<section class="level3"><h3 id="what-chmsflow-provides">What chmsflow provides<a class="anchor" aria-label="anchor" href="#what-chmsflow-provides"></a>
+</h3>
+<p>The package includes two metadata CSV files (<code>variables.csv</code> and <code>variable-details.csv</code>) that define how raw CHMS variables are recoded, and 42 functions that derive new health indicators. The table below summarizes the available variables, organized by <code>section</code> and <code>subject</code> as defined in <code>variables.csv</code>:</p>
+<table class="table caption-top">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 32%">
+<col style="width: 35%">
+</colgroup>
+<thead><tr class="header">
+<th>Section</th>
+<th>Subject</th>
+<th>Examples</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Sociodemographics</td>
+<td>Age, sex, ethnicity</td>
+<td>
+<code>clc_age</code>, <code>clc_sex</code>, <code>pgdcgt</code>
+</td>
+</tr>
+<tr class="even">
+<td>Socioeconomic</td>
+<td>Income, education, occupation, marital status</td>
+<td>
+<code>adj_hh_income</code>, <code>income_quintile</code>, <code>edudr04</code>
+</td>
+</tr>
+<tr class="odd">
+<td>Health status</td>
+<td>Blood pressure, hypertension</td>
+<td>
+<code>sbp_adj_mmhg</code>, <code>htn_status</code>, <code>htn_control_status</code>
+</td>
+</tr>
+<tr class="even">
+<td>Health status</td>
+<td>Chronic disease (diabetes, CKD, CVD)</td>
+<td>
+<code>diab_status</code>, <code>ckd_status</code>, <code>cvd_status</code>
+</td>
+</tr>
+<tr class="odd">
+<td>Health status</td>
+<td>Medication (8 drug classes from ATC codes)</td>
+<td>
+<code>ace_med</code>, <code>any_htn_med</code>, <code>diab_med</code>
+</td>
+</tr>
+<tr class="even">
+<td>Health status</td>
+<td>Weight, height, cholesterol</td>
+<td>
+<code>nonhdl_mmoll</code>, <code>waist_height_ratio</code>, <code>hwmdbmi</code>
+</td>
+</tr>
+<tr class="odd">
+<td>Health status</td>
+<td>Family history</td>
+<td>
+<code>cvd_premature_famhist_status</code>, <code>fam_bp</code>
+</td>
+</tr>
+<tr class="even">
+<td>Health behaviour</td>
+<td>Alcohol, diet</td>
+<td>
+<code>alc_risk_score</code>, <code>fv_daily_times</code>, <code>healthy_diet_indicator</code>
+</td>
+</tr>
+<tr class="odd">
+<td>Health behaviour</td>
+<td>Exercise</td>
+<td>
+<code>exercise_min_week</code>, <code>enough_exercise_indicator</code>
+</td>
+</tr>
+<tr class="even">
+<td>Health behaviour</td>
+<td>Smoking</td>
+<td>
+<code>pack_years</code>, <code>smoke</code>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For the full variable list, see <a href="variables_and_variable_details.html">Variable schema reference</a>.</p>
+</section><section class="level3"><h3 id="typical-workflow">Typical workflow<a class="anchor" aria-label="anchor" href="#typical-workflow"></a>
+</h3>
+<ol type="1">
+<li>
+<strong>Merge cycle components</strong> - At the RDC, combine household, clinic, and lab data into one object per cycle (e.g., <code>cycle4</code>). Keep medication data separate as <code>cyclex_meds</code>.</li>
+<li>
+<strong>Recode medications first</strong> - If your analysis needs medication variables, always recode them before other variables. See <a href="recoding_medications.html">Recoding medications</a>.</li>
+<li>
+<strong>Recode other variables</strong> - Use <code><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table()</a></code> from recodeflow to transform source variables and derive new ones.</li>
+</ol></section></section><section class="level2"><h2 id="installation">2. Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install release version from CRAN</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"chmsflow"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Install the most recent version from GitHub</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Big-Life-Lab/chmsflow"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/chmsflow" class="external-link">chmsflow</a></span><span class="op">)</span></span></code></pre></div>
-</div>
-</section><section class="level2"><h2 id="transform-variables-into-harmonized-versions">2. Transform variables into harmonized versions<a class="anchor" aria-label="anchor" href="#transform-variables-into-harmonized-versions"></a>
+</section><section class="level2"><h2 id="quick-start">3. Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>Use <code><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table()</a></code> of recodeflow to transform the variables of a CHMS dataset. Cycle data object always has to be called “cyclex” in order for recoding to work properly.</p>
-<p>At the RDC, each cycle is split into multiple components (e.g., household data, clinic data, laboratory data, etc.), so it is the analyst’s responsibility to merge their required components in one database named “cyclex”. However, keep medication data separate from the rest of the cycle data (<a href="recoding_medications.html">see here</a>). Note that row headers for cycle 6 must be put to lower case prior to recoding.</p>
+<p>Use <code><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table()</a></code> from recodeflow to transform CHMS variables. The cycle data object must be named <code>cyclex</code> for recoding to work properly.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load recodeflow</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/recodeflow" class="external-link">recodeflow</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Big-Life-Lab/recodeflow" class="external-link">recodeflow</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Recoding basic variables</span></span>
-<span><span class="va">cycle4_ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle4</span>, <span class="st">"clc_age"</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Recode a source variable (age)</span></span>
+<span><span class="va">cycle4_ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span></span>
+<span>  <span class="va">cycle4</span>, <span class="st">"clc_age"</span>,</span>
+<span>  variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Using the passed data variable name as database_name</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
-database_name, : is missing from variable details therefore cannot be recoded</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>The variable clc_age was recoded into clc_age for the database cycle4 the following recodes were made: </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  value_to       From rows_recoded
-1     copy    [3, 80]         1000
+1     copy    [3, 80]           50
 2    NA::a        996            0
 3    NA::b [997, 999]            0
 4     &lt;NA&gt;       else            0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle4_ages</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  clc_age
-1      50
-2      34
-3      70
-4      33
-5      22
-6      61</code></pre>
+1      73
+2      33
+3      22
+4      47
+5      74
+6      22</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cycle4_sexes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle4</span>, <span class="st">"clc_sex"</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="level2"><h2 id="variable-types">4. Variable types<a class="anchor" aria-label="anchor" href="#variable-types"></a>
+</h2>
+<p>chmsflow handles three types of variables, each recoded differently.</p>
+<section class="level3"><h3 id="source-variables-direct-mapping">4.1 Source variables (direct mapping)<a class="anchor" aria-label="anchor" href="#source-variables-direct-mapping"></a>
+</h3>
+<p>Source variables are mapped directly from raw CHMS columns. Variable names may differ across cycles, but chmsflow harmonizes them to a single name.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Recode sex (same variable name across all cycles)</span></span>
+<span><span class="va">cycle4_sexes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span></span>
+<span>  <span class="va">cycle4</span>, <span class="st">"clc_sex"</span>,</span>
+<span>  variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Using the passed data variable name as database_name</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
-database_name, : is missing from variable details therefore cannot be recoded</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>The variable clc_sex was recoded into clc_sex for the database cycle4 the following recodes were made: </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  value_to   From rows_recoded
-1        1      1          516
-2        2      2          484
+1        1      1           27
+2        2      2           23
 3    NA::a      6            0
 4    NA::b [7, 9]            0
 5    NA(b)   else            0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle4_sexes</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  clc_sex
 1       2
 2       2
-3       1
-4       1
-5       1
+3       2
+4       2
+5       2
 6       2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Recoding a transformed variable (cont to cat)</span></span>
-<span><span class="va">cycle4_categorical_ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle4</span>, <span class="st">"agegroup4"</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="level3"><h3 id="transformed-variables-continuous-to-categorical">4.2 Transformed variables (continuous to categorical)<a class="anchor" aria-label="anchor" href="#transformed-variables-continuous-to-categorical"></a>
+</h3>
+<p>Some variables convert continuous measurements into categories using thresholds defined in <code>variable-details.csv</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Recode age into 4 groups</span></span>
+<span><span class="va">cycle4_categorical_ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span></span>
+<span>  <span class="va">cycle4</span>, <span class="st">"agegroup4"</span>,</span>
+<span>  variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Using the passed data variable name as database_name</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
-database_name, : is missing from variable details therefore cannot be recoded</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>The variable clc_age was recoded into agegroup4 for the database cycle4 the following recodes were made: </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  value_to       From rows_recoded
-1        1   [20, 39]          337
-2        2   [40, 59]          332
-3        3   [60, 69]          161
-4        4   [70, 79]          170
+1        1   [20, 39]           12
+2        2   [40, 59]           23
+3        3   [60, 69]            6
+4        4   [70, 79]            9
 5    NA::a        996            0
 6    NA::b [997, 999]            0
 7    NA(b)       else            0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle4_categorical_ages</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  agegroup4
-1         2
+1         4
 2         1
-3         4
-4         1
-5         1
-6         3</code></pre>
+3         1
+4         2
+5         4
+6         1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Recoding a derived variable</span></span>
-<span><span class="va">cycle4_adjusted_SBPs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span><span class="va">cycle4</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bpmdpbps"</span>, <span class="st">"sbp_adj"</span><span class="op">)</span>, variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="level3"><h3 id="derived-variables-computed-by-functions">4.3 Derived variables (computed by functions)<a class="anchor" aria-label="anchor" href="#derived-variables-computed-by-functions"></a>
+</h3>
+<p>Derived variables are computed by R functions referenced as <code>Func::</code> entries in <code>variable-details.csv</code>. These require their input variables to be present in the data. See <a href="derived_variables.html">Derived variables</a> for details.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Derive adjusted systolic blood pressure</span></span>
+<span><span class="co"># bpmdpbps (raw SBP) must be in the data for sbp_adj_mmhg to be computed</span></span>
+<span><span class="va">cycle4_adjusted_SBPs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/recodeflow/man/rec_with_table.html" class="external-link">rec_with_table</a></span><span class="op">(</span></span>
+<span>  <span class="va">cycle4</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bpmdpbps"</span>, <span class="st">"sbp_adj_mmhg"</span><span class="op">)</span>,</span>
+<span>  variable_details <span class="op">=</span> <span class="va">variable_details</span>, log <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Using the passed data variable name as database_name</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in recode_call(variables = variables, data = data, database_name =
-database_name, : is missing from variable details therefore cannot be recoded</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>The variable bpmdpbps was recoded into bpmdpbps for the database cycle4 the following recodes were made: </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  value_to       From rows_recoded
-1     copy  [73, 216]          977
-2    NA::a        996            1
-3    NA::b [997, 999]           22
+1     copy  [73, 216]           50
+2    NA::a        996            0
+3    NA::b [997, 999]            0
 4     &lt;NA&gt;       else            0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cycle4_adjusted_SBPs</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  bpmdpbps sbp_adj
-1      118  121.14
-2      123  125.79
-3      104  108.12
-4      201  198.33
-5       82   87.66
-6      141  142.53</code></pre>
+<pre><code>  bpmdpbps sbp_adj_mmhg
+1      207       203.91
+2      101       105.33
+3       92        96.96
+4      196       193.68
+5      152       152.76
+6       79        84.87</code></pre>
 </div>
 </div>
-</section><script id="quarto-html-after-body" type="application/javascript">
+</section></section><section class="level2"><h2 id="next-steps">5. Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+</h2>
+<ul>
+<li>
+<strong>Full walkthrough</strong> – End-to-end hypertension prevalence analysis in <a href="analysis_walkthrough.html">Analysis walkthrough</a>.</li>
+<li>
+<strong>Medication recoding</strong> – Required before deriving hypertension or diabetes status. See <a href="recoding_medications.html">Recoding medications</a>.</li>
+<li>
+<strong>Understanding the metadata</strong> – Learn about the CSV schema in <a href="variables_and_variable_details.html">Variable schema reference</a>.</li>
+<li>
+<strong>Derived variables</strong> – How <code>Func::</code> and <code>DerivedVar::</code> entries work in <a href="derived_variables.html">Derived variables</a>.</li>
+<li>
+<strong>Adding variables</strong> – Extend chmsflow with your own variables in <a href="how_to_add_variables.html">How to add variables</a>.</li>
+<li>
+<strong>Missing data</strong> – How <code><a href="https://haven.tidyverse.org/reference/tagged_na.html" class="external-link">haven::tagged_na()</a></code> handles CHMS missing codes in <a href="tagged_na_usage.html">Missing data (tagged_na)</a>.</li>
+<li>
+<strong>Methodology</strong> – Why harmonization is non-trivial and how chmsflow works in <a href="methodology.html">Methodology</a>.</li>
+<li>
+<strong>RDC setup</strong> – Using chmsflow at a Research Data Centre in <a href="using_chmsflow_at_an_rdc.html">Using chmsflow at an RDC</a>.</li>
+</ul></section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -305,7 +453,7 @@ database_name, : is missing from variable details therefore cannot be recoded</c
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafidul Islam, Douglas Manuel, Therese Chan.</p>
+  <p>Developed by Rafidul Islam, Douglas Manuel.</p>
 </div>
 
 <div class="pkgdown-footer-right">

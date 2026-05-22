@@ -15,8 +15,19 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/get_started.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/analysis_walkthrough.html">Tutorial</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides"><li><a class="dropdown-item" href="../articles/recoding_medications.html">Recoding medications</a></li>
+    <li><a class="dropdown-item" href="../articles/using_chmsflow_at_an_rdc.html">Using chmsflow at an RDC</a></li>
+    <li><a class="dropdown-item" href="../articles/how_to_add_variables.html">Adding variables</a></li>
+  </ul></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-explanation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Explanation</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-explanation"><li><a class="dropdown-item" href="../articles/methodology.html">Methodology</a></li>
+    <li><a class="dropdown-item" href="../articles/tagged_na_usage.html">Missing data (tagged NA)</a></li>
+    <li><a class="dropdown-item" href="../articles/derived_variables.html">Derived variables</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/Big-Life-Lab/chmsflow/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -32,12 +43,30 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="chmsflow-010-first-version">chmsflow 0.1.0 (First Version)<a class="anchor" aria-label="anchor" href="#chmsflow-010-first-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="chmsflow-010">chmsflow 0.1.0<a class="anchor" aria-label="anchor" href="#chmsflow-010"></a></h2>
 <div class="section level3">
-<h3 id="features-0-1-0">Features<a class="anchor" aria-label="anchor" href="#features-0-1-0"></a></h3>
+<h3 id="basic-features-0-1-0">Basic features<a class="anchor" aria-label="anchor" href="#basic-features-0-1-0"></a></h3>
 <ul><li>Added variables.csv that contains list of CHMS variables in chmsflow.</li>
 <li>Added variable-details.csv that maps variables across CHMS cycles 1-6</li>
 <li>Added Vignettes to describe the process of using rec_with_table() (part of recodeflow) to combine the data</li>
+</ul></div>
+<div class="section level3">
+<h3 id="medication-features-0-1-0">Medication features<a class="anchor" aria-label="anchor" href="#medication-features-0-1-0"></a></h3>
+<ul><li>
+<p><code><a href="../reference/recode_meds_cycles1to2.html">recode_meds_cycles1to2()</a></code> and <code><a href="../reference/recode_meds_cycles3to6.html">recode_meds_cycles3to6()</a></code> recode medication data and merge medication columns into the main cycle data frame in one call. Both share the same call signature, so the workflow is identical regardless of cycle:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cycle1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/recode_meds_cycles1to2.html">recode_meds_cycles1to2</a></span><span class="op">(</span><span class="va">cycle1</span>, <span class="va">cycle1_meds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"any_htn_med"</span>, <span class="st">"diab_med"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">cycle3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/recode_meds_cycles3to6.html">recode_meds_cycles3to6</a></span><span class="op">(</span><span class="va">cycle3</span>, <span class="va">cycle3_meds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"any_htn_med"</span>, <span class="st">"diab_med"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</li>
+<li><p><code><a href="../reference/aggregate_meds_by_person.html">aggregate_meds_by_person()</a></code> collapses long-format medication data to one row per respondent, preserving <code>tagged_na("a")</code> (valid skip) and <code>tagged_na("b")</code> (missing) distinctions across the aggregation.</p></li>
+<li><p><code><a href="../reference/recode_after_meds.html">recode_after_meds()</a></code> recodes derived variables (e.g. <code>htn_status</code>, <code>diab_status</code>) whose inputs include pre-computed medication variables, automatically excluding meds-database rows from <code>variable_details</code> so medication columns are passed through rather than re-derived from raw ATC/MHR columns.</p></li>
+<li><p>16 ATC-classification functions (<code><a href="../reference/is_ace_inhibitor.html">is_ace_inhibitor()</a></code>, <code><a href="../reference/is_beta_blocker.html">is_beta_blocker()</a></code>, <code><a href="../reference/is_calcium_channel_blocker.html">is_calcium_channel_blocker()</a></code>, <code><a href="../reference/is_diuretic.html">is_diuretic()</a></code>, <code><a href="../reference/is_diabetes_med.html">is_diabetes_med()</a></code>, <code><a href="../reference/is_nsaid.html">is_nsaid()</a></code>, <code><a href="../reference/is_any_antihtn_med.html">is_any_antihtn_med()</a></code>, <code><a href="../reference/is_other_antihtn_med.html">is_other_antihtn_med()</a></code>, plus their <code>is_*_cycles1to2()</code> variants) are exported for custom workflows.</p></li>
+<li><p>New vignette <code>recoding_medications.qmd</code> documents the medication-recoding workflow for both cycle groupings, with a section on calling the underlying <code>is_*</code> classifiers directly.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-medications-0-1-0">Breaking changes (medications)<a class="anchor" aria-label="anchor" href="#breaking-changes-medications-0-1-0"></a></h3>
+<ul><li>The <code>any_htn_med2</code> argument of <code><a href="../reference/derive_hypertension.html">derive_hypertension()</a></code>, <code><a href="../reference/derive_hypertension_adj.html">derive_hypertension_adj()</a></code>, <code><a href="../reference/derive_hypertension_control.html">derive_hypertension_control()</a></code>, and <code><a href="../reference/derive_hypertension_control_adj.html">derive_hypertension_control_adj()</a></code> has been renamed to <code>any_htn_med</code>. The <code>diab_med2</code> argument of <code><a href="../reference/derive_diabetes_status.html">derive_diabetes_status()</a></code> has been renamed to <code>diab_med</code>. Calls that pass the old argument by name will fail with an “unused argument” error.</li>
+<li>The self-referential <code>any_htn_med2</code> and <code>diab_med2</code> entries in <code>inst/extdata/variable-details.csv</code> have been removed. New <code>any_htn_med</code> and <code>diab_med</code> entries cover all six cycles via three database tiers: <code>DerivedVar</code> rows for cycles 1-2 (<code>atc_*</code>/<code>mhr_*</code> columns), <code>DerivedVar</code> rows for cycles 3-6 (<code>meucatc</code>, <code>npi_25b</code>), and <code>copy</code> passthrough rows for the main cycle databases once medications have been merged in.</li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -45,7 +74,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafidul Islam, Douglas Manuel, Therese Chan.</p>
+  <p>Developed by Rafidul Islam, Douglas Manuel.</p>
 </div>
 
 <div class="pkgdown-footer-right">

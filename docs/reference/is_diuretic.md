@@ -1,50 +1,65 @@
 # Diuretics
 
-This function checks if a given medication for a CHMS respondent belongs
-to the diuretic drug class. The identification is based on the
-Anatomical Therapeutic Chemical (ATC) code of the medication and the
-time when the medication was last taken.
+This function checks if a given medication is a diuretic. This function
+processes multiple inputs efficiently.
 
 ## Usage
 
 ``` r
-is_diuretic(MEUCATC, NPI_25B)
+is_diuretic(meucatc, npi_25b)
 ```
 
 ## Arguments
 
-- MEUCATC:
+- meucatc:
 
-  A character vector representing the Anatomical Therapeutic Chemical
-  (ATC) code of the medication.
+  [character](https://rdrr.io/r/base/character.html) ATC code of the
+  medication.
 
-- NPI_25B:
+- npi_25b:
 
-  An integer representing the CHMS response for the time when the
-  medication was last taken. 1 = Today, 2 = Yesterday, 3 = Within the
-  last week, 4 = Within the last month, 5 = More than a month ago, 6 =
-  Never taken
+  [integer](https://rdrr.io/r/base/integer.html) Time when the
+  medication was last taken.
 
 ## Value
 
-A numeric, 1 if medication is in the diuretic class and 0 if it is not.
+[numeric](https://rdrr.io/r/base/numeric.html) 1 if medication is a
+diuretic, 0 otherwise. If inputs are invalid or out of bounds, the
+function returns a tagged NA.
 
 ## Details
 
-This function uses the `startsWith` function to identify diuretics based
-on their ATC codes, which typically start with "C03". Additionally,
-specific sub-codes 'C03BA08' and 'C03CA01' are excluded from the
-diuretic class. If the ATC code matches the pattern and is not in the
-exclusion list, and the medication was taken within the last month
-(NPI_25B \<= 4), the medication is considered a diuretic, and the
-function returns TRUE. Otherwise, it returns FALSE.
+Identifies diuretics based on ATC codes starting with "C03", excluding
+specific sub-codes.
+
+         **Missing Data Codes:**
+         - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+         - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 
 ## Examples
 
 ``` r
-
-# Let's say the ATC code is "C03AA03" and the time last taken was within last week (3).
-
-is_diuretic("C03AA03", 3) # Should return 1 (TRUE)
+# Scalar usage: Single respondent
+is_diuretic("C03AA03", 3)
 #> [1] 1
+# Returns: 1
+
+# Example: Respondent has non-response values for all inputs.
+result <- is_diuretic("9999998", 8)
+result # Shows: NA
+#> [1] NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#> [1] TRUE
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+#> [1] "NA"
+
+# Multiple respondents
+is_diuretic(c("C03AA03", "C03BA08"), c(3, 2))
+#> [1] 1 0
+# Returns: c(1, 0)
+
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset |>
+#   mutate(diuretic = is_diuretic(meucatc, npi_25b))
 ```

@@ -1,4 +1,4 @@
-# missing data (tagged_na)
+# Missing data (tagged_na)
 
 ## Missing data (`NA` –\> `tagged_na`)
 
@@ -92,7 +92,7 @@ When creating derived variables from CHMS variables, it is important to
 distinguish the different NA values. Certain derived variables include
 the use of variables that may not be applicable to respondents. For
 example, [smoking
-pack-years](https://big-life-lab.github.io/chmsflow/reference/pack_years_fun.html)
+pack-years](https://big-life-lab.github.io/chmsflow/reference/calculate_pack_years.md)
 involves the use of smoking variables that may not be applicable to all
 CHMS respondents (i.e. non-smokers who have never smoked). In this
 scenario, respondents who had values of `NA(a)` for the various base
@@ -104,7 +104,7 @@ calculated due to missing values.
 
 On the other hand, there are certain derived variables that use
 variables that are applicable to all respondents. For example,
-[WHR](https://big-life-lab.github.io/chmsflow/reference/calculate_WHR.html)
+[WHR](https://big-life-lab.github.io/chmsflow/reference/calculate_waist_height_ratio.md)
 uses CHMS height and waist circumference variables which are asked to
 all CHMS respondents. In this scenario, all NA variables would be tagged
 as `NA(b)` as these variables are applicable to everyone, and
@@ -113,3 +113,15 @@ respondents with NA values would be classified as missing.
 When creating deriving variables, it is important to examine the base
 CHMS variables to check for the presence of `NA(a)` and `NA(b)`. This
 can be done by reviewing CHMS documentation.
+
+## Next steps
+
+- **See tagged NAs in practice** – The [Analysis
+  walkthrough](https://big-life-lab.github.io/chmsflow/articles/analysis_walkthrough.md)
+  shows how tagged NAs appear in hypertension derivation results.
+- **Understand derived variables** – Learn how `Func::` and
+  `DerivedVar::` entries work in [Derived
+  variables](https://big-life-lab.github.io/chmsflow/articles/derived_variables.md).
+- **Inspect the recoding rules** – See how missing data codes are mapped
+  in [Variable schema
+  reference](https://big-life-lab.github.io/chmsflow/articles/variables_and_variable_details.md).

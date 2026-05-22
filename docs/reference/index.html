@@ -15,8 +15,19 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/get_started.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/analysis_walkthrough.html">Tutorial</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides"><li><a class="dropdown-item" href="../articles/recoding_medications.html">Recoding medications</a></li>
+    <li><a class="dropdown-item" href="../articles/using_chmsflow_at_an_rdc.html">Using chmsflow at an RDC</a></li>
+    <li><a class="dropdown-item" href="../articles/how_to_add_variables.html">Adding variables</a></li>
+  </ul></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-explanation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Explanation</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-explanation"><li><a class="dropdown-item" href="../articles/methodology.html">Methodology</a></li>
+    <li><a class="dropdown-item" href="../articles/tagged_na_usage.html">Missing data (tagged NA)</a></li>
+    <li><a class="dropdown-item" href="../articles/derived_variables.html">Derived variables</a></li>
+  </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/Big-Life-Lab/chmsflow/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -65,220 +76,178 @@
 
       <dl><dt>
 
-          <code><a href="adjust_DBP.html">adjust_DBP()</a></code>
+          <code><a href="adjust_dbp.html">adjust_dbp()</a></code>
 
         </dt>
         <dd>Adjusted diastolic blood pressure</dd>
 
         <dt>
 
-          <code><a href="adjust_SBP.html">adjust_SBP()</a></code>
+          <code><a href="adjust_sbp.html">adjust_sbp()</a></code>
 
         </dt>
         <dd>Adjusted systolic blood pressure</dd>
 
         <dt>
 
-          <code><a href="calculate_GFR.html">calculate_GFR()</a></code>
+          <code><a href="calculate_exercise_daily_avg.html">calculate_exercise_daily_avg()</a></code>
 
         </dt>
-        <dd>Estimated glomerular filtration rate (GFR)</dd>
+        <dd>Average daily minutes of moderate-to-vigorous physical activity (MVPA) from accelerometer data</dd>
 
         <dt>
 
-          <code><a href="calculate_Hhld_Income.html">calculate_hhld_income()</a></code>
+          <code><a href="calculate_exercise_weekly.html">calculate_exercise_weekly()</a></code>
 
         </dt>
-        <dd>Adjusted total household income</dd>
+        <dd>Weekly minutes of moderate-to-vigorous physical activity (MVPA) from daily average</dd>
 
         <dt>
 
-          <code><a href="calculate_WHR.html">calculate_WHR()</a></code>
-
-        </dt>
-        <dd>Waist-to-height ratio (WHR)</dd>
-
-        <dt>
-
-          <code><a href="calculate_nonHDL.html">calculate_nonHDL()</a></code>
-
-        </dt>
-        <dd>Non-HDL cholesterol level</dd>
-
-        <dt>
-
-          <code><a href="categorize_GFR_to_CKD.html">categorize_GFR_to_CKD()</a></code>
-
-        </dt>
-        <dd>Chronic kidney disease (CKD) derived variable</dd>
-
-        <dt>
-
-          <code><a href="categorize_income.html">categorize_income()</a></code>
-
-        </dt>
-        <dd>Categorical adjusted household income</dd>
-
-        <dt>
-
-          <code><a href="categorize_minperweek.html">categorize_minperweek()</a></code>
-
-        </dt>
-        <dd>Categorical weekly physical activity indicator</dd>
-
-        <dt>
-
-          <code><a href="categorize_nonHDL.html">categorize_nonHDL()</a></code>
-
-        </dt>
-        <dd>Categorical non-HDL cholesterol level</dd>
-
-        <dt>
-
-          <code><a href="cycles1to2_ace_inhibitors.html">cycles1to2_ace_inhibitors()</a></code>
-
-        </dt>
-        <dd>ACE inhibitors - cycles 1-2</dd>
-
-        <dt>
-
-          <code><a href="cycles1to2_any_antiHTN_meds.html">cycles1to2_any_antiHTN_meds()</a></code>
-
-        </dt>
-        <dd>Any anti-hypertensive medications - cycles 1-2</dd>
-
-        <dt>
-
-          <code><a href="cycles1to2_beta_blockers.html">cycles1to2_beta_blockers()</a></code>
-
-        </dt>
-        <dd>Beta blockers - cycles 1-2</dd>
-
-        <dt>
-
-          <code><a href="cycles1to2_calcium_channel_blockers.html">cycles1to2_calcium_channel_blockers()</a></code>
-
-        </dt>
-        <dd>Calcium channel blockers - cycles 1-2</dd>
-
-        <dt>
-
-          <code><a href="cycles1to2_diabetes_drugs.html">cycles1to2_diabetes_drugs()</a></code>
-
-        </dt>
-        <dd>Diabetes medications - cycles 1-2</dd>
-
-        <dt>
-
-          <code><a href="cycles1to2_diuretics.html">cycles1to2_diuretics()</a></code>
-
-        </dt>
-        <dd>Diuretics - cycles 1-2</dd>
-
-        <dt>
-
-          <code><a href="cycles1to2_nsaid.html">cycles1to2_nsaid()</a></code>
-
-        </dt>
-        <dd>Non-steroidal anti-inflammatory drugs (NSAIDs) - cycles 1-2</dd>
-
-        <dt>
-
-          <code><a href="cycles1to2_other_antiHTN_meds.html">cycles1to2_other_antiHTN_meds()</a></code>
-
-        </dt>
-        <dd>Other anti-hypertensive medications - cycles 1-2</dd>
-
-        <dt>
-
-          <code><a href="determine_CVD_Family_History.html">determine_CVD_family_history()</a></code>
-
-        </dt>
-        <dd>Cardiovascular Disease (CVD) family history</dd>
-
-        <dt>
-
-          <code><a href="determine_CVD_Personal_History.html">determine_CVD_personal_history()</a></code>
-
-        </dt>
-        <dd>Cardiovascular disease (CVD) personal history</dd>
-
-        <dt>
-
-          <code><a href="determine_adjusted_hypertension.html">determine_adjusted_hypertension()</a></code>
-
-        </dt>
-        <dd>Hypertension derived variable with adjusted blood pressures</dd>
-
-        <dt>
-
-          <code><a href="determine_controlled_adjusted_hypertension.html">determine_controlled_adjusted_hypertension()</a></code>
-
-        </dt>
-        <dd>Controlled hypertension derived variable with adjusted blood pressures</dd>
-
-        <dt>
-
-          <code><a href="determine_controlled_hypertension.html">determine_controlled_hypertension()</a></code>
-
-        </dt>
-        <dd>Controlled hypertension derived variable</dd>
-
-        <dt>
-
-          <code><a href="determine_gooddiet.html">determine_gooddiet()</a></code>
-
-        </dt>
-        <dd>Categorical diet indicator</dd>
-
-        <dt>
-
-          <code><a href="determine_hypertension.html">determine_hypertension()</a></code>
-
-        </dt>
-        <dd>Hypertension derived variable</dd>
-
-        <dt>
-
-          <code><a href="determine_inclusive_diabetes.html">determine_inclusive_diabetes()</a></code>
-
-        </dt>
-        <dd>Diabetes derived variable</dd>
-
-        <dt>
-
-          <code><a href="find_totalFV_cycles1and2.html">find_totalFV_cycles1and2()</a></code>
+          <code><a href="calculate_fv_daily_cycles1to2.html">calculate_fv_daily_cycles1to2()</a></code>
 
         </dt>
         <dd>Daily fruit and vegetable consumption in a year - cycles 1-2</dd>
 
         <dt>
 
-          <code><a href="find_totalFV_cycles3to6.html">find_totalFV_cycles3to6()</a></code>
+          <code><a href="calculate_fv_daily_cycles3to6.html">calculate_fv_daily_cycles3to6()</a></code>
 
         </dt>
         <dd>Daily fruit and vegetable consumption in a year - cycles 3-6</dd>
 
         <dt>
 
-          <code><a href="find_week_accelerometer_average.html">find_week_accelerometer_average()</a></code>
+          <code><a href="calculate_gfr.html">calculate_gfr()</a></code>
 
         </dt>
-        <dd>Average minutes of exercise per day for week-long accelerometer data</dd>
+        <dd>Estimated glomerular filtration rate (GFR)</dd>
 
         <dt>
 
-          <code><a href="in_lowest_income_quintile.html">in_lowest_income_quintile()</a></code>
+          <code><a href="calculate_household_income.html">calculate_household_income()</a></code>
 
         </dt>
-        <dd>Lowest income quintile indicator</dd>
+        <dd>Adjusted total household income</dd>
 
         <dt>
 
-          <code><a href="is_NSAID.html">is_NSAID()</a></code>
+          <code><a href="calculate_nonhdl.html">calculate_nonhdl()</a></code>
 
         </dt>
-        <dd>Non-steroidal anti-inflammatory drugs (NSAIDs)</dd>
+        <dd>Non-HDL cholesterol level</dd>
+
+        <dt>
+
+          <code><a href="calculate_pack_years.html">calculate_pack_years()</a></code>
+
+        </dt>
+        <dd>Smoking pack-years</dd>
+
+        <dt>
+
+          <code><a href="calculate_waist_height_ratio.html">calculate_waist_height_ratio()</a></code>
+
+        </dt>
+        <dd>Waist-to-height ratio (WHtR)</dd>
+
+        <dt>
+
+          <code><a href="categorize_ckd.html">categorize_ckd()</a></code>
+
+        </dt>
+        <dd>Chronic kidney disease (CKD) derived variable</dd>
+
+        <dt>
+
+          <code><a href="categorize_diet_quality.html">categorize_diet_quality()</a></code>
+
+        </dt>
+        <dd>Categorical diet indicator</dd>
+
+        <dt>
+
+          <code><a href="categorize_exercise.html">categorize_exercise()</a></code>
+
+        </dt>
+        <dd>Categorical weekly moderate-to-vigorous physical activity (MVPA) indicator</dd>
+
+        <dt>
+
+          <code><a href="categorize_income_quintile.html">categorize_income_quintile()</a></code>
+
+        </dt>
+        <dd>Categorical adjusted household income</dd>
+
+        <dt>
+
+          <code><a href="categorize_nonhdl.html">categorize_nonhdl()</a></code>
+
+        </dt>
+        <dd>Categorical non-HDL cholesterol level</dd>
+
+        <dt>
+
+          <code><a href="derive_alcohol_risk.html">derive_alcohol_risk()</a></code>
+
+        </dt>
+        <dd>Low risk drinking score</dd>
+
+        <dt>
+
+          <code><a href="derive_alcohol_risk_detailed.html">derive_alcohol_risk_detailed()</a></code>
+
+        </dt>
+        <dd>Low risk drinking score - former/never categories</dd>
+
+        <dt>
+
+          <code><a href="derive_cvd_family_history.html">derive_cvd_family_history()</a></code>
+
+        </dt>
+        <dd>Cardiovascular Disease (CVD) family history</dd>
+
+        <dt>
+
+          <code><a href="derive_cvd_personal_history.html">derive_cvd_personal_history()</a></code>
+
+        </dt>
+        <dd>Cardiovascular disease (CVD) personal history</dd>
+
+        <dt>
+
+          <code><a href="derive_diabetes_status.html">derive_diabetes_status()</a></code>
+
+        </dt>
+        <dd>Diabetes derived variable</dd>
+
+        <dt>
+
+          <code><a href="derive_hypertension.html">derive_hypertension()</a></code>
+
+        </dt>
+        <dd>Hypertension derived variable</dd>
+
+        <dt>
+
+          <code><a href="derive_hypertension_adj.html">derive_hypertension_adj()</a></code>
+
+        </dt>
+        <dd>Hypertension derived variable with adjusted blood pressures</dd>
+
+        <dt>
+
+          <code><a href="derive_hypertension_control.html">derive_hypertension_control()</a></code>
+
+        </dt>
+        <dd>Controlled hypertension derived variable</dd>
+
+        <dt>
+
+          <code><a href="derive_hypertension_control_adj.html">derive_hypertension_control_adj()</a></code>
+
+        </dt>
+        <dd>Controlled hypertension derived variable with adjusted blood pressures</dd>
 
         <dt>
 
@@ -289,10 +258,31 @@
 
         <dt>
 
-          <code><a href="is_any_antiHTN_med.html">is_any_antiHTN_med()</a></code>
+          <code><a href="is_ace_med_cycles1to2.html">is_ace_med_cycles1to2()</a></code>
+
+        </dt>
+        <dd>ACE inhibitors - cycles 1-2</dd>
+
+        <dt>
+
+          <code><a href="is_any_antihtn_med.html">is_any_antihtn_med()</a></code>
 
         </dt>
         <dd>Any anti-hypertensive medications</dd>
+
+        <dt>
+
+          <code><a href="is_any_htn_med_cycles1to2.html">is_any_htn_med_cycles1to2()</a></code>
+
+        </dt>
+        <dd>Any anti-hypertensive medications - cycles 1-2</dd>
+
+        <dt>
+
+          <code><a href="is_bb_med_cycles1to2.html">is_bb_med_cycles1to2()</a></code>
+
+        </dt>
+        <dd>Beta blockers - cycles 1-2</dd>
 
         <dt>
 
@@ -310,10 +300,24 @@
 
         <dt>
 
-          <code><a href="is_diabetes_drug.html">is_diabetes_drug()</a></code>
+          <code><a href="is_ccb_med_cycles1to2.html">is_ccb_med_cycles1to2()</a></code>
+
+        </dt>
+        <dd>Calcium channel blockers - cycles 1-2</dd>
+
+        <dt>
+
+          <code><a href="is_diabetes_med.html">is_diabetes_med()</a></code>
 
         </dt>
         <dd>Diabetes medications</dd>
+
+        <dt>
+
+          <code><a href="is_diab_med_cycles1to2.html">is_diab_med_cycles1to2()</a></code>
+
+        </dt>
+        <dd>Diabetes medications - cycles 1-2</dd>
 
         <dt>
 
@@ -324,45 +328,82 @@
 
         <dt>
 
-          <code><a href="is_other_antiHTN_med.html">is_other_antiHTN_med()</a></code>
+          <code><a href="is_diur_med_cycles1to2.html">is_diur_med_cycles1to2()</a></code>
+
+        </dt>
+        <dd>Diuretics - cycles 1-2</dd>
+
+        <dt>
+
+          <code><a href="is_lowest_income_quintile.html">is_lowest_income_quintile()</a></code>
+
+        </dt>
+        <dd>Lowest income quintile indicator</dd>
+
+        <dt>
+
+          <code><a href="is_misc_htn_med_cycles1to2.html">is_misc_htn_med_cycles1to2()</a></code>
+
+        </dt>
+        <dd>Other anti-hypertensive medications - cycles 1-2</dd>
+
+        <dt>
+
+          <code><a href="is_nsaid.html">is_nsaid()</a></code>
+
+        </dt>
+        <dd>Non-steroidal anti-inflammatory drugs (NSAIDs)</dd>
+
+        <dt>
+
+          <code><a href="is_nsaid_med_cycles1to2.html">is_nsaid_med_cycles1to2()</a></code>
+
+        </dt>
+        <dd>Non-steroidal anti-inflammatory drugs (NSAIDs) - cycles 1-2</dd>
+
+        <dt>
+
+          <code><a href="is_other_antihtn_med.html">is_other_antihtn_med()</a></code>
 
         </dt>
         <dd>Other anti-hypertensive medications</dd>
+      </dl></div><div class="section level2">
+      <h2 id="medication-recoding-functions">Medication recoding functions<a class="anchor" aria-label="anchor" href="#medication-recoding-functions"></a></h2>
+
+      <div class="section-desc"><p>Functions for recoding and aggregating CHMS medication variables</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="recode_meds_cycles1to2.html">recode_meds_cycles1to2()</a></code>
+
+        </dt>
+        <dd>Recode medication variables for cycles 1-2 (wide format)</dd>
 
         <dt>
 
-          <code><a href="is_taking_drug_class.html">is_taking_drug_class()</a></code>
+          <code><a href="recode_meds_cycles3to6.html">recode_meds_cycles3to6()</a></code>
 
         </dt>
-        <dd>Number of occurrences of a specific drug class based on given conditions</dd>
+        <dd>Recode medication variables for cycles 3-6 (long format)</dd>
 
         <dt>
 
-          <code><a href="low_drink_score_fun.html">low_drink_score_fun()</a></code>
+          <code><a href="aggregate_meds_by_person.html">aggregate_meds_by_person()</a></code>
 
         </dt>
-        <dd>Low risk drinking score</dd>
+        <dd>Aggregate medication variables to one row per person</dd>
 
         <dt>
 
-          <code><a href="low_drink_score_fun1.html">low_drink_score_fun1()</a></code>
+          <code><a href="recode_after_meds.html">recode_after_meds()</a></code>
 
         </dt>
-        <dd>Low risk drinking score - former/never categories</dd>
-
-        <dt>
-
-          <code><a href="minperday_to_minperweek.html">minperday_to_minperweek()</a></code>
-
-        </dt>
-        <dd>Minutes per week from minutes per day</dd>
-
-        <dt>
-
-          <code><a href="pack_years_fun.html">pack_years_fun()</a></code>
-
-        </dt>
-        <dd>Smoking pack-years</dd>
+        <dd>Recode variables that depend on derived medication variable inputs</dd>
       </dl></div><div class="section level2">
       <h2 id="chms-dummy-data">CHMS dummy data<a class="anchor" aria-label="anchor" href="#chms-dummy-data"></a></h2>
 
@@ -375,52 +416,94 @@
 
       <dl><dt>
 
+          <code><a href="cycle1.html">cycle1</a></code>
+
+        </dt>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 1</dd>
+
+        <dt>
+
+          <code><a href="cycle1_meds.html">cycle1_meds</a></code>
+
+        </dt>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 1 Medications</dd>
+
+        <dt>
+
           <code><a href="cycle2.html">cycle2</a></code>
 
         </dt>
-        <dd>CHMS Cycle 2</dd>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 2</dd>
 
         <dt>
 
           <code><a href="cycle2_meds.html">cycle2_meds</a></code>
 
         </dt>
-        <dd>CHMS Cycle 2 Medications</dd>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 2 Medications</dd>
 
         <dt>
 
           <code><a href="cycle3.html">cycle3</a></code>
 
         </dt>
-        <dd>CHMS Cycle 3</dd>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 3</dd>
 
         <dt>
 
           <code><a href="cycle3_meds.html">cycle3_meds</a></code>
 
         </dt>
-        <dd>CHMS Cycle 3 Medications</dd>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 3 Medications</dd>
 
         <dt>
 
           <code><a href="cycle4.html">cycle4</a></code>
 
         </dt>
-        <dd>CHMS Cycle 4</dd>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 4</dd>
+
+        <dt>
+
+          <code><a href="cycle4_meds.html">cycle4_meds</a></code>
+
+        </dt>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 4 Medications</dd>
 
         <dt>
 
           <code><a href="cycle5.html">cycle5</a></code>
 
         </dt>
-        <dd>CHMS Cycle 5</dd>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 5</dd>
+
+        <dt>
+
+          <code><a href="cycle5_meds.html">cycle5_meds</a></code>
+
+        </dt>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 5 Medications</dd>
+
+        <dt>
+
+          <code><a href="cycle6.html">cycle6</a></code>
+
+        </dt>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 6</dd>
+
+        <dt>
+
+          <code><a href="cycle6_meds.html">cycle6_meds</a></code>
+
+        </dt>
+        <dd>Canadian Health Measures Survey (CHMS) Cycle 6 Medications</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafidul Islam, Douglas Manuel, Therese Chan.</p>
+  <p>Developed by Rafidul Islam, Douglas Manuel.</p>
 </div>
 
 <div class="pkgdown-footer-right">

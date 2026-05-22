@@ -1,137 +1,82 @@
 # Derived variables
 
-## Introduction
-
-There are two types derived variables in the CHMS surveys. Both types of
-derived variables are supported in `chmsflow`.
-
-- Variable mapping - mapping two or more variables into a single
-  variable.
-- Variables that derived using math equations.
-
-`chmsflow` calculates these more complex derived variables using
-functions that are referenced in `variable_details.csv` within `RecTo`
-section with the prefix ‘Func::’. The variables used in the function are
-referenced in the `variableStart` section with the prefix
-‘DerivedVar::’. For example, GFR (`gfr`) includes `Func::calculate_GFR`
-in the `RecTo` section; and
-`DerivedVar::[lab_bcre, pgdcgt, clc_sex, clc_age]` in the
-`variableStart` section, which indicates the four starting variables
-(`lab_bcre, pgdcgt, clc_sex, clc_age`).
-
-## Example - Glomerular filtration rate (GFR)
-
-A derived variable for GFR has been created in `chmsflow` that uses
-harmonized blood creatine (lab_bcre - in µmol/L), ethnicity (pgdcgt - 13
-categories), sex (clc_sex - 2 categories), and age (clc_age - in years)
-variables across all CHMS cycles.
-
-Using `rec_with_table()` you can transform the derived WHR variable
-across multiple CHMS cycles and create a transformed dataset.
-
-In order derive variables, you must load the existing custom function
-associated with the derived variable
-
-``` r
-
-# Function for derived GFR variable
-calculate_GFR <- function(LAB_BCRE, PGDCGT, CLC_SEX, CLC_AGE) {
-  GFR <- 0
-  serumcreat <- 0
-
-  if (any(!LAB_BCRE %in% 14:785) || (any(!CLC_SEX %in% c(1, 2)) || any(!PGDCGT %in% 1:13)) || any(!CLC_AGE %in% 3:79)) {
-    GFR <- haven::tagged_na("b") # GFR is NA if any non-responses found
-  } else {
-    serumcreat <- LAB_BCRE / 88.4 # Proceeds without non-responses
-
-    if (!is.na(CLC_SEX) && !is.na(PGDCGT) && serumcreat != 0) {
-      if (CLC_SEX == 2 && PGDCGT == 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (0.742) * (1.210) # female and black
-      } else if (CLC_SEX == 2 && PGDCGT != 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (0.742) # female and not black
-      } else if (CLC_SEX == 1 && PGDCGT == 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) * (1.210) # male and black
-      } else if (CLC_SEX == 1 && PGDCGT != 2) {
-        GFR <- 175 * ((serumcreat)^(-1.154)) * ((CLC_AGE)^(-0.203)) # male and not black
-      }
-    } else {
-      GFR <- haven::tagged_na("b") # Handle case where CLC_SEX or PGDCGT is NA or serumcreat is 0
-    }
-  }
-
-  return(GFR)
-}
-```
-
 ``` r
 
 library(chmsflow)
 ```
 
+## Introduction
+
+There are two types of derived variables in the CHMS surveys. Both are
+supported in chmsflow.
+
+- **Variable mapping** – mapping two or more variables into a single
+  variable.
+- **Computed variables** – variables derived using mathematical
+  equations or clinical logic.
+
+chmsflow computes derived variables using functions referenced in
+`variable-details.csv`. The `recEnd` column uses the prefix `Func::` to
+name the R function, and the `variableStart` column uses the prefix
+`DerivedVar::` to list the input variables.
+
+For example, GFR (`gfr_ml_min`) has:
+
+- `recEnd`: `Func::calculate_gfr`
+- `variableStart`: `DerivedVar::[lab_bcre, pgdcgt, clc_sex, clc_age]`
+
+This tells
+[`rec_with_table()`](https://rdrr.io/pkg/recodeflow/man/rec_with_table.html)
+to call
+[`calculate_gfr()`](https://big-life-lab.github.io/chmsflow/reference/calculate_gfr.md)
+with the four input variables.
+
+## How to use derived variables
+
+Since derived variables depend on their input variables, you must list
+both the derived variable and its inputs when calling
+[`rec_with_table()`](https://rdrr.io/pkg/recodeflow/man/rec_with_table.html):
+
 ``` r
 
-cycle2_gfr <- recodeflow:::rec_with_table(cycle2, variables = c("gfr", "lab_bcre", "pgdcgt", "clc_sex", "clc_age"), variable_details = variable_details, log = TRUE)
+cycle2_gfr <- recodeflow::rec_with_table(
+  cycle2,
+  variables = c("lab_bcre", "pgdcgt", "clc_sex", "clc_age", "gfr_ml_min"),
+  variable_details = variable_details,
+  log = TRUE
+)
 ```
 
-    Using the passed data variable name as database_name
-
-    The variable clc_age was recoded into clc_age for the database cycle2 the following recodes were made: 
-
-      value_to       From rows_recoded
-    1     copy    [3, 80]            4
-    2    NA::a        996            0
-    3    NA::b [997, 999]            0
-    4     <NA>       else            0
-
-    The variable clc_sex was recoded into clc_sex for the database cycle2 the following recodes were made: 
-
-      value_to   From rows_recoded
-    1        1      1            2
-    2        2      2            2
-    3    NA::a      6            0
-    4    NA::b [7, 9]            0
-    5    NA(b)   else            0
-
-    The variable lab_bcre was recoded into lab_bcre for the database cycle2 the following recodes were made: 
-
-      value_to         From rows_recoded
-    1     copy    [14, 785]            4
-    2    NA::a [9994, 9996]            0
-    3    NA::b [9997, 9999]            0
-    4     <NA>         else            0
-
-    NOTE for pgdcgt: Respondents who respond as indigenous to previous question are identified as 'not applicable' in this question. Recode to "other", as per OCAP.
-
-    The variable sdcdcgt was recoded into pgdcgt for the database cycle2 the following recodes were made: 
-
-       value_to     From rows_recoded
-    1         1        1            3
-    2         2        2            1
-    3         3        3            0
-    4         4        4            0
-    5         5        5            0
-    6         6        6            0
-    7         7        7            0
-    8         8        8            0
-    9         9        9            0
-    10       10       10            0
-    11       11       11            0
-    12       12       12            0
-    13       13       13            0
-    14       12       96            0
-    15    NA::b [97, 99]            0
-    16    NA(b)     else            0
-
-Since derived variables are based on previously transformed variables,
-if you want to only transform your derived variable, you must also
-specify its base CHMS variables in `rec_with_table()` as shown above. So
-for the derived GFR variable, you will have to also specify the blood
-creatine (lab_bcre), ethnicity (pgdcgt), sex (clc_sex), and age
-(clc_age) variables.
+For variables that depend on medication status (e.g., hypertension,
+diabetes), use
+[`recode_after_meds()`](https://big-life-lab.github.io/chmsflow/reference/recode_after_meds.md)
+instead of
+[`rec_with_table()`](https://rdrr.io/pkg/recodeflow/man/rec_with_table.html).
+See [Recoding
+medications](https://big-life-lab.github.io/chmsflow/articles/recoding_medications.md)
+and [Analysis
+walkthrough](https://big-life-lab.github.io/chmsflow/articles/analysis_walkthrough.md)
+for the full workflow.
 
 ## Creating a derived variable
 
-Creating a derived variable requires the harmonization of existing CHMS
-variables, and a custom function that uses those harmonized variables.
-For more information on how to create a derived variable [see
-here](https://big-life-lab.github.io/chmsflow/articles/how_to_add_variables.md)
+To add a new derived variable to chmsflow, you need to create a
+harmonized set of input variables and an R function that computes the
+derived value. See [How to add
+variables](https://big-life-lab.github.io/chmsflow/articles/how_to_add_variables.md)
+for step-by-step instructions.
+
+For details on the metadata schema, see [Variable schema
+reference](https://big-life-lab.github.io/chmsflow/articles/variables_and_variable_details.md).
+
+## Next steps
+
+- **See derived variables in a full analysis** – The [Analysis
+  walkthrough](https://big-life-lab.github.io/chmsflow/articles/analysis_walkthrough.md)
+  demonstrates deriving hypertension status from CHMS cycle 3 data.
+- **Handle missing data** – Learn how `tagged_na()` codes propagate
+  through derived variable functions in [Missing data
+  (tagged_na)](https://big-life-lab.github.io/chmsflow/articles/tagged_na_usage.md).
+- **Understand the methodology** – For the design rationale behind the
+  rules-as-data approach, see
+  [Methodology](https://big-life-lab.github.io/chmsflow/articles/methodology.md).

@@ -1,55 +1,65 @@
 # Beta blockers
 
-This function determines whether a given medication, taken by a CHMS
-respondent, is classified as a beta blocker. The identification is based
-on Anatomical Therapeutic Chemical (ATC) codes and the timing of the
-last medication intake.
+This function determines whether a given medication is a beta blocker.
+This function processes multiple inputs efficiently.
 
 ## Usage
 
 ``` r
-is_beta_blocker(MEUCATC, NPI_25B)
+is_beta_blocker(meucatc, npi_25b)
 ```
 
 ## Arguments
 
-- MEUCATC:
+- meucatc:
 
-  A character vector representing the Anatomical Therapeutic Chemical
-  (ATC) code of the medication.
+  [character](https://rdrr.io/r/base/character.html) ATC code of the
+  medication.
 
-- NPI_25B:
+- npi_25b:
 
-  An integer representing the CHMS response for the time when the
-  medication was last taken. 1 = Today, 2 = Yesterday, 3 = Within the
-  last week, 4 = Within the last month, 5 = More than a month ago, 6 =
-  Never taken
+  [integer](https://rdrr.io/r/base/integer.html) Time when the
+  medication was last taken.
 
 ## Value
 
-A numeric, 1 if medication is in the beta blocker class and 0 if it is
-not.
+[numeric](https://rdrr.io/r/base/numeric.html) 1 if medication is a beta
+blocker, 0 otherwise. If inputs are invalid or out of bounds, the
+function returns a tagged NA.
 
 ## Details
 
-This function identifies whether a medication is a beta blocker based on
-their ATC codes, which typically start with "C07". Additionally,
-specific sub-codes 'C07AA07', 'C07AA12', and 'C07AG02' are excluded from
-the beta blocker class. A respondent is classified as taking a beta
-blocker (return = 1) if the ATC code matches the pattern and is not in
-the exclusion list, and the medication was taken within the last month
-(NPI_25B \<= 4), otherwise the respondent is not taking a beta blocker
-(return = 0)
+Identifies beta blockers based on ATC codes starting with "C07",
+excluding specific sub-codes.
+
+         **Missing Data Codes:**
+         - `meucatc`: `9999996` (Not applicable), `9999997-9999999` (Missing)
+         - `npi_25b`: `6` (Not applicable), `7-9` (Missing)
 
 ## Examples
 
 ``` r
-
-# Example 1: Medication ATC code is "C07AA13", and it was taken within the last week
-is_beta_blocker("C07AA13", 3) # Should return 1 (TRUE)
+# Scalar usage: Single respondent
+is_beta_blocker("C07AA13", 3)
 #> [1] 1
+# Returns: 1
 
-# Example 2: Medication ATC code is "C07AA07" (excluded code), and it was taken within last month
-is_beta_blocker("C07AA07", 4) # Should return 0 (FALSE)
-#> [1] 0
+# Example: Respondent has non-response values for all inputs.
+result <- is_beta_blocker("9999998", 8)
+result # Shows: NA
+#> [1] NA
+haven::is_tagged_na(result, "b") # Shows: TRUE (confirms it's tagged NA(b))
+#> [1] TRUE
+format(result, tag = TRUE) # Shows: "NA(b)" (displays the tag)
+#> [1] "NA"
+
+# Multiple respondents
+is_beta_blocker(c("C07AA13", "C07AA07"), c(3, 4))
+#> [1] 1 0
+# Returns: c(1, 0)
+
+# Database usage: Applied to survey datasets
+# library(dplyr)
+# dataset |>
+#   mutate(beta_blocker = is_beta_blocker(meucatc, npi_25b))
 ```

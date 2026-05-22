@@ -1,0 +1,189 @@
+# Methodology
+
+## Why CHMS harmonization is non-trivial
+
+The [Canadian Health Measures Survey
+(CHMS)](https://www.statcan.gc.ca/en/survey/household/5071) is a
+repeated cross-sectional survey conducted by Statistics Canada since
+2007. Each cycle collects questionnaire, physical measurement, and
+laboratory data from a nationally representative sample of Canadians.
+Combining data across cycles enables trend analyses and increases
+statistical power, but the raw data is not directly comparable across
+cycles for several reasons.
+
+### Variable naming changes
+
+Variable names sometimes change between cycles. For example, the
+accelerometer variable for moderate-to-vigorous physical activity on day
+1 is named `amsdmva1` in cycle 1, but `ammdmva1` in cycles 2–6. A
+researcher pooling cycles must know about every such rename, or risk
+silent misalignment.
+
+chmsflow handles these renames through metadata in
+`variable-details.csv`. The `variableStart` column uses a mixed format
+to specify cycle-specific exceptions:
+
+    cycle1::amsdmva1, [ammdmva1]
+
+This means: use `amsdmva1` for cycle 1, and `ammdmva1` for all other
+cycles. The `recodeflow` package reads this format and applies the
+correct mapping automatically. For the full list of variable naming
+patterns, see `inst/metadata/schemas/chms/chms_database_config.yaml` in
+the package source.
+
+### Coding scheme differences
+
+Even when variable names are stable, the coding categories may differ.
+CHMS response codes for missing data, valid skips, and refusals vary
+across variables and cycles. chmsflow’s recoding rules in
+`variable-details.csv` define explicit mappings for each response code,
+ensuring consistent treatment across cycles.
+
+### Medication data format changes
+
+Cycles 1–2 store medication data in a wide format: up to 80 columns of
+ATC code and time-last-taken pairs per respondent. Cycles 3–6 use a long
+format: one row per medication per respondent with two columns
+(`meucatc` and `npi_25b`). chmsflow provides separate functions for each
+format
+([`recode_meds_cycles1to2()`](https://big-life-lab.github.io/chmsflow/reference/recode_meds_cycles1to2.md)
+and
+[`recode_meds_cycles3to6()`](https://big-life-lab.github.io/chmsflow/reference/recode_meds_cycles3to6.md))
+with identical call signatures, so the downstream workflow is the same
+regardless of cycle. See [Recoding
+medications](https://big-life-lab.github.io/chmsflow/articles/recoding_medications.md)
+for details.
+
+## How chmsflow works
+
+### Rules as data, derivation as code
+
+chmsflow builds on the
+[recodeflow](https://big-life-lab.github.io/recodeflow/) package, which
+separates recoding *rules* from recoding *logic*. The rules live in two
+CSV metadata files:
+
+- **`variables.csv`** – lists every harmonized variable with its name,
+  label, section, subject, type, and unit
+- **`variable-details.csv`** – defines how each raw CHMS value maps to a
+  harmonized value, row by row
+
+The recoding logic lives in
+[`recodeflow::rec_with_table()`](https://rdrr.io/pkg/recodeflow/man/rec_with_table.html),
+which reads the metadata and applies the mappings. This separation means
+that adding or correcting a recoding rule is a CSV edit, not a code
+change.
+
+For detailed schema documentation, see [Variable schema
+reference](https://big-life-lab.github.io/chmsflow/articles/variables_and_variable_details.md).
+
+### The `variableStart` column
+
+The `variableStart` column in `variable-details.csv` tells
+[`rec_with_table()`](https://rdrr.io/pkg/recodeflow/man/rec_with_table.html)
+where to find the source data. It supports several formats:
+
+| Format | Meaning | Example |
+|----|----|----|
+| `[variable_name]` | Same name across all cycles | `[clc_age]` |
+| `cycle1::name1, [default_name]` | Cycle-specific exception with a default | `cycle1::amsdmva1, [ammdmva1]` |
+| `DerivedVar::[var1, var2, ...]` | Computed by a function from listed inputs | `DerivedVar::[lab_bcre, pgdcgt, clc_sex, clc_age]` |
+| `Func::function_name` | The R function that computes the derived variable (in `recTo`) | `Func::calculate_gfr` |
+
+### The `recStart` and `recEnd` columns
+
+These columns define the mapping from source values to harmonized
+values:
+
+- **Continuous pass-through**: `recStart = "copy"` passes the value
+  unchanged
+- **Category mapping**: `recStart` and `recEnd` define source ranges
+  (e.g., `[1, 3]`), and the row’s `recTo` column gives the harmonized
+  value
+- **Missing data**: rows with `recTo = "NA::a"` or `recTo = "NA::b"` map
+  specific source codes to tagged NA values
+
+### Missing data semantics
+
+CHMS uses numeric codes for missing data (e.g., `996` for valid skip,
+`997--999` for don’t know / refusal / not stated). chmsflow converts
+these to
+[`haven::tagged_na()`](https://haven.tidyverse.org/reference/tagged_na.html)
+values that preserve the reason for missingness:
+
+- `tagged_na("a")` – valid skip (not applicable to this respondent)
+- `tagged_na("b")` – missing (don’t know, refusal, or not stated)
+
+This distinction matters for analysis. For example, a respondent who was
+never asked about smoking (valid skip) should be treated differently
+from one who refused to answer (missing). See [Missing data
+(tagged_na)](https://big-life-lab.github.io/chmsflow/articles/tagged_na_usage.md)
+for a full explanation.
+
+### Derived variables
+
+Some harmonized variables cannot be created by simple value mapping.
+These are computed by R functions referenced in `variable-details.csv`
+with the `Func::` prefix. Examples include:
+
+- [`calculate_gfr()`](https://big-life-lab.github.io/chmsflow/reference/calculate_gfr.md)
+  – estimated glomerular filtration rate from creatinine, ethnicity,
+  sex, and age
+- [`derive_hypertension()`](https://big-life-lab.github.io/chmsflow/reference/derive_hypertension.md)
+  – hypertension status from adjusted blood pressure, medication use,
+  and comorbidities
+- [`calculate_pack_years()`](https://big-life-lab.github.io/chmsflow/reference/calculate_pack_years.md)
+  – smoking pack-years from smoking history variables
+
+The `DerivedVar::` prefix in `variableStart` lists the input variables
+that must be present in the data before the function can run. See
+[Derived
+variables](https://big-life-lab.github.io/chmsflow/articles/derived_variables.md)
+for details.
+
+## Known limits
+
+- **Cycle 1 naming divergences** require mixed-format `variableStart`
+  entries. These are documented in the metadata but can be surprising if
+  you inspect the raw CHMS data directly.
+- **Not all CHMS variables are harmonized.** chmsflow currently covers
+  variables used in cardiometabolic health research. The [613apps data
+  dictionary](https://www.613apps.ca/data-dictionary-builder/) provides
+  a broader reference for all CHMS variables.
+- **Harmonization decisions are embedded in the metadata.** Researchers
+  should review `variable-details.csv` to confirm that the recoding
+  rules are appropriate for their specific research question. The
+  mappings follow clinical and epidemiological conventions but may not
+  suit every analytic purpose.
+- **Survey design is out of scope.** chmsflow harmonizes and derives
+  variables but does not implement CHMS survey design, weights, or
+  bootstrap variance estimation.
+
+## Next steps
+
+- **See it in action** – Follow the [Analysis
+  walkthrough](https://big-life-lab.github.io/chmsflow/articles/analysis_walkthrough.md)
+  to run a complete hypertension prevalence analysis using chmsflow.
+- **Inspect the recoding rules** – Browse the metadata column by column
+  in [Variable schema
+  reference](https://big-life-lab.github.io/chmsflow/articles/variables_and_variable_details.md).
+- **Understand missing data** – Learn how `tagged_na()` preserves the
+  reason for missingness in [Missing data
+  (tagged_na)](https://big-life-lab.github.io/chmsflow/articles/tagged_na_usage.md).
+- **Add your own variables** – Extend chmsflow with custom harmonized
+  variables in [How to add
+  variables](https://big-life-lab.github.io/chmsflow/articles/how_to_add_variables.md).
+
+## References
+
+- Statistics Canada. [Canadian Health Measures Survey
+  (CHMS)](https://www.statcan.gc.ca/en/survey/household/5071). Survey
+  overview and documentation.
+- Statistics Canada. CHMS user guide materials. Available at
+  [OSF](https://osf.io/v27mw/files/v8ahd).
+- [613apps data dictionary
+  builder](https://www.613apps.ca/data-dictionary-builder/). Interactive
+  CHMS variable lookup (select “CHMS” under “Choose survey”).
+- Big Life Lab.
+  [recodeflow](https://big-life-lab.github.io/recodeflow/). The
+  general-purpose harmonization engine underlying chmsflow.

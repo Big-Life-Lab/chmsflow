@@ -2,14 +2,16 @@ pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  analysis_walkthrough: analysis_walkthrough.html
   derived_variables: derived_variables.html
   get_started: get_started.html
   how_to_add_variables: how_to_add_variables.html
+  methodology: methodology.html
   recoding_medications: recoding_medications.html
   tagged_na_usage: tagged_na_usage.html
-  variable_details: variable_details.html
-  variables_sheet: variables_sheet.html
-last_built: 2026-05-21T21:09Z
+  using_chmsflow_at_an_rdc: using_chmsflow_at_an_rdc.html
+  variables_and_variable_details: variables_and_variable_details.html
+last_built: 2026-05-22T11:23Z
 urls:
   reference: https://big-life-lab.github.io/chmsflow/reference
   article: https://big-life-lab.github.io/chmsflow/articles

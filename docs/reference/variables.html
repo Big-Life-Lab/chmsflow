@@ -15,8 +15,19 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/get_started.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/analysis_walkthrough.html">Tutorial</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-how-to-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">How-to guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-how-to-guides"><li><a class="dropdown-item" href="../articles/recoding_medications.html">Recoding medications</a></li>
+    <li><a class="dropdown-item" href="../articles/using_chmsflow_at_an_rdc.html">Using chmsflow at an RDC</a></li>
+    <li><a class="dropdown-item" href="../articles/how_to_add_variables.html">Adding variables</a></li>
+  </ul></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-explanation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Explanation</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-explanation"><li><a class="dropdown-item" href="../articles/methodology.html">Methodology</a></li>
+    <li><a class="dropdown-item" href="../articles/tagged_na_usage.html">Missing data (tagged NA)</a></li>
+    <li><a class="dropdown-item" href="../articles/derived_variables.html">Derived variables</a></li>
+  </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/Big-Life-Lab/chmsflow/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -36,28 +47,22 @@
     <p>This dataset lists all the variables that are present in chmsflow.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">variables</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div class="section level2">
-    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-
-
-<dl><dt>variables</dt>
-<dd><p>a data frame</p></dd>
-
-</dl></div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>See the below link for more details about how the worksheet is structured
-<a href="https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html">https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html</a></p>
+    <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
+    <p>See <a href="https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html">https://big-life-lab.github.io/chmsflow/articles/variables_sheet.html</a> for more details.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">variables</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">variables</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	213 obs. of  11 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ variable     : chr  "acemed" "adj_hh_inc" "agegroup2079" "agegroup4" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ role         : chr  "" "" "" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	211 obs. of  9 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ variable     : chr  "ace_med" "adj_hh_income" "agegroup2079" "agegroup4" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ label        : chr  "ACE inhibitors" "Adjusted household income" "Age " "Age " ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ labelLong    : chr  "Taking ACE inhibitors" "Adjusted total household income based on household size" "Converted age (2 groups)" "Converted age (4 groups)" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ section      : chr  "Health status" "Socioeconomic" "Sociodemographics" "Sociodemographics" ...</span>
@@ -65,8 +70,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ variableType : chr  "Categorical" "Continuous" "Categorical" "Categorical" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ units        : chr  "N/A" "$" "N/A" "N/A" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ databaseStart: chr  "cycle1_meds, cycle2_meds, cycle3_meds, cycle4_meds, cycle5_meds, cycle6_meds" "cycle1, cycle2, cycle3, cycle4, cycle5, cycle6" "cycle1, cycle2, cycle3, cycle4, cycle5, cycle6" "cycle1, cycle2, cycle3, cycle4, cycle5, cycle6" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ variableStart: chr  "DerivedVar::[atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a"| __truncated__ "DerivedVar::[thi_01, dhhdsz]" "[clc_age]" "[clc_age]" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ description  : chr  "" "" "" "" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ variableStart: chr  "DerivedVar::[atc_101a, atc_102a, atc_103a, atc_104a, atc_105a, atc_106a, atc_107a, atc_108a, atc_109a, atc_110a"| __truncated__ "DerivedVar::[thi_01, dhhdsz]" "cycle6::CLC_AGE, [clc_age]" "cycle6::CLC_AGE, [clc_age]" ...</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -74,7 +78,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafidul Islam, Douglas Manuel, Therese Chan.</p>
+  <p>Developed by Rafidul Islam, Douglas Manuel.</p>
 </div>
 
 <div class="pkgdown-footer-right">
