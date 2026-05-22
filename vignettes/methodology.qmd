@@ -21,7 +21,7 @@ chmsflow handles these renames through metadata in `variable-details.csv`. The `
 cycle1::amsdmva1, [ammdmva1]
 ```
 
-This means: use `amsdmva1` for cycle 1, and `ammdmva1` for all other cycles. The `recodeflow` package reads this format and applies the correct mapping automatically. For the full list of variable naming patterns, see the [CHMS database configuration](https://github.com/Big-Life-Lab/chmsflow/blob/main/inst/metadata/schemas/chms/chms_database_config.yaml).
+This means: use `amsdmva1` for cycle 1, and `ammdmva1` for all other cycles. The `recodeflow` package reads this format and applies the correct mapping automatically. For the full list of variable naming patterns, see `inst/metadata/schemas/chms/chms_database_config.yaml` in the package source.
 
 ### Coding scheme differences
 
