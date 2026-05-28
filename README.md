@@ -32,10 +32,10 @@ For use at a Research Data Centre (RDC), see `vignette("using_chmsflow_at_an_rdc
 
 ## Documentation
 
-- **Tutorial** -- [Analysis walkthrough](articles/analysis_walkthrough.html): end-to-end hypertension prevalence using cycles 3--6
-- **How-to guides** -- [Recoding medications](articles/recoding_medications.html), [Using chmsflow at an RDC](articles/using_chmsflow_at_an_rdc.html), [Adding variables](articles/how_to_add_variables.html)
-- **Explanation** -- [Methodology](articles/methodology.html), [Missing data (tagged NA)](articles/tagged_na_usage.html), [Derived variables](articles/derived_variables.html)
-- **Reference** -- [Variable schema](articles/variables_and_variable_details.html), [Function reference](reference/index.html)
+- **Tutorial** -- [Analysis walkthrough](https://big-life-lab.github.io/chmsflow/articles/analysis_walkthrough.html): end-to-end hypertension prevalence using cycles 3--6
+- **How-to guides** -- [Recoding medications](https://big-life-lab.github.io/chmsflow/articles/recoding_medications.html), [Using chmsflow at an RDC](https://big-life-lab.github.io/chmsflow/articles/using_chmsflow_at_an_rdc.html), [Adding variables](https://big-life-lab.github.io/chmsflow/articles/how_to_add_variables.html)
+- **Explanation** -- [Methodology](https://big-life-lab.github.io/chmsflow/articles/methodology.html), [Missing data (tagged NA)](https://big-life-lab.github.io/chmsflow/articles/tagged_na_usage.html), [Derived variables](https://big-life-lab.github.io/chmsflow/articles/derived_variables.html)
+- **Reference** -- [Variable schema](https://big-life-lab.github.io/chmsflow/articles/variables_and_variable_details.html), [Function reference](https://big-life-lab.github.io/chmsflow/reference/index.html)
 
 ## Contributing
 
